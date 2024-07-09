@@ -1,0 +1,18 @@
+.generalLog_container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .header_wrapper {
+    h3 {
+      color: #fff;
+      font-family: "Nunito Sans";
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: normal;
+    }
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}

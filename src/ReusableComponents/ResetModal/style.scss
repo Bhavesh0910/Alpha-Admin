@@ -1,0 +1,108 @@
+.reset-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(7px);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 199;
+
+  .reset-modal-container {
+    border-radius: 20px;
+    border: 1px solid var(--stroke-unselect, #767676);
+    background: var(--box-bg, #131313);
+    display: inline-flex;
+    width: 400px;
+    padding: 50px 20px 20px 20px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    gap: 20px;
+
+    .reset-modal-icon {
+      width: 80px;
+      height: 80px;
+      position: absolute;
+      top: 1%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      img {
+        width: 100%;
+      }
+    }
+    .reset-modal-info {
+      h2 {
+        color: var(--White, #fff);
+        leading-trim: both;
+        text-edge: cap;
+        font-family: var(--primary-font-family);
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        text-align: center;
+      }
+      p {
+        color: var(--paragraph-text, #b0b0b0);
+        text-align: center;
+        leading-trim: both;
+        text-edge: cap;
+        font-family: var(--primary-font-family);
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+      }
+    }
+    .reset-modal-button {
+      display: flex;
+      width: 100%;
+      gap: 20px;
+
+      button {
+        border-radius: 20px;
+        border: 1px solid var(--stroke-unselect, #767676);
+        background: var(--black-bg, #030504);
+        display: flex;
+        padding: 20px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        flex: 1 0 0;
+        color: var(--White, #fff);
+        leading-trim: both;
+        text-edge: cap;
+        font-family: var(--primary-font-family);
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        &.standard_button {
+          display: flex;
+          width: 100%;
+          height: 55px;
+          border: 0.5px solid var(--Text-Medium, #333);
+          border-radius: 20px;
+          background: var(--Green-brand-colour, #4bb390);
+          background-image: url("../../assets/icons/buttonsvg.svg");
+          background-position: center;
+          color: var(--black-bg, #030504);
+          font-family: var(--primary-font-family);
+          font-weight: var(--fw-medium);
+          font-size: 20px;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          background-size: cover !important;
+          background-repeat: no-repeat;
+        }
+      }
+    }
+  }
+}

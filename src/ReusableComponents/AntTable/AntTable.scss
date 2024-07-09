@@ -1,0 +1,433 @@
+// AntTable.scss
+
+/* Change the background color of the table */
+.ant-table-wrapper {
+  border-radius: var(--Outside-box, 10px);
+  border: 1px solid var(--Stroke, #252a29);
+  background: var(--Inner-box-BG, #141a17);
+}
+
+.ant-table-thead > tr > th {
+  background-color: #09090b !important;
+  /* Change to your desired header background color */
+  color: #ffffff !important;
+  border-bottom: 1px solid #252a29 !important;
+}
+
+.ant-table-tbody > tr > td {
+  background-color: #141a17;
+  color: #a6a6a6 !important;
+  border-bottom: 1px solid #252a29 !important;
+}
+
+.highlight {
+  background-color: #04d9ff;
+  color: #000;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: #09090b !important;
+}
+
+.ant-table-cell-row-hover {
+  background: #09090b !important;
+}
+
+.ant-empty-description {
+  color: #fff !important;
+}
+
+.ant-table-cell::before {
+  background: none !important;
+}
+
+// Table alignment
+
+.ant-table {
+  background: #000;
+}
+
+.ant-table-thead > tr > th {
+  background: #333;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 1px solid #444;
+  white-space: normal;
+  width: 100px !important;
+  text-wrap: nowrap;
+}
+
+.ant-table-tbody > tr > td {
+  color: #ddd;
+  white-space: normal;
+  min-width: 150px !important;
+  border-bottom: 1px solid var(--Stroke, #252a29);
+  background: var(--Inner-box-BG, #141a17);
+}
+
+.ant-table-pagination {
+  background: #000;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: #262626;
+}
+
+.table-wrapper {
+  border-radius: var(--Outside-box, 10px);
+  border: 1px solid var(--Stroke, #252a29);
+  background: var(--Inner-box-BG, #141a17);
+  padding: 0 !important;
+
+  .ant-pagination {
+    border-radius: var(--Outside-box, 10px);
+    border: 1px solid var(--Stroke, #252a29);
+    background: var(--Main-Background, #09090b);
+    padding: 20px;
+    margin: 20px;
+    justify-content: center !important;
+
+    @media only screen and (max-width: 800px) {
+      justify-content: center !important;
+    }
+
+    .ant-pagination-total-text {
+      @media only screen and (max-width: 800px) {
+        display: none;
+      }
+    }
+    .ant-pagination-options {
+      @media only screen and (max-width: 450px) {
+        flex-direction: column !important;
+        margin: 0 auto !important;
+      }
+    }
+  }
+}
+
+.ant-table-container {
+  background: var(--Main-Background, #09090b) !important;
+}
+
+.ant-table-cell {
+  &::before {
+    background: var(--Main-Background, #09090b) !important;
+  }
+}
+
+thead tr {
+  border-bottom: 1px solid var(--Stroke, #252a29);
+  background: var(--Main-Background, #09090b) !important;
+
+  th {
+    background: var(--Main-Background, #09090b) !important;
+    color: var(--Text-white, #fff) !important;
+    font-family: "Nunito Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 18px;
+    border: none !important;
+  }
+}
+
+td {
+  border: none !important;
+}
+
+tbody {
+  tr {
+    background: var(--Inner-box-BG, #141a17);
+  }
+
+  td {
+    color: var(--Paragraph-text-colour, #a6a6a6);
+    font-family: "Nunito Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+    border-bottom: 1px solid var(--Stroke, #252a29) !important;
+  }
+}
+
+.ant-pagination {
+  display: flex;
+  align-items: center !important;
+
+  .ant-pagination-item {
+    a {
+      color: #000 !important;
+    }
+  }
+
+  .ant-pagination-total-text {
+    margin-right: auto !important;
+    color: #fff;
+
+    @media only screen and (max-width: 800px) {
+      display: none;
+    }
+
+    @media only screen and (max-width: 705px) {
+      margin: 0 !important;
+      width: fit-content;
+    }
+  }
+
+  .ant-pagination-options {
+    margin-left: auto !important;
+  }
+}
+
+.ant-table {
+  .info-btn {
+    color: #fff !important;
+    cursor: pointer;
+  }
+
+  .ant-table-cell {
+    a {
+      color: #fff !important;
+      cursor: pointer;
+    }
+    .index_cell {
+      min-width: 61px !important;
+    }
+  }
+
+  .action_btn {
+    min-height: 35px;
+    max-width: 100px;
+  }
+}
+
+// Pangination
+
+.ant-pagination {
+  display: flex;
+  border-radius: var(--Outside-box, 10px);
+  border: 1px solid var(--Stroke, #252a29);
+  background: var(--Main-Background, #09090b);
+  padding: 20px;
+  margin: 20px !important;
+  justify-content: center !important;
+
+  .ant-table-pagination-right {
+    justify-content: center !important;
+  }
+
+  .ant-pagination-item-active {
+    background-color: #04d9ff !important;
+    a {
+      color: #000 !important;
+    }
+    background-color: none !important;
+    border-radius: 5px !important;
+    border: none !important;
+  }
+  .ant-pagination-item {
+    a {
+      color: #fff !important;
+    }
+    background-color: none !important;
+    border-radius: 5px !important;
+    border: none !important;
+  }
+  .ant-pagination {
+    li {
+      background-color: none !important;
+    }
+  }
+  .ant-pagination-item-link {
+    color: #fff !important;
+  }
+  .ant-pagination-item-ellipsis {
+    color: #fff !important;
+  }
+
+  .ant-pagination-small {
+    font-size: 12px;
+  }
+
+  .ant-pagination-options {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .ant-pagination-options-quick-jumper {
+      display: flex;
+      height: 100%;
+      margin-inline-start: 0px;
+      line-height: 32px;
+      vertical-align: middle;
+      color: #fff !important;
+
+      input {
+        width: 65px !important;
+        color: #fff !important;
+        border-radius: 5px !important;
+        border: 1px solid var(--Stroke, #252a29) !important;
+        background: #09090b !important;
+      }
+    }
+  }
+}
+
+.clickable-row {
+}
+
+.ant-table {
+  .info-btn {
+    color: #fff !important;
+    cursor: pointer;
+  }
+
+  .ant-table-cell {
+    a {
+      color: #fff !important;
+      cursor: pointer;
+    }
+
+    .index_cell {
+      min-width: 61px !important;
+    }
+  }
+
+  .action_btn {
+    min-height: 35px;
+    max-width: 100px;
+  }
+}
+
+// Pangination
+
+.ant-pagination {
+  display: flex;
+  border-radius: var(--Outside-box, 10px);
+  border: 1px solid var(--Stroke, #252a29);
+  background: var(--Main-Background, #09090b);
+  padding: 20px;
+  margin: 20px !important;
+
+  .ant-table-pagination-right {
+    justify-content: center !important;
+  }
+
+  .ant-pagination-item-active {
+    background-color: #04d9ff !important;
+
+    a {
+      color: #000 !important;
+    }
+
+    background-color: none !important;
+    border-radius: 5px !important;
+    border: none !important;
+  }
+
+  .ant-pagination-item {
+    a {
+      color: #fff;
+    }
+
+    background-color: none !important;
+    border-radius: 5px !important;
+    border: none !important;
+  }
+
+  .ant-pagination {
+    li {
+      background-color: none !important;
+    }
+  }
+
+  .ant-pagination-item-link {
+    color: #fff !important;
+  }
+
+  .ant-pagination-item-ellipsis {
+    color: #fff !important;
+  }
+
+  .ant-pagination-small {
+    font-size: 12px;
+  }
+
+  .ant-pagination-options {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    @media only screen and (max-width: 705px) {
+      justify-content: center !important;
+      margin-left: 0 !important;
+    }
+
+    @media only screen and (max-width: 500px) {
+      flex-direction: column !important;
+    }
+
+    .ant-pagination-options-quick-jumper {
+      display: flex;
+      height: 100%;
+      margin-inline-start: 0px;
+      line-height: 32px;
+      vertical-align: middle;
+      color: #fff !important;
+
+      input {
+        width: 65px !important;
+        color: #fff !important;
+        border-radius: 5px !important;
+        border: 1px solid var(--Stroke, #252a29) !important;
+        background: #09090b !important;
+      }
+    }
+  }
+
+  .clickable-row {
+  }
+}
+
+.ant_table_container {
+  .ant-table {
+    overflow-x: auto;
+    scrollbar-width: thin; /* Thin scrollbar (works in Firefox) */
+    scrollbar-color: var(--Brand, #04d9ff) var(--Stroke, #252a29); /* Color of the scrollbar (thumb and track) */
+
+    .ant-table-body {
+      @media only screen and (max-width: 768px) {
+        max-height: 60vh !important;
+      }
+    }
+  }
+
+  /* Webkit (Chrome, Safari) scrollbar customization */
+  .ant-table::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar */
+  }
+
+  .ant-table::-webkit-scrollbar-track {
+    background: var(--Stroke, #252a29); /* Background color of the scrollbar track */
+  }
+
+  .ant-table::-webkit-scrollbar-thumb {
+    background: var(--Brand, #04d9ff); /* Color of the scrollbar thumb */
+    border-radius: 5px; /* Rounded corners for the thumb */
+  }
+
+  .ant-table::-webkit-scrollbar-thumb:hover {
+    background: var(--Brand-hover, #5ac9a7); /* Color of the scrollbar thumb on hover */
+  }
+}
+
+.ant-table-row-expand-icon-cell {
+  button {
+    background: none !important;
+
+    &:hover {
+      color: #04d9ff !important;
+    }
+  }
+}

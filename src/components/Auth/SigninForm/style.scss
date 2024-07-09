@@ -1,0 +1,250 @@
+.signinform-container {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+  max-width: 100%;
+  overflow-y: hidden;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 582px;
+  padding-bottom: 150px;
+  padding-top: 20px;
+  margin-left: 5%;
+
+  @media only screen and (min-width: 800px) and (max-width: 1300px) {
+    max-width: 48%;
+  }
+
+  @media only screen and (max-width: 800px) {
+    padding: 0;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .signinform_wrapper {
+    width: 100%;
+    padding: 40px;
+    border-radius: 16px;
+    border: 0.5px solid var(--secondary-sb-150-graph, #393939);
+    background: rgba(1, 1, 1, 0.3);
+    backdrop-filter: blur(7px);
+
+    @media only screen and (max-width: 800px) {
+      padding: 40px 20px;
+    }
+  }
+
+  .company-logo {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 62px;
+      height: 58px;
+    }
+  }
+}
+
+.signinform-wrapper {
+  width: 100%;
+  max-width: 579px;
+  display: flex;
+  margin-top: 20px;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+
+  @media only screen and (max-width: 800px) {
+    margin: 0 auto;
+    margin-top: 10px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .signin-form-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .signinform-innnercontainer {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+
+    .form-separator {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+
+      p {
+        color: #989898;
+        font-family: var(--primary-font-family);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: var(--fw-normal);
+        line-height: normal;
+        min-width: 104px;
+      }
+
+      .left {
+        height: 1px;
+        width: 100%;
+        background-color: #42474a;
+      }
+    }
+
+    .signin-options {
+      display: flex;
+      max-width: 477px;
+      height: 60px;
+      padding: 20px;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      border-radius: 20px;
+      background: var(--Box, #131313);
+      cursor: pointer;
+      width: 100%;
+      margin: 0 auto 0 auto;
+
+      p {
+        color: var(--primary-text-color);
+        font-family: var(--primary-font-family);
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+
+        @media only screen and (max-width: 360px) {
+          font-size: 16px;
+        }
+      }
+    }
+
+    .signinform-subcontainer-form {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      background: var(--secondary-sb-100-inside, #121418);
+
+      .signinform-container-input {
+        display: flex;
+        padding: 20px;
+        align-items: center;
+        gap: 10px;
+        align-self: stretch;
+        height: 50px;
+        width: 100%;
+        border-radius: 8px;
+        background: var(--secondary-sb-50-background, #010101);
+
+        border: 1px solid transparent;
+
+        &:focus-within {
+          border: 1px solid var(--primary-p-blue-100-main, #04d9ff);
+        }
+
+        img {
+          height: 24px;
+          width: 24px;
+        }
+
+        input {
+          width: 100%;
+          background-color: transparent !important;
+          border: none;
+          outline: none;
+          color: #fff;
+          &:focus {
+            background-color: transparent !important;
+            border: none;
+            outline: none;
+          }
+        }
+      }
+    }
+
+    .signinform-submit-options {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+
+      .signinform-option {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .checkbox {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+
+          label {
+            color: #989898;
+            font-family: var(--primary-font-family);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 140%; /* 22.4px */
+          }
+
+          .MuiFormControlLabel-root {
+            margin-right: 0;
+            margin-left: 0;
+            .MuiButtonBase-root {
+              margin: 0;
+              padding: 0;
+            }
+          }
+
+          p {
+            color: var(--primary-text-color);
+            font-family: var(--primary-font-family);
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+          }
+        }
+
+        .forgot-password-link {
+          font-family: var(--primary-font-family);
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 140%; /* 22.4px */
+          color: #4bb390;
+          text-decoration: none;
+        }
+      }
+      p,
+      span {
+        color: #989898;
+        font-family: var(--primary-font-family);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 140%; /* 22.4px */
+      }
+      span a {
+        text-decoration: none;
+        color: #4bb390;
+        cursor: pointer;
+      }
+    }
+  }
+}

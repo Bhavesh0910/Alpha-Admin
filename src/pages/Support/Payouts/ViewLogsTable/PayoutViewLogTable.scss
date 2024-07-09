@@ -1,0 +1,72 @@
+.viewLogs_table {
+  .header_wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    align-items: center;
+
+    @media only screen and (max-width: 660px) {
+      flex-direction: column;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .ant-radio-group {
+      display: flex;
+      padding: 4px;
+      align-items: center;
+      gap: 6px;
+      max-height: 44px;
+      border-radius: var(--Corner-1, 5px);
+      border: 1px solid var(--Stroke, #252a29);
+      background: var(--Main-Background, #09090b);
+      .ant-radio-button-wrapper {
+        display: flex;
+        min-height: 36px;
+        padding: 0px 12px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        border-radius: var(--Corner-1, 5px);
+        color: var(--Paragraph-text-colour, #a6a6a6);
+        border: 0;
+        background: transparent;
+        font-family: "Nunito Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        text-wrap: nowrap;
+        &:not(:first-child)::before {
+          display: none;
+        }
+
+        &.ant-radio-button-wrapper-checked {
+          background: var(--Brand, #04d9ff);
+          color: var(--Main-Background, #09090b);
+        }
+      }
+    }
+  }
+
+  .comment_container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    > div {
+      display: flex;
+      flex-direction: row;
+      gap: 34px;
+
+      &.comment_box {
+        gap: 12px;
+
+        p {
+          max-width: 429px;
+        }
+      }
+    }
+  }
+}

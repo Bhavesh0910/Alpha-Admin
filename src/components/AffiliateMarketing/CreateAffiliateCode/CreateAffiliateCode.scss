@@ -1,0 +1,95 @@
+.create_affiliate_code_wrapper {
+  .header_wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    @media only screen and (max-width: 768px) {
+      flex-direction: column;
+      gap: 20px;
+      align-items: stretch;
+
+      button {
+        margin-left: auto;
+      }
+    }
+  }
+
+  .ant-select-selector {
+    border-radius: var(--Corner-2, 10px);
+    border: 1px solid var(--Stroke, #252a29) !important;
+    background: var(--Inner-box-BG, #141a17) !important;
+    &:hover {
+      border: 1px solid var(--Brand, #04d9ff) !important;
+      background: transparent;
+    }
+    &:focus-within {
+      border: 1px solid var(--Brand, #04d9ff) !important;
+      background: var(--Main-Background, #09090b) !important;
+    }
+  }
+
+  .affiliate_input {
+    border-radius: var(--Corner-2, 10px);
+    border: 1px solid var(--Stroke, #252a29) !important;
+    background: var(--Inner-box-BG, #141a17) !important;
+
+    &:hover {
+      border: 1px solid var(--Brand, #04d9ff) !important;
+      background: transparent;
+    }
+    &:focus-within {
+      border: 1px solid var(--Brand, #04d9ff) !important;
+      background: var(--Main-Background, #09090b) !important;
+    }
+  }
+
+  .create_plan_form {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: var(--Outside-box, 10px);
+    border: 1px solid var(--Stroke, #252a29);
+    background: var(--Inner-box-BG, #141a17);
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .form_input {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      label {
+        color: var(--Text-white, #fff);
+        font-family: var(--primary-font-family);
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+      }
+    }
+
+    .row1 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .row2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .create_button_wrapper {
+      display: flex;
+      justify-content: flex-end;
+      button {
+        max-width: 155px;
+        @media only screen and (max-width: 768px) {
+          max-width: 100%;
+        }
+      }
+    }
+  }
+}

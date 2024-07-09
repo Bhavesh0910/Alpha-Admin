@@ -1,0 +1,109 @@
+.affiliateMarketing_container {
+  color: #fff;
+  .header_wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    align-items: center;
+
+    @media only screen and (max-width: 768px) {
+      flex-direction: column;
+      gap: 20px;
+      align-items: stretch;
+
+      button {
+        margin-left: auto;
+      }
+    }
+  }
+
+  .table_header_filter {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    @media only screen and (max-width: 1000px) {
+      flex-direction: column;
+    }
+    .trader_overview_row2_groupA {
+      display: flex;
+      gap: 20px;
+
+      @media only screen and (max-width: 800px) {
+        flex-direction: column;
+      }
+    }
+  }
+
+  .country_flag_div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    img {
+      width: 27px;
+      height: 27px;
+      border-radius: 27px;
+    }
+  }
+
+  .view_details_btn {
+    min-height: 31px;
+    padding: 0px 10px;
+    border-radius: 10px;
+    color: var(--Main-Background, #09090b);
+    font-family: "Nunito Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    cursor: pointer;
+  }
+
+  .export_btn {
+    @media only screen and (max-width: 768px) {
+      button {
+        margin-left: auto;
+      }
+    }
+
+    button {
+      display: flex;
+      min-height: 44px;
+      padding: 0px 15px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--Text-white, #fff);
+      background: var(--Stroke, #252a29);
+      color: var(--Text-white, #fff);
+      font-family: "Nunito Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+
+      &:hover {
+        color: var(--Text-white, #fff) !important;
+        background: var(--Stroke, #252a29) !important;
+        border: 1px solid var(--Text-white, #fff) !important;
+      }
+    }
+  }
+
+  .userDetails_container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(9, 9, 11, 0.2);
+    backdrop-filter: blur(2px);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 19px;
+  }
+}

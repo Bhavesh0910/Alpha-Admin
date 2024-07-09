@@ -1,0 +1,143 @@
+.editCouponModal_container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(9, 9, 11, 0.2);
+  backdrop-filter: blur(2px);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 19px;
+  .editCouponModal_wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 580px;
+    padding: 20px;
+    flex-direction: column;
+    gap: 20px;
+    color: #fff;
+    border-radius: var(--Outside-box, 10px);
+    border: 1px solid var(--Stroke, #252a29);
+    background: var(--Main-Background, #09090b);
+    position: relative;
+    .header_wrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+
+      h3 {
+        color: var(--Text-white, #fff);
+        font-family: var(--primary-font-family);
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+      }
+    }
+
+    .editCouponForm {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .form_input_box {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .ant-select {
+          .ant-select-selector {
+            border: 1px solid var(--Stroke, #252a29) !important;
+            background: var(--Inner-box-BG, #141a17) !important;
+
+            &:focus-within {
+              border: 1px solid var(--Brand, #04d9ff) !important;
+              background: var(--Main-Background, #09090b) !important;
+            }
+
+            .ant-select-selection-placeholder {
+              padding-left: 10px;
+            }
+          }
+        }
+
+        .ant-input-affix-wrapper {
+          .ant-input {
+            padding-left: 10px !important;
+          }
+        }
+
+        .ant-picker {
+          border: 1px solid var(--Stroke, #252a29) !important;
+          background: var(--Inner-box-BG, #141a17) !important;
+
+          &:focus-within {
+            border: 1px solid var(--Brand, #04d9ff) !important;
+            background: var(--Main-Background, #09090b) !important;
+          }
+
+          .ant-picker-input {
+            padding-left: 10px;
+          }
+        }
+      }
+
+      .topSection {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .bottomSection {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(167px, 1fr));
+        gap: 20px;
+      }
+
+      .footerSection {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        .status_checkbox_wrapper {
+          .ant-checkbox-wrapper {
+            span {
+              color: var(--Text-white, #fff);
+              font-family: var(--primary-font-family);
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 600;
+              line-height: normal;
+            }
+          }
+        }
+
+        .save_changes_btn {
+          color: var(--Main-Background, #09090b);
+          font-family: "Nunito Sans";
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: normal;
+          display: flex;
+          max-width: 155px;
+          width: 100%;
+          height: 44px;
+          padding: 0px 20px;
+          justify-content: center;
+          align-items: center;
+          border-radius: 10px;
+          background: var(--Brand, #04d9ff);
+          margin-left: auto;
+
+          @media only screen and (max-width: 432px) {
+            max-width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

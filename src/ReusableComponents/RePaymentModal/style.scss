@@ -1,0 +1,135 @@
+.repayment-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(7px);
+  z-index: 111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .repayment-modal-container {
+    display: flex;
+    width: 563px;
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 20px;
+    border-radius: 20px;
+    border: 1px solid var(--Stroke, #272727);
+    background: var(--box-bg, #131313);
+    .repayment-heading {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      p {
+        color: var(--White, #fff);
+        leading-trim: both;
+        text-edge: cap;
+        font-family: "Nunito Sans";
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+      }
+    }
+    .payment-container {
+      border-radius: 16px;
+      border: 1px solid #272727;
+      background: var(--black-bg, #030504);
+      display: flex;
+      padding: 20px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+      align-self: stretch;
+      width: 100%;
+      p {
+        color: var(--white, #fff);
+        leading-trim: both;
+        text-edge: cap;
+        font-family: "Nunito Sans";
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+      }
+      .payment-methods {
+        width: 100%;
+      }
+    }
+    .coupon_container {
+      border-radius: 20px;
+      border: 1px solid #272727;
+      background: var(--black-bg, #030504);
+      display: flex;
+      padding: 20px;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      align-self: stretch;
+      .x {
+        width: 100%;
+        .flexColumn {
+          gap: 10px;
+          .title {
+            color: var(--white, #fff);
+            leading-trim: both;
+            text-edge: cap;
+            font-family: "Nunito Sans";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+          }
+          .challengeTitle {
+            color: var(--white, #fff);
+            leading-trim: both;
+            text-edge: cap;
+            font-family: "Nunito Sans";
+            font-size: 32px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+          }
+        }
+        .couponWrapper {
+          input {
+            display: flex;
+            padding: 8px 8px 8px 20px;
+            justify-content: space-between;
+            align-items: center;
+            align-self: stretch;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+          }
+        }
+      }
+      .flexSpacebetween.priceSection {
+        span {
+          color: var(--white, #fff);
+          leading-trim: both;
+          text-edge: cap;
+          font-family: "Nunito Sans";
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: normal;
+        }
+      }
+      .flexSpacebetween.discountSection {
+        color: var(--white, #fff);
+        leading-trim: both;
+        text-edge: cap;
+        font-family: "Nunito Sans";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+      }
+    }
+  }
+}

@@ -1,0 +1,101 @@
+.funded_wrapper {
+  .header_wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      color: var(--Text-white, #fff);
+      font-family: "Nunito Sans";
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: normal;
+    }
+  }
+
+  .table_header_filter {
+    display: flex !important;
+    gap: 20px;
+    margin: 20px 0;
+    @media only screen and (max-width: 1390px) {
+      flex-wrap: wrap;
+    }
+
+    .filter_buttons {
+      @media only screen and (max-width: 900px) {
+        max-width: fit-content;
+      }
+
+      @media only screen and (max-width: 570px) {
+        button {
+          padding: 4px 2px;
+        }
+      }
+    }
+  }
+
+  .account_metrics_btn {
+    display: flex;
+    max-height: 31px;
+    padding: 0px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border-radius: 10px;
+    border: 1px solid var(--Brand, #04d9ff);
+    color: var(--Text-white, #fff);
+    font-family: "Nunito Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+
+    &:hover {
+      border: 1px solid var(--Brand, #04d9ff) !important;
+      background: transparent !important;
+      color: var(--Text-white, #fff) !important;
+    }
+  }
+
+  .status_button {
+    color: #fff !important;
+    border: 0;
+    background: transparent;
+    padding: 0 !important;
+
+    &:hover {
+      border: 0 !important;
+      background: transparent !important;
+      color: var(--Text-white, #fff) !important;
+    }
+    p {
+      display: flex;
+      width: 92px;
+      padding: 6px 10px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      border-radius: var(--Corner-Radius, 10px);
+      border: 1px solid transparent;
+
+      &.in_progress {
+        border: 1px solid #fffa8a;
+      }
+      &.approved {
+        border: 1px solid #a3ea93;
+      }
+      &.flagged {
+        border: 1px solid #ff7b36;
+      }
+      &.dismissed {
+        border: 1px solid #f97f7f;
+      }
+      &.new {
+        border: 1px solid #00a3ff;
+      }
+    }
+  }
+}

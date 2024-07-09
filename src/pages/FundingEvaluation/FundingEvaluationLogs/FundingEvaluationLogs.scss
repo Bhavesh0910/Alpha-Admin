@@ -1,0 +1,17 @@
+.stage_status_wrapper {
+  p {
+    display: flex;
+    width: 100%;
+    max-width: 92px;
+    padding: 6px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: var(--Corner-Radius, 10px);
+    border: 1px solid transparent;
+    text-transform: capitalize;
+    &.funded {
+      border: 1px solid var(--Green, #a3ea93);
+    }
+  }
+}

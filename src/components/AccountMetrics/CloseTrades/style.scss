@@ -1,0 +1,42 @@
+.db_table_container {
+  width: 100%;
+  overflow-x: auto;
+
+  h3 {
+    color: #fff;
+    font-family: Outfit;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  .negative-profit {
+    color: var(--red, #ff4343);
+
+    font-family: var(--primary-font-family);
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 119%; /* 17.85px */
+    svg {
+      margin-right: 5px;
+    }
+  }
+
+  .positive-profit {
+    color: var(--green, rgba(175, 255, 158));
+
+    font-family: var(--primary-font-family);
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 119%; /* 17.85px */
+    svg {
+      margin-right: 5px;
+    }
+  }
+  td:nth-child(5) {
+    // max-width: 240px;
+  }
+}

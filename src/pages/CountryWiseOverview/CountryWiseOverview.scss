@@ -1,0 +1,23 @@
+.countryWiseOverview_container {
+  color: #fff;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .row1_table_box {
+  }
+  .row2_chart_box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+
+    #custom_pie_chart {
+      max-width: 400px !important;
+    }
+
+    @media only screen and (max-width: 1100px) {
+      grid-template-columns: 100%;
+    }
+  }
+}

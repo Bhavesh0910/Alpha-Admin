@@ -1,0 +1,130 @@
+.coupon_container {
+  .header_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    button {
+      margin-left: auto;
+    }
+
+    .header_row2 {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+
+      .create_coupon_btn {
+        button {
+          color: var(--Text-white, #fff);
+          font-family: "Nunito Sans";
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: normal;
+          background: transparent;
+          border-radius: 10px;
+          border: 1px solid var(--Brand, #04d9ff);
+          min-height: 40px;
+        }
+
+        @media only screen and (max-width: 934px) {
+          margin-left: auto !important;
+        }
+      }
+
+      .filter_buttons {
+        margin: 0 auto;
+        margin-right: 0;
+
+        @media only screen and (max-width: 934px) {
+          margin-left: 0 !important;
+        }
+      }
+    }
+  }
+
+  .coupon_status_container {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+
+    p {
+      text-transform: capitalize;
+      display: flex;
+      width: 100%;
+      max-width: 92px;
+      padding: 6px 10px;
+      justify-content: center;
+      align-items: center;
+      border-radius: var(--Corner-Radius, 10px);
+      border: 1px solid transparent;
+
+      &.active {
+        border: 1px solid var(--Green, #a3ea93);
+      }
+      &.inactive {
+        border: 1px solid var(--Red, #f97f7f);
+      }
+    }
+  }
+
+  .actn_btn_container {
+    display: flex;
+    gap: 20px;
+    > div {
+      display: flex;
+      height: 100%;
+      min-height: 30px;
+      padding: 0px 20px;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+      border-radius: 10px;
+
+      font-family: var(--primary-font-family);
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      text-transform: capitalize;
+
+      &.private {
+        color: #09090b;
+        background: var(--Brand, #04d9ff);
+      }
+      &.public {
+        color: #ffffff;
+        border: 1px solid var(--Brand, #04d9ff);
+      }
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      border: 1px solid var(--Text-white, #fff);
+      background: transparent !important;
+      display: flex;
+      height: 100%;
+      min-height: 30px;
+      padding: 0px 20px;
+      color: var(--Text-white, #fff);
+      font-family: var(--primary-font-family);
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      text-transform: capitalize;
+
+      &:hover {
+        color: var(--Text-white, #fff) !important;
+        border: 1px solid var(--Text-white, #fff) !important;
+      }
+    }
+  }
+}

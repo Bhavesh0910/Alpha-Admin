@@ -1,0 +1,66 @@
+.pieChart_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  h2 {
+    color: var(--Text-white, #fff);
+    font-family: "Nunito Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+  .row1_wrapper {
+    display: flex;
+    width: 100%;
+    gap: 13px;
+    justify-content: space-between;
+    #chart {
+    }
+
+    .apexcharts-legend {
+      height: 100% !important;
+      position: absolute;
+      left: auto;
+      top: 0px !important;
+      right: 0px !important;
+      padding: 0 !important;
+      justify-content: center !important;
+      gap: 20px;
+      .apexcharts-legend-series {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        .apexcharts-legend-marker {
+          width: 19px !important;
+          height: 19px !important;
+          border-radius: 2px !important;
+        }
+        .apexcharts-legend-text {
+          color: var(--Paragraph-text-colour, #a6a6a6) !important;
+          font-family: "Nunito Sans" !important;
+          font-size: 16px !important;
+          font-style: normal !important;
+          font-weight: 400 !important;
+          line-height: 24px !important;
+        }
+      }
+    }
+
+    .labels_container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+      .label_with_value {
+        .value {
+          color: var(--Text-white, #fff);
+          font-family: "Nunito Sans";
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}

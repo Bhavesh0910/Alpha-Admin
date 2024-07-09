@@ -1,0 +1,62 @@
+.authframe-container::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  right: 0px;
+  bottom: 0;
+  left: 340px;
+  background-image: url(../../../../src/assets/images/laptop.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-blend-mode: multiply;
+  z-index: -1;
+  pointer-events: none;
+  transform: scale(0.9);
+
+  @media only screen and (max-width: 800px) {
+    display: none;
+  }
+}
+
+.authframe-container {
+  max-width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  .laptop {
+    position: absolute;
+    z-index: -1;
+    width: 1071.336px !important;
+    right: 5px;
+    top: 48px;
+    pointer-events: none;
+  }
+
+  .backdrops {
+    position: relative;
+    height: 100%;
+    z-index: -2;
+    .backdrop_items {
+      filter: blur(40px);
+      pointer-events: none;
+      max-width: 400px;
+    }
+
+    .backdrop-top {
+      position: absolute;
+      bottom: 40%;
+    }
+
+    .backdrop-middle {
+      position: absolute;
+      left: 35%;
+      top: 25%;
+    }
+
+    .backdrop-right {
+      position: absolute;
+      right: 6%;
+      top: 50%;
+    }
+  }
+}

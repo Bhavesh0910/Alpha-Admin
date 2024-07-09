@@ -1,0 +1,75 @@
+.createCompetition_container {
+  .createCompetition_wrapper {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: var(--Outside-box, 10px);
+    border: 1px solid var(--Stroke, #252a29);
+    background: var(--Inner-box-BG, #141a17);
+
+    .createCompetitionForm {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .form_input_box {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        label {
+          color: var(--Text-white, #fff);
+          font-family: "Nunito Sans";
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: normal;
+        }
+
+        .ant-picker {
+          background: var(--Inner-box-BG, #141a17) !important;
+          border: 1px solid #252a29 !important;
+          &:focus-within {
+            background: var(--Main-Background, #09090b) !important;
+            border: 1px solid var(--Brand, #04d9ff) !important;
+          }
+        }
+      }
+
+      .topSection {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      }
+      .bottomSection {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+
+        @media only screen and (max-width: 460px) {
+          grid-template-columns: 100%;
+        }
+
+        .ant-picker {
+          max-width: 100%;
+        }
+      }
+      .footer_section {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .ant-input-textarea-affix-wrapper {
+          min-height: 93px;
+          textarea {
+            min-height: 91px !important;
+          }
+        }
+
+        button {
+          max-width: 155px;
+          margin-left: auto;
+        }
+      }
+    }
+  }
+}

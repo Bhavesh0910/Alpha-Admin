@@ -1,0 +1,13 @@
+:root {
+  --primary-text-color: #ffffff;
+  --bg-color: #09090b;
+  --fw-normal: 400;
+  --fw-medium: 700;
+  --fw-bold: 800;
+  --primary-font-family: "Nunito Sans";
+}
+body {
+  background-color: var(--bg-color);
+  color: var(--primary-text-color);
+  font-family: var(--primary-font-family);
+}

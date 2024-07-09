@@ -1,0 +1,8 @@
+.viewDetails_button {
+  min-height: 30px;
+
+  &:hover {
+    color: #09090b !important;
+    background: var(--Brand, #04d9ff) !important;
+  }
+}

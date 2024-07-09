@@ -1,0 +1,115 @@
+.userSupport_container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .header_wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+
+    @media only screen and (max-width: 460px) {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .filter_buttons {
+      min-height: 44px;
+    }
+  }
+
+  .userSupportForm_wrapper {
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: var(--Outside-box, 10px);
+    border: 1px solid var(--Stroke, #252a29);
+    background: var(--Inner-box-BG, #141a17);
+    .form_input_box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      color: #fff;
+
+      .ant-select-selector {
+        border: 1px solid var(--Stroke, #252a29) !important;
+        background: var(--Inner-box-BG, #141a17) !important;
+
+        &:focus-within {
+          border: 1px solid var(--Brand, #04d9ff) !important;
+          background: var(--Main-Background, #09090b) !important;
+        }
+      }
+
+      .ant-input-affix-wrapper {
+        flex-direction: row !important;
+
+        input {
+          padding-left: 10px !important;
+        }
+
+        .ant-input-suffix {
+          padding-right: 10px !important;
+          .anticon {
+            color: #fff !important;
+            background: transparent !important;
+          }
+        }
+      }
+    }
+
+    .userSupportForm_changeEmail {
+      .change_form_inputFields {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+        gap: 20px;
+      }
+    }
+    .userSupportForm_reqPayoutForm {
+      .req_form_inputFields {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(328px, 1fr));
+        gap: 20px;
+
+        @media only screen and (max-width: 836px) {
+          grid-template-columns: 100%;
+        }
+
+        .form_input_box {
+          &:last-child {
+            grid-column: span 2;
+            @media only screen and (max-width: 836px) {
+              grid-column: span 1;
+            }
+            .ant-input-textarea-affix-wrapper {
+              min-height: 93px;
+              textarea {
+                min-height: 91px !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .footer_section {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    button {
+      width: 100%;
+      max-width: 155px;
+
+      &:hover {
+        color: #09090b !important;
+        background: var(--Brand, #04d9ff) !important;
+      }
+
+      @media only screen and (max-width: 460px) {
+        max-width: 100%;
+      }
+    }
+  }
+}

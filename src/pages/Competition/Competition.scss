@@ -1,0 +1,202 @@
+.competition_container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .header_wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    h3 {
+      color: var(--Text-white, #fff);
+      font-family: var(--primary-font-family);
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: normal;
+    }
+  }
+  .table_header_filter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .competition_data {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    .competition_card_container {
+      display: flex;
+      padding: 20px;
+      flex-direction: column;
+      gap: 20px;
+      border-radius: 20px;
+      background: var(--Inner-box-BG, #141a17);
+      color: #fff;
+      .header_section {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        h4 {
+          color: var(--Text-white, #fff);
+          font-family: var(--primary-font-family);
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: normal;
+        }
+      }
+      .competition_info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+
+        .topSection {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 10px;
+          width: 100%;
+
+          .label {
+            color: var(--Paragraph-text-colour, #a6a6a6);
+            font-family: "Nunito Sans";
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+          }
+          .value {
+            color: var(--Text-white, #fff);
+            font-family: "Nunito Sans";
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+          }
+        }
+        .bottomSection {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+
+          > div {
+            flex: 1;
+          }
+
+          .status_box,
+          .participants_info {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+          }
+
+          .status_box {
+            border-right: 1px solid #252a29;
+
+            .label {
+              color: var(--Paragraph-text-colour, #a6a6a6);
+              font-family: "Nunito Sans";
+              font-size: 14px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: normal;
+            }
+
+            .status_value {
+              text-transform: capitalize;
+              display: flex;
+              width: 100%;
+              max-width: 92px;
+              padding: 6px 10px;
+              justify-content: center;
+              border-radius: var(--Corner-Radius, 10px);
+              align-items: center;
+            }
+
+            .ongoing {
+              border: 1px solid var(--Green, #a3ea93);
+            }
+
+            .upcoming {
+              border: 1px solid var(--Brand, #04d9ff);
+            }
+
+            .ended {
+              border: 1px solid var(--Red, #f97f7f);
+            }
+          }
+          .participants_info {
+            justify-content: flex-end;
+          }
+        }
+      }
+      .prize_container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border-radius: 20px;
+        border: 1px solid var(--Stroke, #252a29);
+        display: flex;
+        padding: 10px;
+        align-items: flex-start;
+
+        .prizes_wrapper {
+          display: grid;
+          width: 100%;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 10px;
+          .prize_box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            padding: 15px;
+            border-radius: 20px;
+            background: var(--Main-Background, #09090b);
+
+            .label {
+              color: var(--Text-white, #fff);
+              font-family: "Nunito Sans";
+              font-size: 14px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: normal;
+            }
+            .value {
+              color: var(--Brand, #04d9ff);
+              font-family: "Nunito Sans";
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: normal;
+            }
+          }
+        }
+      }
+    }
+    .view_board {
+      display: flex;
+      min-height: 46px;
+      padding: 0px 20px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      background: var(--Brand, #04d9ff);
+
+      color: var(--Main-Background, #09090b);
+      font-family: "Nunito Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+    }
+  }
+}

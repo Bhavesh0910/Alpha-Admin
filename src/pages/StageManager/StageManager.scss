@@ -1,0 +1,108 @@
+.stageManager_container {
+  display: flex !important;
+  flex-direction: column;
+  gap: 20px;
+
+  h2 {
+    color: var(--Text-white, #fff);
+    font-family: "Nunito Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+  }
+
+  .table_header_filter {
+    display: flex !important;
+    gap: 20px;
+
+    @media only screen and (max-width: 900px) {
+      flex-direction: column;
+    }
+
+    .ant-picker {
+      max-height: 44px;
+      border-radius: var(--Corner-Radius, 10px);
+      border: 1px solid var(--Stroke, #252a29);
+      background: var(--Main-Background, #09090b);
+      width: 100%;
+      max-width: 364px;
+      flex-basis: 30%;
+      flex-shrink: 2;
+      .ant-picker-input {
+        input {
+          color: var(--primary-text-color) !important;
+          font-family: "Nunito Sans";
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: normal;
+
+          &::placeholder {
+            color: var(--Paragraph-text-colour, #a6a6a6);
+          }
+        }
+      }
+
+      .ant-picker-active-bar {
+        display: none;
+      }
+
+      .ant-picker-range-separator {
+        span {
+          color: #a6a6a6 !important;
+        }
+      }
+      .ant-picker-suffix {
+        cursor: pointer !important;
+        span {
+          svg {
+            fill: #a6a6a6;
+          }
+        }
+      }
+    }
+  }
+  .filter_buttons {
+    display: flex;
+    gap: 6px;
+    padding: 4px;
+    align-items: center;
+
+    @media only screen and (max-width: 900px) {
+      max-width: fit-content;
+    }
+
+    @media only screen and (max-width: 570px) {
+      button {
+        padding: 4px 2px;
+      }
+    }
+
+    border-radius: var(--Corner-1, 5px);
+    border: 1px solid var(--Stroke, #252a29) !important;
+    background: var(--Main-Background, #09090b);
+    button {
+      border-radius: var(--Corner-1, 5px);
+      background: transparent !important;
+      color: #fff;
+      border: none;
+    }
+    .active {
+      background: #04d9ff !important;
+      color: #000 !important;
+    }
+    .active:hover {
+      color: #000 !important;
+    }
+    button:hover {
+      color: #04d9ff !important;
+      border: none !important;
+    }
+  }
+
+  .copy_btn {
+    background: transparent !important;
+    border: 0;
+  }
+}

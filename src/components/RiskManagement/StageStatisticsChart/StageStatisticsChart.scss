@@ -1,0 +1,18 @@
+.stageStatisticsChart_contianer {
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: var(--Outside-box, 10px);
+  border: 1px solid var(--Stroke, #252a29);
+  background: var(--Inner-box-BG, #141a17);
+
+  h2 {
+    color: var(--Text-white, #fff);
+    font-family: "Nunito Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+}

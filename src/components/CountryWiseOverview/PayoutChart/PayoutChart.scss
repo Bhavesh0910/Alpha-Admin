@@ -1,0 +1,44 @@
+.payoutChart_wrapper {
+  padding: 20px;
+  border-radius: var(--Outside-box, 10px);
+  border: 1px solid var(--Stroke, #252a29);
+  background: var(--Inner-box-BG, #141a17);
+  .header_wrapper {
+    h2 {
+      color: var(--Text-white, #fff);
+      font-family: Inter;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+  }
+  .apexcharts-legend {
+    height: 100% !important;
+    position: absolute;
+    left: auto;
+    top: 0px !important;
+    right: 0px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    gap: 8px;
+    .apexcharts-legend-series {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      .apexcharts-legend-marker {
+        width: 16px !important;
+        height: 16px !important;
+        border-radius: 50% !important;
+      }
+      .apexcharts-legend-text {
+        color: var(--Paragraph-text-colour, #a6a6a6) !important;
+        font-family: "Nunito Sans" !important;
+        font-size: 12px !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+        line-height: normal !important;
+      }
+    }
+  }
+}

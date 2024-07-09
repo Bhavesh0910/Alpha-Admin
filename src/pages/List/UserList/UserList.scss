@@ -1,0 +1,58 @@
+.user_list_container{
+    .status_wrapper{
+        display: flex;
+width: 92px;
+padding: 6px 10px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+    }
+    .status_wrapper.active{
+        border-radius: var(--Corner-Radius, 10px);
+        border: 1px solid var(--Green, #A3EA93); 
+    }
+    .header_wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        align-items: center;
+    
+        @media only screen and (max-width: 768px) {
+          flex-direction: column;
+          gap: 20px;
+          align-items: stretch;
+    
+          button {
+            margin-left: auto;
+          }
+        }
+      }
+    
+      .table_header_filter {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+        justify-content: space-between;
+        @media only screen and (max-width: 1000px) {
+          flex-direction: column;
+        }
+        .table_header_filter_radio{
+            display: flex;
+            gap: 20px;
+        }
+        .trader_overview_row2_groupA {
+          display: flex;
+          gap: 20px;
+    
+          @media only screen and (max-width: 800px) {
+            flex-direction: column;
+          }
+        }
+      }
+.action_wrapper{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+}

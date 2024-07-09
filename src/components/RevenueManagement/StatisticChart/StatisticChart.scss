@@ -1,0 +1,34 @@
+.statisticChart_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  padding: 20px;
+  border-radius: var(--Outside-box, 10px);
+  border: 1px solid var(--Stroke, #252a29);
+  background: var(--Inner-box-BG, #141a17);
+
+  .header_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    h3 {
+      color: var(--Text-white, #fff);
+      font-family: "Nunito Sans";
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+
+    .chart_filter {
+      max-width: 90px;
+      .ant-select-selector {
+        border-radius: var(--inner-box, 5px) !important;
+        border: 1px solid var(--Stroke, #252a29) !important;
+        background: var(--Main-Background, #09090b) !important;
+      }
+    }
+  }
+}

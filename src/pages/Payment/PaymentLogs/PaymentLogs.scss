@@ -1,0 +1,34 @@
+.status_btn_wrapper {
+  div {
+    color: var(--Text-white, #fff);
+    font-family: "Nunito Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    display: flex;
+    width: 100%;
+    max-width: 92px;
+    padding: 6px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: var(--Corner-Radius, 10px);
+    border: 1px solid transparent;
+    text-wrap: nowrap;
+    background: transparent;
+
+    &.in_progress {
+      border: 1px solid #fffa8a;
+    }
+    &.approved {
+      border: 1px solid #a3ea93;
+    }
+    &.flagged {
+      border: 1px solid #ff7b36;
+    }
+    &.dismissed {
+      border: 1px solid #f97f7f;
+    }
+  }
+}
