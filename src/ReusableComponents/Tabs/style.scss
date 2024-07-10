@@ -54,15 +54,7 @@
         &.tabination-active-button {
           border-radius: 20px;
           border: 1px solid var(--brand-gradient, #0273ff);
-          background: var(
-            --background-gradient,
-            linear-gradient(
-              240deg,
-              #fff -93.51%,
-              rgba(255, 255, 255, 0.4) -93.49%,
-              rgba(255, 255, 255, 0) 95.73%
-            )
-          );
+          background: var(--background-gradient, linear-gradient(240deg, #1e1e1e -93.51%, rgba(255, 255, 255, 0.4) -93.49%, rgba(255, 255, 255, 0) 95.73%));
         }
       }
     }
@@ -120,15 +112,7 @@
         &.tabination-active-button-variant2 {
           border-radius: 20px;
           border: 1px solid var(--brand-gradient, #0273ff);
-          background: var(
-            --background-gradient,
-            linear-gradient(
-              240deg,
-              #fff -93.51%,
-              rgba(255, 255, 255, 0.4) -93.49%,
-              rgba(255, 255, 255, 0) 95.73%
-            )
-          );
+          background: var(--background-gradient, linear-gradient(240deg, #1e1e1e -93.51%, rgba(255, 255, 255, 0.4) -93.49%, rgba(255, 255, 255, 0) 95.73%));
         }
       }
     }
@@ -164,7 +148,7 @@
 //         padding: 20px;
 //         text-wrap: nowrap;
 
-//         color: #fff;
+//         color: #1E1E1E;
 
 //         font-family: Outfit;
 //         font-size: 14px;
@@ -178,8 +162,8 @@
 //         cursor: pointer;
 
 //         &.tabination-active-button-variant2 {
-//           color: #fff;
-//           border-bottom: 3px solid var(--Blue-Gradient, #fff);
+//           color: #1E1E1E;
+//           border-bottom: 3px solid var(--Blue-Gradient, #1E1E1E);
 //           z-index: 111;
 //         }
 //       }
@@ -225,15 +209,7 @@
 
         &.tabination-active-button {
           border: 1px solid rgba(129, 129, 129, 0.6);
-          background: var(
-            --Selection-Gradient,
-            linear-gradient(
-              240deg,
-              #fff -93.51%,
-              rgba(255, 255, 255, 0.4) -93.49%,
-              rgba(255, 255, 255, 0) 95.73%
-            )
-          );
+          background: var(--Selection-Gradient, linear-gradient(240deg, #1e1e1e -93.51%, rgba(255, 255, 255, 0.4) -93.49%, rgba(255, 255, 255, 0) 95.73%));
         }
       }
     }
@@ -268,7 +244,7 @@
 //         color: var(--primary-text-color);
 //       }
 //       .react-select__input-container {
-//         color: #fff;
+//         color: #1E1E1E;
 
 //         font-family: Outfit;
 //         font-size: 14px;

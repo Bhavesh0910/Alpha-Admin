@@ -10,7 +10,7 @@
     min-height: 44px;
     border-radius: var(--Corner-Radius, 10px);
     border: 1px solid var(--Stroke, #252a29);
-    background: var(--Main-Background, #09090b);
+    background: var(--Main-Background, #f6fefe);
     width: 100%;
     max-width: 364px;
     flex-basis: 100%;
@@ -71,9 +71,9 @@
         align-items: center;
         gap: 10px;
         border-radius: 10px;
-        border: 1px solid var(--Stroke, #252a29) !important;
-        background: transparent !important;
-        color: var(--Paragraph-text-colour, #a6a6a6);
+        border: 1px solid var(--Stroke, #fff) !important;
+        background: #fff !important;
+        color: var(--Paragraph-text-colour, #1e1e1e);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;

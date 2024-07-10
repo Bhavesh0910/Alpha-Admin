@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./FundingTotalProgress.scss";
 const FundingTotalProgress = () => {
   return (
@@ -15,11 +15,21 @@ const FundingTotalProgress = () => {
         <div className="progress-labels">
           <div className="profit_value">
             <p className="value">$42,084.56</p>
-            <p className="label">Profit</p>
+            <p
+              className="label"
+              style={{color: "#5F9D51"}}
+            >
+              Profit
+            </p>
           </div>
           <div className="loss_value">
             <p className="value">-$260,224.73</p>
-            <p className="label">Loss</p>
+            <p
+              className="label"
+              style={{color: "#E92B37"}}
+            >
+              Loss
+            </p>
           </div>
         </div>
       </div>

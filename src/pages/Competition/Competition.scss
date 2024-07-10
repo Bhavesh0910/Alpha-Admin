@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: space-between;
     h3 {
-      color: var(--Text-white, #fff);
+      color: var(--Text-white, #1e1e1e);
       font-family: var(--primary-font-family);
       font-size: 20px;
       font-style: normal;
@@ -33,7 +33,7 @@
       gap: 20px;
       border-radius: 20px;
       background: var(--Inner-box-BG, #141a17);
-      color: #fff;
+      color: #1e1e1e;
       .header_section {
         display: flex;
         flex-direction: row;
@@ -41,7 +41,7 @@
         justify-content: space-between;
 
         h4 {
-          color: var(--Text-white, #fff);
+          color: var(--Text-white, #1e1e1e);
           font-family: var(--primary-font-family);
           font-size: 18px;
           font-style: normal;
@@ -71,7 +71,7 @@
             line-height: normal;
           }
           .value {
-            color: var(--Text-white, #fff);
+            color: var(--Text-white, #1e1e1e);
             font-family: "Nunito Sans";
             font-size: 14px;
             font-style: normal;
@@ -160,10 +160,10 @@
             align-items: center;
             padding: 15px;
             border-radius: 20px;
-            background: var(--Main-Background, #09090b);
+            background: var(--Main-Background, #f6fefe);
 
             .label {
-              color: var(--Text-white, #fff);
+              color: var(--Text-white, #1e1e1e);
               font-family: "Nunito Sans";
               font-size: 14px;
               font-style: normal;
@@ -191,7 +191,7 @@
       border-radius: 10px;
       background: var(--Brand, #04d9ff);
 
-      color: var(--Main-Background, #09090b);
+      color: var(--Main-Background, #f6fefe);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;

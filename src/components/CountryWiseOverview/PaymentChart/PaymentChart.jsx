@@ -7,27 +7,8 @@ const PaymentChart = () => {
     chart: {
       type: "pie",
     },
-    labels: [
-      "Japan",
-      "Iceland",
-      "India",
-      "Guinea",
-      "Poland",
-      "Brazil",
-      "Bahrain",
-      "Monaco",
-    ],
-    colors: [
-      "#9A60B4",
-      "#315CDE",
-      "#FAC858",
-      "#B2DC9F",
-      "#6B54C6",
-      "#EE6666",
-      "#73C0DE",
-      "#3BA272",
-      "#FC8452",
-    ],
+    labels: ["Japan", "Iceland", "India", "Guinea", "Poland", "Brazil", "Bahrain", "Monaco"],
+    colors: ["#9A60B4", "#315CDE", "#FAC858", "#B2DC9F", "#6B54C6", "#EE6666", "#73C0DE", "#3BA272", "#FC8452"],
 
     plotOptions: {
       pie: {
@@ -57,7 +38,7 @@ const PaymentChart = () => {
       show: true,
       curve: "straight",
       lineCap: "butt",
-      colors: ["#000"], // Set border color here
+      colors: ["#fff"], // Set border color here
       width: 2, // Set border width here
       dashArray: 0,
     },

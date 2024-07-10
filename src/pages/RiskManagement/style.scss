@@ -17,7 +17,7 @@
   }
 
   .ant-typography {
-    color: #fff !important;
+    color: #ffffff !important;
     font-family: "Nunito Sans";
     font-size: 20px;
     font-style: normal;
@@ -38,9 +38,8 @@
       width: 100%;
       max-width: 489px;
       padding: 20px;
-      border-radius: var(--Outside-box, 10px);
-      border: 1px solid var(--Stroke, #252a29);
-      background: var(--Inner-box-BG, #141a17);
+      border-radius: 20px;
+      background: var(--white, #fff);
 
       @media only screen and (max-width: 900px) {
         max-width: 100%;
@@ -55,7 +54,7 @@
     min-height: 44px;
     border-radius: var(--Corner-Radius, 10px);
     border: 1px solid var(--Stroke, #252a29);
-    background: var(--Main-Background, #09090b);
+    background: var(--Main-Background, #f6fefe);
     width: 100%;
     max-width: 364px;
     flex-basis: 100%;

@@ -1,5 +1,5 @@
 .affiliateMarketing_container {
-  color: #fff;
+  color: #1e1e1e;
   .header_wrapper {
     display: flex;
     flex-direction: row;
@@ -51,7 +51,7 @@
     min-height: 31px;
     padding: 0px 10px;
     border-radius: 10px;
-    color: var(--Main-Background, #09090b);
+    color: var(--Main-Background, #f6fefe);
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -75,9 +75,9 @@
       align-items: center;
       gap: 10px;
       border-radius: 10px;
-      border: 1px solid var(--Text-white, #fff);
+      border: 1px solid var(--Text-white, #1e1e1e);
       background: var(--Stroke, #252a29);
-      color: var(--Text-white, #fff);
+      color: var(--Text-white, #1e1e1e);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -85,9 +85,9 @@
       line-height: normal;
 
       &:hover {
-        color: var(--Text-white, #fff) !important;
+        color: var(--Text-white, #1e1e1e) !important;
         background: var(--Stroke, #252a29) !important;
-        border: 1px solid var(--Text-white, #fff) !important;
+        border: 1px solid var(--Text-white, #1e1e1e) !important;
       }
     }
   }

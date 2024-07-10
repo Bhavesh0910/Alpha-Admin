@@ -1,10 +1,10 @@
-import { colors } from "@mui/material";
-import { grid } from "ldrs";
+import {colors} from "@mui/material";
+import {grid} from "ldrs";
 import React from "react";
 import ReactApexCharts from "react-apexcharts";
 
-function RoundedBarChart({ data, color1, color2 }) {
-  const defaultData = { data: [], time: [] };
+function RoundedBarChart({data, color1, color2}) {
+  const defaultData = {data: [], time: []};
   const chartData = data || defaultData;
 
   const options = {
@@ -69,18 +69,18 @@ function RoundedBarChart({ data, color1, color2 }) {
       yaxis: [
         {
           y: 0,
-          borderColor: '#fff',
+          borderColor: "#1E1E1E",
           borderWidth: 0.6,
           label: {
-            borderColor: '#000',
+            borderColor: "#000",
             style: {
-              color: '#fff',
-              background: '#000'
+              color: "#1E1E1E",
+              background: "#000",
             },
-            text: 'Center Line'
-          }
-        }
-      ]
+            text: "Center Line",
+          },
+        },
+      ],
     },
   };
 

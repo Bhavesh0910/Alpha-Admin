@@ -1,16 +1,16 @@
-import { Button, DatePicker, Select } from "antd";
+import {Button, DatePicker, Select} from "antd";
 import "./KYC.scss";
-import React, { useState } from "react";
-import { ReactComponent as DownloadToPC } from "../../../assets/icons/download_to_pc.svg";
+import React, {useState} from "react";
+import {ReactComponent as DownloadToPC} from "../../../assets/icons/download_to_pc.svg";
 
 import searchIcon from "../../../assets/icons/searchIcon.svg";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import { useSelector } from "react-redux";
-const { Option } = Select;
-const { RangePicker } = DatePicker;
+import {useSelector} from "react-redux";
+const {Option} = Select;
+const {RangePicker} = DatePicker;
 const KYC = () => {
-  const { idToken, searchDates } = useSelector((state) => state.auth);
+  const {idToken, searchDates} = useSelector((state) => state.auth);
   const [searchText, setSearchText] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [category, setCategory] = useState("all");
@@ -54,7 +54,7 @@ const KYC = () => {
             padding: "5px 10px",
             borderRadius: "5px",
             backgroundColor: "#28a745",
-            color: "#fff",
+            color: "#1E1E1E",
           }}
         >
           {text}
@@ -117,7 +117,10 @@ const KYC = () => {
       <div className="header_wrapper">
         <div className="heading_box">
           <h3>KYC</h3>{" "}
-          <RangePicker placeholder={dates} onChange={updateDateRange} />
+          <RangePicker
+            placeholder={dates}
+            onChange={updateDateRange}
+          />
         </div>
         <div className="table_header_filter">
           <div className="search_box_wrapper search_box_wrapper">
@@ -136,7 +139,10 @@ const KYC = () => {
               onKeyDown={(e) => handleSearch(e)}
             />
             <div className="searchImg">
-              <img src={searchIcon} alt="searchIcon" />
+              <img
+                src={searchIcon}
+                alt="searchIcon"
+              />
             </div>
           </div>
           <div className="filter_buttons">
@@ -173,7 +179,10 @@ const KYC = () => {
           </div>
         </div>
       </div>
-      <AntTable data={dummyData} columns={columns} />
+      <AntTable
+        data={dummyData}
+        columns={columns}
+      />
     </div>
   );
 };

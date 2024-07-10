@@ -46,11 +46,18 @@
       font-style: normal;
       font-weight: 700;
       line-height: normal;
+      border: 0;
     }
     .btn-block {
-      background: var(--Text-white, #fff);
-      color: var(--Inner-box-BG, #141a17);
+      background: var(--Text-white, #1e1e1e);
+      color: #fff;
       min-height: 19px;
+
+      &:hover {
+        border: 0;
+        color: #1e1e1e;
+        background: #eee;
+      }
     }
     .btn-delete {
       color: var(--Red, #f97f7f);
@@ -85,10 +92,10 @@
         gap: 10px;
         border-radius: var(--Corner-Radius, 10px);
         border: 1px solid var(--Stroke, #252a29);
-        background: var(--Main-Background, #09090b);
+        background: var(--Main-Background, #f6fefe);
       }
       .ant-select-selector {
-        background: var(--Main-Background, #09090b);
+        background: var(--Main-Background, #f6fefe);
         border: none;
         color: var(--Paragraph-text-colour, #a6a6a6);
         font-family: "Nunito Sans";
@@ -125,27 +132,12 @@
     .ant-picker {
       border-radius: var(--Corner-Radius, 10px);
       border: 1px solid var(--Stroke, #252a29);
-      background: var(--Main-Background, #09090b);
+      background: var(--Main-Background, #f6fefe);
       width: 100%;
       max-width: 364px;
 
       @media only screen and (max-width: 900px) {
         min-height: 44px;
-      }
-
-      .ant-picker-input {
-        input {
-          color: var(--primary-text-color) !important;
-          font-family: "Nunito Sans";
-          font-size: 14px;
-          font-style: normal;
-          font-weight: 600;
-          line-height: normal;
-
-          &::placeholder {
-            color: var(--Paragraph-text-colour, #a6a6a6);
-          }
-        }
       }
 
       .ant-picker-active-bar {
@@ -169,7 +161,7 @@
   }
 
   .title {
-    color: var(--Text-white, #fff);
+    color: var(--Text-white, #ffffff);
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -182,124 +174,12 @@
   .ant-card-body {
     padding: 0px !important;
   }
-
-  .table-wrapper {
-    border-radius: var(--Outside-box, 10px);
-    border: 1px solid var(--Stroke, #252a29);
-    background: var(--Inner-box-BG, #141a17);
-    padding: 0 !important;
-  }
-
-  .ant-table-container {
-    background: var(--Main-Background, #09090b) !important;
-  }
-
-  .ant-table-cell {
-    &::before {
-      background: var(--Main-Background, #09090b) !important;
-    }
-  }
-
-  thead tr {
-    border-bottom: 1px solid var(--Stroke, #252a29);
-    background: var(--Main-Background, #09090b) !important;
-
-    th {
-      background: var(--Main-Background, #09090b) !important;
-      color: var(--Text-white, #fff) !important;
-      font-family: "Nunito Sans";
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 18px;
-      border: none !important;
-    }
-  }
-
-  table {
-  }
-
-  td {
-    border: none !important;
-  }
-
-  tbody {
-    tr {
-      background: var(--Inner-box-BG, #141a17);
-    }
-
-    td {
-      color: var(--Paragraph-text-colour, #a6a6a6);
-      font-family: "Nunito Sans";
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 18px;
-      border-bottom: 1px solid var(--Stroke, #252a29) !important;
-    }
-  }
-}
-
-.table-wrapper {
-  border-radius: var(--Outside-box, 10px);
-  border: 1px solid var(--Stroke, #252a29);
-  background: var(--Inner-box-BG, #141a17);
-  padding: 0 !important;
-
-  .ant-table-container {
-    background: var(--Main-Background, #09090b) !important;
-  }
-
-  .ant-table-cell {
-    &::before {
-      background: var(--Main-Background, #09090b) !important;
-    }
-  }
-
-  thead tr {
-    border-bottom: 1px solid var(--Stroke, #252a29);
-    background: var(--Main-Background, #09090b) !important;
-
-    th {
-      background: var(--Main-Background, #09090b) !important;
-      color: var(--Text-white, #fff) !important;
-      font-family: "Nunito Sans";
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 18px;
-      border: none !important;
-    }
-  }
-
-  table {
-  }
-
-  td {
-    border: none !important;
-  }
-
-  tbody {
-    tr {
-      background: var(--Inner-box-BG, #141a17);
-    }
-
-    td {
-      color: var(--Paragraph-text-colour, #a6a6a6);
-      font-family: "Nunito Sans";
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 18px;
-      border-bottom: 1px solid var(--Stroke, #252a29) !important;
-    }
-  }
 }
 
 .ant-picker-panels {
   .ant-picker-panel {
     border-bottom: 1px solid var(--Stroke, #252a29) !important;
-    background: var(--Main-Background, #09090b) !important;
+    background: var(--Main-Background, #f6fefe) !important;
 
     button {
       color: var(--Paragraph-text-colour, #a6a6a6) !important;
@@ -307,7 +187,7 @@
 
     .ant-picker-header-view {
       button {
-        color: #fff !important;
+        color: #1e1e1e !important;
       }
     }
     .ant-picker-date-panel {
@@ -316,7 +196,7 @@
           tr {
             td {
               .ant-picker-cell-inner {
-                color: #fff !important;
+                color: #1e1e1e !important;
               }
             }
             .ant-picker-cell-in-range {
@@ -354,14 +234,33 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
-  border-radius: var(--Outside-box, 10px);
-  border: 1px solid var(--Stroke, #252a29);
-  background: var(--Main-Background, #09090b);
-  div {
-    background: var(--Main-Background, #09090b) !important;
+
+  .ant-modal-content {
+    border-radius: var(--table-box, 20px);
+    background: var(--Brand-2, #12181f);
+
+    .ant-modal-header {
+      background: var(--Brand-2, #12181f);
+
+      .ant-modal-title {
+        color: #fff;
+      }
+    }
+    .ant-modal-close-x {
+      span {
+        color: #fff;
+      }
+    }
+    .ant-modal-body {
+      .modal-content {
+        .modal-title {
+          color: #fff;
+        }
+      }
+    }
   }
   .ant-modal-title {
-    color: var(--Text-white, #fff);
+    color: var(--Text-white, #1e1e1e);
     font-family: "Nunito Sans";
     font-size: 20px;
     font-style: normal;
@@ -375,7 +274,7 @@
     gap: 8px;
     margin-top: 20px;
     .modal-title {
-      color: var(--Text-white, #fff);
+      color: var(--Text-white, #1e1e1e);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -389,10 +288,9 @@
       align-items: center;
       gap: 10px;
       align-self: stretch;
-      border-radius: var(--inner-box, 5px);
-      border: 1px solid var(--Stroke, #252a29);
-      background: var(--Inner-box-BG, #141a17);
-      min-height: 58px;
+      border-radius: var(--table-box, 20px);
+      background: #fff;
+      min-height: 70px;
       resize: none;
     }
   }
@@ -431,7 +329,7 @@
   max-height: 44px;
   border-radius: var(--Corner-1, 5px);
   border: 1px solid var(--Stroke, #252a29);
-  background: var(--Main-Background, #09090b);
+  background: var(--Main-Background, #f6fefe);
   max-width: fit-content;
   flex-basis: 20%;
   flex-shrink: 1;
@@ -458,7 +356,7 @@
 
     &.ant-radio-button-wrapper-checked {
       background: var(--Brand, #04d9ff);
-      color: var(--Main-Background, #09090b);
+      color: var(--Main-Background, #f6fefe);
     }
   }
 }

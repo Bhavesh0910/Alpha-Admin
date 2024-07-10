@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./Infobox.scss";
 import totalAccIcon from "../../../assets/icons/totalAccIcon.svg";
 import revenueAccIcon from "../../../assets/icons/revenueAccIcon.png";
@@ -24,7 +24,10 @@ const Infobox = () => {
       <div className="infobox_wrapper">
         <div className="infobox_data">
           {dummyData.map((item, index) => (
-            <InfoBox key={index} item={item} />
+            <InfoBox
+              key={index}
+              item={item}
+            />
           ))}
         </div>
       </div>
@@ -32,11 +35,15 @@ const Infobox = () => {
   );
 };
 
-const InfoBox = ({ item }) => {
+const InfoBox = ({item}) => {
   return (
     <div className="infobox_wrapper">
       <div className="infobox_content">
-        <img className="infobox_icon" src={totalAccIcon} alt="totalAccIcon" />
+        <img
+          className="infobox_icon"
+          src={totalAccIcon}
+          alt="totalAccIcon"
+        />
         <p className="infobox_label">Total Accounts</p>
         <p className="infobox_value">{item.totalAccounts}</p>
       </div>
@@ -50,7 +57,11 @@ const InfoBox = ({ item }) => {
         <p className="infobox_value">{item.revenueFromAccountPayments}</p>
       </div>
       <div className="infobox_content">
-        <img className="infobox_icon" src={payoutReqIcon} alt="payoutReqIcon" />
+        <img
+          className="infobox_icon"
+          src={payoutReqIcon}
+          alt="payoutReqIcon"
+        />
         <p className="infobox_label">Payouts Requested</p>
         <p className="infobox_value">{item.payoutsRequested}</p>
       </div>

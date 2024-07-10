@@ -56,7 +56,7 @@
 
     .goals-box-content {
       p {
-        color: var(--Secondary-SB-250-White, #fff);
+        color: var(--Secondary-SB-250-White, #1e1e1e);
         leading-trim: both;
         text-edge: cap;
         font-family: var(--primary-font-family);
@@ -96,7 +96,7 @@
         color: #ff5d5d;
 
         p {
-          color: #ffffff;
+          color: #1E1E1Efff;
         }
       }
     }
@@ -110,15 +110,15 @@
       }
     }
     .inProgress {
-      border: 1px solid var(--Yellow, #fff27a) !important;
+      border: 1px solid var(--Yellow, #1E1E1E27a) !important;
       background: rgba(255, 236, 67, 0.15) !important;
       p {
-        color: #fff27a;
+        color: #1E1E1E27a;
       }
     }
 
     h3 {
-      color: var(--White, #fff);
+      color: var(--White, #1e1e1e);
       font-family: var(--primary-font-family);
       font-size: 16px;
       font-style: normal;
@@ -176,7 +176,7 @@
 
         > div {
           span {
-            color: #fff;
+            color: #1e1e1e;
             font-family: var(--primary-font-family);
             font-size: 10px;
             font-style: normal;
@@ -187,10 +187,7 @@
       }
 
       span {
-        background: var(
-          --brand-gradient,
-          linear-gradient(90deg, #0273ff 18.4%, #01e1ff 100%)
-        );
+        background: var(--brand-gradient, linear-gradient(90deg, #0273ff 18.4%, #01e1ff 100%));
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -223,7 +220,7 @@
   .slider-container {
     .sliderMaxValue {
       text-align: right;
-      color: var(--Secondary-SB-250-White, #fff);
+      color: var(--Secondary-SB-250-White, #1e1e1e);
       font-family: var(--primary-font-family);
       font-size: 14px;
       font-style: normal;
@@ -255,10 +252,10 @@
         }
 
         &.in_Progress {
-          background-color: #fff27a !important;
+          background-color: #1E1E1E27a !important;
 
           .sliderCircle {
-            background-color: #fff27a !important;
+            background-color: #1E1E1E27a !important;
           }
         }
 
@@ -304,7 +301,7 @@
             text-wrap: nowrap;
             position: absolute;
             top: 18px;
-            color: var(--Secondary-SB-250-White, #fff);
+            color: var(--Secondary-SB-250-White, #1e1e1e);
             font-family: var(--primary-font-family);
             font-size: 14px;
             font-style: normal;
@@ -317,7 +314,7 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background-color: #fff;
+            background-color: #1e1e1e;
           }
         }
       }

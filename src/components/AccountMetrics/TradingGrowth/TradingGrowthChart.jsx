@@ -1,11 +1,11 @@
 // TradingGrowthChart.js
 
-import { LTTB } from "downsample";
+import {LTTB} from "downsample";
 import React from "react";
 import ReactApexChart from "react-apexcharts";
-import { FormatUSD } from "../../../utils/helpers/string";
+import {FormatUSD} from "../../../utils/helpers/string";
 
-function TradingGrowthChart({ balance_chart, maxLoss, profit }) {
+function TradingGrowthChart({balance_chart, maxLoss, profit}) {
   const balanceData = balance_chart?.map((entry) => entry.balance);
   const equityData = balance_chart?.map((entry) => entry.equity);
   const timeData = balance_chart?.map((entry) => entry.time);
@@ -21,12 +21,7 @@ function TradingGrowthChart({ balance_chart, maxLoss, profit }) {
     }));
 
     try {
-      const dataToSmooth = combinedData.map((entry, index) => [
-        index,
-        entry.balance,
-        entry.equity,
-        entry.time,
-      ]);
+      const dataToSmooth = combinedData.map((entry, index) => [index, entry.balance, entry.equity, entry.time]);
 
       const smooth = LTTB(dataToSmooth, 1500);
 
@@ -45,18 +40,9 @@ function TradingGrowthChart({ balance_chart, maxLoss, profit }) {
   //   new Date(entry.time).getTime(),
   //   entry.equity,
   // ]);
-  const maxLossSeries = separatedData.map((entry) => [
-    new Date(entry.time).getTime(),
-    maxLoss,
-  ]);
-  const profitSeries = separatedData.map((entry) => [
-    new Date(entry.time).getTime(),
-    profit,
-  ]);
-  const balanceSeries = separatedData.map((entry) => [
-    new Date(entry.time).getTime(),
-    entry.balance,
-  ]);
+  const maxLossSeries = separatedData.map((entry) => [new Date(entry.time).getTime(), maxLoss]);
+  const profitSeries = separatedData.map((entry) => [new Date(entry.time).getTime(), profit]);
+  const balanceSeries = separatedData.map((entry) => [new Date(entry.time).getTime(), entry.balance]);
   const formattedDates = balance_chart?.map((entry) => {
     const date = new Date(entry?.time);
     return date.toLocaleDateString("en-GB", {
@@ -101,7 +87,7 @@ function TradingGrowthChart({ balance_chart, maxLoss, profit }) {
         show: false,
       },
     },
-    colors: ["#8BFB88", "#FFF27A", "#FF9898"],
+    colors: ["#8BFB88", "#1E1E1E27A", "#FF9898"],
     legend: {
       show: false,
     },
@@ -116,7 +102,7 @@ function TradingGrowthChart({ balance_chart, maxLoss, profit }) {
       categories: formattedDates,
       labels: {
         style: {
-          colors: "#FFF",
+          colors: "#1E1E1E",
           fontSize: "10px",
           fontFamily: "var(--primary-font-family)",
           fontStyle: "normal",
@@ -138,7 +124,7 @@ function TradingGrowthChart({ balance_chart, maxLoss, profit }) {
       min: maxLoss - 5000,
       // labels: {
       //   style: {
-      //     colors: "#FFF",
+      //     colors: "#1E1E1E",
       //   },
       // },
       labels: {

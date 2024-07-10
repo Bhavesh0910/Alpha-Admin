@@ -26,7 +26,7 @@
       justify-content: space-between;
       align-items: center;
       p {
-        color: var(--White, #fff);
+        color: var(--White, #1e1e1e);
         leading-trim: both;
         text-edge: cap;
         font-family: "Nunito Sans";
@@ -48,7 +48,7 @@
       align-self: stretch;
       width: 100%;
       p {
-        color: var(--white, #fff);
+        color: var(--white, #1e1e1e);
         leading-trim: both;
         text-edge: cap;
         font-family: "Nunito Sans";
@@ -76,7 +76,7 @@
         .flexColumn {
           gap: 10px;
           .title {
-            color: var(--white, #fff);
+            color: var(--white, #1e1e1e);
             leading-trim: both;
             text-edge: cap;
             font-family: "Nunito Sans";
@@ -86,7 +86,7 @@
             line-height: normal;
           }
           .challengeTitle {
-            color: var(--white, #fff);
+            color: var(--white, #1e1e1e);
             leading-trim: both;
             text-edge: cap;
             font-family: "Nunito Sans";
@@ -110,7 +110,7 @@
       }
       .flexSpacebetween.priceSection {
         span {
-          color: var(--white, #fff);
+          color: var(--white, #1e1e1e);
           leading-trim: both;
           text-edge: cap;
           font-family: "Nunito Sans";
@@ -121,7 +121,7 @@
         }
       }
       .flexSpacebetween.discountSection {
-        color: var(--white, #fff);
+        color: var(--white, #1e1e1e);
         leading-trim: both;
         text-edge: cap;
         font-family: "Nunito Sans";

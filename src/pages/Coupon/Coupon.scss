@@ -18,7 +18,7 @@
 
       .create_coupon_btn {
         button {
-          color: var(--Text-white, #fff);
+          color: var(--Text-white, #1e1e1e);
           font-family: "Nunito Sans";
           font-size: 14px;
           font-style: normal;
@@ -93,11 +93,11 @@
       text-transform: capitalize;
 
       &.private {
-        color: #09090b;
+        color: #f6fefe;
         background: var(--Brand, #04d9ff);
       }
       &.public {
-        color: #ffffff;
+        color: #1E1E1Efff;
         border: 1px solid var(--Brand, #04d9ff);
       }
     }
@@ -107,13 +107,13 @@
       align-items: center;
       justify-content: center;
       border-radius: 10px;
-      border: 1px solid var(--Text-white, #fff);
+      border: 1px solid var(--Text-white, #1e1e1e);
       background: transparent !important;
       display: flex;
       height: 100%;
       min-height: 30px;
       padding: 0px 20px;
-      color: var(--Text-white, #fff);
+      color: var(--Text-white, #1e1e1e);
       font-family: var(--primary-font-family);
       font-size: 14px;
       font-style: normal;
@@ -122,8 +122,8 @@
       text-transform: capitalize;
 
       &:hover {
-        color: var(--Text-white, #fff) !important;
-        border: 1px solid var(--Text-white, #fff) !important;
+        color: var(--Text-white, #1e1e1e) !important;
+        border: 1px solid var(--Text-white, #1e1e1e) !important;
       }
     }
   }

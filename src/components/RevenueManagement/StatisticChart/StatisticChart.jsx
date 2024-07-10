@@ -1,7 +1,7 @@
 import React from "react";
 import "./StatisticChart.scss";
 import ReactApexChart from "react-apexcharts";
-import { Select } from "antd";
+import {Select} from "antd";
 
 const StatisticChart = () => {
   const series = [
@@ -22,7 +22,7 @@ const StatisticChart = () => {
       toolbar: {
         show: false,
       },
-      background: "#141A17",
+      background: "#fff",
     },
     colors: ["#FF7F00", "#4CAF50"],
     dataLabels: {
@@ -44,14 +44,14 @@ const StatisticChart = () => {
       ],
       labels: {
         style: {
-          colors: "#FFF",
+          colors: "#1E1E1E",
         },
       },
     },
     yaxis: {
       labels: {
         style: {
-          colors: "#FFF",
+          colors: "#1E1E1E",
         },
         formatter: (val) => `$${val}`,
       },
@@ -63,7 +63,7 @@ const StatisticChart = () => {
     },
     legend: {
       labels: {
-        colors: "#FFF",
+        colors: "#1E1E1E",
       },
     },
     grid: {

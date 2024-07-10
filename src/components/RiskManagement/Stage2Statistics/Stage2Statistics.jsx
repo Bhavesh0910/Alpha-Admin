@@ -1,7 +1,8 @@
 import React from "react";
 import ReactECharts from "echarts-for-react";
-import "./AccountProfitChart.scss";
-const AccountProfitChart = () => {
+import "./Stage2Statistics.scss";
+
+const Stage2Statistics = () => {
   const generateZigzagData = (data, amplitude, frequency) => {
     return data.map((value, index) => {
       return value + amplitude * Math.sin(frequency * index);
@@ -93,8 +94,8 @@ const AccountProfitChart = () => {
   };
 
   return (
-    <div className="accountProfitChart_wrapper">
-      <h2>Current Funding Account Profit</h2>
+    <div className="stageStatisticsChart_contianer">
+      <h2>Stage 2 Statistics</h2>
       <ReactECharts
         option={option}
         style={{height: "400px", width: "100%"}}
@@ -103,4 +104,4 @@ const AccountProfitChart = () => {
   );
 };
 
-export default AccountProfitChart;
+export default Stage2Statistics;

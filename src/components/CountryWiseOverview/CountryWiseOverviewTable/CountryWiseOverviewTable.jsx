@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./CountryWiseOverviewTable.scss";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import dayjs from "dayjs";
-import { Button, DatePicker } from "antd";
+import {Button, DatePicker} from "antd";
 import AccountRangeSlider from "./AccountRangeSlider/AccountRangeSlider";
 import rangeIcon from "../../../assets/icons/range_icon_gray.svg";
-const { RangePicker } = DatePicker;
+const {RangePicker} = DatePicker;
 const CountryWiseOverviewTable = () => {
   const columns = [
     {
@@ -166,11 +166,11 @@ const CountryWiseOverviewTable = () => {
   };
 
   const rangePresets = [
-    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
-    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
-    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
-    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
-    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] }, // Assuming "All time" covers a very long period
+    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
+    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
+    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
+    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
+    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]}, // Assuming "All time" covers a very long period
   ];
 
   const [isRangeOpen, setIsRangeOpen] = useState(false);
@@ -183,8 +183,14 @@ const CountryWiseOverviewTable = () => {
     <div className="countryWiseOverviewTable_wrapper">
       <div className="header_wrapper">
         <div className="rangeBtn_wrapper">
-          <Button className="accnt_range_btn" onClick={handleRangeBtn}>
-            <img src={rangeIcon} alt="range_icn" />
+          <Button
+            className="accnt_range_btn"
+            onClick={handleRangeBtn}
+          >
+            <img
+              src={rangeIcon}
+              alt="range_icn"
+            />
             Accounts Range
           </Button>
           {isRangeOpen === true ? (
@@ -196,9 +202,15 @@ const CountryWiseOverviewTable = () => {
             ""
           )}
         </div>
-        <RangePicker presets={rangePresets} onChange={onRangeChange} />
+        <RangePicker
+          presets={rangePresets}
+          onChange={onRangeChange}
+        />
       </div>
-      <AntTable data={dummyData} columns={columns} />
+      <AntTable
+        data={dummyData}
+        columns={columns}
+      />
     </div>
   );
 };

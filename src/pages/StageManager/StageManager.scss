@@ -4,7 +4,7 @@
   gap: 20px;
 
   h2 {
-    color: var(--Text-white, #fff);
+    color: var(--Text-white, #1e1e1e);
     font-family: "Nunito Sans";
     font-size: 20px;
     font-style: normal;
@@ -24,7 +24,7 @@
       max-height: 44px;
       border-radius: var(--Corner-Radius, 10px);
       border: 1px solid var(--Stroke, #252a29);
-      background: var(--Main-Background, #09090b);
+      background: var(--Main-Background, #f6fefe);
       width: 100%;
       max-width: 364px;
       flex-basis: 30%;
@@ -81,11 +81,11 @@
 
     border-radius: var(--Corner-1, 5px);
     border: 1px solid var(--Stroke, #252a29) !important;
-    background: var(--Main-Background, #09090b);
+    background: var(--Main-Background, #f6fefe);
     button {
       border-radius: var(--Corner-1, 5px);
       background: transparent !important;
-      color: #fff;
+      color: #1e1e1e;
       border: none;
     }
     .active {

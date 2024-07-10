@@ -10,7 +10,7 @@
     border-radius: var(--Corner-Radius, 10px);
     border: 1px solid var(--Green, #a3ea93);
     background: transparent !important;
-    color: var(--Text-white, #fff);
+    color: var(--Text-white, #1e1e1e);
     font-family: var(--primary-font-family);
     font-size: 14px;
     font-style: normal;
@@ -19,7 +19,7 @@
 
     &:hover {
       border: 1px solid var(--Green, #a3ea93) !important;
-      color: var(--Text-white, #fff) !important;
+      color: var(--Text-white, #1e1e1e) !important;
     }
   }
 }

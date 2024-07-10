@@ -3,9 +3,8 @@
   flex-direction: column;
   gap: 15px;
   padding: 20px;
-  border-radius: var(--Corner-2, 10px);
-  border: 1px solid var(--Stroke, #252a29);
-  background: var(--Inner-box-BG, #141a17);
+  border-radius: 10px;
+  background: var(--Box-1, #27313e);
   width: 100%;
   min-width: 405px;
   position: absolute;
@@ -40,7 +39,7 @@
 
   .country_info {
     p {
-      color: var(--white, #fff);
+      color: var(--white, #ffffff);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -60,7 +59,7 @@
         height: 44px;
         padding: 0px 20px;
         border-radius: 10px;
-        border: 1px solid var(--Text-white, #fff);
+        border: 1px solid var(--Text-white, #1e1e1e);
         background: transparent !important;
         min-width: 94px;
         color: var(--Text-white, #fff);
@@ -75,14 +74,14 @@
 
   .ant-slider {
     .ant-slider-rail {
-      background: var(--Stroke, #252a29);
+      background: var(--Stroke, #fff);
     }
     .ant-slider-track {
-      background: var(--Stroke, #252a29);
+      background: var(--Stroke, #fff);
     }
     .ant-slider-handle {
       &::after {
-        background-color: var(--Main-Background, #09090b);
+        background-color: var(--Main-Background, #f6fefe);
         box-shadow: 0 0 0 2px #04d9ff;
       }
     }

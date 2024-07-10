@@ -9,7 +9,7 @@
     padding: 20px;
     flex-direction: column;
     gap: 20px;
-    color: #fff;
+    color: #1e1e1e;
     border-radius: var(--Outside-box, 10px);
     border: 1px solid var(--Stroke, #252a29);
     background: var(--Inner-box-BG, #141a17);
@@ -22,7 +22,7 @@
       justify-content: space-between;
 
       h3 {
-        color: var(--Text-white, #fff);
+        color: var(--Text-white, #1e1e1e);
         font-family: var(--primary-font-family);
         font-size: 18px;
         font-style: normal;
@@ -48,7 +48,7 @@
 
             &:focus-within {
               border: 1px solid var(--Brand, #04d9ff) !important;
-              background: var(--Main-Background, #09090b) !important;
+              background: var(--Main-Background, #f6fefe) !important;
             }
 
             .ant-select-selection-placeholder {
@@ -70,7 +70,7 @@
 
           &:focus-within {
             border: 1px solid var(--Brand, #04d9ff) !important;
-            background: var(--Main-Background, #09090b) !important;
+            background: var(--Main-Background, #f6fefe) !important;
           }
 
           .ant-picker-input {
@@ -98,7 +98,7 @@
         .status_checkbox_wrapper {
           .ant-checkbox-wrapper {
             span {
-              color: var(--Text-white, #fff);
+              color: var(--Text-white, #1e1e1e);
               font-family: var(--primary-font-family);
               font-size: 16px;
               font-style: normal;
@@ -109,7 +109,7 @@
         }
 
         .save_changes_btn {
-          color: var(--Main-Background, #09090b);
+          color: var(--Main-Background, #f6fefe);
           font-family: "Nunito Sans";
           font-size: 14px;
           font-style: normal;

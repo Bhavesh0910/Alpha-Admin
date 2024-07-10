@@ -165,7 +165,12 @@
           background-color: transparent !important;
           border: none;
           outline: none;
-          color: #fff;
+          color: #fff !important;
+
+          &::placeholder {
+            color: #989898;
+          }
+
           &:focus {
             background-color: transparent !important;
             border: none;

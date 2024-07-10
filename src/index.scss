@@ -88,7 +88,7 @@ code {
   border: 0.5px solid var(--Text-Medium, #333);
   border-radius: 8px;
   background: var(--primary-p-blue-100-main, #04d9ff);
-  color: #ffffff;
+  color: #1e1e1e;
   font-family: var(--primary-font-family);
   font-weight: var(--fw-medium);
   font-size: 20px;
@@ -99,7 +99,7 @@ code {
 }
 
 .component-heading {
-  color: var(--White, #fff);
+  color: var(--White, #1e1e1e);
 
   font-family: var(--primary-font-family);
   font-size: 20px;
@@ -125,12 +125,16 @@ code {
     line-height: normal;
     border-radius: var(--Corner-2, 10px) !important;
     border: 1px solid var(--Brand, #04d9ff) !important;
-    background: var(--Main-Background, #09090b) !important;
+    background: var(--Main-Background, #f6fefe) !important;
     padding: 10px 20px !important;
+
+    .ant-select-selection-item {
+      color: #1e1e1e !important;
+    }
   }
 
   .ant-select-arrow {
-    color: #fff !important;
+    color: #1e1e1e !important;
     padding-right: 10px;
   }
   .ant-select-selection-placeholder {
@@ -142,8 +146,8 @@ code {
 }
 
 /* .ant-select-dropdown {
-  color: #fff !important;
-  background: var(--Main-Background, #09090b) !important;
+  color: #1E1E1E !important;
+  background: var(--Main-Background, #F6FEFE) !important;
 } */
 
 .ant-input {
@@ -161,7 +165,7 @@ code {
   background: var(--Inner-box-BG, #141a17) !important;
   &:focus-within {
     border: 1px solid var(--Brand, #04d9ff) !important;
-    background: var(--Main-Background, #09090b) !important;
+    background: var(--Main-Background, #f6fefe) !important;
   }
 
   &::placeholder {
@@ -180,7 +184,7 @@ code {
   gap: 10px;
   border-radius: 10px;
   background: var(--Brand, #04d9ff);
-  color: var(--Main-Background, #09090b);
+  color: var(--Main-Background, #f6fefe);
   font-family: var(--primary-font-family);
   font-size: 14px;
   font-style: normal;
@@ -208,8 +212,8 @@ input:-webkit-autofill:active {
   border: 1px solid var(--Stroke, #252a29);
   background: var(--Stroke, #252a29);
   .ant-picker-presets {
-    border-radius: var(--Outside-box, 10px);
-    background: var(--second-Background, #0f0f11);
+    border-radius: var(--table-box, 20px);
+    background: #fff;
 
     ul {
       li {
@@ -217,15 +221,14 @@ input:-webkit-autofill:active {
         align-items: center;
         justify-content: flex-start;
         min-height: 33px;
-        color: var(--Text-white, #fff);
+        color: var(--Text-white, #1e1e1e);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
         font-weight: 400;
         line-height: normal;
         padding: 7px 10px;
-        border-radius: var(--inner-box, 5px);
-        background: var(--Stroke, #252a29);
+        background: #fff;
         border: 1px solid transparent;
         &:hover {
           border: 1px solid var(--Brand, #04d9ff) !important;
@@ -237,25 +240,25 @@ input:-webkit-autofill:active {
   .ant-picker-panel {
     padding: 15px !important;
     border-radius: var(--Corner-2, 10px) !important;
-    background: var(--Inner-box-BG, #141a17) !important;
-    color: #fff !important;
+    background: #fff !important;
+    color: #1e1e1e !important;
     .ant-picker-datetime-panel {
       .ant-picker-date-panel {
-        color: #fff !important;
+        color: #1e1e1e !important;
         .ant-picker-header {
-          color: #fff !important;
+          color: #1e1e1e !important;
 
           button {
-            color: #fff !important;
+            color: #1e1e1e !important;
           }
         }
         .ant-picker-body {
-          color: #fff !important;
+          color: #1e1e1e !important;
           .ant-picker-content {
             tbody {
               tr {
                 td {
-                  color: #fff !important;
+                  color: #1e1e1e !important;
                 }
               }
             }
@@ -264,7 +267,7 @@ input:-webkit-autofill:active {
       }
       .ant-picker-time-panel {
         .ant-picker-header-view {
-          color: #fff;
+          color: #1e1e1e;
         }
         .ant-picker-content {
           .ant-picker-time-panel-column {
@@ -274,7 +277,7 @@ input:-webkit-autofill:active {
             }
             .ant-picker-time-panel-cell {
               .ant-picker-time-panel-cell-inner {
-                color: #fff !important;
+                color: #1e1e1e !important;
               }
             }
           }
@@ -291,7 +294,7 @@ input:-webkit-autofill:active {
     .ant-picker-ranges {
       .ant-picker-now {
         a {
-          color: #fff !important;
+          color: #1e1e1e !important;
         }
       }
 
@@ -309,7 +312,7 @@ input:-webkit-autofill:active {
   display: flex;
   border-radius: var(--Corner-Radius, 10px);
   border: 1px solid var(--Stroke, #252a29);
-  background: var(--Main-Background, #09090b);
+  background: var(--Main-Background, #f6fefe);
   width: 100%;
   min-width: 539px;
   max-width: 539px;
@@ -340,8 +343,8 @@ input:-webkit-autofill:active {
       border: 0 !important;
       border-top-right-radius: 0 !important;
       border-bottom-right-radius: 0 !important;
-      border-right: 1px solid var(--Stroke, #252a29) !important;
-      background: var(--Inner-box-BG, #141a17) !important;
+      border-right: 1px solid var(--Stroke, #f0f0f0) !important;
+      background: var(--Inner-box-BG, #f5f5f5) !important;
       max-width: 170px;
       max-height: 42.48px;
       @media only screen and (max-width: 768px) {
@@ -362,7 +365,7 @@ input:-webkit-autofill:active {
     line-height: normal;
     border-radius: var(--Corner-Radius, 10px);
     border: 0 !important;
-    background: var(--Main-Background, #09090b);
+    background: var(--Main-Background, #f6fefe);
     padding: 12px 20px;
     width: 100%;
     max-width: 325px;
@@ -408,7 +411,7 @@ input:-webkit-autofill:active {
   .ant-radio-group {
     border-radius: var(--Corner-1, 5px);
     border: 1px solid var(--Stroke, #252a29);
-    background: var(--Main-Background, #09090b);
+    background: var(--Main-Background, #f6fefe);
     padding: 4px;
     height: 44px;
     display: flex;
@@ -420,7 +423,7 @@ input:-webkit-autofill:active {
     }
   }
   .ant-radio-button-wrapper {
-    background: var(--Main-Background, #09090b);
+    background: var(--Main-Background, #f6fefe);
     border: none !important;
     &::before {
       content: none;
@@ -438,7 +441,7 @@ input:-webkit-autofill:active {
     border-radius: var(--Corner-1, 5px);
     background: var(--Brand, #04d9ff);
     span {
-      color: var(--Main-Background, #09090b);
+      color: var(--Main-Background, #f6fefe);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -478,7 +481,7 @@ input:-webkit-autofill:active {
         a {
           display: flex;
           align-items: center;
-          color: var(--Text-white, #fff);
+          color: var(--Text-white, #1e1e1e);
           font-family: "Nunito Sans";
           font-size: 20px;
           font-style: normal;
@@ -486,7 +489,7 @@ input:-webkit-autofill:active {
         }
       }
       &.ant-breadcrumb-separator {
-        color: #fff;
+        color: #1e1e1e;
       }
       &:last-child {
         .ant-breadcrumb-link {
@@ -507,16 +510,16 @@ input:-webkit-autofill:active {
   min-height: 44px;
   border-radius: var(--Corner-Radius, 10px);
   border: 1px solid var(--Stroke, #252a29);
-  background: var(--Main-Background, #09090b);
+  background: var(--Main-Background, #f6fefe);
   width: 100%;
   max-width: 364px;
 
   &:hover {
-    background: var(--Main-Background, #09090b);
+    background: var(--Main-Background, #f6fefe);
   }
 
   &:focus-within {
-    background: var(--Main-Background, #09090b);
+    background: var(--Main-Background, #f6fefe);
   }
 
   @media only screen and (max-width: 800px) {
@@ -566,11 +569,11 @@ input:-webkit-autofill:active {
   align-items: center;
   border-radius: var(--Corner-1, 5px);
   border: 1px solid var(--Stroke, #252a29) !important;
-  background: var(--Main-Background, #09090b);
+  background: var(--Main-Background, #f6fefe);
   button {
     border-radius: var(--Corner-1, 5px);
     background: transparent !important;
-    color: #fff;
+    color: #1e1e1e;
     border: none;
   }
   .active {
@@ -588,7 +591,7 @@ input:-webkit-autofill:active {
 
 // Page Header CSS
 .page_header {
-  color: var(--Text-white, #fff);
+  color: var(--Text-white, #1e1e1e);
   font-family: "Nunito Sans";
   font-size: 20px;
   font-style: normal;
@@ -610,11 +613,11 @@ input:-webkit-autofill:active {
   }
   &:focus-within {
     border: 1px solid var(--Brand, #04d9ff);
-    background: var(--Main-Background, #09090b) !important;
+    background: var(--Main-Background, #f6fefe) !important;
   }
 
   .ant-input {
-    color: var(--Text-white, #fff) !important;
+    color: var(--Text-white, #1e1e1e) !important;
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -624,14 +627,14 @@ input:-webkit-autofill:active {
     min-height: 34px !important;
     background: var(--Inner-box-BG, #141a17) !important;
     &:focus-within {
-      background: var(--Main-Background, #09090b) !important;
+      background: var(--Main-Background, #f6fefe) !important;
     }
   }
 }
 
 .view_logs__btn {
   &:hover {
-    color: #09090b !important;
+    color: #f6fefe !important;
     background: var(--Brand, #04d9ff) !important;
   }
 }
@@ -661,7 +664,7 @@ input:-webkit-autofill:active {
   @media only screen and (max-width: 768px) {
     display: block;
     h4 {
-      color: var(--Text-white, #fff) !important;
+      color: var(--Text-white, #1e1e1e) !important;
       font-family: var(--primary-font-family);
       font-size: 16px;
       font-style: normal;
@@ -684,7 +687,7 @@ input:-webkit-autofill:active {
       .ant-picker-year-panel {
         .ant-picker-header {
           button {
-            color: #fff !important;
+            color: #1e1e1e !important;
           }
         }
         .ant-picker-body {
@@ -693,7 +696,7 @@ input:-webkit-autofill:active {
               tr {
                 td {
                   div {
-                    color: #fff !important;
+                    color: #1e1e1e !important;
                   }
                 }
               }
@@ -705,7 +708,7 @@ input:-webkit-autofill:active {
               tr {
                 td {
                   div {
-                    color: #fff !important;
+                    color: #1e1e1e !important;
                   }
                 }
               }
@@ -717,7 +720,7 @@ input:-webkit-autofill:active {
       .ant-picker-month-panel {
         .ant-picker-header {
           button {
-            color: #fff !important;
+            color: #1e1e1e !important;
           }
         }
         .ant-picker-body {
@@ -726,7 +729,7 @@ input:-webkit-autofill:active {
               tr {
                 td {
                   div {
-                    color: #fff !important;
+                    color: #1e1e1e !important;
                   }
                 }
               }
@@ -738,7 +741,7 @@ input:-webkit-autofill:active {
               tr {
                 td {
                   div {
-                    color: #fff !important;
+                    color: #1e1e1e !important;
                   }
                 }
               }
@@ -750,10 +753,10 @@ input:-webkit-autofill:active {
       .ant-picker-decade-panel {
         .ant-picker-header {
           button {
-            color: #fff !important;
+            color: #1e1e1e !important;
           }
           div {
-            color: #fff !important;
+            color: #1e1e1e !important;
           }
         }
         .ant-picker-body {
@@ -762,7 +765,7 @@ input:-webkit-autofill:active {
               tr {
                 td {
                   div {
-                    color: #fff !important;
+                    color: #1e1e1e !important;
                   }
                 }
               }
@@ -774,7 +777,7 @@ input:-webkit-autofill:active {
               tr {
                 td {
                   div {
-                    color: #fff !important;
+                    color: #1e1e1e !important;
                   }
                 }
               }

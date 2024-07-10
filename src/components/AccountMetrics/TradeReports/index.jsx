@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./style.scss";
 // import Tabination from "../../../reusableComponents/Tabs";
 import RoundedBarChart from "./RoundedBarChart";
-import { useSelector } from "react-redux";
-import { getPerformanceChartRequest } from "../../../utils/apis/accountsApi";
+import {useSelector} from "react-redux";
+import {getPerformanceChartRequest} from "../../../utils/apis/accountsApi";
 
 function TradeReports() {
   const [performanceChart, setPerformanceChart] = useState([]);
-  const { idToken } = useSelector((state) => state?.auth);
-  const { login_id } = useSelector((state) => state?.accountList);
+  const {idToken} = useSelector((state) => state?.auth);
+  const {login_id} = useSelector((state) => state?.accountList);
 
   const fetchPerformanceChartData = async () => {
     try {
@@ -26,16 +26,16 @@ function TradeReports() {
   }, [login_id, idToken]);
 
   const tabItems1 = [
-    { name: "Overall", path: "/overall" },
-    { name: "Long", path: "/long" },
-    { name: "Short", path: "/short" },
+    {name: "Overall", path: "/overall"},
+    {name: "Long", path: "/long"},
+    {name: "Short", path: "/short"},
   ];
 
   const tabItems2 = [
-    { name: "Trade Duration", path: "/trade-duration" },
-    { name: "Daily", path: "/daily" },
-    { name: "Weekly", path: "/weekly" },
-    { name: "Monthly", path: "/monthly" },
+    {name: "Trade Duration", path: "/trade-duration"},
+    {name: "Daily", path: "/daily"},
+    {name: "Weekly", path: "/weekly"},
+    {name: "Monthly", path: "/monthly"},
   ];
 
   const performance_trade = {
@@ -87,12 +87,11 @@ function TradeReports() {
           <div className="tabs-2-charts">
             <div className="chart-box">
               <h2 className="component-heading">
-                Trade Count By Trade Duration{" "}
-                <span className="sub_title">(No. of Trades vs Time)</span>
+                Trade Count By Trade Duration <span className="sub_title">(No. of Trades vs Time)</span>
               </h2>
               <RoundedBarChart
-                color2={"#FFF27A"}
-                color1={"#FFF27A"}
+                color2={"#1E1E1E27A"}
+                color1={"#1E1E1E27A"}
                 data={trade_Count}
               />
             </div>

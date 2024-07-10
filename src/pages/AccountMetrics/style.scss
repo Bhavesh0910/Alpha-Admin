@@ -28,7 +28,7 @@
         align-items: center;
         gap: 10px;
         p {
-          color: #fff;
+          color: #1e1e1e;
           font-family: var(--primary-font-family);
           font-size: 14px;
           font-style: normal;
@@ -47,7 +47,7 @@
         align-items: center;
         text-decoration: none;
         border-radius: 20px;
-        color: var(--White, #fff);
+        color: var(--White, #1e1e1e);
 
         font-family: var(--primary-font-family);
         font-size: 15px;
@@ -55,15 +55,7 @@
         font-weight: 700;
         line-height: normal;
         border: 1px solid var(--brand-gradient, #4bb390);
-        background: var(
-          --background-gradient,
-          linear-gradient(
-            240deg,
-            #fff -93.51%,
-            rgba(255, 255, 255, 0.4) -93.49%,
-            rgba(255, 255, 255, 0) 95.73%
-          )
-        );
+        background: var(--background-gradient, linear-gradient(240deg, #1e1e1e -93.51%, rgba(255, 255, 255, 0.4) -93.49%, rgba(255, 255, 255, 0) 95.73%));
       }
     }
 
@@ -85,8 +77,7 @@
       bottom: 1px;
       border-radius: 10px;
       border: 1px solid transparent;
-      -webkit-mask: linear-gradient(#fff 0 0) padding-box,
-        linear-gradient(#fff 0 0);
+      -webkit-mask: linear-gradient(#1e1e1e 0 0) padding-box, linear-gradient(#1e1e1e 0 0);
       -webkit-mask-composite: destination-out;
       mask-composite: exclude;
     }
@@ -97,7 +88,7 @@
   }
 
   p {
-    color: #fff;
+    color: #1e1e1e;
 
     font-family: var(--primary-font-family);
     font-size: 14px;
@@ -221,7 +212,7 @@
       }
 
       .react-calendar__navigation__arrow {
-        color: #fff;
+        color: #1e1e1e;
       }
 
       .react-calendar__navigation__label {
@@ -229,7 +220,7 @@
         width: fit-content !important;
 
         span {
-          color: #fff;
+          color: #1e1e1e;
           font-family: var(--primary-font-family);
           font-size: 20px;
           font-style: normal;
@@ -261,7 +252,7 @@
 
                 abbr {
                   text-decoration: none;
-                  color: var(--White, #fff);
+                  color: var(--White, #1e1e1e);
                   font-family: var(--primary-font-family);
                   font-size: 14px;
                   font-style: normal;
@@ -291,7 +282,7 @@
 
                 abbr {
                   text-decoration: none;
-                  color: var(--White, #fff);
+                  color: var(--White, #1e1e1e);
                   font-family: var(--primary-font-family);
                   font-size: 14px;
                   font-style: normal;
@@ -342,20 +333,12 @@
         &:hover {
           border-radius: 20px;
           border: 1px solid var(--brand-gradient, #0273ff);
-          background: var(
-            --background-gradient,
-            linear-gradient(
-              240deg,
-              #fff -93.51%,
-              rgba(255, 255, 255, 0.4) -93.49%,
-              rgba(255, 255, 255, 0) 95.73%
-            )
-          );
+          background: var(--background-gradient, linear-gradient(240deg, #1e1e1e -93.51%, rgba(255, 255, 255, 0.4) -93.49%, rgba(255, 255, 255, 0) 95.73%));
         }
 
         abbr {
-          color: #fff;
-          color: var(--White, #fff);
+          color: #1e1e1e;
+          color: var(--White, #1e1e1e);
           font-family: var(--primary-font-family);
           font-size: 14px;
           font-style: normal;
@@ -368,7 +351,7 @@
         border-radius: 16px;
         border: 1px solid var(--Stroke, #272727);
         background: var(--bg, #030504);
-        color: #fff;
+        color: #1e1e1e;
       }
     }
   }
@@ -413,7 +396,7 @@
   overflow: auto;
 
   h4 {
-    color: var(--White, #fff);
+    color: var(--White, #1e1e1e);
     font-family: var(--primary-font-family);
     font-size: 14px;
     font-style: normal;
@@ -444,7 +427,7 @@
       gap: 20px;
 
       span {
-        color: #fff;
+        color: #1e1e1e;
         font-family: var(--primary-font-family);
         font-size: 14px;
         font-style: normal;
@@ -566,7 +549,7 @@
         }
 
         &:last-child {
-          color: var(--Secondary-SB-250-White, #fff);
+          color: var(--Secondary-SB-250-White, #1e1e1e);
           leading-trim: both;
           text-edge: cap;
 
@@ -610,7 +593,7 @@
     align-items: center;
     gap: 15px;
     flex-shrink: 0;
-    color: #fff;
+    color: #1e1e1e;
     leading-trim: both;
     text-edge: cap;
     font-family: var(--primary-font-family);
@@ -622,15 +605,7 @@
     letter-spacing: 0.14px;
     border-radius: 10px;
     border: 1px solid var(--stroke-unselect, #767676);
-    background: var(
-      --background-gradient,
-      linear-gradient(
-        240deg,
-        #fff -93.51%,
-        rgba(255, 255, 255, 0.4) -93.49%,
-        rgba(255, 255, 255, 0) 95.73%
-      )
-    );
+    background: var(--background-gradient, linear-gradient(240deg, #1e1e1e -93.51%, rgba(255, 255, 255, 0.4) -93.49%, rgba(255, 255, 255, 0) 95.73%));
   }
 
   .line_one {

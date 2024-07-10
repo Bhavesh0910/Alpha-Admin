@@ -6,7 +6,7 @@ const FundedAccGraph = () => {
     chart: {
       type: "bar",
       height: 350,
-      background: "#141A17",
+      background: "#fff !important",
     },
     plotOptions: {
       bar: {
@@ -50,6 +50,7 @@ const FundedAccGraph = () => {
       show: true,
       borderColor: "#252A29",
     },
+    backgroundColor: "#fff !important",
   };
 
   const series = [

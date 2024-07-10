@@ -1,12 +1,11 @@
 .paymentChart_wrapper {
   padding: 20px;
-  border-radius: var(--Outside-box, 10px);
-  border: 1px solid var(--Stroke, #252a29);
-  background: var(--Inner-box-BG, #141a17);
+  border-radius: var(--Corner-Radius, 10px);
+  background: var(--white, #fff);
 
   .header_wrapper {
     h2 {
-      color: var(--Text-white, #fff);
+      color: var(--Text-white, #1e1e1e);
       font-family: Inter;
       font-size: 20px;
       font-style: normal;

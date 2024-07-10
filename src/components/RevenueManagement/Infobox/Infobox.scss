@@ -15,9 +15,8 @@
           align-items: flex-start;
           gap: 15px;
           flex: 1 0 0;
-          border-radius: var(--Outside-box, 10px);
-          border: 1px solid var(--Stroke, #252a29);
-          background: var(--Inner-box-BG, #141a17);
+          border-radius: var(--table-box, 20px);
+          background: #fff;
 
           .infobox_label {
             color: var(--secondary-sb-200-paragraph-text-i-con, #8f8f8f);
@@ -28,7 +27,7 @@
             line-height: normal;
           }
           .infobox_value {
-            color: var(--White, #fff);
+            color: var(--White, #1e1e1e);
             font-family: "Nunito Sans";
             font-size: 24px;
             font-style: normal;

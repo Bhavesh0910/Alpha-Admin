@@ -49,8 +49,7 @@
         border: 1px solid var(--brand-gradient, #4bb390);
         background: var(--box-bg, #131313);
         background: linear-gradient(45deg, #4bb390, #4bb390);
-        -webkit-mask: linear-gradient(#fff 0 0) padding-box,
-          linear-gradient(#fff 0 0);
+        -webkit-mask: linear-gradient(#1e1e1e 0 0) padding-box, linear-gradient(#1e1e1e 0 0);
         -webkit-mask-composite: destination-out;
         mask-composite: exclude;
       }
@@ -99,7 +98,7 @@
     }
 
     .value {
-      color: #fff;
+      color: #1e1e1e;
     }
 
     .circle {
@@ -131,7 +130,7 @@
       box-shadow: 2px 16px 19px 0px rgba(0, 0, 0, 0.09);
     }
     p {
-      color: #fff;
+      color: #1e1e1e;
       font-family: Nunito Sans;
       font-size: 14px;
       font-style: normal;
@@ -160,11 +159,11 @@
     background-color: #04d9ff;
   }
   .react-calendar__navigation button {
-    color: #fff;
+    color: #1e1e1e;
   }
 
   .react-calendar__navigation__label__labelText {
-    color: #fff;
+    color: #1e1e1e;
     text-align: center;
     font-family: Lato;
     font-size: 20px;
@@ -174,7 +173,7 @@
   }
 
   .react-calendar__month-view__weekdays__weekday {
-    color: #fff;
+    color: #1e1e1e;
     font-family: Lato;
     font-size: 12px;
     font-style: normal;
@@ -193,7 +192,7 @@
   }
 
   .react-calendar__month-view__days__day--neighboringMonth {
-    color: #fff;
+    color: #1e1e1e;
     text-align: center;
     font-family: Nunito Sans;
     font-size: 18px;
@@ -204,9 +203,8 @@
     /* 122.222% */
   }
 
-  .react-calendar__navigation__label__labelText
-    .react-calendar__navigation__label__labelText--from {
-    color: #fff;
+  .react-calendar__navigation__label__labelText .react-calendar__navigation__label__labelText--from {
+    color: #1e1e1e;
     text-align: center;
     font-family: Nunito Sans;
     font-size: 20px;
@@ -216,11 +214,11 @@
   }
 
   .react-calendar__month-view__days__day--weekend {
-    color: #fff;
+    color: #1e1e1e;
   }
 
   .react-calendar__month-view__days__day {
-    color: var(--Base-White, #fff);
+    color: var(--Base-White, #1e1e1e);
     text-align: center;
     font-family: Nunito Sans;
     font-size: 16px;
@@ -240,10 +238,7 @@
     align-items: center;
     gap: 10px;
     border-radius: 6px;
-    background: var(
-      --brand-gradient,
-      linear-gradient(90deg, #0273ff 18.4%, #01e1ff 100%)
-    );
+    background: var(--brand-gradient, linear-gradient(90deg, #0273ff 18.4%, #01e1ff 100%));
   }
 
   .trading-growth-left {
@@ -282,7 +277,7 @@
       align-self: stretch;
 
       p {
-        color: #fff;
+        color: #1e1e1e;
         font-family: Nunito Sans;
         font-size: 14px;
         font-style: normal;
@@ -292,7 +287,7 @@
       }
 
       span {
-        color: var(--Text-white, #fff);
+        color: var(--Text-white, #1e1e1e);
         font-family: "Nunito Sans";
         font-size: 20px;
         font-style: normal;

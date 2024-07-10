@@ -2,22 +2,18 @@
 
 /* Change the background color of the table */
 .ant-table-wrapper {
-  border-radius: var(--Outside-box, 10px);
-  border: 1px solid var(--Stroke, #252a29);
-  background: var(--Inner-box-BG, #141a17);
+  border-radius: var(--Corner-Radius, 10px);
+  background: var(--white, #fff);
 }
 
 .ant-table-thead > tr > th {
-  background-color: #09090b !important;
-  /* Change to your desired header background color */
-  color: #ffffff !important;
-  border-bottom: 1px solid #252a29 !important;
+  background-color: #f6fefe !important;
+  color: #1e1e1e !important;
 }
 
 .ant-table-tbody > tr > td {
   background-color: #141a17;
   color: #a6a6a6 !important;
-  border-bottom: 1px solid #252a29 !important;
 }
 
 .highlight {
@@ -26,15 +22,15 @@
 }
 
 .ant-table-tbody > tr:hover > td {
-  background: #09090b !important;
+  background: #f6fefe !important;
 }
 
 .ant-table-cell-row-hover {
-  background: #09090b !important;
+  background: #f6fefe !important;
 }
 
 .ant-empty-description {
-  color: #fff !important;
+  color: #1e1e1e !important;
 }
 
 .ant-table-cell::before {
@@ -49,7 +45,7 @@
 
 .ant-table-thead > tr > th {
   background: #333;
-  color: #fff;
+  color: #1e1e1e;
   font-weight: 600;
   text-align: center;
   border-bottom: 1px solid #444;
@@ -59,11 +55,10 @@
 }
 
 .ant-table-tbody > tr > td {
-  color: #ddd;
+  color: #686868;
   white-space: normal;
   min-width: 150px !important;
-  border-bottom: 1px solid var(--Stroke, #252a29);
-  background: var(--Inner-box-BG, #141a17);
+  background: var(--white, #fff);
 }
 
 .ant-table-pagination {
@@ -83,7 +78,7 @@
   .ant-pagination {
     border-radius: var(--Outside-box, 10px);
     border: 1px solid var(--Stroke, #252a29);
-    background: var(--Main-Background, #09090b);
+    background: var(--Main-Background, #f6fefe);
     padding: 20px;
     margin: 20px;
     justify-content: center !important;
@@ -107,22 +102,21 @@
 }
 
 .ant-table-container {
-  background: var(--Main-Background, #09090b) !important;
+  background: var(--Main-Background, #f6fefe) !important;
 }
 
 .ant-table-cell {
   &::before {
-    background: var(--Main-Background, #09090b) !important;
+    background: var(--Main-Background, #f6fefe) !important;
   }
 }
 
 thead tr {
-  border-bottom: 1px solid var(--Stroke, #252a29);
-  background: var(--Main-Background, #09090b) !important;
+  background: var(--Main-Background, #f6fefe) !important;
 
   th {
-    background: var(--Main-Background, #09090b) !important;
-    color: var(--Text-white, #fff) !important;
+    background: var(--Main-Background, #f6fefe) !important;
+    color: var(--Text-white, #1e1e1e) !important;
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -138,7 +132,6 @@ td {
 
 tbody {
   tr {
-    background: var(--Inner-box-BG, #141a17);
   }
 
   td {
@@ -148,7 +141,7 @@ tbody {
     font-style: normal;
     font-weight: 400;
     line-height: 18px;
-    border-bottom: 1px solid var(--Stroke, #252a29) !important;
+    border-bottom: 1px solid #686868 !important;
   }
 }
 
@@ -164,7 +157,7 @@ tbody {
 
   .ant-pagination-total-text {
     margin-right: auto !important;
-    color: #fff;
+    color: #1e1e1e;
 
     @media only screen and (max-width: 800px) {
       display: none;
@@ -183,13 +176,13 @@ tbody {
 
 .ant-table {
   .info-btn {
-    color: #fff !important;
+    color: #1e1e1e !important;
     cursor: pointer;
   }
 
   .ant-table-cell {
     a {
-      color: #fff !important;
+      color: #1e1e1e !important;
       cursor: pointer;
     }
     .index_cell {
@@ -209,7 +202,7 @@ tbody {
   display: flex;
   border-radius: var(--Outside-box, 10px);
   border: 1px solid var(--Stroke, #252a29);
-  background: var(--Main-Background, #09090b);
+  background: var(--Main-Background, #f6fefe);
   padding: 20px;
   margin: 20px !important;
   justify-content: center !important;
@@ -229,7 +222,7 @@ tbody {
   }
   .ant-pagination-item {
     a {
-      color: #fff !important;
+      color: #1e1e1e !important;
     }
     background-color: none !important;
     border-radius: 5px !important;
@@ -241,10 +234,10 @@ tbody {
     }
   }
   .ant-pagination-item-link {
-    color: #fff !important;
+    color: #1e1e1e !important;
   }
   .ant-pagination-item-ellipsis {
-    color: #fff !important;
+    color: #1e1e1e !important;
   }
 
   .ant-pagination-small {
@@ -261,14 +254,14 @@ tbody {
       margin-inline-start: 0px;
       line-height: 32px;
       vertical-align: middle;
-      color: #fff !important;
+      color: #1e1e1e !important;
 
       input {
         width: 65px !important;
-        color: #fff !important;
+        color: #1e1e1e !important;
         border-radius: 5px !important;
         border: 1px solid var(--Stroke, #252a29) !important;
-        background: #09090b !important;
+        background: #f6fefe !important;
       }
     }
   }
@@ -279,13 +272,13 @@ tbody {
 
 .ant-table {
   .info-btn {
-    color: #fff !important;
+    color: #1e1e1e !important;
     cursor: pointer;
   }
 
   .ant-table-cell {
     a {
-      color: #fff !important;
+      color: #1e1e1e !important;
       cursor: pointer;
     }
 
@@ -306,7 +299,7 @@ tbody {
   display: flex;
   border-radius: var(--Outside-box, 10px);
   border: 1px solid var(--Stroke, #252a29);
-  background: var(--Main-Background, #09090b);
+  background: var(--Main-Background, #f6fefe);
   padding: 20px;
   margin: 20px !important;
 
@@ -328,7 +321,7 @@ tbody {
 
   .ant-pagination-item {
     a {
-      color: #fff;
+      color: #1e1e1e;
     }
 
     background-color: none !important;
@@ -343,11 +336,11 @@ tbody {
   }
 
   .ant-pagination-item-link {
-    color: #fff !important;
+    color: #1e1e1e !important;
   }
 
   .ant-pagination-item-ellipsis {
-    color: #fff !important;
+    color: #1e1e1e !important;
   }
 
   .ant-pagination-small {
@@ -374,14 +367,14 @@ tbody {
       margin-inline-start: 0px;
       line-height: 32px;
       vertical-align: middle;
-      color: #fff !important;
+      color: #1e1e1e !important;
 
       input {
         width: 65px !important;
-        color: #fff !important;
+        color: #1e1e1e !important;
         border-radius: 5px !important;
         border: 1px solid var(--Stroke, #252a29) !important;
-        background: #09090b !important;
+        background: #f6fefe !important;
       }
     }
   }

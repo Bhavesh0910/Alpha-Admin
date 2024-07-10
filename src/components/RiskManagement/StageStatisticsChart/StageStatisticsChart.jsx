@@ -9,24 +9,16 @@ const StageStatisticsChart = () => {
     });
   };
 
-  const dailyData1 = generateZigzagData(
-    [400, 300, 200, 350, 400, 300, 200, 300, 450, 500, 450, 400],
-    50,
-    0.2
-  );
+  const dailyData1 = generateZigzagData([400, 300, 200, 350, 400, 300, 200, 300, 450, 500, 450, 400], 50, 0.2);
 
-  const dailyData2 = generateZigzagData(
-    [200, 150, 100, 250, 300, 200, 100, 150, 300, 350, 300, 250],
-    40,
-    0.15
-  );
+  const dailyData2 = generateZigzagData([200, 150, 100, 250, 300, 200, 100, 150, 300, 350, 300, 250], 40, 0.15);
 
   const generateMonthRanges = (data) => {
     const monthRanges = [];
     let currentMonth = null;
     data.forEach((value, index) => {
       const date = new Date(2023, index, 1);
-      const month = date.toLocaleString("default", { month: "short" });
+      const month = date.toLocaleString("default", {month: "short"});
       if (!currentMonth || currentMonth !== month) {
         monthRanges.push(month);
         currentMonth = month;
@@ -61,7 +53,7 @@ const StageStatisticsChart = () => {
     title: {
       left: "center",
       textStyle: {
-        color: "#fff",
+        color: "#1E1E1E",
       },
     },
     tooltip: {
@@ -72,22 +64,22 @@ const StageStatisticsChart = () => {
       boundaryGap: false,
       data: xAxisData,
       axisLabel: {
-        color: "#fff",
+        color: "#1E1E1E",
       },
       axisLine: {
         lineStyle: {
-          color: "#fff",
+          color: "#1E1E1E",
         },
       },
     },
     yAxis: {
       type: "value",
       axisLabel: {
-        color: "#fff",
+        color: "#1E1E1E",
       },
       axisLine: {
         lineStyle: {
-          color: "#fff",
+          color: "#1E1E1E",
         },
       },
     },
@@ -98,7 +90,7 @@ const StageStatisticsChart = () => {
       bottom: "3%",
       containLabel: true,
     },
-    backgroundColor: "#1b1b1b",
+    backgroundColor: "#fff !important",
   };
 
   return (
@@ -106,7 +98,7 @@ const StageStatisticsChart = () => {
       <h2>Stage 1 Statistics</h2>
       <ReactECharts
         option={option}
-        style={{ height: "400px", width: "100%" }}
+        style={{height: "400px", width: "100%"}}
       />
     </div>
   );

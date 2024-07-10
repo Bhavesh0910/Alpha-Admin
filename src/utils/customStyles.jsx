@@ -4,7 +4,7 @@ const customStyles = {
   singleValue: (provided) => ({
     ...provided,
     fontFamily: "Nunito Sans",
-    color: "#FFF",
+    color: "#1E1E1E",
   }),
   control: (provided) => ({
     ...provided,
@@ -15,8 +15,7 @@ const customStyles = {
     height: "48px",
     borderRadius: "10px",
     border: "1px solid var(--brand-gradient, #4BB390);",
-    background:
-      "var(--background-gradient, linear-gradient(240deg, #FFF -93.51%, rgba(255, 255, 255, 0.40) -93.49%, rgba(255, 255, 255, 0.00) 95.73%))",
+    background: "var(--background-gradient, linear-gradient(240deg, #1E1E1E -93.51%, rgba(255, 255, 255, 0.40) -93.49%, rgba(255, 255, 255, 0.00) 95.73%))",
     cursor: "pointer",
     boxShadow: "none",
     paddingRight: "20px",
@@ -27,9 +26,9 @@ const customStyles = {
       border: "1px solid var(--brand-gradient, #4BB390);",
     },
   }),
-  option: (provided, { isFocused, isSelected }) => ({
+  option: (provided, {isFocused, isSelected}) => ({
     ...provided,
-    color: isSelected ? "#fff" : "#FFF",
+    color: isSelected ? "#1E1E1E" : "#1E1E1E",
     backgroundColor: isSelected ? "#4BB390" : "",
     padding: "10px",
     cursor: "pointer",
@@ -37,8 +36,7 @@ const customStyles = {
     fontSize: "14px",
     fontWeight: "400",
     "&:hover": {
-      background:
-        "var(--brand-gradient, linear-gradient(90deg, #4BB390 18.4%, #4BB390 100%))",
+      background: "var(--brand-gradient, linear-gradient(90deg, #4BB390 18.4%, #4BB390 100%))",
       color: "white",
     },
   }),
@@ -56,7 +54,7 @@ const customStyles = {
 
   dropdownIndicator: (provided) => ({
     ...provided,
-    color: "#fff",
+    color: "#1E1E1E",
     padding: "0px",
   }),
 };

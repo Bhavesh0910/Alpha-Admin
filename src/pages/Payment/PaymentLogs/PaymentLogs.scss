@@ -1,6 +1,6 @@
 .status_btn_wrapper {
   div {
-    color: var(--Text-white, #fff);
+    color: var(--Text-white, #1e1e1e);
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -19,7 +19,7 @@
     background: transparent;
 
     &.in_progress {
-      border: 1px solid #fffa8a;
+      border: 1px solid #1E1E1Ea8a;
     }
     &.approved {
       border: 1px solid #a3ea93;

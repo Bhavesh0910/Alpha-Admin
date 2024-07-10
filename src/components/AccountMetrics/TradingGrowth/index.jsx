@@ -1,17 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {useState, useRef, useEffect} from "react";
 import "./style.scss";
 import calendarIcon from "../../../assets/icons/calendar.svg";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import TradingGrowthChart from "./TradingGrowthChart";
 import moment from "moment";
-import { FormatUSD } from "../../../utils/helpers/string";
-import { getBalanceChartRequest } from "../../../utils/apis/accountsApi.js";
-import { useSelector } from "react-redux";
+import {FormatUSD} from "../../../utils/helpers/string";
+import {getBalanceChartRequest} from "../../../utils/apis/accountsApi.js";
+import {useSelector} from "react-redux";
 
-function TradingGrowth({ data }) {
-  const { idToken } = useSelector((state) => state.auth);
-  const { login_id } = useSelector((state) => state.accountList);
+function TradingGrowth({data}) {
+  const {idToken} = useSelector((state) => state.auth);
+  const {login_id} = useSelector((state) => state.accountList);
   const [balanceChart, setBalanceChart] = useState([]);
   const fetchBalanceChartData = async () => {
     try {
@@ -37,12 +37,7 @@ function TradingGrowth({ data }) {
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (
-        calendarRef.current &&
-        !calendarRef.current.contains(event.target) &&
-        headerRightRef.current &&
-        !headerRightRef.current.contains(event.target)
-      ) {
+      if (calendarRef.current && !calendarRef.current.contains(event.target) && headerRightRef.current && !headerRightRef.current.contains(event.target)) {
         setShowCalendar(false);
       }
     }
@@ -72,11 +67,11 @@ function TradingGrowth({ data }) {
     {
       title: "Profit target",
       value: data?.account_metrics?.get_trading_accounts?.startingBalance + data?.account_metrics?.program_objectives?.profit_target,
-      color: "#FFF27A",
+      color: "#1E1E1E27A",
     },
     {
       title: "Max loss limit",
-      value:  data?.account_metrics?.get_trading_accounts?.maximumLoss,
+      value: data?.account_metrics?.get_trading_accounts?.maximumLoss,
       color: "#FF9898",
     },
   ];
@@ -95,7 +90,7 @@ function TradingGrowth({ data }) {
       value: FormatUSD(data?.account_balance_equity?.balance),
     },
     // { title: "Equity", value: FormatUSD(data?.account_balance_equity?.equity) },
-    { title: "Starting Balance", value: FormatUSD(data?.account_metrics?.get_trading_accounts?.startingBalance) },
+    {title: "Starting Balance", value: FormatUSD(data?.account_metrics?.get_trading_accounts?.startingBalance)},
     // { title: "Status", value: "$6000" },
   ];
 
@@ -111,7 +106,10 @@ function TradingGrowth({ data }) {
             <img src={calendarIcon} alt="" onClick={handleCalendarClick} />
           </div> */}
           {showCalendar && (
-            <div className="calendar-container" ref={calendarRef}>
+            <div
+              className="calendar-container"
+              ref={calendarRef}
+            >
               <div>
                 <p>From</p>
                 <Calendar
@@ -135,31 +133,36 @@ function TradingGrowth({ data }) {
         <div className="trading-growth-chart">
           <div className="chart-legend">
             {legendData.map((item, index) => (
-              <div className="legend" key={index}>
+              <div
+                className="legend"
+                key={index}
+              >
                 <div>
                   <span
-                    style={{ background: item.color }}
+                    style={{background: item.color}}
                     className="circle"
                   ></span>
                   <p className="title">{item.title}</p>
                 </div>
-                <p
-                  className={
-                    item?.value > 0 ? "positive_value" : "navative_value"
-                  }
-                >
-                  {FormatUSD(item.value)}
-                </p>
+                <p className={item?.value > 0 ? "positive_value" : "navative_value"}>{FormatUSD(item.value)}</p>
               </div>
             ))}
           </div>
-          <TradingGrowthChart balance_chart={balanceChart} profit={data?.account_metrics?.get_trading_accounts?.startingBalance + data?.account_metrics?.program_objectives?.profit_target} maxLoss={data?.account_metrics?.get_trading_accounts?.maximumLoss} />
+          <TradingGrowthChart
+            balance_chart={balanceChart}
+            profit={data?.account_metrics?.get_trading_accounts?.startingBalance + data?.account_metrics?.program_objectives?.profit_target}
+            maxLoss={data?.account_metrics?.get_trading_accounts?.maximumLoss}
+          />
         </div>
       </div>
 
       <div className="trading-growth-right">
         {infoBoxData.map((data, index) => (
-          <TgInfoBox key={index} title={data.title} value={data.value} />
+          <TgInfoBox
+            key={index}
+            title={data.title}
+            value={data.value}
+          />
         ))}
       </div>
     </div>
@@ -168,13 +171,11 @@ function TradingGrowth({ data }) {
 
 export default TradingGrowth;
 
-const TgInfoBox = ({ title, value }) => {
+const TgInfoBox = ({title, value}) => {
   return (
     <div className="tginfobox">
       <p>{title}</p>
-      <span className={value < 0 ? "negative-profit" : "positive-profit"}>
-        {value}
-      </span>
+      <span className={value < 0 ? "negative-profit" : "positive-profit"}>{value}</span>
     </div>
   );
 };
