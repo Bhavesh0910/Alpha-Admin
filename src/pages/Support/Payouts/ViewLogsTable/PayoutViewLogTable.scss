@@ -1,4 +1,10 @@
 .viewLogs_table {
+  background: transparent !important;
+  border: 0;
+
+  .ant-card-body {
+    padding: 0;
+  }
   .header_wrapper {
     display: flex;
     flex-direction: row;

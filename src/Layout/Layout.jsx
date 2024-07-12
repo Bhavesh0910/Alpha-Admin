@@ -14,24 +14,24 @@ import {deAuthenticateAll} from "../store/NewReducers/logout";
 const {Header, Sider, Content} = Layout;
 
 const items = [
-  // {
-  //   key: "1",
-  //   icon: <PieChartOutlined />,
-  //   label: "Risk Management",
-  //   link: "/risk-management",
-  // },
-  // {
-  //   key: "2",
-  //   icon: <DesktopOutlined />,
-  //   label: "Revenue Management",
-  //   link: "/revenue-management",
-  // },
-  // {
-  //   key: "3",
-  //   icon: <UserOutlined />,
-  //   label: "County Wise Overview",
-  //   link: "/county-wise-overview",
-  // },
+  {
+    key: "1",
+    icon: <PieChartOutlined />,
+    label: "Risk Management",
+    link: "/risk-management",
+  },
+  {
+    key: "2",
+    icon: <DesktopOutlined />,
+    label: "Revenue Management",
+    link: "/revenue-management",
+  },
+  {
+    key: "3",
+    icon: <UserOutlined />,
+    label: "County Wise Overview",
+    link: "/country-wise-overview",
+  },
   {
     key: "4",
     // icon: <Overview />,
@@ -50,16 +50,16 @@ const items = [
     icon: <FileOutlined />,
     label: "Support",
     children: [
-      // {
-      //   key: "6-1",
-      //   label: "Stage 1",
-      //   link: "/support/stage-1",
-      // },
-      // {
-      //   key: "6-2",
-      //   label: "Funded",
-      //   link: "/support/funded",
-      // },
+      {
+        key: "6-1",
+        label: "Stage 1",
+        link: "/support/stage-1",
+      },
+      {
+        key: "6-2",
+        label: "Funded",
+        link: "/support/funded",
+      },
       {
         key: "6-3",
         label: "Payout",
@@ -79,48 +79,84 @@ const items = [
       },
     ],
   },
-  // {
-  //   key: "8",
-  //   icon: <DesktopOutlined />,
-  //   label: "Payments",
-  //   link: "/payments",
-  // },
-  // {
-  //   key: "9",
-  //   icon: <UserOutlined />,
-  //   label: "Affiliate Marketing",
-  //   link: "/affiliate-marketing",
-  // },
-  // {
-  //   key: "10",
-  //   icon: <TeamOutlined />,
-  //   label: "User Support Competition General Log",
-  //   link: "/user-support-competition",
-  // },
-  // {
-  //   key: "11",
-  //   icon: <TeamOutlined />,
-  //   label: "Country Wise Overview",
-  //   link: "/country-wise-overview",
-  // },
-  // {
-  //   key: "13",
-  //   icon: <DesktopOutlined />,
-  //   label: "Coupons",
-  //   link: "/coupon",
-  // },
+  {
+    key: "8",
+    icon: <DesktopOutlined />,
+    label: "Payments",
+    link: "/payments",
+  },
+  {
+    key: "9",
+    icon: <UserOutlined />,
+    label: "Affiliate Marketing",
+    link: "/affiliate-marketing",
+  },
+  {
+    key: "10",
+    icon: <TeamOutlined />,
+    label: "User Support",
+    link: "/user-support",
+  },
+  {
+    key: "13",
+    icon: <DesktopOutlined />,
+    label: "Coupons",
+    link: "/coupon",
+  },
+  {
+    key: "14",
+    icon: <UserOutlined />,
+    label: "General Logs",
+    link: "/general-log",
+  },
+  {
+    key: "15",
+    icon: <TeamOutlined />,
+    label: "Lists",
+    link: "/list/user-ip-list",
+    children: [
+      {
+        key: "15-1",
+        label: "User List",
+        link: "/list/user-list",
+      },
+      {
+        key: "15-2",
+        label: "IP List",
+        link: "/list/user-ip-list",
+      },
+    ],
+  },
+  {
+    key: "16",
+    icon: <TeamOutlined />,
+    label: "Compliance",
+    link: "/compliance/kyc",
+    children: [
+      {
+        key: "16-1",
+        label: "KYC",
+        link: "/compliance/kyc",
+      },
+      {
+        key: "16-2",
+        label: "Billing",
+        link: "/compliance/billing",
+      },
+    ],
+  },
+  {
+    key: "17",
+    icon: <DesktopOutlined />,
+    label: "Competition",
+    link: "/competitions/",
+  },
   {
     key: "12",
     icon: <Logout />,
     label: "Logout",
     link: "/signup",
   },
-  // {
-  //   key: "12",
-  //   icon: <TeamOutlined />,
-  //   label: "Revenue Management",
-  //   link: "/revenue-management",
-  // },
 ];
 
 const PageLayout = ({headerName, children}) => {
@@ -170,6 +206,26 @@ const PageLayout = ({headerName, children}) => {
           return "6-3";
         case "/funding-evaluation":
           return "7-1";
+        case "/payments":
+          return ["8"];
+        case "/affiliate-marketing":
+          return ["9"];
+        case "/user-support":
+          return ["10"];
+        case "/coupon":
+          return ["13"];
+        case "/general-log":
+          return ["14"];
+        case "/list/user-ip-list":
+          return ["15", "15-2"];
+        case "/list/user-list":
+          return ["15", "15-1"];
+        case "/compliance/kyc":
+          return ["16", "16-1"];
+        case "/compliance/billing":
+          return ["16", "16-2"];
+        case "/competitions/":
+          return ["17"];
         default:
           return null;
       }
@@ -210,6 +266,26 @@ const PageLayout = ({headerName, children}) => {
         return ["6", "6-3"];
       case "/funding-evaluation":
         return ["7", "7-1"];
+      case "/payments":
+        return ["8"];
+      case "/affiliate-marketing":
+        return ["9"];
+      case "/user-support":
+        return ["10"];
+      case "/coupon":
+        return ["13"];
+      case "/general-log":
+        return ["14"];
+      case "/list/user-ip-list":
+        return ["15", "15-2"];
+      case "/list/user-list":
+        return ["15", "15-1"];
+      case "/compliance/kyc":
+        return ["16", "16-1"];
+      case "/compliance/billing":
+        return ["16", "16-2"];
+      case "/competitions/":
+        return ["17"];
       default:
         return [];
     }
@@ -347,7 +423,7 @@ const PageLayout = ({headerName, children}) => {
           </Drawer>
         </div>
 
-        <Header style={{padding: "20px", background: "#12181F"}}>
+        <Header style={{padding: "20px", background: "#0F0F11"}}>
           <h1>{headerName}</h1>
         </Header>
         <Content
@@ -355,7 +431,7 @@ const PageLayout = ({headerName, children}) => {
             margin: "24px 16px",
             padding: 24,
             minHeight: 280,
-            borderRadius: "var(--Outside-box, 10px)",
+            borderRadius: "var(--Outside-box, 20px)",
             border: "1px solid var(--Stroke, #252A29)",
             background: "var(--second-Background, #27313E)",
           }}

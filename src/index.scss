@@ -159,11 +159,9 @@ code {
   font-style: normal;
   font-weight: 600;
   line-height: normal;
-  border-radius: var(--Corner-2, 10px) !important;
   padding: 10px 20px !important;
-  border-radius: var(--Corner-Radius, 10px);
-  border: 1px solid var(--Text-2, #686868);
-  background: transparent;
+  border-radius: var(--Corner-Radius, 10px) !important;
+  border: 1px solid var(--Text-2, #686868) !important;
   &:focus-within {
     border: 1px solid var(--Brand, #04d9ff) !important;
     background: var(--Main-Background, #f6fefe) !important;
@@ -184,6 +182,7 @@ code {
   align-items: center;
   gap: 10px;
   border-radius: 10px;
+  border: 1px solid transparent;
   background: var(--Brand, #04d9ff);
   color: var(--Main-Background, #f6fefe);
   font-family: var(--primary-font-family);
@@ -191,6 +190,11 @@ code {
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+
+  &:hover {
+    border: 1px solid var(--Brand-1, #04d9ff);
+    background: transparent !important;
+  }
 }
 
 /* Input Autocomplete Background Color for Chrome, Safari, Edge, Opera */
@@ -442,7 +446,7 @@ input:-webkit-autofill:active {
     border-radius: var(--Corner-1, 5px);
     background: var(--Brand, #04d9ff);
     span {
-      color: var(--Main-Background, #f6fefe);
+      color: var(--Main-Background, #12181f);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -482,7 +486,7 @@ input:-webkit-autofill:active {
         a {
           display: flex;
           align-items: center;
-          color: #FFF;
+          color: var(--Text-white, #ffffff);
           font-family: "Nunito Sans";
           font-size: 20px;
           font-style: normal;
@@ -491,17 +495,23 @@ input:-webkit-autofill:active {
         }
       }
       &.ant-breadcrumb-separator {
-        color: #fff;
+        color: #ffffff;
       }
       &:last-child {
-        .ant-breadcrumb-link {
-          a {
-            color: #FFF;
-            font-size: 16px !important;
-            font-style: normal;
-            font-weight: 400 !important;
-            line-height: normal;
-          }
+        span {
+          color: #ffffff !important;
+          font-size: 16px !important;
+          font-style: normal;
+          font-weight: 400 !important;
+          line-height: normal;
+        }
+        a{
+          color: #ffffff !important;
+          font-size: 16px !important;
+          font-style: normal;
+          font-weight: 400 !important;
+          line-height: normal;
+          
         }
       }
     }
@@ -594,7 +604,7 @@ input:-webkit-autofill:active {
 
 // Page Header CSS
 .page_header {
-  color: var(--Text-white, #1e1e1e);
+  color: var(--Text-white, #fff);
   font-family: "Nunito Sans";
   font-size: 20px;
   font-style: normal;
@@ -606,16 +616,15 @@ input:-webkit-autofill:active {
 .ant-input-affix-wrapper {
   max-height: 44px;
   flex-direction: row-reverse;
-  background: var(--Inner-box-BG, #141a17) !important;
-  border-radius: var(--Corner-2, 10px);
-  border: 1px solid var(--Stroke, #252a29);
+  border-radius: var(--Corner-Radius, 10px);
+  border: 1px solid var(--Text-2, #686868) !important;
 
   &:hover {
     border: 1px solid var(--Brand, #04d9ff);
-    background: var(--Inner-box-BG, #141a17) !important;
+    background: var(--Inner-box-BG, #f6fefe) !important;
   }
   &:focus-within {
-    border: 1px solid var(--Brand, #04d9ff);
+    border: 1px solid var(--Brand, #04d9ff) !important;
     background: var(--Main-Background, #f6fefe) !important;
   }
 

@@ -18,8 +18,8 @@
 
   .ant-select-selector {
     border-radius: var(--Corner-2, 10px);
-    border: 1px solid var(--Stroke, #252a29) !important;
-    background: var(--Inner-box-BG, #141a17) !important;
+    border: 1px solid var(--Stroke, #686868) !important;
+    background: transparent !important;
     &:hover {
       border: 1px solid var(--Brand, #04d9ff) !important;
       background: transparent;
@@ -32,8 +32,8 @@
 
   .affiliate_input {
     border-radius: var(--Corner-2, 10px);
-    border: 1px solid var(--Stroke, #252a29) !important;
-    background: var(--Inner-box-BG, #141a17) !important;
+    border: 1px solid var(--Stroke, #686868) !important;
+    background: transparent !important;
 
     &:hover {
       border: 1px solid var(--Brand, #04d9ff) !important;
@@ -48,9 +48,8 @@
   .create_plan_form {
     margin-top: 20px;
     padding: 20px;
-    border-radius: var(--Outside-box, 10px);
-    border: 1px solid var(--Stroke, #252a29);
-    background: var(--Inner-box-BG, #141a17);
+    border-radius: var(--table-box, 20px);
+    background: #fff;
 
     display: flex;
     flex-direction: column;

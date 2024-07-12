@@ -1,8 +1,7 @@
 .userDetails_wrapper {
   padding: 20px;
-  border-radius: var(--Outside-box, 10px);
-  border: 1px solid var(--Stroke, #252a29);
-  background: var(--Main-Background, #f6fefe);
+  border-radius: var(--table-box, 20px);
+  background: var(--Brand-2, #12181f);
   width: 100%;
   max-width: 835px;
   display: flex;
@@ -23,6 +22,15 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
+
+    .list_header {
+      color: var(--white, #fff);
+      font-family: "Nunito Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+    }
 
     @media only screen and (max-width: 650px) {
       flex-direction: column;

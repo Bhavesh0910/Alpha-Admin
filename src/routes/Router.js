@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
 import RiskManagement from "../pages/RiskManagement";
 
@@ -50,7 +50,10 @@ function Router() {
         {/* Public Routes */}
 
         <Route element={<PublicRoutes />}>
-          <Route path="/*" element={<Signin />} />
+          <Route
+            path="/*"
+            element={<Signin />}
+          />
         </Route>
 
         {/* Public Routes */}
@@ -286,7 +289,7 @@ function Router() {
             exact={true}
             path="/user-support/changeEmail-logs"
             element={
-              <PageLayout headerName="Affiliate Marketing">
+              <PageLayout headerName="User Support">
                 <ChangeEmailLogs />
               </PageLayout>
             }
@@ -296,7 +299,7 @@ function Router() {
             exact={true}
             path="/user-support/request-payout"
             element={
-              <PageLayout headerName="Affiliate Marketing">
+              <PageLayout headerName="User Support">
                 <RequestPayout />
               </PageLayout>
             }
