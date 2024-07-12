@@ -423,7 +423,7 @@ const PageLayout = ({headerName, children}) => {
           </Drawer>
         </div>
 
-        <Header style={{padding: "20px", background: "#12181F"}}>
+        <Header style={{padding: "20px", background: "#12181F" , display:'flex' , alignItems:'center'}}>
           <h1>{headerName}</h1>
         </Header>
         <Content
@@ -434,8 +434,6 @@ const PageLayout = ({headerName, children}) => {
             borderRadius: "var(--Outside-box, 20px)",
             border: "1px solid var(--Stroke, #252A29)",
             background: "var(--second-Background, #27313E)",
-            display:'flex',
-            alignItems:'center'
           }}
         >
           {children}
