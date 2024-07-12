@@ -1,45 +1,88 @@
-import React from "react";
+import React, { useState } from "react";
 import "./CreateCompetition.scss";
-import { Breadcrumb, Button, DatePicker, Input } from "antd";
-import { Link } from "react-router-dom";
-import dayjs from "dayjs";
+import { Breadcrumb, Button, DatePicker, Input, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import moment from "moment";
 import TextArea from "antd/es/input/TextArea";
+import { useSelector, useDispatch } from "react-redux";
+import { createCompetition } from "../../../store/NewReducers/competitionSlice";
+import { returnMessages } from "../../../store/reducers/message";
+import { returnErrors } from "../../../store/reducers/error";
+import dayjs from "dayjs";
+
 const CreateCompetition = () => {
-  const range = (start, end) => {
-    const result = [];
-    for (let i = start; i < end; i++) {
-      result.push(i);
+  const dispatch = useDispatch();
+  const idToken = useSelector((state) => state.auth.idToken);
+
+  const [formValues, setFormValues] = useState({
+    competition_name: "",
+    challenge_name: "",
+    schedule_competition: null,
+    start_date: null,
+    end_date: null,
+    first_prize: "",
+    second_prize: "",
+    third_prize: "",
+    total_contestants: "",
+    rules: "",
+  });
+
+  const navigate = useNavigate();
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormValues({ ...formValues, [id]: value });
+  };
+
+  const handleDateChange = (date, dateString, id) => {
+    setFormValues({ ...formValues, [id]: dateString });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validation
+    const requiredFields = [
+      "competition_name",
+      "challenge_name",
+      "schedule_competition",
+      "start_date",
+      "end_date",
+      "first_prize",
+      "second_prize",
+      "third_prize",
+      "total_contestants",
+    ];
+
+    for (let field of requiredFields) {
+      if (!formValues[field]) {
+        message.error(`Please fill in the ${field.replace("_", " ")} field`);
+        return;
+      }
     }
-    return result;
+
+    const formData = new FormData();
+    formData.append("name", formValues.competition_name);
+    formData.append("challenge", formValues.challenge_name);
+    formData.append("schedule_competition", moment(formValues.schedule_competition).format("YYYY-MM-DD"));
+    formData.append("start_date", moment(formValues.start_date).format("YYYY-MM-DD"));
+    formData.append("end_Date", moment(formValues.end_date).format("YYYY-MM-DD"));
+    formData.append("first_prize", formValues.first_prize);
+    formData.append("second_prize", formValues.second_prize);
+    formData.append("third_prize", formValues.third_prize);
+    formData.append("total_contestants", formValues.total_contestants);
+    formData.append("rules", formValues.rules);
+
+    try {
+      dispatch(createCompetition({ idToken, formData }));
+      navigate("/competitions");
+    } catch (error) {
+      dispatch(returnErrors("Error creating competition"));
+    }
   };
 
   const disabledDate = (current) => {
-    // Can not select days before today and today
     return current && current < dayjs().endOf("day");
-  };
-
-  const disabledDateTime = () => ({
-    disabledHours: () => range(0, 24).splice(4, 20),
-    disabledMinutes: () => range(30, 60),
-    disabledSeconds: () => [55, 56],
-  });
-  const disabledRangeTime = (_, type) => {
-    if (type === "start") {
-      return {
-        disabledHours: () => range(0, 60).splice(4, 20),
-        disabledMinutes: () => range(30, 60),
-        disabledSeconds: () => [55, 56],
-      };
-    }
-    return {
-      disabledHours: () => range(0, 60).splice(20, 4),
-      disabledMinutes: () => range(0, 31),
-      disabledSeconds: () => [55, 56],
-    };
-  };
-
-  const onChange = (e) => {
-    console.log("Change:", e.target.value);
   };
 
   return (
@@ -48,92 +91,123 @@ const CreateCompetition = () => {
         separator=">"
         items={[
           {
-            title: <Link to="/competitions">Competition List</Link>,
+            title: <Link className="page_header" to="/competitions">Competition List</Link>,
           },
           {
-            title: <Link to="">Create Competition</Link>,
+            title: <Link className="breadcrumb" to="">Create Competition</Link>,
           },
         ]}
       />
       <div className="createCompetition_wrapper">
-        {" "}
-        <form className="createCompetitionForm" action="">
+        <form className="createCompetitionForm" onSubmit={handleSubmit}>
           <div className="topSection">
             <div className="form_input_box">
               <label htmlFor="competition_name">Competition Name</label>
               <Input
                 id="competition_name"
                 placeholder="Enter Competition Name"
+                value={formValues.competition_name}
+                onChange={handleInputChange}
               />
             </div>
             <div className="form_input_box">
               <label htmlFor="challenge_name">Challenge</label>
-              <Input id="challenge_name" placeholder="Type Challenge" />
+              <Input
+                id="challenge_name"
+                placeholder="Type Challenge"
+                value={formValues.challenge_name}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="form_input_box">
+              <label htmlFor="total_contestants">Total Contestants</label>
+              <Input
+                id="total_contestants"
+                placeholder="Enter Total Contestants"
+                value={formValues.total_contestants}
+                onChange={handleInputChange}
+              />
             </div>
           </div>
           <div className="bottomSection">
             <div className="form_input_box">
-              <label htmlFor="coupon_code">Schedule Competition</label>
+              <label htmlFor="schedule_competition">Schedule Competition</label>
               <DatePicker
-                format="YYYY-MM-DD HH:mm:ss"
+                style={{ color: "#fff" }}
+                format="YYYY-MM-DD"
                 disabledDate={disabledDate}
-                disabledTime={disabledDateTime}
-                showTime={{
-                  defaultValue: dayjs("00:00:00", "HH:mm:ss"),
-                }}
+                onChange={(date, dateString) => handleDateChange(date, dateString, "schedule_competition")}
               />
             </div>
             <div className="form_input_box">
-              <label htmlFor="coupon_code">Start Date</label>
+              <label htmlFor="start_date">Start Date</label>
               <DatePicker
-                format="YYYY-MM-DD HH:mm:ss"
+                format="YYYY-MM-DD"
                 disabledDate={disabledDate}
-                disabledTime={disabledDateTime}
-                showTime={{
-                  defaultValue: dayjs("00:00:00", "HH:mm:ss"),
-                }}
+                onChange={(date, dateString) => handleDateChange(date, dateString, "start_date")}
               />
             </div>
             <div className="form_input_box">
-              <label htmlFor="coupon_code">End Date</label>
-              <DatePicker
-                format="YYYY-MM-DD HH:mm:ss"
+              <label htmlFor="end_date">End Date</label>
+              {/* <DatePicker
+                format="YYYY-MM-DD"
+                disabledDate={(current) => current && current < moment().endOf("day")}
+                value={formValues.end_date ? moment(formValues.end_date) : null}
+                onChange={(date, dateString) => handleDateChange(date, dateString, "end_date")}
+              /> */}
+                    <DatePicker
+                format="YYYY-MM-DD"
                 disabledDate={disabledDate}
-                disabledTime={disabledDateTime}
-                showTime={{
-                  defaultValue: dayjs("00:00:00", "HH:mm:ss"),
-                }}
+                onChange={(date, dateString) => handleDateChange(date, dateString, "end_date")}
               />
             </div>
             <div className="form_input_box">
               <label htmlFor="first_prize">1st Prize</label>
-              <Input id="first_prize" placeholder="Enter 1st Prize" />
-            </div>{" "}
+              <Input
+                id="first_prize"
+                placeholder="Enter 1st Prize"
+                value={formValues.first_prize}
+                onChange={handleInputChange}
+              />
+            </div>
             <div className="form_input_box">
               <label htmlFor="second_prize">2nd Prize</label>
-              <Input id="second_prize" placeholder="Enter 2nd Prize" />
-            </div>{" "}
+              <Input
+                id="second_prize"
+                placeholder="Enter 2nd Prize"
+                value={formValues.second_prize}
+                onChange={handleInputChange}
+              />
+            </div>
             <div className="form_input_box">
               <label htmlFor="third_prize">3rd Prize</label>
-              <Input id="third_prize" placeholder="Enter 3rd Prize" />
+              <Input
+                id="third_prize"
+                placeholder="Enter 3rd Prize"
+                value={formValues.third_prize}
+                onChange={handleInputChange}
+              />
             </div>
           </div>
           <div className="footer_section">
             <div className="form_input_box">
               <label htmlFor="competition_rules">Competitions Rules</label>
               <TextArea
-                id="competition_rules"
+                id="rules"
                 showCount
                 maxLength={100}
-                onChange={onChange}
+                onChange={handleInputChange}
                 placeholder="Type competition rules"
                 style={{
                   height: 93,
                   resize: "none",
                 }}
+                value={formValues.rules}
               />
             </div>
-            <Button className="standard_button">Create</Button>
+            <Button className="standard_button" htmlType="submit">
+              Create
+            </Button>
           </div>
         </form>
       </div>

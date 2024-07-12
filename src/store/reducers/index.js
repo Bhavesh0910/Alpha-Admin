@@ -3,7 +3,7 @@ import { combineReducers } from "redux";
 import accountReducer from "./accountSlice";
 import advReducer from "./advSlice";
 import authReducer from "./authSlice";
-import compReducer from "./compSlice";
+import compReducer from "../NewReducers/competitionSlice";
 import couponReducer from "./couponSlice";
 import errorAlertReducer from "./error";
 import fundingReducer from "../NewReducers/fundingSlice";

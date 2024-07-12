@@ -161,8 +161,9 @@ code {
   line-height: normal;
   border-radius: var(--Corner-2, 10px) !important;
   padding: 10px 20px !important;
-  border: 1px solid var(--Stroke, #252a29) !important;
-  background: var(--Inner-box-BG, #141a17) !important;
+  border-radius: var(--Corner-Radius, 10px);
+  border: 1px solid var(--Text-2, #686868);
+  background: transparent;
   &:focus-within {
     border: 1px solid var(--Brand, #04d9ff) !important;
     background: var(--Main-Background, #f6fefe) !important;
@@ -481,19 +482,21 @@ input:-webkit-autofill:active {
         a {
           display: flex;
           align-items: center;
-          color: var(--Text-white, #1e1e1e);
+          color: #FFF;
           font-family: "Nunito Sans";
           font-size: 20px;
           font-style: normal;
-          font-weight: 900 !important;
+          font-weight: 900;
+          line-height: normal;
         }
       }
       &.ant-breadcrumb-separator {
-        color: #1e1e1e;
+        color: #fff;
       }
       &:last-child {
         .ant-breadcrumb-link {
           a {
+            color: #FFF;
             font-size: 16px !important;
             font-style: normal;
             font-weight: 400 !important;
@@ -625,7 +628,9 @@ input:-webkit-autofill:active {
     line-height: normal;
     border: 0 !important;
     min-height: 34px !important;
-    background: var(--Inner-box-BG, #141a17) !important;
+    border-radius: var(--Corner-Radius, 10px) !important;
+    border: 1px solid var(--Text-2, #686868) !important;
+    background: transparent !important;
     &:focus-within {
       background: var(--Main-Background, #f6fefe) !important;
     }

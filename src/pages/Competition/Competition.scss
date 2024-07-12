@@ -8,8 +8,8 @@
     align-items: center;
     justify-content: space-between;
     h3 {
-      color: var(--Text-white, #1e1e1e);
-      font-family: var(--primary-font-family);
+      color: #FFF;
+      font-family: "Nunito Sans";
       font-size: 20px;
       font-style: normal;
       font-weight: 900;
@@ -22,6 +22,13 @@
     align-items: center;
     justify-content: space-between;
   }
+  .create_btn{
+    background: transparent !important;
+    border-radius: 10px;
+    border: 1px solid #04D9FF;
+    color: #fff;    
+    max-width: 155px;
+  }
   .competition_data {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -32,7 +39,8 @@
       flex-direction: column;
       gap: 20px;
       border-radius: 20px;
-      background: var(--Inner-box-BG, #141a17);
+      border-radius: 20px;
+      background: var(--white, #FFF);
       color: #1e1e1e;
       .header_section {
         display: flex;
@@ -122,16 +130,19 @@
             }
 
             .ongoing {
-              border: 1px solid var(--Green, #a3ea93);
-            }
+              border-radius: var(--Corner-Radius, 10px);
+              border: 1px solid var(--sucess, #009017);
+              background: var(--Success-Body, #CDFFDD);            }
 
             .upcoming {
-              border: 1px solid var(--Brand, #04d9ff);
-            }
+              border-radius: var(--Corner-Radius, 10px);
+              border: 1px solid var(--Brand-1, #04D9FF);
+              background: var(--new-body, #C5FFFF);            }
 
             .ended {
-              border: 1px solid var(--Red, #f97f7f);
-            }
+              border-radius: var(--Corner-Radius, 10px);
+              border: 1px solid var(--Failed, #F20000);
+              background: var(--Failed-body, #FFE1E1);            }
           }
           .participants_info {
             justify-content: flex-end;
@@ -160,10 +171,9 @@
             align-items: center;
             padding: 15px;
             border-radius: 20px;
-            background: var(--Main-Background, #f6fefe);
-
+            background: var(--Box-1, #27313E);
             .label {
-              color: var(--Text-white, #1e1e1e);
+              color: var(--white, #FFF);
               font-family: "Nunito Sans";
               font-size: 14px;
               font-style: normal;
@@ -190,13 +200,103 @@
       align-items: center;
       border-radius: 10px;
       background: var(--Brand, #04d9ff);
-
-      color: var(--Main-Background, #f6fefe);
+      color: #12181F;
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
       font-weight: 600;
       line-height: normal;
+    }
+  }
+}
+
+
+
+.edit_modal {
+  display: flex;
+  width: 100%;
+  max-width: 580px;
+  padding: 0px !important;
+  flex-direction: column;
+  gap: 20px;
+  color: #fff;
+  border-radius: var(--Outside-box, 10px);
+  position: relative;
+
+  .ant-btn-default{
+   color: #09090b !important;
+  }
+  .ant-input {
+    margin-top: 10px !important;
+  }
+
+  .ant-modal-title {
+    color: #09090b !important;
+    background: var(--Main-Background, #fff) !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .ant-modal-content {
+    svg {
+      fill: #000 !important;
+    }
+
+    display: flex;
+    width: 100%;
+    padding: 20px !important;
+    flex-direction: column;
+    gap: 20px;
+    color: #fff;
+    border: none !important;
+    background: var(--Main-Background, #fff) !important;
+    max-height: 70vh !important;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      padding-left: 5px;
+      height: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #75ebc3;
+      border-radius: 50px;
+      height: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #0f0f11;
+      border-radius: 50px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #75ebc3;
+    }
+  }
+  label{
+    color: #09090b;
+  }
+}
+
+.edit_competition_form {
+  display: flex;
+  width: 100%;
+  max-width: 580px;
+  flex-direction: column;
+  gap: 20px;
+
+  .form_group_2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+  }
+
+  .form_group {
+    .ant-picker {
+      max-width: 100% !important;
     }
   }
 }

@@ -565,7 +565,7 @@ const postAffiliateDetails = async (idToken, data) => {
       },
     };
     const response = await axios.post(
-      `${baseUrl}affiliates/create-link/`,
+      `${baseUrl}affiliates/admin/v2/create-link/`,
       data,
       config
     );
@@ -1200,29 +1200,40 @@ const getCompDetails = async (idToken) => {
   return output;
 };
 
-const postCompDetails = async (idToken, data) => {
+export const getOneCompDetails = async (idToken , id) => {
+  let config = {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  };
+  let output;
+  await axios
+    .get(`${baseUrl}account/admin/competitions/${id}`, config)
+    .then((res) => {
+      output = res;
+
+      return output;
+    })
+    .catch(function (error) {
+      output = error;
+      return output;
+    });
+
+  return output;
+};
+
+
+const postCompDetails = async (idToken, formData) => {
   try {
-    const config = {
+    const response = await axios.post(`${baseUrl}account/admin/competitions/`, formData, {
       headers: {
         Authorization: `Bearer ${idToken}`,
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
-    };
-    const response = await axios.post(
-      `${baseUrl}account/admin/competitions/`,
-      data,
-      config
-    );
-    if (response.status === 201 || response.status === 200) {
-      return response;
-    } else {
-      return response;
-      // throw new Error("POST request failed");
-    }
+    });
+    return response.data;
   } catch (error) {
-    console.error("Error making POST request for comp data:", error);
-    // throw error;
-    return error;
+    throw new Error(`Error creating competition: ${error.response?.data?.message || error.message}`);
   }
 };
 
@@ -1247,7 +1258,8 @@ const deleteCompDetails = async (idToken, id) => {
   }
 };
 
-const updateCompDetails = async (idToken, data, id) => {
+const updateCompDetails = async (idToken, id , data) => {
+  console.log(data , id)
   const apiUrl = `${baseUrl}account/admin/competitions/${id}`;
 
   const config = {

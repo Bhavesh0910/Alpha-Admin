@@ -71,8 +71,6 @@
 
 .table-wrapper {
   border-radius: var(--Outside-box, 10px);
-  border: 1px solid var(--Stroke, #252a29);
-  background: var(--Inner-box-BG, #141a17);
   padding: 0 !important;
 
   .ant-pagination {
@@ -112,10 +110,10 @@
 }
 
 thead tr {
-  background: var(--Main-Background, #f6fefe) !important;
+  background: var(--Main-Background, #EDF0F0) !important;
 
   th {
-    background: var(--Main-Background, #f6fefe) !important;
+    background: var(--Main-Background, #EDF0F0) !important;
     color: var(--Text-white, #1e1e1e) !important;
     font-family: "Nunito Sans";
     font-size: 14px;

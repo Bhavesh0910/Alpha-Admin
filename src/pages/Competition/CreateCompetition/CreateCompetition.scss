@@ -2,9 +2,8 @@
   .createCompetition_wrapper {
     margin-top: 20px;
     padding: 20px;
-    border-radius: var(--Outside-box, 10px);
-    border: 1px solid var(--Stroke, #252a29);
-    background: var(--Inner-box-BG, #141a17);
+    border-radius: 20px;
+    background: #FFF;
 
     .createCompetitionForm {
       display: flex;
@@ -26,8 +25,10 @@
         }
 
         .ant-picker {
-          background: var(--Inner-box-BG, #141a17) !important;
-          border: 1px solid #252a29 !important;
+          border-radius: var(--Corner-Radius, 10px);
+          border: 1px solid var(--Text-2, #686868);
+          background: transparent !important;
+
           &:focus-within {
             background: var(--Main-Background, #f6fefe) !important;
             border: 1px solid var(--Brand, #04d9ff) !important;
@@ -40,6 +41,7 @@
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 20px;
       }
+
       .bottomSection {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -53,6 +55,7 @@
           max-width: 100%;
         }
       }
+
       .footer_section {
         display: flex;
         flex-direction: column;
@@ -60,8 +63,11 @@
 
         .ant-input-textarea-affix-wrapper {
           min-height: 93px;
+
           textarea {
-            min-height: 91px !important;
+            border-radius: var(--Corner-Radius, 10px);
+            border: 1px solid var(--Text-2, #686868) !important;
+            background: white !important;
           }
         }
 
@@ -71,5 +77,21 @@
         }
       }
     }
+  }
+  .page_header{
+    color: #FFF;
+    font-family: "Nunito Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+  }
+  .breadcrumb{
+    color: #FFF;
+    font-family: "Nunito Sans";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
   }
 }
