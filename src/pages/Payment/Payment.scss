@@ -33,8 +33,7 @@
       min-height: 44px;
       padding: 0px 15px;
       border-radius: 10px;
-      border: 1px solid var(--Text-white, #1e1e1e);
-      background: var(--Stroke, #252a29);
+      background: #f6fefe;
 
       &:hover {
         border: 1px solid var(--Text-white, #1e1e1e) !important;
@@ -43,17 +42,15 @@
       }
     }
 
-    a {
-      p {
-        color: var(--Brand, #04d9ff);
-        font-family: "Nunito Sans";
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: normal;
-        text-decoration-line: underline;
-        text-wrap: nowrap;
-      }
+    p {
+      color: var(--Brand, #04d9ff) !important;
+      font-family: "Nunito Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      text-decoration-line: underline;
+      text-wrap: nowrap;
     }
   }
 

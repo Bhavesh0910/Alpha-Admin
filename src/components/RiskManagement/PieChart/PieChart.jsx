@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, {useRef, useState} from "react";
 import ApexCharts from "react-apexcharts";
 import "./PieChart.scss";
 const PieChart = () => {
@@ -65,13 +65,16 @@ const PieChart = () => {
             options={options}
             series={options.series}
             type="donut"
-            width={350}
+            width={300}
             height={150}
           />
         </div>
         <div className="labels_container">
           {options.labels.map((label, index) => (
-            <div key={index} className="label_with_value">
+            <div
+              key={index}
+              className="label_with_value"
+            >
               <span className="value">{options.series[index]}</span>
             </div>
           ))}

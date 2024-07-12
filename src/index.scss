@@ -475,6 +475,11 @@ input:-webkit-autofill:active {
 // View Log Btn CSS
 .view_logs__btn {
   max-width: 155px;
+  color: #12181f !important;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
 
 // Breadcrumb CSS
@@ -505,13 +510,12 @@ input:-webkit-autofill:active {
           font-weight: 400 !important;
           line-height: normal;
         }
-        a{
+        a {
           color: #ffffff !important;
           font-size: 16px !important;
           font-style: normal;
           font-weight: 400 !important;
           line-height: normal;
-          
         }
       }
     }

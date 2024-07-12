@@ -162,7 +162,7 @@ const items = [
 const PageLayout = ({headerName, children}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [openKeys, setOpenKeys] = useState([]);
-  const [open, setOpen] = useState(false); // State to handle drawer visibility
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -173,7 +173,7 @@ const PageLayout = ({headerName, children}) => {
 
   const handleMouseLeave = () => {
     setIsSidebarOpen(false);
-    setOpenKeys([]); // Close all submenus when the sidebar collapses
+    setOpenKeys([]);
   };
 
   const handleMenuClick = ({key}) => {
@@ -206,26 +206,6 @@ const PageLayout = ({headerName, children}) => {
           return "6-3";
         case "/funding-evaluation":
           return "7-1";
-        case "/payments":
-          return ["8"];
-        case "/affiliate-marketing":
-          return ["9"];
-        case "/user-support":
-          return ["10"];
-        case "/coupon":
-          return ["13"];
-        case "/general-log":
-          return ["14"];
-        case "/list/user-ip-list":
-          return ["15", "15-2"];
-        case "/list/user-list":
-          return ["15", "15-1"];
-        case "/compliance/kyc":
-          return ["16", "16-1"];
-        case "/compliance/billing":
-          return ["16", "16-2"];
-        case "/competitions/":
-          return ["17"];
         default:
           return null;
       }
@@ -238,7 +218,7 @@ const PageLayout = ({headerName, children}) => {
 
   const handleSubMenuClick = ({key}) => {
     const selectedChildItem = items
-      .filter((item) => item.children) // Only consider items with children
+      .filter((item) => item.children)
       .map((item) => item.children)
       .flat()
       .find((child) => child.key === key);
@@ -253,19 +233,19 @@ const PageLayout = ({headerName, children}) => {
   };
 
   const onClose = () => {
-    setOpen(false); // Close drawer
+    setOpen(false);
   };
 
   const selectedKeys = (() => {
     switch (location.pathname) {
       case "/trader-overview":
-        return ["4"];
+        return "4";
       case "/stage-manager":
-        return ["5"];
+        return "5";
       case "/support/payout":
-        return ["6", "6-3"];
+        return "6-3";
       case "/funding-evaluation":
-        return ["7", "7-1"];
+        return "7-1";
       case "/payments":
         return ["8"];
       case "/affiliate-marketing":
@@ -287,7 +267,7 @@ const PageLayout = ({headerName, children}) => {
       case "/competitions/":
         return ["17"];
       default:
-        return [];
+        return null;
     }
   })();
 
@@ -320,9 +300,9 @@ const PageLayout = ({headerName, children}) => {
           mode="inline"
           onClick={handleMenuClick}
           onOpenChange={(keys) => setOpenKeys(keys)}
-          openKeys={isSidebarOpen ? openKeys : []} // Manage open keys based on sidebar state
+          openKeys={isSidebarOpen ? openKeys : []}
           onSelect={handleSubMenuClick}
-          selectedKeys={selectedKeys} // Set selected keys
+          selectedKeys={selectedKeys}
         >
           {items.map((item) => {
             if (item.children) {
@@ -374,11 +354,11 @@ const PageLayout = ({headerName, children}) => {
           </Button>
           <Drawer
             title="Basic Drawer"
-            placement="left" // Fixed placement
+            placement="left"
             closable={false}
             onClose={onClose}
             open={open}
-            key="left" // Fixed key
+            key="left"
             extra={<Space></Space>}
           >
             <Menu
@@ -386,22 +366,23 @@ const PageLayout = ({headerName, children}) => {
               mode="inline"
               onClick={handleMenuClick}
               onOpenChange={(keys) => setOpenKeys(keys)}
-              openKeys={open ? openKeys : []} // Manage open keys based on drawer state
+              openKeys={open ? openKeys : []}
               onSelect={handleSubMenuClick}
-              selectedKeys={selectedKeys} // Set selected keys
+              selectedKeys={selectedKeys}
               className="mobile_menu_container"
             >
               {items.map((item) => {
-                if (item.children) {
+                if (item?.children) {
                   return (
                     <Menu.SubMenu
                       key={item.key}
                       icon={item.icon}
                       title={item.label}
                     >
-                      {item.children.map((child) => (
+                      {item?.children.map((child) => (
                         <Menu.Item
                           className="nestedItems"
+                          onClick={onClose}
                           key={child.key}
                         >
                           {child.label}
@@ -412,6 +393,7 @@ const PageLayout = ({headerName, children}) => {
                 }
                 return (
                   <Menu.Item
+                    onClick={!item?.children && onClose}
                     key={item.key}
                     icon={item.icon}
                   >
@@ -423,17 +405,17 @@ const PageLayout = ({headerName, children}) => {
           </Drawer>
         </div>
 
-        <Header style={{padding: "20px", background: "#12181F" , display:'flex' , alignItems:'center'}}>
+        <Header style={{padding: "20px", background: "#0F0F11"}}>
           <h1>{headerName}</h1>
         </Header>
         <Content
           style={{
-            margin: "30px 40px",
+            margin: "24px 16px",
             padding: 24,
             minHeight: 280,
-            borderRadius: "var(--Outside-box, 20px)",
+            borderRadius: "var(--Outside-box, 10px)",
             border: "1px solid var(--Stroke, #252A29)",
-            background: "var(--second-Background, #27313E)",
+            background: "var(--second-Background, #0F0F11)",
           }}
         >
           {children}

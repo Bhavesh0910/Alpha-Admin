@@ -65,7 +65,7 @@ const Stage2Chart = () => {
             options={options}
             series={options.series}
             type="donut"
-            width={350}
+            width={300}
             height={150}
           />
         </div>

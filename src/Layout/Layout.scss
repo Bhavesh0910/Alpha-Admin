@@ -27,16 +27,32 @@
   justify-content: center;
   margin-left: 10px;
 }
+
+.ant-menu-submenu {
+  width: 100%;
+  .ant-menu-submenu-title {
+    display: flex;
+  }
+  &.ant-menu-submenu-selected {
+    .ant-menu-submenu-title {
+      color: #04d9ff;
+    }
+  }
+}
+
 .ant-menu-item {
   margin-top: 20px;
   width: 100%;
   padding: 10px !important;
+
   .ant-menu-item-icon {
     vertical-align: 0.825em !important;
   }
 }
+
 .ant-menu-submenu {
   width: 100%;
+
   .ant-menu-submenu-title {
     padding: 10px !important;
     width: 100%;
@@ -44,6 +60,13 @@
 
   .ant-menu-sub {
     padding-left: 20px !important;
+    overflow: hidden; /* Ensure the submenu doesn't exceed its container */
+    transition: max-height 0.3s ease; /* Apply the transition for height */
+    max-height: 0; /* Initial state */
+  }
+
+  &.ant-menu-submenu-open .ant-menu-sub {
+    max-height: 1000px; /* Large enough value to accommodate the submenu items */
   }
 }
 
