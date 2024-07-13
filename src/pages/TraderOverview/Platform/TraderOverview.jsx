@@ -27,6 +27,7 @@ import {
 } from "../../../store/NewReducers/accountList";
 import { clearPersistedData } from "../../../store/configureStore";
 import dayjs from "dayjs";
+import { formatDate } from "fullcalendar/index.js";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -34,13 +35,11 @@ const { RangePicker } = DatePicker;
 
 function TraderOverview() {
   const dispatch = useDispatch();
-  const [tradersData, setTradersData] = useState([]);
   const [status, setStatus] = useState("");
-  const [category, setCategory] = useState("all");
+  const [platform, setPlatform] = useState("trader-accounts");
   const [isLoading, setIsLoading] = useState(false);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(null);
   const [search, setSearch] = useState("");
-  const [filterData, setFilterData] = useState([]);
 
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
@@ -52,17 +51,15 @@ function TraderOverview() {
     isLoading: accountsLoading,
     totalItems,
   } = useSelector((state) => state.accountList);
-  const accounts = useSelector((state) => state.accounts);
-  const [dates, setDates] = useState(searchDates);
+
+  const [dates, setDates] = useState(null);
   const defaultDates = [dayjs().subtract(7, 'day'), dayjs()];
 
   useEffect(() => {
-    fetchTradersData(dates, pageNo, pageSize, searchText, status, phase);
-  }, [idToken, dates, pageNo, pageSize, searchText, status, phase]);
+    fetchTradersData(dates, pageNo, pageSize, searchText, status, phase, platform);
+  }, [idToken, dates, pageNo, pageSize, searchText, status, phase, platform]);
 
-  useEffect(() => {
-    setTradersData(data || []);
-  }, [data]);
+  ;
 
   const fetchTradersData = async (
     dates,
@@ -70,20 +67,30 @@ function TraderOverview() {
     pageSize,
     searchText,
     status,
-    phase
+    phase,
+    platform
   ) => {
     setIsLoading(true);
     try {
-      // clearPersistedData();
+
+      let query = `?page=${pageNo ? pageNo : 1}&page_size=${pageSize ? pageSize : ""}&is_active=${status === "active" ? 1 : status === "inactive" ? 0 : ""}`
+
+      if (searchText) {
+        query = query + `&search=${searchText}`
+      }
+      if (dates) {
+        query = query + `&start_date=${dates[0]}&end_date=${dates[1]}`
+      }
+      if (phase !== "") {
+        let phaseQuery = phase === "Free Trail" ? "&free_trail=1" : "&status=Funded&status=Evalution"
+        query = query + phaseQuery;
+      }
+
       dispatch(
         accountList({
           idToken,
-          dates,
-          pageNo,
-          pageSize,
-          searchText,
-          status,
-          phase,
+          platform,
+          query,
           dispatch,
         })
       );
@@ -94,21 +101,6 @@ function TraderOverview() {
     }
   };
 
-  const filteredTradersData = useMemo(() => {
-    return tradersData?.filter((trader) => {
-      if (status === "active") {
-        return trader?.is_active;
-      } else if (status === "inactive") {
-        return !trader?.is_active;
-      } else {
-        return true;
-      }
-    });
-  }, [status, tradersData]);
-
-  useEffect(() => {
-    setFilterData(filteredTradersData);
-  }, [filteredTradersData]);
 
   const navigate = useNavigate();
 
@@ -116,19 +108,19 @@ function TraderOverview() {
     setPageNo(1);
     setStatus(e.target.value);
   };
+
   const onChangePhase = (e) => {
-    console.log("In phase change : ", e.target.value);
-    setPhase(
-      e.target.value === "assessment"
-        ? "assessment"
-        : e.target.value === "qualified"
-        ? "qualified"
-        : ""
-    );
+    setPhase(e.target.value);
   };
 
-  const handleCategoryChange = (value) => {
-    setCategory(value);
+  const handlePlatformChange = (value) => {
+    setPageNo(1);
+    setPageSize(20);
+    setSearchText("");
+    setDates(null);
+    setPhase("");
+    const data = value === "MT5" ? "trader-accounts" : value === "C-traders" ? "ctrader-accounts" : "dxtraders"
+    setPlatform(data);
   };
 
   const handleSearch = (value) => {
@@ -139,13 +131,17 @@ function TraderOverview() {
 
   const options = [
     {
-      value: "AplhaTicks",
-      label: "AlphaTicks",
+      value: "MT5",
+      label: "MT5",
     },
-    // {
-    //   value: "MT5",
-    //   label: "MT5",
-    // },
+    {
+      value: "C-traders",
+      label: "C-traders",
+    },
+    {
+      value: "DX",
+      label: "DX",
+    },
   ];
 
   const highlightText = (text, search) => {
@@ -172,61 +168,6 @@ function TraderOverview() {
 
   const columns = [
     {
-      title: "Account Name",
-      dataIndex: "account_name",
-      key: "account_name",
-      width: 150,
-      render: (text, record) => (
-        <Link
-          to="/account-analysis"
-          className="info-btn new"
-          onClick={() => {
-            console.log("Loging ID : ",record)
-            console.log("Loging ID : ",record?.account_name)
-            dispatch(accountList({ idToken, searchText: record?.email }))
-            dispatch(setDefaultLoginId(Number(record?.login_id)));
-          }}
-        >
-          {highlightText(text, searchText)}
-        </Link>
-      ),
-    },
-    {
-      title: "Account Type",
-      dataIndex: "account_type",
-      key: "account_type",
-      width: 150,
-      render: (text) => highlightText(text, searchText),
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-      width: 200,
-      render: (text) => highlightText(text, searchText),
-    },
-    {
-      title: "Active",
-      dataIndex: "is_active",
-      key: "is_active",
-      width: 100,
-      render: (isActive) => <span>{isActive ? "Active" : "Inactive"}</span>,
-    },
-    {
-      title: "Disqualified",
-      dataIndex: "is_disqualified",
-      key: "is_disqualified",
-      width: 120,
-      render: (isDisqualified) => <span>{isDisqualified ? "Yes" : "No"}</span>,
-    },
-    {
-      title: "Login ID",
-      dataIndex: "login_id",
-      key: "login_id",
-      width: 100,
-      render: (text) => highlightText(text, searchText),
-    },
-    {
       title: "Name",
       dataIndex: "name",
       key: "name",
@@ -234,34 +175,69 @@ function TraderOverview() {
       render: (text) => highlightText(text, searchText),
     },
     {
-      title: "Phase",
-      dataIndex: "phase",
-      key: "phase",
+      title: "Country",
+      dataIndex: "country",
+      key: "country",
       width: 150,
       render: (text) => highlightText(text, searchText),
     },
     {
-      title: "Starting Balance",
-      dataIndex: "starting_balance",
-      key: "starting_balance",
+      title: "Account Number",
+      dataIndex: "login_id",
+      key: "login_id",
+      width: 100,
+      render: (text) => highlightText(text, searchText),
+    },
+    {
+      title: "Balance",
+      dataIndex: "balance",
+      key: "balance",
       width: 150,
       render: (startingBalance) => (
         <span>${parseFloat(startingBalance).toLocaleString()}</span>
       ),
     },
     {
-      title: "Status",
+      title: "Equity",
+      dataIndex: "equity",
+      key: "equity",
+      width: 150,
+      render: (equity) => <span>{equity}</span>,
+    },
+    {
+      title: "Leverage",
+      dataIndex: "leverage",
+      key: "leverage",
+      width: 150,
+      render: (leverage) => <span>1:{leverage}</span>,
+    },
+    {
+      title: "Start Date",
+      dataIndex: "start_date",
+      key: "start_date",
+      width: 150,
+      render: (startDate) => <span>{formatDate(startDate)}</span>,
+    },
+    {
+      title: "End Date",
+      dataIndex: "expiry_date",
+      key: "expiry_date",
+      width: 150,
+      render: (expiryDate) => <span>{expiryDate ? formatDate(expiryDate) : "-"}</span>,
+    },
+    {
+      title: "Trader Type",
       dataIndex: "status",
       key: "status",
       width: 150,
       render: (text) => highlightText(text, searchText),
     },
     {
-      title: "Trading Platform",
-      dataIndex: "trading_platform",
-      key: "trading_platform",
+      title: "Status",
+      dataIndex: "user_is_active",
+      key: "user_is_active",
       width: 150,
-      render: (text) => highlightText(text, searchText),
+      render: (text) => text ? "UnBlocked" : "Blocked",
     },
     {
       title: "Action",
@@ -270,9 +246,25 @@ function TraderOverview() {
       width: 200,
       render: (_, record) => (
         <div className="btn-wrapper">
-          <Button className="btn-block" onClick={() => handleBlock(record)}>
-            Block
-          </Button>
+          {record.user_is_active ?
+
+            <Button className="btn-block" onClick={() => handleBlock(record)}>
+              Block
+            </Button>
+            :
+            <Button className="btn-unblock" onClick={() => handleBlock(record)}>
+              Unblock
+            </Button>
+
+            //UNCOMMENT THIS AND COMMENT UPPER PART ONLY TO CHECK CSS OF UNBLOCK BUTTON AFTER THAT REVERT TO NORMAL
+            // <Button className="btn-unblock" onClick={() => handleBlock(record)}>
+            //   Unblock
+            // </Button>
+            // :
+            // <Button className="btn-block" onClick={() => handleBlock(record)}>
+            //   Block
+            // </Button>
+          }
           <Button className="btn-delete" danger>
             Delete
           </Button>
@@ -280,6 +272,7 @@ function TraderOverview() {
       ),
     },
   ];
+
 
   const handleBlock = (record) => {
     setSelectedTrader(record);
@@ -295,7 +288,9 @@ function TraderOverview() {
   };
 
   function updateDateRange(dates) {
-    setDates(dates.map((date) => date.format("YYYY-MM-DD")));
+    setPageNo(1);
+    setPageSize(20);
+    setDates(dates.map((date) => date.format("DD MMM YYYY")));
   }
 
   function triggerChange(page, updatedPageSize) {
@@ -316,7 +311,7 @@ function TraderOverview() {
           <Select
             defaultValue={options[0].value}
             className="header-select"
-            onChange={handleCategoryChange}
+            onChange={handlePlatformChange}
             options={options}
           />
         </div>
@@ -342,7 +337,7 @@ function TraderOverview() {
               <Select
                 className="category_dropdown"
                 defaultValue="all"
-                onChange={handleCategoryChange}
+                onChange={handlePlatformChange}
               >
                 <Option value="all">All Categories</Option>
                 {/* <Option value="swift">Swift</Option>
@@ -367,15 +362,15 @@ function TraderOverview() {
             </div>
           </div>
           <RangePicker
-            placeholder={dates}
-            defaultValue={defaultDates}
+            // placeholder={['Start Date', 'End Date']}
+            // defaultValue={defaultDates}
             onChange={updateDateRange}
           />
         </div>
         <Radio.Group value={phase} onChange={onChangePhase}>
           <Radio.Button value="">All</Radio.Button>
-          <Radio.Button value="qualified">Qualified</Radio.Button>
-          <Radio.Button value="assessment">Assesment</Radio.Button>
+          <Radio.Button value="Evalution/Funded">Evalution/Funded</Radio.Button>
+          <Radio.Button value="Free Trail">Free Trail</Radio.Button>
         </Radio.Group>
       </div>
       <Card className="table-wrapper">
@@ -384,7 +379,7 @@ function TraderOverview() {
         ) : (
           <AntTable
             columns={columns}
-            data={searchText || status !== "all" ? filterData : tradersData}
+            data={data || []}
             totalPages={Math.ceil(totalItems / pageSize)}
             totalItems={totalItems}
             pageSize={pageSize}

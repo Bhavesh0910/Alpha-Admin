@@ -7,14 +7,14 @@ import { setIsLoading } from "../../store/reducers/authSlice";
 
 //  Acg Futures Admin
 // export const baseUrl = "http://35.177.123.105/";
-export const baseUrl = "https://backend.alpha-futures.com/";
+export const baseUrl = "https://backend.alphacapitalgroup.uk/";
 
 
-export const acgLogin = async (payload, dispatch) => {
+export const alphaNewLogin = async (payload, dispatch) => {
   const { email, password } = payload;
 
   try {
-    const response = await axios.post(`${baseUrl}auth/admin/login/`, {
+    const response = await axios.post(`${baseUrl}adm/email/signin/`, {
       email,
       password,
     });

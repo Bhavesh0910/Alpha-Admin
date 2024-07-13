@@ -9,7 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {validateEmail, validatePassword} from "../../../utils/helpers/string";
 import {useDispatch, useSelector} from "react-redux";
 import {authenticate, setAuthenticationStatus} from "../../../store/reducers/authSlice";
-import {acgLogin} from "../../../utils/api/apis";
+import {alphaNewLogin} from "../../../utils/api/apis";
 import {returnErrors} from "../../../store/reducers/error";
 import {formatText} from "../../../utils/string";
 
@@ -61,7 +61,7 @@ function SigninForm() {
     setLoading(true);
     // dispatch(authenticate(inputValue));
 
-    acgLogin(inputValue)
+    alphaNewLogin(inputValue)
       .then((res) => {
         dispatch(setAuthenticationStatus(res));
         setLoading(false);

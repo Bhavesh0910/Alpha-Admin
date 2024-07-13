@@ -7,10 +7,10 @@ import { PURGE } from "redux-persist";
 // Define the async thunk for account list
 export const accountList = createAsyncThunk(
   "accounts/fetchAccountList",
-  async ({ idToken, dates, pageNo, pageSize, searchText, status, phase, dispatch }, { rejectWithValue }) => {
+  async ({ idToken, query, platform, dispatch }, { rejectWithValue }) => {
     try {
-      // console.log("I am hereeee...")
-      const response = await accountListReq(idToken, dates, pageNo, pageSize, searchText, status, phase);
+
+      const response = await accountListReq(idToken, query, platform);
       return response;
     } catch (error) {
       dispatch(returnErrors("Error Fetching List...", 400));

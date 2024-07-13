@@ -3,7 +3,7 @@ import { baseUrl } from "../api/apis";
 import moment from "moment";
 import { returnMessages } from "../../store/reducers/message";
 
-const accountListReq = async (idToken, dates, pageNo, pageSize, searchText, status, phase) => {
+const accountListReq = async (idToken, query, platform) => {
   try {
     const config = {
       headers: {
@@ -11,16 +11,7 @@ const accountListReq = async (idToken, dates, pageNo, pageSize, searchText, stat
       },
     };
 
-    // console.log("Status : ", status);
-    // console.log("phase : ", phase);
-    let response;
-    if (phase) {
-      response = await axios.get(`${baseUrl}account/admin/accounts-list/?start_date=${dates ? dates[0] : ""}&end_date=${dates ? dates[1] : ""}&page=${pageNo ? pageNo : 1}&page_size=${pageSize ? pageSize : ""}&search=${searchText ? searchText : ""}&is_active=${status === "active" ? true : status === "inactive" ? false : ""}&phase=${phase}`, config);
-    } else {
-      response = await axios.get(`${baseUrl}account/admin/accounts-list/?start_date=${dates ? dates[0] : ""}&end_date=${dates ? dates[1] : ""}&page=${pageNo ? pageNo : 1}&page_size=${pageSize ? pageSize : ""}&search=${searchText ? searchText : ""}&is_active=${status === "active" ? true : status === "inactive" ? false : ""}`, config);
-
-    }
-
+    let response = await axios.get(`${baseUrl}v2/${platform}/list/${query}`, config);
 
     return response.data;
   } catch (error) {
