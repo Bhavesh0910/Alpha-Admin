@@ -27,220 +27,189 @@ const Payment = () => {
 
   const dispatch = useDispatch();
   const { idToken, searchDates } = useSelector(state => state.auth);
-  const { paymentData, count, isLoading } = useSelector(state => state.payment);
+  const { paymentData, isLoading } = useSelector(state => state.payment);
 
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
-  const [dates, setDates] = useState(searchDates);
+  const [dates, setDates] = useState();
   const defaultDates = [dayjs().subtract(7, 'day'), dayjs()];
 
   const columns = useMemo(() => [
     {
-      title: "User",
-      dataIndex: "user",
-      key: "user",
-    },
-    {
-      title: "Account",
-      dataIndex: "account",
-      key: "account",
-    },
-    {
-      title: "Balance",
-      dataIndex: "account_balance",
-      key: "account_balance",
-    },
-    {
-      title: "Amount",
-      dataIndex: "amount",
-      key: "amount",
-    },
-    {
-      title: "Created At",
-      dataIndex: "created_at",
-      key: "created_at",
-      render: (text) => moment(text?.created_at).format("YYYY-MM-DD")
-
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width: 150,
+      render: (text) => text,
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      width: 200,
       render: (text) => {
         return (
           <div onClick={() => {
             dispatch(selectedEmail(text));
-            navigate("/payments/payments-export-history")
+            navigate("/payments/payments-export-history");
           }}>
             {text}
           </div>
-          // <div onClick={() => {
-          //   dispatch(selectedEmail(text));
-          //   navigate("/payment/admin/payment-history/")
-          // }}>
-          //   {text}
-          // </div>
-        )
-      }
+        );
+      },
+    },
+    {
+      title: "Payment ID",
+      dataIndex: "payment_id",
+      key: "payment_id",
+      width: 150,
+      render: (text) => (
+        <>
+          {text ?
+            <div className="copy_text_btn">
+              <a href={`mailto:${text}`}>{text}</a>
+              <Tooltip title="Copy Payment ID">
+                <Button
+                  icon={<CopyButton />}
+                  size="small"
+                  style={{ marginLeft: 8 }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(text);
+                    notification.success({
+                      message: "Payment ID copied to clipboard",
+                      placement: "topRight",
+                    });
+                  }}
+                  className="copy_btn"
+                />
+              </Tooltip>
+            </div>
+            : "-"}
+        </>
+      ),
+    },
+    {
+      title: "Transaction ID",
+      dataIndex: "transaction_id",
+      key: "transaction_id",
+      width: 200,
+      render: (text) => (
+        <>
+          {text ?
+            <div className="copy_text_btn">
+              <a href={`mailto:${text}`}>{text}</a>
+              <Tooltip title="Copy Transaction ID">
+                <Button
+                  icon={<CopyButton />}
+                  size="small"
+                  style={{ marginLeft: 8 }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(text);
+                    notification.success({
+                      message: "Transaction ID copied to clipboard",
+                      placement: "topRight",
+                    });
+                  }}
+                  className="copy_btn"
+                />
+              </Tooltip>
+            </div>
+            : "-"}
 
-    },
-    {
-      title: "Funding Evaluation",
-      dataIndex: "funding_evaluation",
-      key: "funding_evaluation",
-      render: (text) => (
-        <>
-          <div className="copy_text_btn">
-            <a href={`mailto:${text}`}>{text}</a>
-            <Tooltip title="Copy Payment ID">
-              <Button
-                icon={<CopyButton />}
-                size="small"
-                style={{ marginLeft: 8 }}
-                onClick={() => {
-                  navigator.clipboard.writeText(text);
-                  notification.success({
-                    message: "Payment ID copied to clipboard",
-                    placement: "topRight",
-                  });
-                }}
-                className="copy_btn"
-              />
-            </Tooltip>
-          </div>
         </>
       ),
     },
     {
-      title: "Payment Id",
-      dataIndex: "id",
-      key: "id",
-      render: (text) => (
-        <>
-          <div className="copy_text_btn">
-            <a href={`mailto:${text}`}>{text}</a>
-            <Tooltip title="Copy Transaction ID">
-              <Button
-                icon={<CopyButton />}
-                size="small"
-                style={{ marginLeft: 8 }}
-                onClick={() => {
-                  navigator.clipboard.writeText(text);
-                  notification.success({
-                    message: "Transaction ID copied to clipboard",
-                    placement: "topRight",
-                  });
-                }}
-                className="copy_btn"
-              />
-            </Tooltip>
-          </div>
-        </>
-      ),
-    },
-    // {
-    //   title: "Payment ID",
-    //   dataIndex: "id",
-    //   key: "id",
-    //   render: (text) => (
-    //     <>
-    //       <div className="status_icon_wrapper">
-    //         <img
-    //           src={
-    //             text?.id
-    //               === true ? verifiedIcon : notVerifiedIcon
-    //           }
-    //           alt=""
-    //         />
-    //       </div>
-    //     </>
-    //   ),
-    // },
-    {
-      title: "Payment Type",
-      dataIndex: "payment_type",
-      key: "payment_type",
-      render: (text) => (
-        <>
-          <div className="copy_text_btn">
-            <a href={`mailto:${text}`}>{text}</a>
-            <Tooltip title="Copy Promo">
-              <Button
-                icon={<CopyButton />}
-                size="small"
-                style={{ marginLeft: 8 }}
-                onClick={() => {
-                  navigator.clipboard.writeText(text);
-                  notification.success({
-                    message: "Promo copied to clipboard",
-                    placement: "topRight",
-                  });
-                }}
-                className="copy_btn"
-              />
-            </Tooltip>
-          </div>
-        </>
-      ),
-    },
-    {
-      title: "Status",
+      title: "Payment Status",
       dataIndex: "payment_status",
       key: "payment_status",
+      width: 150,
     },
     {
-      title: "Plan",
-      dataIndex: "plan",
-      key: "plan",
+      title: "Payment Platform Status",
+      dataIndex: "payment_platform_status",
+      key: "payment_platform_status",
+      width: 180,
     },
-    // {
-    //   title: "Transaction ID",
-    //   dataIndex: "transaction_id",
-    //   key: "transaction_id",
-    //   render: (text) => (
-    //     <>
-    //       <div className="copy_text_btn">
-    //         <a href={`mailto:${text}`}>{text}</a>
-    //         <Tooltip title="Copy Login ID">
-    //           <Button
-    //             icon={<CopyButton />}
-    //             size="small"
-    //             style={{ marginLeft: 8 }}
-    //             onClick={() => {
-    //               navigator.clipboard.writeText(text);
-    //               notification.success({
-    //                 message: "Login ID copied to clipboard",
-    //                 placement: "topRight",
-    //               });
-    //             }}
-    //             className="copy_btn"
-    //           />
-    //         </Tooltip>
-    //       </div>
-    //     </>
-    //   ),
-    // },
+    {
+      title: "Promo",
+      dataIndex: "promo_code",
+      key: "promo_code",
+      width: 50,
+      render: (text) => (
+        <>
+          {text ?
+
+            <div className="copy_text_btn">
+              <a href={`mailto:${text}`}>{text}</a>
+              <Tooltip title="Copy Promo">
+                <Button
+                  icon={<CopyButton />}
+                  size="small"
+                  style={{ marginLeft: 8 }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(text);
+                    notification.success({
+                      message: "Promo copied to clipboard",
+                      placement: "topRight",
+                    });
+                  }}
+                  className="copy_btn"
+                />
+              </Tooltip>
+            </div>
+            : "-"}
+
+        </>
+      ),
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
+      width: 150,
+      render: (amount) => <span>{amount}</span>,
+    },
+    {
+      title: "Date",
+      dataIndex: "created_at",
+      key: "created_at",
+      width: 150,
+      render: (text) => moment(text).format("YYYY-MM-DD"),
+    },
+    {
+      title: "Login ID",
+      dataIndex: "account_login_id",
+      key: "account_login_id",
+      width: 150,
+    },
+    {
+      title: "Challenge",
+      dataIndex: "challenge_name",
+      key: "challenge_name",
+      width: 150,
+    },
     {
       title: "Invoice",
       dataIndex: "transactionId",
       key: "transaction_Id",
+      width: 200,
       render: (_, record) => (
-
-        <div className="btn-wrapper">
-          {record?.invoice ?
+        record?.invoice ? (
+          <div className="btn-wrapper">
             <a href={record?.invoice} target="_blank">
               <Button className="btn-block">
                 {"In Voice"}
               </Button>
-            </a> :
-            <Button className="btn-block">
-              {"-"}
-            </Button>}
-        </div>
+            </a>
+          </div>
+        ) : (
+          "-"
+        )
       ),
     },
+  ], [paymentData]);
 
-  ], [paymentData])
 
 
   useEffect(() => {
@@ -248,7 +217,20 @@ const Payment = () => {
   }, [idToken, pageSize, pageNo, searchText, activeTab, dates])
 
   function fetchPayments(idToken, pageSize, pageNo, searchText, activeTab, dates) {
-    dispatch(paymentListReq({ idToken, pageSize, pageNo, searchText, activeTab, dates }));
+    let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}&status=${activeTab === "paid" ? 1 : activeTab === "unpaid" ? 0 : ""}`;
+
+    if (searchText) {
+      query = query + `&search=${searchText}`;
+    }
+    if (dates) {
+      query = query + `&start_date=${dates[0]}&end_date=${dates[1]}`;
+    }
+    // if (phase !== "") {
+    //   let phaseQuery = phase === "Free Trail" ? "&free_trail=1" : "&status=Funded&status=Evalution";
+    //   query = query + phaseQuery;
+    // }
+
+    dispatch(paymentListReq({ idToken,query,dispatch}));
   }
 
   const handleSearch = (value) => {
@@ -258,14 +240,14 @@ const Payment = () => {
   };
 
   const handleTabChange = (value) => {
+    setPageNo(1);
     setActiveTab(value);
   };
 
   const handleCategoryChange = (value) => {
+    setPageNo(1);
     setCategory(value);
   };
-
-  const handleStatusChange = (index, status) => { };
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
@@ -273,7 +255,8 @@ const Payment = () => {
   }
 
   function updateDateRange(dates) {
-    setDates(dates.map((date) => date.format("YYYY-MM-DD")));
+    setPageNo(1);
+    setDates(dates.map((date) => date.format("DD MMM YYYY")));
   }
 
 
@@ -302,54 +285,58 @@ const Payment = () => {
       </div>
       <div className="table_header_filter">
         <div className="header_left">
-        <div className="search_box_wrapper">
-          <Select
-            className="category_dropdown"
-            defaultValue="all"
-            onChange={handleCategoryChange}
-          >
-            <Option value="all">All Categories</Option>
-            {/* <Option value="swift">Swift</Option>
+          <div className="search_box_wrapper">
+            <Select
+              className="category_dropdown"
+              defaultValue="all"
+              onChange={handleCategoryChange}
+            >
+              <Option value="all">All Categories</Option>
+              {/* <Option value="swift">Swift</Option>
             <Option value="wire">Wire</Option> */}
-          </Select>
-          <input
-            placeholder="Search..."
-            className="search_input"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSearch(e.target.value)
-              }
-            }}
-          />
-          <div className="searchImg" onClick={() => handleSearch(search)}>
-            <img src={searchIcon} alt="searchIcon" />
+            </Select>
+            <input
+              placeholder="Search..."
+              className="search_input"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch(e.target.value)
+                }
+              }}
+            />
+            <div className="searchImg" onClick={() => handleSearch(search)}>
+              <img src={searchIcon} alt="searchIcon" />
+            </div>
           </div>
-        </div>
-        <div className="header_middle">
-        <div className="filter_buttons">
-          <Button
-            className={activeTab === "all" ? "active" : ""}
-            onClick={() => handleTabChange("all")}
-          >
-            All
-          </Button>
-          <Button
-            className={activeTab === "paid" ? "active" : ""}
-            onClick={() => handleTabChange("paid")}
-          >
-            Paid
-          </Button>
-          <Button
-            className={activeTab === "unpaid" ? "active" : ""}
-            onClick={() => handleTabChange("unpaid")}
-          >
-            Unpaid
-          </Button>
-        </div>
-        <RangePicker placeholder={dates} defaultValue={defaultDates} onChange={updateDateRange} autoFocus presets={rangePresets} />
-        </div>
+          <div className="header_middle">
+            <div className="filter_buttons">
+              <Button
+                className={activeTab === "all" ? "active" : ""}
+                onClick={() => handleTabChange("all")}
+              >
+                All
+              </Button>
+              <Button
+                className={activeTab === "paid" ? "active" : ""}
+                onClick={() => handleTabChange("paid")}
+              >
+                Paid
+              </Button>
+              <Button
+                className={activeTab === "unpaid" ? "active" : ""}
+                onClick={() => handleTabChange("unpaid")}
+              >
+                Unpaid
+              </Button>
+            </div>
+            <RangePicker
+              // placeholder={dates}
+              //  defaultValue={defaultDates} 
+              onChange={updateDateRange}
+              autoFocus presets={rangePresets} />
+          </div>
         </div>
         <div className="export_btn">
           <Button onClick={handleCloseModal}>
@@ -372,8 +359,8 @@ const Payment = () => {
             // data={paymentData?.data || []}
             data={paymentData?.results || paymentData || []}
             columns={columns}
-            totalPages={Math.ceil(count / pageSize)}
-            totalItems={count}
+            totalPages={Math.ceil(paymentData?.count / pageSize)}
+            totalItems={paymentData?.count}
             pageSize={pageSize}
             CurrentPageNo={pageNo}
             setPageSize={setPageSize}

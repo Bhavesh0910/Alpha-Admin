@@ -166,6 +166,54 @@ const CreateTradingAccount = () => {
         <div className="create_plan_form">
           <div className="row1">
             <div className="form_input">
+              <label htmlFor="Email">Platform</label>
+              <Select
+                showSearch
+                placeholder="Search for a user"
+                style={{ width: "100%" }}
+                defaultActiveFirstOption={false}
+                showArrow={false}
+                filterOption={false}
+                onSearch={handleOnInputChange}
+                onChange={(value) =>
+                  setData((prev) => ({ ...prev, user: value }))
+                }
+                notFoundContent={isLoading ? <Spin size="small" /> : null}
+              >
+                {emailOpts.map((option) => (
+                  <Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+            <div className="form_input">
+              <label htmlFor="Broker">Account name</label>
+              <Select
+                className="plan_selector"
+                options={brokerOptions}
+                styles={customStyles}
+                value={broker}
+                onChange={(selectedOption) => {
+                  setBroker(selectedOption);
+                  setData((prev) => ({
+                    ...prev,
+                    broker: selectedOption,
+                  }));
+                  handleSelectCompetitionChange(selectedOption);
+                }}
+              >
+                {brokerOptions.map((option) => (
+                  <Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Option>
+                ))}
+              </Select>
+
+          </div>
+        </div>
+          <div className="row1">
+            <div className="form_input">
               <label htmlFor="Email">Email</label>
               <Select
                 showSearch

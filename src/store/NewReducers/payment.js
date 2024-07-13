@@ -4,14 +4,14 @@ import axios from "axios";
 import { PURGE } from "redux-persist";
 import { returnErrors } from "../reducers/error";
 
-async function paymentListApi(idToken, pageSize, pageNo, searchText, activeTab, dates) {
+async function paymentListApi(idToken,query) {
     try {
         const config = {
             headers: {
                 Authorization: `Bearer ${idToken}`,
             },
         };
-        const res = axios.get(`${baseUrl}payment/admin/list/?start_date=${dates[0]}&end_date=${dates[1]}&search=${searchText}&status=${activeTab === "all" ? "" : activeTab}&page_size=${pageSize}&page_no=${pageNo}`, config);
+        const res = axios.get(`${baseUrl}payments/admin/transactions/list/${query}`, config);
         return res;
     } catch (error) {
         throw error;
@@ -46,9 +46,9 @@ async function paymentExportsApi(idToken, dates) {
 
 export const paymentListReq = createAsyncThunk(
     "payoutList",
-    async ({ idToken, pageSize, pageNo, searchText, activeTab, dates, dispatch }, { rejectWithValue }) => {
+    async ({ idToken, query, dispatch }, { rejectWithValue }) => {
         try {
-            const response = await paymentListApi(idToken, pageSize, pageNo, searchText, activeTab, dates);
+            const response = await paymentListApi(idToken, query);
             return response;
         } catch (error) {
             dispatch(returnErrors(error?.response?.data?.detail || "Error while fetching Payment List!", 400))
