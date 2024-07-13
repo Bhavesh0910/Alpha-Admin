@@ -4,7 +4,7 @@ import { Breadcrumb, Typography, Button, Input, Select, Space, Spin } from "antd
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDetailsReq, updateUserDetailsRequest } from "../../utils/api/apis";
 import { setUser } from "../../store/reducers/userSlice";
-import profileImg from '../../assets/images/profile-edit.svg'
+import profileImg from '../../assets/images/profile-edit.png'
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
 const { Title } = Typography;

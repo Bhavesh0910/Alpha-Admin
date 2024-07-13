@@ -1,10 +1,12 @@
 .userProfile_container {
-  padding: 20px;
-  border-radius: var(--Outside-box, 10px);
-  border: 1px solid var(--Stroke, #252a29);
-  background: var(--second-Background, #0f0f11);
+
   display: flex;
   flex-direction: column;
+
+  .ant-input-outlined[disabled]{
+    border: 1px solid var(--Text-2, #686868) !important;
+    background: transparent;
+  }
 
   .userProfile_wrapper {
     display: flex;
@@ -13,9 +15,8 @@
     flex-direction: column;
     gap: 20px;
     color: #1e1e1e;
-    border-radius: var(--Outside-box, 10px);
-    border: 1px solid var(--Stroke, #252a29);
-    background: var(--Inner-box-BG, #141a17);
+    border-radius: var(--Outside-box, 20px);
+    background: var(--Inner-box-BG, #fff);
     position: relative;
     margin-top: 20px;
 
@@ -124,20 +125,20 @@
 
       .edit_btn {
         border-radius: 10px;
-        border: 1px solid var(--Text-white, #1e1e1e);
+        border: none !important;
         display: flex;
         height: 33px;
         padding: 0px 20px;
         justify-content: center;
         align-items: center;
         gap: 10px;
-        background: transparent;
-        color: var(--Text-white, #1e1e1e) !important;
+        background: #EEE;     
+        color: var(--Text, #1E1E1E);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
-        font-weight: 600;
-        line-height: normal;
+        font-weight: 700;
+        line-height: normal; 
       }
     }
 
@@ -153,8 +154,9 @@
 
         .ant-select {
           .ant-select-selector {
-            border: 1px solid var(--Stroke, #252a29) !important;
-            background: var(--Inner-box-BG, #141a17) !important;
+            border-radius: var(--Corner-Radius, 10px) !important;
+            border: 1px solid var(--Text-2, #686868) !important;
+            background: transparent !important;
 
             &:focus-within {
               border: 1px solid var(--Brand, #04d9ff) !important;

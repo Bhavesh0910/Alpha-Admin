@@ -423,7 +423,7 @@ const PageLayout = ({headerName, children}) => {
           </Drawer>
         </div>
 
-        <Header style={{padding: "20px", background: "#12181F" , display:'flex' , alignItems:'center'}}>
+        <Header style={{padding: "20px", background: "#12181F" , display:'flex' , alignItems:'center' , height: '109px'}}>
           <h1>{headerName}</h1>
         </Header>
         <Content
