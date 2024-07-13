@@ -90,7 +90,7 @@ const StageStatisticsChart = () => {
       bottom: "3%",
       containLabel: true,
     },
-    backgroundColor: "#fff !important",
+    backgroundColor: "#fff",
   };
 
   return (

@@ -27,8 +27,9 @@
   }
 
   .row1_box {
-    display: flex;
+    display: grid;
     gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 
     @media only screen and (max-width: 900px) {
       flex-direction: column;
@@ -36,7 +37,7 @@
 
     .pieChart_container {
       width: 100%;
-      max-width: 489px;
+      max-width: 100%;
       padding: 20px;
       border-radius: 20px;
       background: var(--white, #fff);

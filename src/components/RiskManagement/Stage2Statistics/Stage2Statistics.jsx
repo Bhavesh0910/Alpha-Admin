@@ -94,7 +94,7 @@ const Stage2Statistics = () => {
   };
 
   return (
-    <div className="stageStatisticsChart_contianer">
+    <div className="stage2StatisticsChart_contianer">
       <h2>Stage 2 Statistics</h2>
       <ReactECharts
         option={option}
