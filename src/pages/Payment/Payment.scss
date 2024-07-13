@@ -12,6 +12,18 @@
     align-items: flex-start;
     justify-content: space-between;
 
+    .header_left{
+      display: flex;
+      align-items: center;
+      gap: 53px;
+    }
+
+    .header_middle{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .filter_buttons {
       min-height: 44px;
     }
@@ -33,9 +45,7 @@
       min-height: 44px;
       padding: 0px 15px;
       border-radius: 10px;
-      border: 1px solid var(--Text-white, #1e1e1e);
-      background: var(--Stroke, #252a29);
-
+      background: #F6FEFE;
       &:hover {
         border: 1px solid var(--Text-white, #1e1e1e) !important;
         color: var(--Text-white, #1e1e1e) !important;
@@ -44,16 +54,14 @@
     }
 
     a {
-      p {
-        color: var(--Brand, #04d9ff);
+        color: var(--Brand-1, #04D9FF) !important;
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
         font-weight: 600;
         line-height: normal;
         text-decoration-line: underline;
-        text-wrap: nowrap;
-      }
+      
     }
   }
 
@@ -105,7 +113,7 @@
       &.in_progress {
         .ant-select-selector {
           .ant-select-selection-item {
-            border: 1px solid #1E1E1Ea8a;
+            border: 1px solid #1E1E1Ea8;
           }
         }
       }

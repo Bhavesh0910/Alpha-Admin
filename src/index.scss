@@ -525,7 +525,7 @@ input:-webkit-autofill:active {
   border: 1px solid var(--Stroke, #252a29);
   background: var(--Main-Background, #f6fefe);
   width: 100%;
-  max-width: 364px;
+  max-width: 319px;
 
   &:hover {
     background: var(--Main-Background, #f6fefe);
@@ -580,7 +580,7 @@ input:-webkit-autofill:active {
   gap: 6px;
   padding: 4px;
   align-items: center;
-  border-radius: var(--Corner-1, 5px);
+  border-radius: var(--Corner-1, 10px);
   border: 1px solid var(--Stroke, #252a29) !important;
   background: var(--Main-Background, #f6fefe);
   button {
