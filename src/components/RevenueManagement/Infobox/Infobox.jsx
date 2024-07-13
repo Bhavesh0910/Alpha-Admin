@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import "./Infobox.scss";
 import totalAccIcon from "../../../assets/icons/totalAccIcon.svg";
-import revenueAccIcon from "../../../assets/icons/revenueAccIcon.png";
+import revenueAccIcon from "../../../assets/icons/revenueAccIcon.svg";
 import payoutReqIcon from "../../../assets/icons/payoutReqIcon.svg";
 import alphaProfitIcon from "../../../assets/icons/alphaProfitIcon.svg";
 import netProfitIcon from "../../../assets/icons/netProfitIcon.svg";

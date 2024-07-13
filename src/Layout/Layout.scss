@@ -97,7 +97,7 @@
   }
 
   @media only screen and (max-width: 768px) {
-    display: none;
+    display: none !important;
   }
 }
 .ant-menu-item-selected {
@@ -172,6 +172,27 @@
         .ant-menu {
           margin-left: 0;
         }
+
+        &::-webkit-scrollbar {
+          width: 5px;
+          padding-left: 5px;
+          height: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: #75ebc3;
+          border-radius: 50px;
+          height: 10px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background-color: #0f0f11;
+          border-radius: 50px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+          background-color: #75ebc3;
+        }
       }
     }
   }
@@ -179,7 +200,7 @@
 
 .ant-layout-content {
   @media only screen and (max-width: 768px) {
-    margin-top: 70px !important;
+    margin-top: 95px !important;
   }
 }
 

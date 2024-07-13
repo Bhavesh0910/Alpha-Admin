@@ -55,10 +55,21 @@
 
       &:hover {
         border: 0;
-        color: #1e1e1e;
-        background: #eee;
+        background: var(--Text-white, #1e1e1e) !important;
+        color: #fff !important;
       }
     }
+    .btn-unblock {
+      border-radius: var(--Corner-Radius, 10px) !important;
+      background: #eee !important;
+
+      &:hover {
+        border: 0;
+        border-radius: var(--Corner-Radius, 10px) !important;
+        background: #eee !important;
+      }
+    }
+
     .btn-delete {
       color: var(--Red, #f97f7f);
       border: 1px solid var(--Red, #f97f7f);
@@ -341,7 +352,7 @@
     align-items: center;
     gap: 10px;
     border-radius: var(--Corner-1, 5px);
-    color: var(--Paragraph-text-colour, #a6a6a6);
+    color: var(--Paragraph-text-colour, #12181f);
     border: 0;
     background: transparent;
     font-family: "Nunito Sans";
@@ -356,7 +367,27 @@
 
     &.ant-radio-button-wrapper-checked {
       background: var(--Brand, #04d9ff);
-      color: var(--Main-Background, #f6fefe);
+      color: var(--Paragraph-text-colour, #12181f);
     }
+  }
+}
+
+.country_name_wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+
+  img {
+    width: 33px !important;
+    height: 26px !important;
+    border-radius: 100% !important;
+  }
+}
+
+.status_text {
+  &.evaluation {
+    color: #f26419;
   }
 }

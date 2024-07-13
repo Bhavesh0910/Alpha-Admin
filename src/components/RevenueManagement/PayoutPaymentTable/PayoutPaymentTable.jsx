@@ -1,7 +1,7 @@
 import React from "react";
 import "./PayoutPaymentTable.scss";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import { Button } from "antd";
+import {Button} from "antd";
 
 const PayoutPaymentTable = () => {
   const columns = [
@@ -25,9 +25,7 @@ const PayoutPaymentTable = () => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      sorter: (a, b) =>
-        parseFloat(a.amount.replace("$", "").replace("K", "000")) -
-        parseFloat(b.amount.replace("$", "").replace("K", "000")),
+      sorter: (a, b) => parseFloat(a.amount.replace("$", "").replace("K", "000")) - parseFloat(b.amount.replace("$", "").replace("K", "000")),
     },
     {
       title: "Method",
@@ -38,11 +36,7 @@ const PayoutPaymentTable = () => {
       title: "Action",
       dataIndex: "action",
       key: "action",
-      render: () => (
-        <Button className="standard_button viewDetails_button">
-          View Details
-        </Button>
-      ),
+      render: () => <Button className="standard_button viewDetails_button">View Details</Button>,
     },
   ];
 
@@ -66,7 +60,12 @@ const PayoutPaymentTable = () => {
     // Add more rows as needed
   ];
 
-  return <AntTable columns={columns} data={data} />;
+  return (
+    <AntTable
+      columns={columns}
+      data={data}
+    />
+  );
 };
 
 export default PayoutPaymentTable;

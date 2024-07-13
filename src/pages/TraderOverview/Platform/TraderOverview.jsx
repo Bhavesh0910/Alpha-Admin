@@ -1,39 +1,25 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import "./TraderOverview.scss";
-import {
-  Table,
-  DatePicker,
-  Button,
-  Card,
-  Radio,
-  Select,
-  Typography,
-  Modal,
-} from "antd";
+import {Table, DatePicker, Button, Card, Radio, Select, Typography, Modal} from "antd";
 
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { getAllTradersRequest } from "../../../utils/api/apis";
-import {
-  getAccountList,
-  getAccountListSuccess,
-} from "../../../store/reducers/accountSlice";
+import {Link, useNavigate} from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
+import {getAllTradersRequest} from "../../../utils/api/apis";
+import {getAccountList, getAccountListSuccess} from "../../../store/reducers/accountSlice";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import {
-  setDefaultLoginId,
-  accountList,
-} from "../../../store/NewReducers/accountList";
-import { clearPersistedData } from "../../../store/configureStore";
+import {setDefaultLoginId, accountList} from "../../../store/NewReducers/accountList";
+import {clearPersistedData} from "../../../store/configureStore";
 import dayjs from "dayjs";
-import { formatDate } from "fullcalendar/index.js";
-
-const { Title } = Typography;
-const { Option } = Select;
-const { RangePicker } = DatePicker;
+import {formatDate} from "fullcalendar/index.js";
+import ReactCountryFlag from "react-country-flag";
+const {Title} = Typography;
+const {Option} = Select;
+const {RangePicker} = DatePicker;
 
 function TraderOverview() {
+  const lookup = require("country-code-lookup");
   const dispatch = useDispatch();
   const [status, setStatus] = useState("");
   const [platform, setPlatform] = useState("trader-accounts");
@@ -45,44 +31,29 @@ function TraderOverview() {
   const [pageNo, setPageNo] = useState(1);
 
   const [phase, setPhase] = useState("");
-  const { idToken, searchDates } = useSelector((state) => state.auth);
-  const {
-    data,
-    isLoading: accountsLoading,
-    totalItems,
-  } = useSelector((state) => state.accountList);
+  const {idToken, searchDates} = useSelector((state) => state.auth);
+  const {data, isLoading: accountsLoading, totalItems} = useSelector((state) => state.accountList);
 
   const [dates, setDates] = useState(null);
-  const defaultDates = [dayjs().subtract(7, 'day'), dayjs()];
+  const defaultDates = [dayjs().subtract(7, "day"), dayjs()];
 
   useEffect(() => {
     fetchTradersData(dates, pageNo, pageSize, searchText, status, phase, platform);
   }, [idToken, dates, pageNo, pageSize, searchText, status, phase, platform]);
 
-  ;
-
-  const fetchTradersData = async (
-    dates,
-    pageNo,
-    pageSize,
-    searchText,
-    status,
-    phase,
-    platform
-  ) => {
+  const fetchTradersData = async (dates, pageNo, pageSize, searchText, status, phase, platform) => {
     setIsLoading(true);
     try {
-
-      let query = `?page=${pageNo ? pageNo : 1}&page_size=${pageSize ? pageSize : ""}&is_active=${status === "active" ? 1 : status === "inactive" ? 0 : ""}`
+      let query = `?page=${pageNo ? pageNo : 1}&page_size=${pageSize ? pageSize : ""}&is_active=${status === "active" ? 1 : status === "inactive" ? 0 : ""}`;
 
       if (searchText) {
-        query = query + `&search=${searchText}`
+        query = query + `&search=${searchText}`;
       }
       if (dates) {
-        query = query + `&start_date=${dates[0]}&end_date=${dates[1]}`
+        query = query + `&start_date=${dates[0]}&end_date=${dates[1]}`;
       }
       if (phase !== "") {
-        let phaseQuery = phase === "Free Trail" ? "&free_trail=1" : "&status=Funded&status=Evalution"
+        let phaseQuery = phase === "Free Trail" ? "&free_trail=1" : "&status=Funded&status=Evalution";
         query = query + phaseQuery;
       }
 
@@ -92,7 +63,7 @@ function TraderOverview() {
           platform,
           query,
           dispatch,
-        })
+        }),
       );
     } catch (error) {
       console.error("Error fetching traders data:", error);
@@ -100,7 +71,6 @@ function TraderOverview() {
       setIsLoading(false);
     }
   };
-
 
   const navigate = useNavigate();
 
@@ -119,7 +89,7 @@ function TraderOverview() {
     setSearchText("");
     setDates(null);
     setPhase("");
-    const data = value === "MT5" ? "trader-accounts" : value === "C-traders" ? "ctrader-accounts" : "dxtraders"
+    const data = value === "MT5" ? "trader-accounts" : value === "C-traders" ? "ctrader-accounts" : "dxtraders";
     setPlatform(data);
   };
 
@@ -152,12 +122,15 @@ function TraderOverview() {
       <>
         {parts.map((part, index) =>
           regex.test(part) ? (
-            <span key={index} className="highlight">
+            <span
+              key={index}
+              className="highlight"
+            >
               {part}
             </span>
           ) : (
             part
-          )
+          ),
         )}
       </>
     );
@@ -174,12 +147,36 @@ function TraderOverview() {
       width: 150,
       render: (text) => highlightText(text, searchText),
     },
+    // {
+    //   title: "Country",
+    //   dataIndex: "country",
+    //   key: "country",
+    //   width: 150,
+    //   render: (text) => highlightText(text, searchText),
+    // },
     {
       title: "Country",
       dataIndex: "country",
       key: "country",
-      width: 150,
-      render: (text) => highlightText(text, searchText),
+      render: (country) => {
+        console.log(country, "country");
+        const countryName = country;
+        const countryCode = lookup.byCountry(countryName);
+        if (countryCode) {
+          return (
+            <div className="country_name_wrapper">
+              <ReactCountryFlag
+                countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
+                svg={true}
+                aria-label={countryName}
+              />
+              <span>{countryName}</span>
+            </div>
+          );
+        } else {
+          return <span>{countryName}</span>;
+        }
+      },
     },
     {
       title: "Account Number",
@@ -193,9 +190,7 @@ function TraderOverview() {
       dataIndex: "balance",
       key: "balance",
       width: 150,
-      render: (startingBalance) => (
-        <span>${parseFloat(startingBalance).toLocaleString()}</span>
-      ),
+      render: (startingBalance) => <span>${parseFloat(startingBalance).toLocaleString()}</span>,
     },
     {
       title: "Equity",
@@ -230,14 +225,15 @@ function TraderOverview() {
       dataIndex: "status",
       key: "status",
       width: 150,
-      render: (text) => highlightText(text, searchText),
+      // render: (text) => highlightText(text, searchText),
+      render: (text) => <p className={`status_text ${text === "Evaluation" ? "evaluation" : "free_trial"}`}>{highlightText(text, searchText)}</p>,
     },
     {
       title: "Status",
       dataIndex: "user_is_active",
       key: "user_is_active",
       width: 150,
-      render: (text) => text ? "UnBlocked" : "Blocked",
+      render: (text) => (text ? "UnBlocked" : "Blocked"),
     },
     {
       title: "Action",
@@ -246,15 +242,22 @@ function TraderOverview() {
       width: 200,
       render: (_, record) => (
         <div className="btn-wrapper">
-          {record.user_is_active ?
-
-            <Button className="btn-block" onClick={() => handleBlock(record)}>
-              Block
-            </Button>
-            :
-            <Button className="btn-unblock" onClick={() => handleBlock(record)}>
-              Unblock
-            </Button>
+          {
+            record.user_is_active ? (
+              <Button
+                className="btn-block"
+                onClick={() => handleBlock(record)}
+              >
+                Block
+              </Button>
+            ) : (
+              <Button
+                className="btn-unblock"
+                onClick={() => handleBlock(record)}
+              >
+                Unblock
+              </Button>
+            )
 
             //UNCOMMENT THIS AND COMMENT UPPER PART ONLY TO CHECK CSS OF UNBLOCK BUTTON AFTER THAT REVERT TO NORMAL
             // <Button className="btn-unblock" onClick={() => handleBlock(record)}>
@@ -265,14 +268,16 @@ function TraderOverview() {
             //   Block
             // </Button>
           }
-          <Button className="btn-delete" danger>
+          <Button
+            className="btn-delete"
+            danger
+          >
             Delete
           </Button>
         </div>
       ),
     },
   ];
-
 
   const handleBlock = (record) => {
     setSelectedTrader(record);
@@ -304,19 +309,11 @@ function TraderOverview() {
         <h4>Trader Overview</h4>
       </div>
       <div className="trader-overview-header">
-        <div className="trader-overview-header-left">
-          <Title className="title" style={{ fontstatus: "14px" }} level={5}>
-            Platform
-          </Title>
-          <Select
-            defaultValue={options[0].value}
-            className="header-select"
-            onChange={handlePlatformChange}
-            options={options}
-          />
-        </div>
         <div className="trader-overview-header-right tabs_wrapper">
-          <Radio.Group value={status} onChange={onChangeActive}>
+          <Radio.Group
+            value={status}
+            onChange={onChangeActive}
+          >
             <Radio.Button value="">All</Radio.Button>
             <Radio.Button value="active">Active</Radio.Button>
             <Radio.Button value="inactive">Inactive</Radio.Button>
@@ -328,6 +325,21 @@ function TraderOverview() {
           >
             View Logs
           </Button> */}
+        </div>
+        <div className="trader-overview-header-left">
+          <Title
+            className="title"
+            style={{fontstatus: "14px"}}
+            level={5}
+          >
+            Platform
+          </Title>
+          <Select
+            defaultValue={options[0].value}
+            className="header-select"
+            onChange={handlePlatformChange}
+            options={options}
+          />
         </div>
       </div>
       <div className="trader_overview_header_row2">
@@ -349,16 +361,22 @@ function TraderOverview() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={(e) => {
-                  console.log("e : ", e.key === "Enter")
+                  console.log("e : ", e.key === "Enter");
                   if (e.key === "Enter") {
-                    console.log("Searching.....")
-                    handleSearch(e.target.value)
+                    console.log("Searching.....");
+                    handleSearch(e.target.value);
                   }
                 }}
               />
             </div>
-            <div className="searchImg" onClick={() => handleSearch(search)}>
-              <img src={searchIcon} alt="searchIcon" />
+            <div
+              className="searchImg"
+              onClick={() => handleSearch(search)}
+            >
+              <img
+                src={searchIcon}
+                alt="searchIcon"
+              />
             </div>
           </div>
           <RangePicker
@@ -367,7 +385,10 @@ function TraderOverview() {
             onChange={updateDateRange}
           />
         </div>
-        <Radio.Group value={phase} onChange={onChangePhase}>
+        <Radio.Group
+          value={phase}
+          onChange={onChangePhase}
+        >
           <Radio.Button value="">All</Radio.Button>
           <Radio.Button value="Evalution/Funded">Evalution/Funded</Radio.Button>
           <Radio.Button value="Free Trail">Free Trail</Radio.Button>
