@@ -38,6 +38,15 @@
     .ant-menu-submenu-title {
       color: #04d9ff;
     }
+    svg {
+      fill: #04d9ff;
+      stroke: #04d9ff;
+      g {
+        path {
+          fill: #04d9ff;
+        }
+      }
+    }
   }
 }
 
@@ -63,13 +72,17 @@
 
   .ant-menu-sub {
     padding-left: 20px !important;
-    overflow: hidden; /* Ensure the submenu doesn't exceed its container */
-    transition: max-height 0.3s ease; /* Apply the transition for height */
-    max-height: 0; /* Initial state */
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    max-height: 0;
   }
 
   &.ant-menu-submenu-open .ant-menu-sub {
     max-height: 1000px; /* Large enough value to accommodate the submenu items */
+  }
+  .ant-menu-submenu-arrow {
+    top: 58% !important;
+    inset-inline-end: 5px !important;
   }
 }
 
@@ -101,6 +114,12 @@
   }
   svg {
     fill: #04d9ff;
+    stroke: #04d9ff;
+    g {
+      path {
+        fill: #04d9ff;
+      }
+    }
   }
 }
 .ant-layout-sider {
@@ -167,10 +186,8 @@
 .nestedItems {
   > span {
     text-wrap: wrap;
+    line-height: 20px !important;
+    padding-left: 10px !important;
     // padding-block: 10px !important;
   }
 }
-
-// .ant-menu-title-content{
-//   padding-block: 20px;
-// }

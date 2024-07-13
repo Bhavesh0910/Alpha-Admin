@@ -10,44 +10,58 @@ import {setAuthenticationStatus} from "../store/reducers/authSlice";
 import {useDispatch} from "react-redux";
 import {returnErrors} from "../store/reducers/error";
 import {deAuthenticateAll} from "../store/NewReducers/logout";
+import {ReactComponent as RiskManagementIcon} from "../assets/icons/riskManagementIcon.svg";
+import {ReactComponent as RevenueManagementIcon} from "../assets/icons/revenueManagementIcon.svg";
+import {ReactComponent as CountryWiseIcon} from "../assets/icons/countryWiseIcon.svg";
+import {ReactComponent as TraderOverviewIcon} from "../assets/icons/traderOverviewMenu.svg";
+import {ReactComponent as SupportIcon} from "../assets/icons/supportIcon.svg";
+import {ReactComponent as StageManagerIcon} from "../assets/icons/stageManagerIcon.svg";
+import {ReactComponent as FundingEvaluationIcon} from "../assets/icons/fundingEvaluationIcon.svg";
+import {ReactComponent as PaymentsIcon} from "../assets/icons/paymentsIcon.svg";
+import {ReactComponent as AffiliateIcon} from "../assets/icons/affiliateIcon.svg";
+import {ReactComponent as UserSupportIcon} from "../assets/icons/userSupportIcon.svg";
+import {ReactComponent as CompetitionIcon} from "../assets/icons/competitionIcon.svg";
+import {ReactComponent as GeneralLogIcon} from "../assets/icons/generalLogIcon.svg";
+import {ReactComponent as CouponIcon} from "../assets/icons/couponIcon.svg";
+import {ReactComponent as ListIcon} from "../assets/icons/listIcon.svg";
+import {ReactComponent as ComplianceIcon} from "../assets/icons/complianceIcon.svg";
 
 const {Header, Sider, Content} = Layout;
 
 const items = [
   {
     key: "1",
-    icon: <PieChartOutlined />,
+    icon: <RiskManagementIcon />,
     label: "Risk Management",
     link: "/risk-management",
   },
   {
     key: "2",
-    icon: <DesktopOutlined />,
+    icon: <RevenueManagementIcon />,
     label: "Revenue Management",
     link: "/revenue-management",
   },
   {
     key: "3",
-    icon: <UserOutlined />,
+    icon: <CountryWiseIcon />,
     label: "County Wise Overview",
     link: "/country-wise-overview",
   },
   {
     key: "4",
-    // icon: <Overview />,
-    icon: <DesktopOutlined />,
+    icon: <TraderOverviewIcon />,
     label: "Trader Overview",
     link: "/trader-overview",
   },
   {
     key: "5",
-    icon: <TeamOutlined />,
+    icon: <StageManagerIcon />,
     label: "Stage Manager",
     link: "/stage-manager",
   },
   {
     key: "6",
-    icon: <FileOutlined />,
+    icon: <SupportIcon />,
     label: "Support",
     children: [
       {
@@ -69,7 +83,7 @@ const items = [
   },
   {
     key: "7",
-    icon: <PieChartOutlined />,
+    icon: <FundingEvaluationIcon />,
     label: "Funding Evaluation",
     children: [
       {
@@ -81,37 +95,37 @@ const items = [
   },
   {
     key: "8",
-    icon: <DesktopOutlined />,
+    icon: <PaymentsIcon />,
     label: "Payments",
     link: "/payments",
   },
   {
     key: "9",
-    icon: <UserOutlined />,
+    icon: <AffiliateIcon />,
     label: "Affiliate Marketing",
     link: "/affiliate-marketing",
   },
   {
     key: "10",
-    icon: <TeamOutlined />,
+    icon: <UserSupportIcon />,
     label: "User Support",
     link: "/user-support",
   },
   {
     key: "13",
-    icon: <DesktopOutlined />,
+    icon: <CouponIcon />,
     label: "Coupons",
     link: "/coupon",
   },
   {
     key: "14",
-    icon: <UserOutlined />,
+    icon: <GeneralLogIcon />,
     label: "General Logs",
     link: "/general-log",
   },
   {
     key: "15",
-    icon: <TeamOutlined />,
+    icon: <ListIcon />,
     label: "Lists",
     link: "/list/user-ip-list",
     children: [
@@ -129,7 +143,7 @@ const items = [
   },
   {
     key: "16",
-    icon: <TeamOutlined />,
+    icon: <ComplianceIcon />,
     label: "Compliance",
     link: "/compliance/kyc",
     children: [
@@ -147,7 +161,7 @@ const items = [
   },
   {
     key: "17",
-    icon: <DesktopOutlined />,
+    icon: <CompetitionIcon />,
     label: "Competition",
     link: "/competitions/",
   },
@@ -405,7 +419,7 @@ const PageLayout = ({headerName, children}) => {
           </Drawer>
         </div>
 
-        <Header style={{padding: "20px", background: "#12181F" , display:'flex' , alignItems:'center' , height: '109px'}}>
+        <Header style={{padding: "20px", background: "#12181F", display: "flex", alignItems: "center", height: "109px"}}>
           <h1>{headerName}</h1>
         </Header>
         <Content
