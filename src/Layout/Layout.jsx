@@ -252,6 +252,12 @@ const PageLayout = ({headerName, children}) => {
 
   const selectedKeys = (() => {
     switch (location.pathname) {
+      case "/risk-management":
+        return "1";
+      case "/revenue-management":
+        return "2";
+      case "/country-wise-overview":
+        return "3";
       case "/trader-overview":
         return "4";
       case "/stage-manager":
