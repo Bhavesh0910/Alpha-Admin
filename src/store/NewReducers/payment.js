@@ -4,35 +4,81 @@ import axios from "axios";
 import { PURGE } from "redux-persist";
 import { returnErrors } from "../reducers/error";
 
-async function paymentReq(idToken, pageSize, pageNo, searchText, activeTab, dates) {
-
+async function paymentListApi(idToken, pageSize, pageNo, searchText, activeTab, dates) {
     try {
         const config = {
             headers: {
                 Authorization: `Bearer ${idToken}`,
             },
         };
-        console.log("Search : ",idToken, pageSize, pageNo, searchText, activeTab, dates)
         const res = axios.get(`${baseUrl}payment/admin/list/?start_date=${dates[0]}&end_date=${dates[1]}&search=${searchText}&status=${activeTab === "all" ? "" : activeTab}&page_size=${pageSize}&page_no=${pageNo}`, config);
-        // const res = axios.get(`${baseUrl}payment/admin/list/`, config);
         return res;
-
+    } catch (error) {
+        throw error;
+    }
+}
+async function paymentHistoryApi(idToken, pageSize, pageNo, paymentEmail) {
+    try {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${idToken}`,
+            },
+        };
+        const res = axios.get(`${baseUrl}payment/admin/payment-history/?email=${paymentEmail}&page_size=${pageSize}&page_no=${pageNo}`, config);
+        return res;
+    } catch (error) {
+        throw error;
+    }
+}
+async function paymentExportsApi(idToken, dates) {
+    try {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${idToken}`,
+            },
+        };
+        const res = axios.get(`${baseUrl}payment/admin/payment-data-export/?from_date=${dates[0]}&to_date=${dates[1]}`, config);
+        return res;
     } catch (error) {
         throw error;
     }
 }
 
-// Define the async thunk for account list
 export const paymentListReq = createAsyncThunk(
     "payoutList",
     async ({ idToken, pageSize, pageNo, searchText, activeTab, dates, dispatch }, { rejectWithValue }) => {
         try {
-            const response = await paymentReq(idToken, pageSize, pageNo, searchText, activeTab, dates);
-            return response; // Assuming accountListReq returns an object with data property
+            const response = await paymentListApi(idToken, pageSize, pageNo, searchText, activeTab, dates);
+            return response;
         } catch (error) {
-            console.log("Error : ", error);
             dispatch(returnErrors(error?.response?.data?.detail || "Error while fetching Payment List!", 400))
-            return rejectWithValue(error.response.data); // Return specific error data from API
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const paymentHistoryReq = createAsyncThunk(
+    "payoutList/history",
+    async ({ idToken, pageSize, pageNo, paymentEmail, dispatch }, { rejectWithValue }) => {
+        try {
+            const response = await paymentHistoryApi(idToken, pageSize, pageNo, paymentEmail);
+            return response;
+        } catch (error) {
+            dispatch(returnErrors(error?.response?.data?.detail || "Error while fetching Payment List!", 400))
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const paymentExportsReq = createAsyncThunk(
+    "payoutList/exports",
+    async ({ idToken, dates, dispatch }, { rejectWithValue }) => {
+        try {
+            const response = await paymentExportsApi(idToken, dates);
+            return response;
+        } catch (error) {
+            dispatch(returnErrors(error?.response?.data?.detail || "Error while exporting file!", 400))
+            return rejectWithValue(error.response.data);
         }
     }
 );
@@ -43,15 +89,23 @@ const paymentSlice = createSlice({
         isLoading: false,
         isError: false,
         paymentData: [],
-        count: 1
+        count: 1,
+        paymentHistoryData: [],
+        paymentHistoryDataCount: 1,
+        paymentEmail: "",
+        exportLink: ""
     },
     reducers: {
         resetPayout: (state) => {
             state.isLoading = false;
             state.isError = false;
             state.paymentData = [];
+            state.paymentHistoryData = [];
             state.count = 1;
         },
+        selectedEmail: (state, action) => {
+            state.paymentEmail = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -64,8 +118,36 @@ const paymentSlice = createSlice({
                 // console.log(action.payload.data," : action payload")
                 state.paymentData = action.payload?.data; // Update state with fetched data
                 state.count = action.payload.data?.length; // Update state with fetched data
+                state.paymentEmail = action.payload?.data[0]?.email;
             })
             .addCase(paymentListReq.rejected, (state) => {
+                state.isLoading = false;
+                state.isError = true;
+            })
+            .addCase(paymentHistoryReq.pending, (state) => {
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(paymentHistoryReq.fulfilled, (state, action) => {
+                state.isLoading = false;
+                console.log(action.payload.data, " : action payload")
+                state.paymentHistoryData = action.payload?.data; // Update state with fetched data
+                state.count = action.payload.data?.length; // Update state with fetched data
+            })
+            .addCase(paymentHistoryReq.rejected, (state) => {
+                state.isLoading = false;
+                state.isError = true;
+            })
+            .addCase(paymentExportsReq.pending, (state) => {
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(paymentExportsReq.fulfilled, (state, action) => {
+                state.isLoading = false;
+                console.log(action.payload?.data);
+                state.exportLink = action.payload?.data; // Update state with fetched data
+            })
+            .addCase(paymentExportsReq.rejected, (state) => {
                 state.isLoading = false;
                 state.isError = true;
             })
@@ -79,5 +161,5 @@ const paymentSlice = createSlice({
 });
 
 // Export the async thunk and any reducers if needed
-export const { resetPayout } = paymentSlice.actions;
+export const { resetPayout, selectedEmail } = paymentSlice.actions;
 export default paymentSlice.reducer;
