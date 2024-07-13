@@ -53,6 +53,12 @@
     align-items: center;
 
     p {
+      color: var(--text, #141414);
+      font-family: "Nunito Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
       text-transform: capitalize;
       display: flex;
       width: 100%;
@@ -62,12 +68,15 @@
       align-items: center;
       border-radius: var(--Corner-Radius, 10px);
       border: 1px solid transparent;
+      background: transparent;
 
       &.active {
-        border: 1px solid var(--Green, #a3ea93);
+        border: 1px solid var(--sucess, #009017);
+        background: var(--Success-Body, #cdffdd);
       }
       &.inactive {
-        border: 1px solid var(--Red, #f97f7f);
+        border: 1px solid var(--Failed, #f20000);
+        background: var(--Failed-body, #ffe1e1);
       }
     }
   }
@@ -97,7 +106,7 @@
         background: var(--Brand, #04d9ff);
       }
       &.public {
-        color: #1E1E1Efff;
+        color: #1e1e1e;
         border: 1px solid var(--Brand, #04d9ff);
       }
     }
@@ -106,12 +115,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 10px;
-      border: 1px solid var(--Text-white, #1e1e1e);
-      background: transparent !important;
+      border-radius: var(--Corner-Radius, 10px);
+      background: #eee;
       display: flex;
       height: 100%;
-      min-height: 30px;
+      max-width: 46px;
+      min-height: 31px;
       padding: 0px 20px;
       color: var(--Text-white, #1e1e1e);
       font-family: var(--primary-font-family);

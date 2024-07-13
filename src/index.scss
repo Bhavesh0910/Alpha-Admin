@@ -163,8 +163,8 @@ code {
   border-radius: var(--Corner-Radius, 10px) !important;
   border: 1px solid var(--Text-2, #686868) !important;
   &:focus-within {
-    border: 1px solid var(--Brand, #04d9ff) !important;
-    background: var(--Main-Background, #f6fefe) !important;
+    border: 1px solid var(--Brand-1, #04d9ff) !important;
+    background: var(--Table-header-fill, #edf0f0) !important;
   }
 
   &::placeholder {
@@ -184,7 +184,7 @@ code {
   border-radius: 10px;
   border: 1px solid transparent;
   background: var(--Brand, #04d9ff);
-  color: var(--Main-Background, #12181F);
+  color: var(--Main-Background, #12181f);
   font-family: var(--primary-font-family);
   font-size: 14px;
   font-style: normal;
@@ -805,4 +805,9 @@ input:-webkit-autofill:active {
       }
     }
   }
+}
+
+.ant-checkbox-checked {
+  background-color: #04d9ff !important;
+  border-color: #04d9ff !important;
 }

@@ -21,7 +21,7 @@
     color: #1e1e1e;
     border-radius: var(--Outside-box, 10px);
     border: 1px solid var(--Stroke, #252a29);
-    background: var(--Main-Background, #f6fefe);
+    background: var(--Main-Background, #fff);
     position: relative;
     .header_wrapper {
       display: flex;
@@ -51,12 +51,13 @@
 
         .ant-select {
           .ant-select-selector {
-            border: 1px solid var(--Stroke, #252a29) !important;
-            background: var(--Inner-box-BG, #141a17) !important;
+            border-radius: var(--Corner-Radius, 10px) !important;
+            border: 1px solid var(--Text-2, #686868) !important;
+            background: transparent !important;
 
             &:focus-within {
               border: 1px solid var(--Brand, #04d9ff) !important;
-              background: var(--Main-Background, #f6fefe) !important;
+              background: var(--Main-Background, #edf0f0) !important;
             }
 
             .ant-select-selection-placeholder {
@@ -66,18 +67,26 @@
         }
 
         .ant-input-affix-wrapper {
+          &:focus-within {
+            border: 1px solid var(--Brand-1, #04d9ff) !important;
+            background: var(--Table-header-fill, #edf0f0) !important;
+          }
           .ant-input {
             padding-left: 10px !important;
+            border: 0 !important;
+            &:focus-within {
+              background: var(--Table-header-fill, #edf0f0) !important;
+            }
           }
         }
 
         .ant-picker {
-          border: 1px solid var(--Stroke, #252a29) !important;
-          background: var(--Inner-box-BG, #141a17) !important;
+          background: transparent !important;
+          border: 1px solid var(--Stroke, #686868) !important;
 
           &:focus-within {
             border: 1px solid var(--Brand, #04d9ff) !important;
-            background: var(--Main-Background, #f6fefe) !important;
+            background: var(--Main-Background, #edf0f0) !important;
           }
 
           .ant-picker-input {

@@ -25,7 +25,8 @@
   gap: 10px;
   align-items: center;
   justify-content: center;
-  margin-left: 10px;
+  // margin-left: 10px;
+  padding: 0 10px;
 }
 
 .ant-menu-submenu {
@@ -44,6 +45,8 @@
   margin-top: 20px;
   width: 100%;
   padding: 10px !important;
+  display: flex !important;
+  align-items: center;
 
   .ant-menu-item-icon {
     vertical-align: 0.825em !important;

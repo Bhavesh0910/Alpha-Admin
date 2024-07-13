@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./CreateCoupon.scss";
 import crossIcon from "../../../assets/icons/cross_icon_white.svg";
-import { Breadcrumb, Button, Checkbox, DatePicker, Input, Select } from "antd";
-import { ReactComponent as PercentageIcon } from "../../../assets/icons/precentage_icon_white.svg";
+import {Breadcrumb, Button, Checkbox, DatePicker, Input, Select} from "antd";
+import {ReactComponent as PercentageIcon} from "../../../assets/icons/precentage_icon_white.svg";
 import dayjs from "dayjs";
-import { useDispatch, useSelector } from "react-redux";
-import { createCoupon } from "../../../store/NewReducers/Coupons";
-import { Link } from "react-router-dom";
-const { RangePicker } = DatePicker;
-const { Option } = Select;
+import {useDispatch, useSelector} from "react-redux";
+import {createCoupon} from "../../../store/NewReducers/Coupons";
+import {Link} from "react-router-dom";
+const {RangePicker} = DatePicker;
+const {Option} = Select;
 // import coupons
 
 const CreateCoupon = () => {
   const [category, setCategory] = useState("Alpha Pro 5K");
-  const [date,setDate] = useState();
+  const [date, setDate] = useState();
   const [size, setSize] = useState("middle");
 
-
-  const {idToken} = useSelector(state=>state.auth);
+  const {idToken} = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const options = [];
@@ -36,10 +35,10 @@ const CreateCoupon = () => {
   const handleSizeChange = (e) => {
     setSize(e.target.value);
   };
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     // dispatch(createCoupon(idToken, dispatch))
-  },[idToken])
+  }, [idToken]);
 
   const handleCategoryChange = (value) => {
     setCategory(value);
@@ -96,11 +95,17 @@ const CreateCoupon = () => {
         ]}
       />
       <div className="createCouponModal_wrapper">
-        <form className="createCouponForm" action="">
+        <form
+          className="createCouponForm"
+          action=""
+        >
           <div className="topSection">
             <div className="form_input_box">
               <label htmlFor="coupon_code">Coupon Code</label>
-              <Input id="coupon_code" placeholder="Enter Coupon Code" />
+              <Input
+                id="coupon_code"
+                placeholder="Enter Coupon Code"
+              />
             </div>
             <div className="form_input_box">
               <label htmlFor="add_user">Add User</label>
@@ -117,7 +122,10 @@ const CreateCoupon = () => {
           <div className="bottomSection">
             <div className="form_input_box">
               <label htmlFor="coupon_amount">Coupon Amount</label>
-              <Input id="coupon_amount" placeholder="Enter Coupon Amount" />
+              <Input
+                id="coupon_amount"
+                placeholder="Enter Coupon Amount"
+              />
             </div>
             <div className="form_input_box">
               <label htmlFor="coupon_percentage">Coupon Percentage</label>
@@ -156,7 +164,7 @@ const CreateCoupon = () => {
               <Checkbox onChange={onChange}>Is Activate</Checkbox>
               <Checkbox onChange={onChange}>Is public</Checkbox>
             </div>
-            <Button className="save_changes_btn">Save Changes</Button>
+            <Button className="save_changes_btn">Create</Button>
           </div>
         </form>
       </div>

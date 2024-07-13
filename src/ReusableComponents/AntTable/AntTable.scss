@@ -7,7 +7,6 @@
 }
 
 .ant-table-thead > tr > th {
-  background-color: #f6fefe !important;
   color: #1e1e1e !important;
 }
 
@@ -72,31 +71,6 @@
 .table-wrapper {
   border-radius: var(--Outside-box, 10px);
   padding: 0 !important;
-
-  .ant-pagination {
-    border-radius: var(--Outside-box, 10px);
-    border: 1px solid var(--Stroke, #252a29);
-    background: var(--Main-Background, #f6fefe);
-    padding: 20px;
-    margin: 20px;
-    justify-content: center !important;
-
-    @media only screen and (max-width: 800px) {
-      justify-content: center !important;
-    }
-
-    .ant-pagination-total-text {
-      @media only screen and (max-width: 800px) {
-        display: none;
-      }
-    }
-    .ant-pagination-options {
-      @media only screen and (max-width: 450px) {
-        flex-direction: column !important;
-        margin: 0 auto !important;
-      }
-    }
-  }
 }
 
 .ant-table-container {
@@ -110,10 +84,10 @@
 }
 
 thead tr {
-  background: var(--Main-Background, #EDF0F0) !important;
+  background: var(--Main-Background, #edf0f0) !important;
 
   th {
-    background: var(--Main-Background, #EDF0F0) !important;
+    background: var(--Main-Background, #edf0f0) !important;
     color: var(--Text-white, #1e1e1e) !important;
     font-family: "Nunito Sans";
     font-size: 14px;
@@ -194,77 +168,6 @@ tbody {
   }
 }
 
-// Pangination
-
-.ant-pagination {
-  display: flex;
-  border-radius: var(--Outside-box, 10px);
-  border: 1px solid var(--Stroke, #252a29);
-  background: var(--Main-Background, #f6fefe);
-  padding: 20px;
-  margin: 20px !important;
-  justify-content: center !important;
-
-  .ant-table-pagination-right {
-    justify-content: center !important;
-  }
-
-  .ant-pagination-item-active {
-    background-color: #04d9ff !important;
-    a {
-      color: #000 !important;
-    }
-    background-color: none !important;
-    border-radius: 5px !important;
-    border: none !important;
-  }
-  .ant-pagination-item {
-    a {
-      color: #1e1e1e !important;
-    }
-    background-color: none !important;
-    border-radius: 5px !important;
-    border: none !important;
-  }
-  .ant-pagination {
-    li {
-      background-color: none !important;
-    }
-  }
-  .ant-pagination-item-link {
-    color: #1e1e1e !important;
-  }
-  .ant-pagination-item-ellipsis {
-    color: #1e1e1e !important;
-  }
-
-  .ant-pagination-small {
-    font-size: 12px;
-  }
-
-  .ant-pagination-options {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    .ant-pagination-options-quick-jumper {
-      display: flex;
-      height: 100%;
-      margin-inline-start: 0px;
-      line-height: 32px;
-      vertical-align: middle;
-      color: #1e1e1e !important;
-
-      input {
-        width: 65px !important;
-        color: #1e1e1e !important;
-        border-radius: 5px !important;
-        border: 1px solid var(--Stroke, #252a29) !important;
-        background: #f6fefe !important;
-      }
-    }
-  }
-}
-
 .clickable-row {
 }
 
@@ -296,11 +199,9 @@ tbody {
 .ant-pagination {
   display: flex;
   border-radius: var(--Outside-box, 10px);
-  border: 1px solid var(--Stroke, #252a29);
   background: var(--Main-Background, #f6fefe);
-  padding: 20px;
-  margin: 20px !important;
-
+  padding: 15px 20px;
+  margin: 0 !important;
   .ant-table-pagination-right {
     justify-content: center !important;
   }
@@ -375,6 +276,10 @@ tbody {
         background: #f6fefe !important;
       }
     }
+
+    .ant-select-selector {
+      border: 1px solid var(--Text-2, #686868) !important;
+    }
   }
 
   .clickable-row {
@@ -385,7 +290,7 @@ tbody {
   .ant-table {
     overflow-x: auto;
     scrollbar-width: thin; /* Thin scrollbar (works in Firefox) */
-    scrollbar-color: var(--Brand, #04d9ff) var(--Stroke, #252a29); /* Color of the scrollbar (thumb and track) */
+    scrollbar-color: var(--Brand, #04d9ff) var(--Stroke, #161d26); /* Color of the scrollbar (thumb and track) */
 
     .ant-table-body {
       @media only screen and (max-width: 768px) {

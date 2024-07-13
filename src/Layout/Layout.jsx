@@ -410,7 +410,7 @@ const PageLayout = ({headerName, children}) => {
         </Header>
         <Content
           style={{
-            margin: "24px 16px",
+            margin: "30px 40px",
             padding: 24,
             minHeight: 280,
             borderRadius: "20px",
