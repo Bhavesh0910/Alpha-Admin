@@ -4,7 +4,7 @@ import { Breadcrumb, Typography, Button, Input, Select, Space, Spin } from "antd
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDetailsReq, updateUserDetailsRequest } from "../../utils/api/apis";
 import { setUser } from "../../store/reducers/userSlice";
-import profileImg from '../../assets/images/profile-edit.png'
+import profileImg from '../../assets/images/profile-edit.png';
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
 const { Title } = Typography;
@@ -19,6 +19,15 @@ const UserProfile = () => {
   const { idToken } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.user);
+
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    contact: "+91 ",
+    email: "",
+    selectedCountry: "",
+    city: "",
+  });
 
   useEffect(() => {
     if (idToken) {
@@ -37,14 +46,16 @@ const UserProfile = () => {
     }
   }, [dispatch, idToken]);
 
-  const [formData, setFormData] = useState({
-    first_name: userDetails.first_name || "",
-    last_name: userDetails.last_name || "",
-    contact: userDetails.contact || "+91 ",
-    email: userDetails.email || "",
-    selectedCountry: userDetails.country || "",
-    city: userDetails.city || "",
-  });
+  useEffect(() => {
+    setFormData({
+      first_name: userDetails.first_name || "",
+      last_name: userDetails.last_name || "",
+      contact: userDetails.contact || "+91 ",
+      email: userDetails.email || "",
+      selectedCountry: userDetails.country || "",
+      city: userDetails.city || "",
+    });
+  }, [userDetails]);
 
   const handleCategoryChange = (value) => {
     setCategory(value);
@@ -72,8 +83,6 @@ const UserProfile = () => {
       });
   };
 
-
-
   return (
     <div className="userProfile_container">
       <Breadcrumb
@@ -88,7 +97,7 @@ const UserProfile = () => {
         ]}
       />
       <div className="userProfile_wrapper">
-       {isLoading && <LoaderOverlay />}
+        {isLoading && <LoaderOverlay />}
         <form className="userProfileForm user_profile" action="">
           <div className="account_settings_header">
             <div className="profile_details_wrapper">
@@ -151,7 +160,7 @@ const UserProfile = () => {
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      contact: `${formData.contact.split(" ")[0]} ${e.target.value}`,
+                      contact: ` ${e.target.value}`,
                     })
                   }
                 />

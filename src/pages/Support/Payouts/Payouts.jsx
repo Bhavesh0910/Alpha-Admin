@@ -18,7 +18,10 @@ import searchIcon from "../../../assets/icons/searchIcon.svg";
 import comment from "../../../assets/icons/comment.svg";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { payoutListReq, payoutListUpdateReq } from "../../../store/NewReducers/payout";
+import {
+  payoutListReq,
+  payoutListUpdateReq,
+} from "../../../store/NewReducers/payout";
 
 import dayjs from "dayjs";
 
@@ -45,8 +48,7 @@ const Payouts = () => {
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
   const [dates, setDates] = useState(searchDates);
-  const defaultDates = [dayjs().subtract(7, 'day'), dayjs()];
-
+  const defaultDates = [dayjs().subtract(7, "day"), dayjs()];
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
@@ -56,78 +58,80 @@ const Payouts = () => {
     setDates(dates.map((date) => date.format("YYYY-MM-DD")));
   }
 
-  const [data, setData] = useState([{
-    id: "snkjxsa",
-    email: "masusaxkasasm.tech",
-    commission: ["Commission A", "Commission B"],
-    settlement_details: { bank: "ABC Bank", account_number: "1234567890" },
-    payout_type: "PkkFS",
-    method: "Rkjnkjise",
-    amount: 1349845,
-    status: "rejected",
-    invoice: null,
-    reason: null,
-    comment: null,
-    login_id: "4hjhjh2",
-    profit_split: 90,
-    created_at: "2024-06-20T12:56:26.760212Z",
-    updated_on: "2024-06-20T12:57:17.203798Z",
-    is_reinstated: true,
-  },
-  {
-    id: "ajhdx2b",
-    email: "example@example.com",
-    commission: ["Commission C", "Commission D"],
-    settlement_details: { bank: "XYZ Bank", account_number: "0987654321" },
-    payout_type: "ZtyHS",
-    method: "Poiuytrew",
-    amount: 289746,
-    status: "accepted",
-    invoice: "https://example.com/invoice1.pdf",
-    reason: "Incomplete details",
-    comment: "Needs further verification",
-    login_id: "8xyzabc",
-    profit_split: 80,
-    created_at: "2024-06-21T10:32:45.123456Z",
-    updated_on: "2024-06-21T11:15:30.987654Z",
-    is_reinstated: false,
-  },
-  {
-    id: "snkjxsa",
-    email: "masusaxkasasm.tech",
-    commission: ["Commission A", "Commission B"],
-    settlement_details: { bank: "ABC Bank", account_number: "1234567890" },
-    payout_type: "PkkFS",
-    method: "Rkjnkjise",
-    amount: 1349845,
-    status: "rejected",
-    invoice: null,
-    reason: null,
-    comment: null,
-    login_id: "4hjhjh2",
-    profit_split: 90,
-    created_at: "2024-06-20T12:56:26.760212Z",
-    updated_on: "2024-06-20T12:57:17.203798Z",
-    is_reinstated: true,
-  },
-  {
-    id: "ajhdx2b",
-    email: "example@example.com",
-    commission: ["Commission C", "Commission D"],
-    settlement_details: { bank: "XYZ Bank", account_number: "0987654321" },
-    payout_type: "ZtyHS",
-    method: "Poiuytrew",
-    amount: 289746,
-    status: "accepted",
-    invoice: "https://example.com/invoice1.pdf",
-    reason: "Incomplete details",
-    comment: "Needs further verification",
-    login_id: "8xyzabc",
-    profit_split: 80,
-    created_at: "2024-06-21T10:32:45.123456Z",
-    updated_on: "2024-06-21T11:15:30.987654Z",
-    is_reinstated: false,
-  },]);
+  const [data, setData] = useState([
+    {
+      id: "snkjxsa",
+      email: "masusaxkasasm.tech",
+      commission: ["Commission A", "Commission B"],
+      settlement_details: { bank: "ABC Bank", account_number: "1234567890" },
+      payout_type: "PkkFS",
+      method: "Rkjnkjise",
+      amount: 1349845,
+      status: "rejected",
+      invoice: null,
+      reason: null,
+      comment: null,
+      login_id: "4hjhjh2",
+      profit_split: 90,
+      created_at: "2024-06-20T12:56:26.760212Z",
+      updated_on: "2024-06-20T12:57:17.203798Z",
+      is_reinstated: true,
+    },
+    {
+      id: "ajhdx2b",
+      email: "example@example.com",
+      commission: ["Commission C", "Commission D"],
+      settlement_details: { bank: "XYZ Bank", account_number: "0987654321" },
+      payout_type: "ZtyHS",
+      method: "Poiuytrew",
+      amount: 289746,
+      status: "accepted",
+      invoice: "https://example.com/invoice1.pdf",
+      reason: "Incomplete details",
+      comment: "Needs further verification",
+      login_id: "8xyzabc",
+      profit_split: 80,
+      created_at: "2024-06-21T10:32:45.123456Z",
+      updated_on: "2024-06-21T11:15:30.987654Z",
+      is_reinstated: false,
+    },
+    {
+      id: "snkjxsa",
+      email: "masusaxkasasm.tech",
+      commission: ["Commission A", "Commission B"],
+      settlement_details: { bank: "ABC Bank", account_number: "1234567890" },
+      payout_type: "PkkFS",
+      method: "Rkjnkjise",
+      amount: 1349845,
+      status: "rejected",
+      invoice: null,
+      reason: null,
+      comment: null,
+      login_id: "4hjhjh2",
+      profit_split: 90,
+      created_at: "2024-06-20T12:56:26.760212Z",
+      updated_on: "2024-06-20T12:57:17.203798Z",
+      is_reinstated: true,
+    },
+    {
+      id: "ajhdx2b",
+      email: "example@example.com",
+      commission: ["Commission C", "Commission D"],
+      settlement_details: { bank: "XYZ Bank", account_number: "0987654321" },
+      payout_type: "ZtyHS",
+      method: "Poiuytrew",
+      amount: 289746,
+      status: "accepted",
+      invoice: "https://example.com/invoice1.pdf",
+      reason: "Incomplete details",
+      comment: "Needs further verification",
+      login_id: "8xyzabc",
+      profit_split: 80,
+      created_at: "2024-06-21T10:32:45.123456Z",
+      updated_on: "2024-06-21T11:15:30.987654Z",
+      is_reinstated: false,
+    },
+  ]);
 
   useEffect(() => {
     dispatch(
@@ -182,11 +186,8 @@ const Payouts = () => {
         updated_on: "2024-06-21T11:15:30.987654Z",
         is_reinstated: false,
       },
-    ]
-    );
+    ]);
   }, [payoutData]);
-
-
 
   // const columns = [
   //   {
@@ -375,11 +376,26 @@ const Payouts = () => {
         <Dropdown
           overlay={() => statusMenu(record, index)}
           trigger={["click"]}
-        // onClick={() => handleStatusChange(text, record, index)} 
+          className="status_dropdown_option"
+          // onClick={() => handleStatusChange(text, record, index)}
         >
           <Button
             icon={<DownOutlined />}
-            className="status-button"
+            className={`status-button ${
+              text === "in_progress"
+                ? "in_progress"
+                : text === "approved"
+                ? "approved"
+                : text === "accepted"
+                ? "accepted"
+                : text === "rejected"
+                ? "rejected"
+                : text === "new"
+                ? "new"
+                : ""
+            }
+    
+                  `}
             style={{
               width: "120px",
               display: "flex",
@@ -388,7 +404,19 @@ const Payouts = () => {
               padding: "6px 10px",
             }}
           >
-            {text}
+            <p className="status_text">
+              {text === "in_progress"
+                ? "In progress"
+                : text === "approved"
+                ? "Approved"
+                : text === "accepted"
+                ? "Accepted"
+                : text === "rejected"
+                ? "Rejected"
+                : text === "new"
+                ? "New"
+                : ""}
+            </p>
           </Button>
         </Dropdown>
       ),
@@ -505,19 +533,25 @@ const Payouts = () => {
   const handleMenuClick = (e, record) => {
     const selectedStatus = e.key;
     const formData = new FormData();
-    formData.append('status', selectedStatus);
-    dispatch(payoutListUpdateReq({ idToken, id: record?.id, updatedStatus: formData, dispatch }));
+    formData.append("status", selectedStatus);
+    dispatch(
+      payoutListUpdateReq({
+        idToken,
+        id: record?.id,
+        updatedStatus: formData,
+        dispatch,
+      })
+    );
   };
 
   const statusMenu = (record, index) => (
     <Menu onClick={(e) => handleMenuClick(e, record)}>
       <Menu.Item key="new">New</Menu.Item>
       <Menu.Item key="approved">Approved</Menu.Item>
-      <Menu.Item key="in_progress">In Process</Menu.Item>
+      <Menu.Item key="in_progress">In Progress</Menu.Item>
       <Menu.Item key="rejected">Rejected</Menu.Item>
     </Menu>
   );
-
 
   const openEditModal = (comment, index) => {
     setEditComment(comment);
@@ -554,11 +588,11 @@ const Payouts = () => {
 
   useEffect(() => {
     console.log("isModalVisible : ", isModalVisible);
-  }, [isModalVisible])
+  }, [isModalVisible]);
 
   return (
     <>
-      { }
+      {}
       <div className="payout_container">
         <div className="mobile_headers">
           <h4>Payout</h4>
@@ -590,7 +624,7 @@ const Payouts = () => {
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  handleSearch(e.target.value)
+                  handleSearch(e.target.value);
                 }
               }}
             />
@@ -633,12 +667,13 @@ const Payouts = () => {
           <RangePicker
             placeholder={dates}
             defaultValue={defaultDates}
-            onChange={updateDateRange} />
+            onChange={updateDateRange}
+          />
         </div>
         <AntTable
           columns={columns}
-          // data={data || []}        // For testing and Ui
-          data={payoutData || []}
+          data={data || []} // For testing and Ui
+          // data={payoutData || []}
           totalPages={Math.ceil(count / pageSize)}
           totalItems={count}
           pageSize={pageSize}
