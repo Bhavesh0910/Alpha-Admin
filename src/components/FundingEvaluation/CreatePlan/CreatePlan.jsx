@@ -1,17 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
-import {
-  CreateTradingAccountReq,
-  UserSearchReq,
-} from "../../../utils/api/apis";
+import {useDispatch, useSelector} from "react-redux";
+import {CreateTradingAccountReq, UserSearchReq} from "../../../utils/api/apis";
 import "./CreatePlan.scss";
-import { useEffect, useState } from "react";
-import { returnErrors } from "../../../store/reducers/error";
-import { returnMessages } from "../../../store/reducers/message";
-import { CircularProgress } from "@mui/material";
-import { Button, Select, Spin } from "antd";
-const { Option } = Select
+import {useEffect, useState} from "react";
+import {returnErrors} from "../../../store/reducers/error";
+import {returnMessages} from "../../../store/reducers/message";
+import {CircularProgress} from "@mui/material";
+import {Button, Input, Select, Spin} from "antd";
+const {Option} = Select;
 const CreateTradingAccount = () => {
-  const [emailOpts, setEmailOpts] = useState([{ label: "", value: "" }]);
+  const [emailOpts, setEmailOpts] = useState([{label: "", value: ""}]);
   const [isLoading, setIsLoading] = useState(false);
   const idToken = useSelector((state) => state.auth.idToken);
   const dispatch = useDispatch();
@@ -27,7 +24,7 @@ const CreateTradingAccount = () => {
         userArray.push({
           label: item?.email,
           value: item?.id,
-        })
+        }),
       );
 
       setEmailOpts(userArray);
@@ -49,14 +46,12 @@ const CreateTradingAccount = () => {
   const [phase, setPhase] = useState(null);
   const [isSpinner, setIsSpinner] = useState(false);
   const phaseOptions = [
-    { label: "Qualified", value: "qualified" },
-    { label: "Assessment", value: "assessment" },
-
-
+    {label: "Qualified", value: "qualified"},
+    {label: "Assessment", value: "assessment"},
   ];
-  const brokerOptions = [{ label: "Aplhaticks", value: "alphaticks" }];
-  const [data, setData] = useState({ broker: "alphaticks" });
-  const [broker, setBroker] = useState(brokerOptions[0])
+  const brokerOptions = [{label: "Aplhaticks", value: "alphaticks"}];
+  const [data, setData] = useState({broker: "alphaticks"});
+  const [broker, setBroker] = useState(brokerOptions[0]);
 
   // use Effects
 
@@ -70,7 +65,7 @@ const CreateTradingAccount = () => {
   useEffect(() => {
     let planArray = [];
     fundingData.map((item) => {
-      planArray.push({ value: item.id, label: item.name });
+      planArray.push({value: item.id, label: item.name});
     });
     setPlanOptions(planArray);
   }, [fundingData]);
@@ -83,7 +78,7 @@ const CreateTradingAccount = () => {
     fundingData?.map((item) => {
       if (selectedOption === item.id) {
         item.challenges.map((item) => {
-          competitionArray.push({ value: item.id, label: item.name });
+          competitionArray.push({value: item.id, label: item.name});
         });
       }
       // console.log(competitionArray)
@@ -106,7 +101,7 @@ const CreateTradingAccount = () => {
   const customStyles = {
     option: (provided) => ({
       ...provided,
-      color: 'black',  // Change text color to black
+      color: "black", // Change text color to black
     }),
     control: (provided) => ({
       ...provided,
@@ -170,18 +165,19 @@ const CreateTradingAccount = () => {
               <Select
                 showSearch
                 placeholder="Search for a user"
-                style={{ width: "100%" }}
+                style={{width: "100%"}}
                 defaultActiveFirstOption={false}
                 showArrow={false}
                 filterOption={false}
                 onSearch={handleOnInputChange}
-                onChange={(value) =>
-                  setData((prev) => ({ ...prev, user: value }))
-                }
+                onChange={(value) => setData((prev) => ({...prev, user: value}))}
                 notFoundContent={isLoading ? <Spin size="small" /> : null}
               >
                 {emailOpts.map((option) => (
-                  <Option key={option.value} value={option.value}>
+                  <Option
+                    key={option.value}
+                    value={option.value}
+                  >
                     {option.label}
                   </Option>
                 ))}
@@ -204,35 +200,126 @@ const CreateTradingAccount = () => {
                 }}
               >
                 {brokerOptions.map((option) => (
-                  <Option key={option.value} value={option.value}>
+                  <Option
+                    key={option.value}
+                    value={option.value}
+                  >
                     {option.label}
                   </Option>
                 ))}
               </Select>
-
+            </div>
+            <div className="form_input">
+              <label htmlFor="Broker">Password</label>
+              <Input placeholder="Enter your password" />
+            </div>
           </div>
-        </div>
           <div className="row1">
             <div className="form_input">
               <label htmlFor="Email">Email</label>
               <Select
                 showSearch
                 placeholder="Search for a user"
-                style={{ width: "100%" }}
+                style={{width: "100%"}}
                 defaultActiveFirstOption={false}
                 showArrow={false}
                 filterOption={false}
                 onSearch={handleOnInputChange}
-                onChange={(value) =>
-                  setData((prev) => ({ ...prev, user: value }))
-                }
+                onChange={(value) => setData((prev) => ({...prev, user: value}))}
                 notFoundContent={isLoading ? <Spin size="small" /> : null}
               >
                 {emailOpts.map((option) => (
-                  <Option key={option.value} value={option.value}>
+                  <Option
+                    key={option.value}
+                    value={option.value}
+                  >
                     {option.label}
                   </Option>
                 ))}
+              </Select>
+            </div>
+
+            <div className="form_input">
+              <label htmlFor="Broker">Raw Spread</label>
+              <Select
+                className="rawSpread_selector"
+                placeholder="Select a Raw Spread"
+                options={""}
+                styles={customStyles}
+                value={""}
+                onChange={(selectedOption) => {
+                  // setBroker(selectedOption);
+                  // setData((prev) => ({
+                  //   ...prev,
+                  //   broker: selectedOption,
+                  // }));
+                  // handleSelectCompetitionChange(selectedOption);
+                }}
+              >
+                {/* {brokerOptions.map((option) => (
+                  <Option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </Option>
+                ))} */}
+              </Select>
+            </div>
+            <div className="form_input">
+              <label htmlFor="funding_evaluation_selector">Funding Evaluation</label>
+              <Select
+                className="funding_evaluation_selector"
+                placeholder="Select a Funding Evaluation"
+                options={""}
+                styles={customStyles}
+                value={""}
+                onChange={(selectedOption) => {
+                  // setBroker(selectedOption);
+                  // setData((prev) => ({
+                  //   ...prev,
+                  //   broker: selectedOption,
+                  // }));
+                  // handleSelectCompetitionChange(selectedOption);
+                }}
+              >
+                {/* {brokerOptions.map((option) => (
+                  <Option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </Option>
+                ))} */}
+              </Select>
+            </div>
+          </div>
+          <div className="row2">
+            <div className="form_input">
+              <label htmlFor="accountBalance_selector">Account Balance</label>
+              <Select
+                className="accountBalance_selector"
+                placeholder="Select Account Balance"
+                options={""}
+                styles={customStyles}
+                value={""}
+                onChange={(selectedOption) => {
+                  // setBroker(selectedOption);
+                  // setData((prev) => ({
+                  //   ...prev,
+                  //   broker: selectedOption,
+                  // }));
+                  // handleSelectCompetitionChange(selectedOption);
+                }}
+              >
+                {/* {brokerOptions.map((option) => (
+                  <Option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </Option>
+                ))} */}
               </Select>
             </div>
             <div className="form_input">
@@ -252,90 +339,149 @@ const CreateTradingAccount = () => {
                 }}
               >
                 {brokerOptions.map((option) => (
-                  <Option key={option.value} value={option.value}>
+                  <Option
+                    key={option.value}
+                    value={option.value}
+                  >
                     {option.label}
                   </Option>
                 ))}
               </Select>
+            </div>
+            <div className="form_input">
+              <label htmlFor="stage_selector">Stage</label>
+              <Select
+                className="stage_selector"
+                placeholder="Select Stage"
+                options={""}
+                styles={customStyles}
+                value={""}
+                onChange={(selectedOption) => {
+                  // setBroker(selectedOption);
+                  // setData((prev) => ({
+                  //   ...prev,
+                  //   broker: selectedOption,
+                  // }));
+                  // handleSelectCompetitionChange(selectedOption);
+                }}
+              >
+                {/* {brokerOptions.map((option) => (
+                  <Option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </Option>
+                ))} */}
+              </Select>
+            </div>
+            <div className="form_input">
+              <label htmlFor="server_selector">Server</label>
+              <Select
+                className="server_selector"
+                placeholder="Select Server"
+                options={""}
+                styles={customStyles}
+                value={""}
+                onChange={(selectedOption) => {
+                  // setBroker(selectedOption);
+                  // setData((prev) => ({
+                  //   ...prev,
+                  //   broker: selectedOption,
+                  // }));
+                  // handleSelectCompetitionChange(selectedOption);
+                }}
+              >
+                {/* {brokerOptions.map((option) => (
+                  <Option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </Option>
+                ))} */}
+              </Select>
+            </div>
+            <div className="form_input">
+              <label htmlFor="PlanType">Plan Type</label>
+              <Select
+                style={{width: "100%"}}
+                options={planOptions}
+                value={selectedOption}
+                onChange={handleSelectChange}
+              >
+                {planOptions.map((option) => (
+                  <Option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+            <div className="form_input">
+              <label htmlFor="AccountSize">Account Size</label>
+              <Select
+                className="plan_selector"
+                value={selectedCompetition}
+                onChange={(selectedOption) => {
+                  setData((prev) => ({
+                    ...prev,
+                    challenge: selectedOption,
+                  }));
 
+                  handleSelectCompetitionChange(selectedOption);
+                }}
+              >
+                {competitonOptions.map((option) => (
+                  <Option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+            <div className="form_input">
+              <label htmlFor="Phase">Phase</label>
+              <Select
+                styles={customStyles}
+                placeholder="Phase"
+                classNamePrefix="react-select"
+                options={phaseOptions}
+                value={phase}
+                onChange={(selectedOption) => {
+                  setPhase(selectedOption);
+                  setData((prev) => ({
+                    ...prev,
+                    phase: selectedOption,
+                  }));
+                }}
+              >
+                {phaseOptions.map((option) => (
+                  <Option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </Option>
+                ))}
+              </Select>
+            </div>
           </div>
-        </div>
-        <div className="row2">
-          <div className="form_input">
-            <label htmlFor="PlanType">Plan Type</label>
-            <Select
-              style={{ width: "100%" }}
-              options={planOptions}
-              value={selectedOption}
-              onChange={handleSelectChange}
+          <div className="create_button_wrapper">
+            <Button
+              className="standard_button"
+              onClick={handleCreateTradingAccount}
+              loading={isSpinner}
             >
-              {planOptions.map((option) => (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              ))}
-            </Select>
+              {isSpinner ? <CircularProgress size={24} /> : "Create Account"}
+            </Button>
           </div>
-          <div className="form_input">
-            <label htmlFor="AccountSize">Account Size</label>
-            <Select
-              className="plan_selector"
-              value={selectedCompetition}
-              onChange={(selectedOption) => {
-                setData((prev) => ({
-                  ...prev,
-                  challenge: selectedOption,
-                }));
-
-                handleSelectCompetitionChange(selectedOption);
-              }}
-            >
-              {competitonOptions.map((option) => (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              ))}
-            </Select>
-          </div>
-          <div className="form_input">
-            <label htmlFor="Phase">Phase</label>
-            <Select
-              styles={customStyles}
-              placeholder="Phase"
-              classNamePrefix="react-select"
-              options={phaseOptions}
-              value={phase}
-              onChange={(selectedOption) => {
-                setPhase(selectedOption);
-                setData((prev) => ({
-                  ...prev,
-                  phase: selectedOption,
-                }));
-              }}
-            >
-              {phaseOptions.map((option) => (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              ))}
-            </Select>
-          </div>
-        </div>
-        <div className="create_button_wrapper">
-          <Button
-            className="standard_button"
-            onClick={handleCreateTradingAccount}
-            loading={isSpinner}
-          >
-            {isSpinner ? (
-              <CircularProgress size={24} />
-            ) : (
-              "Create Account"
-            )}
-          </Button>
         </div>
       </div>
-    </div >
     </>
   );
 };
