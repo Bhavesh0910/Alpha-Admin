@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import "./StageManager.scss";
+import "./StageManager2.scss";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import {Button, Dropdown, Menu, Select, Tooltip, notification} from "antd";
 import searchIcon from "../../assets/icons/searchIcon.svg";
@@ -22,7 +22,7 @@ import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
 const {Option} = Select;
 
-const StageManager = () => {
+const StageManager2 = () => {
   const type = "1_step";
   // const [category, setCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -295,7 +295,7 @@ const StageManager = () => {
   }
   return (
     <div className="stageManager_container">
-      <h2>Stage 1</h2>
+      <h2>Stage 2</h2>
       <div className="mobile_headers">
         <h4>Stage Manager</h4>
       </div>
@@ -380,4 +380,4 @@ const StageManager = () => {
   );
 };
 
-export default StageManager;
+export default StageManager2;

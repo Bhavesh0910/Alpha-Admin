@@ -3,11 +3,12 @@ import {CloseCircleOutlined, DesktopOutlined, FileOutlined, MenuOutlined, PieCha
 import {Button, Drawer, Layout, Menu, Space} from "antd";
 import "./Layout.scss";
 import logo from "../assets/icons/logo.svg";
-import {useNavigate, useLocation} from "react-router-dom";
+import profilePic from "../assets/icons/userProfilePic.svg";
+import {useNavigate, useLocation, Link} from "react-router-dom";
 import {ReactComponent as Logout} from "../assets/icons/logout.svg";
 import {clearPersistedData} from "../store/configureStore";
 import {setAuthenticationStatus} from "../store/reducers/authSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {returnErrors} from "../store/reducers/error";
 import {deAuthenticateAll} from "../store/NewReducers/logout";
 import {ReactComponent as RiskManagementIcon} from "../assets/icons/riskManagementIcon.svg";
@@ -67,15 +68,20 @@ const items = [
       {
         key: "6-1",
         label: "Stage 1",
-        link: "/support/stage-1",
+        link: "/stage-manager/stage-1",
       },
       {
         key: "6-2",
+        label: "Stage 2",
+        link: "/stage-manager/stage-2",
+      },
+      {
+        key: "6-3",
         label: "Funded",
         link: "/support/funded",
       },
       {
-        key: "6-3",
+        key: "6-4",
         label: "Payout",
         link: "/support/payout",
       },
@@ -180,6 +186,7 @@ const PageLayout = ({headerName, children}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+  const userDetails = useSelector((state) => state.user);
 
   const handleMouseEnter = () => {
     setIsSidebarOpen(true);
@@ -262,8 +269,14 @@ const PageLayout = ({headerName, children}) => {
         return "4";
       case "/stage-manager":
         return "5";
-      case "/support/payout":
+      case "/stage-manager/stage-1":
+        return "6-1";
+      case "/stage-manager/stage-2":
+        return "6-2";
+      case "/support/funded":
         return "6-3";
+      case "/support/payout":
+        return "6-4";
       case "/funding-evaluation":
         return "7-1";
       case "/payments":
@@ -425,8 +438,17 @@ const PageLayout = ({headerName, children}) => {
           </Drawer>
         </div>
 
-        <Header style={{padding: "20px", background: "#12181F", display: "flex", alignItems: "center", height: "109px"}}>
+        <Header className="main_header_section">
           <h1>{headerName}</h1>
+          <Link to={"/user-profile"}>
+            <div className="user_profile">
+              <img
+                src={profilePic}
+                alt=""
+              />
+              <p>{userDetails?.first_name}</p>
+            </div>
+          </Link>
         </Header>
         <Content
           style={{

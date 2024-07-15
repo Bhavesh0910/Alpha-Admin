@@ -379,7 +379,7 @@ const CreateTradingAccount = () => {
               <label htmlFor="server_selector">Server</label>
               <Select
                 className="server_selector"
-                placeholder="Select Server"
+                placeholder="Select Stage"
                 options={""}
                 styles={customStyles}
                 value={""}

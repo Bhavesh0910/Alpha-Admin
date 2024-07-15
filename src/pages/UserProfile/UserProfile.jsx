@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./UserProfile.scss";
-import { Breadcrumb, Typography, Button, Input, Select, Space, Spin } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserDetailsReq, updateUserDetailsRequest } from "../../utils/api/apis";
-import { setUser } from "../../store/reducers/userSlice";
-import profileImg from '../../assets/images/profile-edit.png';
+import {Breadcrumb, Typography, Button, Input, Select, Space, Spin} from "antd";
+import {useDispatch, useSelector} from "react-redux";
+import {getUserDetailsReq, updateUserDetailsRequest} from "../../utils/api/apis";
+import {setUser} from "../../store/reducers/userSlice";
+import profileImg from "../../assets/images/user.png";
+import editBtn from "../../assets/icons/editBtnIcon.svg";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
-const { Title } = Typography;
-const { Option } = Select;
+const {Title} = Typography;
+const {Option} = Select;
 
 const UserProfile = () => {
   const [isEditableProfile, setIsEditableProfile] = useState(false);
@@ -16,7 +17,7 @@ const UserProfile = () => {
   const [category, setCategory] = useState("Alpha Pro 5K");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { idToken } = useSelector((state) => state.auth);
+  const {idToken} = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.user);
 
@@ -71,7 +72,7 @@ const UserProfile = () => {
 
   const handleSave = () => {
     setIsLoading(true);
-    updateUserDetailsRequest({ idToken, formData })
+    updateUserDetailsRequest({idToken, formData})
       .then(() => {
         console.log("User details updated:", formData);
       })
@@ -85,29 +86,38 @@ const UserProfile = () => {
 
   return (
     <div className="userProfile_container">
-      <Breadcrumb
-        separator=">"
-        items={[
-          {
-            title: <a href="/user-profile">User Profile</a>,
-          },
-          {
-            title: <a href="">Edit Profile</a>,
-          },
-        ]}
-      />
+      <div className="header_wrapper">
+        <h3>User Profile</h3>
+      </div>
       <div className="userProfile_wrapper">
         {isLoading && <LoaderOverlay />}
-        <form className="userProfileForm user_profile" action="">
+        <form
+          className="userProfileForm user_profile"
+          action=""
+        >
           <div className="account_settings_header">
             <div className="profile_details_wrapper">
-              <img src={profileImg} alt="" />
+              <div className="profile_edit_btn">
+                <img
+                  src={profileImg}
+                  alt="userProfilePic"
+                />
+                <button>
+                  <img
+                    src={editBtn}
+                    alt="editButton"
+                  />
+                </button>
+              </div>
               <div>
                 <span>{userDetails?.first_name}</span>
                 <p>{userDetails?.email}</p>
               </div>
             </div>
-            <Button className="edit_btn" onClick={toggleEditableProfile}>
+            <Button
+              className="edit_btn"
+              onClick={toggleEditableProfile}
+            >
               {isEditableProfile ? "Save" : "Edit"}
             </Button>
           </div>
@@ -119,9 +129,7 @@ const UserProfile = () => {
                 placeholder="Enter First Name"
                 disabled={!isEditableProfile}
                 value={formData.first_name}
-                onChange={(e) =>
-                  setFormData({ ...formData, first_name: e.target.value })
-                }
+                onChange={(e) => setFormData({...formData, first_name: e.target.value})}
               />
             </div>
             <div className="form_input_box">
@@ -131,16 +139,14 @@ const UserProfile = () => {
                 placeholder="Enter Last Name"
                 disabled={!isEditableProfile}
                 value={formData.last_name}
-                onChange={(e) =>
-                  setFormData({ ...formData, last_name: e.target.value })
-                }
+                onChange={(e) => setFormData({...formData, last_name: e.target.value})}
               />
             </div>
             <div className="form_input_box">
               <label htmlFor="contact_number">Contact Number</label>
               <Space.Compact>
                 <Input
-                  style={{ width: "20%" }}
+                  style={{width: "20%"}}
                   placeholder="Country Code"
                   disabled={!isEditableProfile}
                   value={formData.contact.split(" ")[0]}
@@ -153,7 +159,7 @@ const UserProfile = () => {
                   }
                 />
                 <Input
-                  style={{ width: "80%" }}
+                  style={{width: "80%"}}
                   placeholder="Phone Number"
                   disabled={!isEditableProfile}
                   value={formData.contact.split(" ")[1]}
@@ -173,9 +179,7 @@ const UserProfile = () => {
                 placeholder="Enter Email"
                 disabled={!isEditableProfile}
                 value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
+                onChange={(e) => setFormData({...formData, email: e.target.value})}
               />
             </div>
             <div className="form_input_box">
@@ -200,18 +204,19 @@ const UserProfile = () => {
                 placeholder="Enter City"
                 disabled={!isEditableProfile}
                 value={formData.city}
-                onChange={(e) =>
-                  setFormData({ ...formData, city: e.target.value })
-                }
+                onChange={(e) => setFormData({...formData, city: e.target.value})}
               />
             </div>
           </div>
           <div className="reset_password_wrapper">
-            <Title className="title" level={3}>
+            <Title
+              className="title"
+              level={3}
+            >
               Reset Password
             </Title>
             <Button
-              style={{ maxWidth: "234px" }}
+              style={{maxWidth: "234px"}}
               className="standard_button"
             >
               Send Link For Reset Password
@@ -219,13 +224,22 @@ const UserProfile = () => {
           </div>
         </form>
 
-        <form className="userProfileForm account_settings" action="">
+        <form
+          className="userProfileForm account_settings"
+          action=""
+        >
           <div className="account_settings_header">
-            <Title className="title" level={3}>
+            <Title
+              className="title"
+              level={3}
+            >
               Account Settings
             </Title>
 
-            <Button className="edit_btn" onClick={toggleEditableAccount}>
+            <Button
+              className="edit_btn"
+              onClick={toggleEditableAccount}
+            >
               {isEditableAccount ? "Save" : "Edit"}
             </Button>
           </div>
@@ -268,7 +282,11 @@ const UserProfile = () => {
             </div>
           </div>
           <div className="btn_wrapper">
-            <Button onClick={handleSave} style={{ maxWidth: "131px" }} className="standard_button">
+            <Button
+              onClick={handleSave}
+              style={{maxWidth: "131px"}}
+              className="standard_button"
+            >
               Save Changes
             </Button>
           </div>

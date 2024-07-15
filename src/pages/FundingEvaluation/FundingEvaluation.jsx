@@ -1,16 +1,14 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import "./FundingEvaluation.scss";
 import CreatePlan from "../../components/FundingEvaluation/CreatePlan/CreatePlan";
-import { Button } from "antd";
-import { getFundingDetails } from "../../utils/api/apis";
-import {
-  getFundingDataFailure,
-  getFundingDataSuccess,
-} from "../../store/reducers/fundingSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { returnErrors } from "../../store/reducers/error";
-import { useNavigate } from "react-router-dom";
-import { fetchFundingDetails } from "../../store/NewReducers/fundingSlice";
+import {Button} from "antd";
+import {getFundingDetails} from "../../utils/api/apis";
+import {getFundingDataFailure, getFundingDataSuccess} from "../../store/reducers/fundingSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {returnErrors} from "../../store/reducers/error";
+import {useNavigate} from "react-router-dom";
+import {fetchFundingDetails} from "../../store/NewReducers/fundingSlice";
+import SuccessModal from "../../components/Alerts/SuccessModal";
 const FundingEvaluation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -39,11 +37,9 @@ const FundingEvaluation = () => {
   //   }
   // };
 
-
   useEffect(() => {
     dispatch(fetchFundingDetails(idToken));
   }, [dispatch, idToken]);
-
 
   return (
     <div className="fundingEvaluation_container">

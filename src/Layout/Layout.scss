@@ -212,3 +212,30 @@
     // padding-block: 10px !important;
   }
 }
+
+.main_header_section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 109px;
+  padding: 20px;
+  background: #12181f;
+
+  .user_profile {
+    display: flex;
+    border-radius: var(--Corner-Radius, 10px);
+    background: var(--Canvas-BG, #161d26);
+    align-items: center;
+    gap: 10px;
+    height: 60px;
+    padding: 20px;
+    p {
+      color: #fff;
+      font-family: "Nunito Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+  }
+}
