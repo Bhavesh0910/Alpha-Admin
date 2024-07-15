@@ -4,7 +4,7 @@ import axios from "axios";
 import { PURGE } from "redux-persist";
 import { returnErrors } from "../reducers/error";
 
-async function paymentListApi(idToken,query) {
+async function paymentListApi(idToken, query) {
     try {
         const config = {
             headers: {
@@ -30,14 +30,16 @@ async function paymentHistoryApi(idToken, pageSize, pageNo, paymentEmail) {
         throw error;
     }
 }
-async function paymentExportsApi(idToken, dates) {
+async function paymentExportsApi(idToken, query) {
     try {
         const config = {
             headers: {
                 Authorization: `Bearer ${idToken}`,
             },
         };
-        const res = axios.get(`${baseUrl}payment/admin/payment-data-export/?from_date=${dates[0]}&to_date=${dates[1]}`, config);
+
+        //https://backend.alphacapitalgroup.uk/export/payments/?start_date=01/Jul/2024&end_date=02/Jul/2024&status=
+        const res = axios.get(`${baseUrl}export/payments/${query}`, config);
         return res;
     } catch (error) {
         throw error;
@@ -72,9 +74,11 @@ export const paymentHistoryReq = createAsyncThunk(
 
 export const paymentExportsReq = createAsyncThunk(
     "payoutList/exports",
-    async ({ idToken, dates, dispatch }, { rejectWithValue }) => {
+    async ({ idToken, query, dispatch }, { rejectWithValue }) => {
         try {
-            const response = await paymentExportsApi(idToken, dates);
+            const response = await paymentExportsApi(idToken, query).then((response) => {
+                window.open(response?.data?.s3_file_url, "_blank");
+            });
             return response;
         } catch (error) {
             dispatch(returnErrors(error?.response?.data?.detail || "Error while exporting file!", 400))

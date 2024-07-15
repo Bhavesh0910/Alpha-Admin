@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import moment from "moment";
 import exportIcon from "../../../assets/icons/export_now_icon_white.svg";
+import { Link } from "react-router-dom";
 const PaymentExportHistory = () => {
   const [size, setSize] = useState("small");
   const onChange = (e) => {
@@ -67,10 +68,10 @@ const PaymentExportHistory = () => {
           separator=">"
           items={[
             {
-              title: <a href="/payments/">Payments</a>,
+              title: <Link to="/payments/">Payments</Link>,
             },
             {
-              title: <a href="">Export History</a>,
+              title: <Link to="">Export History</Link>,
             },
           ]}
         />
