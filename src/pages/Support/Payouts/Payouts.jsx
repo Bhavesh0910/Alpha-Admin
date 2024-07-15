@@ -1,34 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./Payouts.scss";
-import {
-  DatePicker,
-  Input,
-  Button,
-  Select,
-  Dropdown,
-  Menu,
-  Modal,
-  Form,
-} from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import {DatePicker, Input, Button, Select, Dropdown, Menu, Modal, Form} from "antd";
+import {DownOutlined} from "@ant-design/icons";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import kyc from "../../../assets/icons/greenTick.svg";
 import payoutInvoiceIcon from "../../../assets/icons/payoutInvoiceIcon.svg";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import comment from "../../../assets/icons/comment.svg";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  payoutListReq,
-  payoutListUpdateReq,
-} from "../../../store/NewReducers/payout";
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {payoutListReq, payoutListUpdateReq} from "../../../store/NewReducers/payout";
 
 import dayjs from "dayjs";
 
 // const { TabPane } = Tabs;
 // const { Search } = Input;
-const { Option } = Select;
-const { RangePicker } = DatePicker;
+const {Option} = Select;
+const {RangePicker} = DatePicker;
 
 const Payouts = () => {
   const [category, setCategory] = useState("all");
@@ -39,8 +27,8 @@ const Payouts = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { payoutData, count } = useSelector((state) => state.payoutList);
-  const { idToken, searchDates } = useSelector((state) => state.auth);
+  const {payoutData, count} = useSelector((state) => state.payoutList);
+  const {idToken, searchDates} = useSelector((state) => state.auth);
 
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
@@ -63,7 +51,7 @@ const Payouts = () => {
       id: "snkjxsa",
       email: "masusaxkasasm.tech",
       commission: ["Commission A", "Commission B"],
-      settlement_details: { bank: "ABC Bank", account_number: "1234567890" },
+      settlement_details: {bank: "ABC Bank", account_number: "1234567890"},
       payout_type: "PkkFS",
       method: "Rkjnkjise",
       amount: 1349845,
@@ -81,7 +69,7 @@ const Payouts = () => {
       id: "ajhdx2b",
       email: "example@example.com",
       commission: ["Commission C", "Commission D"],
-      settlement_details: { bank: "XYZ Bank", account_number: "0987654321" },
+      settlement_details: {bank: "XYZ Bank", account_number: "0987654321"},
       payout_type: "ZtyHS",
       method: "Poiuytrew",
       amount: 289746,
@@ -99,7 +87,7 @@ const Payouts = () => {
       id: "snkjxsa",
       email: "masusaxkasasm.tech",
       commission: ["Commission A", "Commission B"],
-      settlement_details: { bank: "ABC Bank", account_number: "1234567890" },
+      settlement_details: {bank: "ABC Bank", account_number: "1234567890"},
       payout_type: "PkkFS",
       method: "Rkjnkjise",
       amount: 1349845,
@@ -117,7 +105,7 @@ const Payouts = () => {
       id: "ajhdx2b",
       email: "example@example.com",
       commission: ["Commission C", "Commission D"],
-      settlement_details: { bank: "XYZ Bank", account_number: "0987654321" },
+      settlement_details: {bank: "XYZ Bank", account_number: "0987654321"},
       payout_type: "ZtyHS",
       method: "Poiuytrew",
       amount: 289746,
@@ -143,7 +131,7 @@ const Payouts = () => {
         activeTab,
         dates,
         dispatch,
-      })
+      }),
     );
   }, [idToken, dates, pageSize, pageNo, searchText, activeTab]);
 
@@ -154,7 +142,7 @@ const Payouts = () => {
         id: "snkjxsa",
         email: "masusaxkasasm.tech",
         commission: ["Commission A", "Commission B"],
-        settlement_details: { bank: "ABC Bank", account_number: "1234567890" },
+        settlement_details: {bank: "ABC Bank", account_number: "1234567890"},
         payout_type: "PkkFS",
         method: "Rkjnkjise",
         amount: 1349845,
@@ -172,7 +160,7 @@ const Payouts = () => {
         id: "ajhdx2b",
         email: "example@example.com",
         commission: ["Commission C", "Commission D"],
-        settlement_details: { bank: "XYZ Bank", account_number: "0987654321" },
+        settlement_details: {bank: "XYZ Bank", account_number: "0987654321"},
         payout_type: "ZtyHS",
         method: "Poiuytrew",
         amount: 289746,
@@ -382,17 +370,7 @@ const Payouts = () => {
           <Button
             icon={<DownOutlined />}
             className={`status-button ${
-              text === "in_progress"
-                ? "in_progress"
-                : text === "approved"
-                ? "approved"
-                : text === "accepted"
-                ? "accepted"
-                : text === "rejected"
-                ? "rejected"
-                : text === "new"
-                ? "new"
-                : ""
+              text === "in_progress" ? "in_progress" : text === "approved" ? "approved" : text === "accepted" ? "accepted" : text === "rejected" ? "rejected" : text === "new" ? "new" : ""
             }
     
                   `}
@@ -405,17 +383,7 @@ const Payouts = () => {
             }}
           >
             <p className="status_text">
-              {text === "in_progress"
-                ? "In progress"
-                : text === "approved"
-                ? "Approved"
-                : text === "accepted"
-                ? "Accepted"
-                : text === "rejected"
-                ? "Rejected"
-                : text === "new"
-                ? "New"
-                : ""}
+              {text === "in_progress" ? "In progress" : text === "approved" ? "Approved" : text === "accepted" ? "Accepted" : text === "rejected" ? "Rejected" : text === "new" ? "New" : ""}
             </p>
           </Button>
         </Dropdown>
@@ -471,6 +439,9 @@ const Payouts = () => {
               {"Reject"}
             </Button>
           </div>
+          {/* <div className="action_button">
+            <Button className="standard_button custom">{"Accept/Reject"}</Button>
+          </div> */}
         </>
       ),
     },
@@ -540,7 +511,7 @@ const Payouts = () => {
         id: record?.id,
         updatedStatus: formData,
         dispatch,
-      })
+      }),
     );
   };
 
@@ -628,8 +599,14 @@ const Payouts = () => {
                 }
               }}
             />
-            <div className="searchImg" onClick={() => handleSearch(search)}>
-              <img src={searchIcon} alt="searchIcon" />
+            <div
+              className="searchImg"
+              onClick={() => handleSearch(search)}
+            >
+              <img
+                src={searchIcon}
+                alt="searchIcon"
+              />
             </div>
           </div>
           <div className="filter_buttons">
@@ -686,6 +663,7 @@ const Payouts = () => {
           open={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
           onOk={modalAction === "Edit" ? handleEditComment : handleAction}
+          className="modal_wrapper"
         >
           {modalAction === "Edit" ? (
             <Form.Item label="Edit Comment">

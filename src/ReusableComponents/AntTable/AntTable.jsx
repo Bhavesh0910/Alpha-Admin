@@ -1,17 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Table } from "antd";
+import React, {useState, useEffect} from "react";
+import {Table} from "antd";
 import "./AntTable.scss";
 
-const AntTable = ({
-  triggerChange,
-  data,
-  columns,
-  totalItems,
-  pageSize,
-  setPageSize,
-  CurrentPageNo,
-  isExpandable,
-}) => {
+const AntTable = ({triggerChange, data, columns, totalItems, pageSize, setPageSize, CurrentPageNo, isExpandable, expandedRowRender}) => {
   const [pagination, setPagination] = useState({
     current: CurrentPageNo,
     pageSize,
@@ -57,17 +48,9 @@ const AntTable = ({
         size={"large"}
         scrollToFirstRowOnChange={true}
         expandable={
-          isExpandable
+          isExpandable && expandedRowRender
             ? {
-                expandedRowRender: (record) => (
-                  <p
-                    style={{
-                      margin: 0,
-                    }}
-                  >
-                    {record.description}
-                  </p>
-                ),
+                expandedRowRender: expandedRowRender,
               }
             : undefined
         }

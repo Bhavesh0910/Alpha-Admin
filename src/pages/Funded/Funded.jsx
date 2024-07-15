@@ -1,22 +1,13 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
-import {
-  DatePicker,
-  Button,
-  Select,
-  Dropdown,
-  Menu,
-  Modal,
-  Form,
-  Input,
-} from "antd";
-import { useNavigate } from "react-router-dom";
+import {DatePicker, Button, Select, Dropdown, Menu, Modal, Form, Input} from "antd";
+import {useNavigate} from "react-router-dom";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import comment from "../../assets/icons/comment.svg";
 import "./Funded.scss";
-import { DownOutlined } from "@ant-design/icons";
-const { Option } = Select;
-const { RangePicker } = DatePicker;
+import {DownOutlined} from "@ant-design/icons";
+const {Option} = Select;
+const {RangePicker} = DatePicker;
 const Funded = () => {
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
@@ -49,12 +40,15 @@ const Funded = () => {
       <>
         {parts.map((part, index) =>
           regex.test(part) ? (
-            <span key={index} className="highlight">
+            <span
+              key={index}
+              className="highlight"
+            >
               {part}
             </span>
           ) : (
             part
-          )
+          ),
         )}
       </>
     );
@@ -114,8 +108,8 @@ const Funded = () => {
       dataIndex: "comment",
       key: "comment",
       render: (text, record, index) => (
-        <div className="comment-cell">
-          {highlightText(text, searchText)}
+        <div className="comment_box">
+          <p>{highlightText(text, searchText)}</p>
           <img
             src={comment}
             alt="comment"
@@ -130,7 +124,10 @@ const Funded = () => {
       dataIndex: "status",
       key: "status",
       render: (text, record, index) => (
-        <Dropdown overlay={() => statusMenu(index)} trigger={["click"]}>
+        <Dropdown
+          overlay={() => statusMenu(index)}
+          trigger={["click"]}
+        >
           <Button
             icon={<DownOutlined />}
             className="status_button"
@@ -143,31 +140,9 @@ const Funded = () => {
             }}
           >
             <p
-              className={
-                text === "in-progress"
-                  ? "in_progress"
-                  : text === "approved"
-                  ? "approved"
-                  : text === "flagged"
-                  ? "flagged"
-                  : text === "dismissed"
-                  ? "dismissed"
-                  : text === "new"
-                  ? "new"
-                  : ""
-              }
+              className={text === "in-progress" ? "in_progress" : text === "approved" ? "approved" : text === "flagged" ? "flagged" : text === "dismissed" ? "dismissed" : text === "new" ? "new" : ""}
             >
-              {text === "in-progress"
-                ? "In Progress"
-                : text === "approved"
-                ? "Approved"
-                : text === "flagged"
-                ? "Flagged"
-                : text === "dismissed"
-                ? "Dismissed"
-                : text === "new"
-                ? "New"
-                : ""}
+              {text === "in-progress" ? "In Progress" : text === "approved" ? "Approved" : text === "flagged" ? "Flagged" : text === "dismissed" ? "Dismissed" : text === "new" ? "New" : ""}
             </p>
           </Button>
         </Dropdown>
@@ -187,9 +162,7 @@ const Funded = () => {
       title: "Details",
       dataIndex: "details",
       key: "details",
-      render: (text, record, index) => (
-        <Button className="account_metrics_btn">Account Metrics</Button>
-      ),
+      render: (text, record, index) => <Button className="account_metrics_btn">Account Metrics</Button>,
     },
   ];
 
@@ -269,7 +242,10 @@ const Funded = () => {
             onChange={(e) => handleSearch(e.target.value)}
           />
           <div className="searchImg">
-            <img src={searchIcon} alt="searchIcon" />
+            <img
+              src={searchIcon}
+              alt="searchIcon"
+            />
           </div>
         </div>
         <div className="filter_buttons">

@@ -12,9 +12,18 @@
     line-height: normal;
   }
 
+  .header_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .table_header_filter {
     display: flex !important;
     gap: 20px;
+    @media only screen and (max-width: 1410px) {
+      flex-wrap: wrap;
+    }
 
     @media only screen and (max-width: 900px) {
       flex-direction: column;

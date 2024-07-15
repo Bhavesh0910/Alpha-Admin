@@ -372,20 +372,6 @@
   }
 }
 
-.country_name_wrapper {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
-  justify-content: flex-start;
-
-  img {
-    width: 33px !important;
-    height: 26px !important;
-    border-radius: 100% !important;
-  }
-}
-
 .status_text {
   &.evaluation {
     color: #f26419;

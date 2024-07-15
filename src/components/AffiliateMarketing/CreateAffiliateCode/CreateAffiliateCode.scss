@@ -26,7 +26,7 @@
     }
     &:focus-within {
       border: 1px solid var(--Brand, #04d9ff) !important;
-      background: var(--Main-Background, #f6fefe) !important;
+      background: var(--Table-header-fill, #edf0f0) !important;
     }
   }
 
@@ -41,7 +41,7 @@
     }
     &:focus-within {
       border: 1px solid var(--Brand, #04d9ff) !important;
-      background: var(--Main-Background, #f6fefe) !important;
+      background: var(--Table-header-fill, #edf0f0) !important;
     }
   }
 
@@ -59,6 +59,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+
       label {
         color: var(--Text-white, #1e1e1e);
         font-family: var(--primary-font-family);
@@ -66,6 +67,13 @@
         font-style: normal;
         font-weight: 600;
         line-height: normal;
+      }
+
+      .ant-input-affix-wrapper {
+        &:focus-within {
+          border: 1px solid var(--Brand, #04d9ff) !important;
+          background: var(--Table-header-fill, #edf0f0) !important;
+        }
       }
     }
 
@@ -78,6 +86,14 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 20px;
+
+      input {
+        border: 0 !important;
+        &:focus-within {
+          border: 0 !important;
+          background: var(--Table-header-fill, #edf0f0) !important;
+        }
+      }
     }
 
     .create_button_wrapper {

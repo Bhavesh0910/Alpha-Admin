@@ -1,9 +1,9 @@
-import { Select } from "antd";
+import {Select} from "antd";
 import "./GeneralLog.scss";
-import React, { useState } from "react";
+import React, {useState} from "react";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
-const { Option } = Select;
+const {Option} = Select;
 const GeneralLog = () => {
   const [searchText, setSearchText] = useState("");
   const [activeTab, setActiveTab] = useState("all");
@@ -45,6 +45,11 @@ const GeneralLog = () => {
       title: "Description",
       dataIndex: "description",
       key: "description",
+      render: (text) => (
+        <div className="description_wrapper">
+          <p>{text}</p>
+        </div>
+      ),
     },
     {
       title: "Date",
@@ -60,8 +65,7 @@ const GeneralLog = () => {
       category: "user-blocked",
       event: "Success",
       reference: "Vestibulum eu quam nec neque pellent",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
       date: "5/30/14",
     },
   ];
@@ -87,11 +91,17 @@ const GeneralLog = () => {
             onChange={(e) => handleSearch(e.target.value)}
           />
           <div className="searchImg">
-            <img src={searchIcon} alt="searchIcon" />
+            <img
+              src={searchIcon}
+              alt="searchIcon"
+            />
           </div>
         </div>
       </div>
-      <AntTable data={dummyData} columns={columns} />
+      <AntTable
+        data={dummyData}
+        columns={columns}
+      />
     </div>
   );
 };

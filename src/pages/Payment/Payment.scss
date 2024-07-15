@@ -11,17 +11,30 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+    gap: 10px;
+
+    @media only screen and (max-width: 1400px) {
+      flex-wrap: wrap;
+    }
 
     .header_left {
       display: flex;
       align-items: center;
       gap: 53px;
+
+      @media only screen and (max-width: 1290px) {
+        flex-wrap: wrap;
+        gap: 20px;
+      }
     }
 
     .header_middle {
       display: flex;
       align-items: center;
       gap: 10px;
+      @media only screen and (max-width: 650px) {
+        flex-wrap: wrap;
+      }
     }
 
     .filter_buttons {
@@ -34,6 +47,10 @@
     flex-direction: column;
     gap: 10px;
     align-items: flex-end;
+
+    @media only screen and (max-width: 1400px) {
+      margin-left: auto;
+    }
 
     button {
       color: var(--Text-white, #1e1e1e);

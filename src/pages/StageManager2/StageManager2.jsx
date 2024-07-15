@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import "./StageManager2.scss";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
-import {Button, Dropdown, Menu, Select, Tooltip, notification} from "antd";
+import {Button, DatePicker, Dropdown, Menu, Select, Tooltip, notification} from "antd";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import greenTickIcon from "../../assets/icons/greenTick.svg";
 import crossRedIcon from "../../assets/icons/cross_icon_red.svg";
@@ -21,6 +21,7 @@ import {setActiveAccount, setActiveUser} from "../../store/reducers/accountSlice
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
 const {Option} = Select;
+const {RangePicker} = DatePicker;
 
 const StageManager2 = () => {
   const type = "1_step";
@@ -295,10 +296,16 @@ const StageManager2 = () => {
   }
   return (
     <div className="stageManager_container">
-      <h2>Stage 2</h2>
-      <div className="mobile_headers">
-        <h4>Stage Manager</h4>
+      <div className="header_wrapper">
+        <h2>Stage 2</h2>
+        <Button
+          // onClick={() => navigate("payments-view-logs")}
+          className="view_logs__btn standard_button"
+        >
+          View Logs
+        </Button>
       </div>
+
       <div className="table_header_filter">
         <div className="search_box_wrapper">
           <Select
@@ -362,7 +369,14 @@ const StageManager2 = () => {
           >
             Rejected
           </Button>
-        </div>
+        </div>{" "}
+        <RangePicker
+          // placeholder={dates}
+          //  defaultValue={defaultDates}
+          // onChange={updateDateRange}
+          autoFocus
+          // presets={rangePresets}
+        />
       </div>
       {isLoading && <LoaderOverlay />}
 

@@ -587,6 +587,11 @@ input:-webkit-autofill:active {
   border-radius: var(--Corner-1, 10px);
   border: 1px solid var(--Stroke, #252a29) !important;
   background: var(--Main-Background, #f6fefe);
+
+  @media only screen and (max-width: 650px) {
+    flex-wrap: wrap;
+  }
+
   button {
     border-radius: var(--Corner-1, 5px);
     background: transparent !important;
@@ -682,7 +687,7 @@ input:-webkit-autofill:active {
   @media only screen and (max-width: 768px) {
     display: block;
     h4 {
-      color: var(--Text-white, #1e1e1e) !important;
+      color: var(--Text-white, #fff) !important;
       font-family: var(--primary-font-family);
       font-size: 16px;
       font-style: normal;
@@ -810,4 +815,49 @@ input:-webkit-autofill:active {
 .ant-checkbox-checked {
   background-color: #04d9ff !important;
   border-color: #04d9ff !important;
+}
+
+// Country with flag field CSS
+.country_name_wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+
+  img {
+    width: 33px !important;
+    height: 26px !important;
+    border-radius: 100% !important;
+  }
+}
+
+// Expandable Row Table CSS
+.expandable_description {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+
+  .description_box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    label {
+      color: var(--Box-1, #27313e);
+      font-family: "Nunito Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    p {
+      color: var(--Brand-2, #12181f);
+      font-family: "Nunito Sans";
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+  }
 }

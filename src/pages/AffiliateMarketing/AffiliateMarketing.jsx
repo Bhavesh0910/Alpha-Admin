@@ -1,57 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import { Button, DatePicker, Select } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
-import searchIcon from '../../assets/icons/searchIcon.svg';
-import AntTable from '../../ReusableComponents/AntTable/AntTable';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchAffiliateList } from '../../store/NewReducers/affiliateSlice';
-import LoaderOverlay from '../../ReusableComponents/LoaderOverlay';
+import React, {useEffect, useState} from "react";
+import {Button, DatePicker, Select} from "antd";
+import {Link, useNavigate} from "react-router-dom";
+import searchIcon from "../../assets/icons/searchIcon.svg";
+import AntTable from "../../ReusableComponents/AntTable/AntTable";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchAffiliateList} from "../../store/NewReducers/affiliateSlice";
+import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
 import "./AffiliateMarketing.scss";
 import exportBtnIcon from "../../assets/icons/export_btn_icon.svg";
 import UserDetails from "../../components/AffiliateMarketing/UserDetails/UserDetails";
-const { Option } = Select;
+import ReactCountryFlag from "react-country-flag";
+const {Option} = Select;
 
-const AffiliateMarketing = ({ userData }) => {
-  const [searchText, setSearchText] = useState('');
-  const [activeTab, setActiveTab] = useState('all');
-  const [category, setCategory] = useState('all');
+const AffiliateMarketing = ({userData}) => {
+  const lookup = require("country-code-lookup");
+  const [searchText, setSearchText] = useState("");
+  const [activeTab, setActiveTab] = useState("all");
+  const [category, setCategory] = useState("all");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [filterData, setFilterData] = useState([]);
 
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
-  const { affiliateData, currentPage, totalPages, totalItems , isLoading } = useSelector((state) => state.affiliate);
+  const {affiliateData, currentPage, totalPages, totalItems, isLoading} = useSelector((state) => state.affiliate);
   const idToken = useSelector((state) => state.auth.idToken);
 
-  console.log(totalItems , totalPages)
+  console.log(totalItems, totalPages);
   useEffect(() => {
-    dispatch(fetchAffiliateList({
-      idToken,
-      pageNo,
-      pageSize,
-      searchText,
-      
-    }));
-  }, [pageNo , pageSize, , searchText , currentPage, dispatch]);
-
+    dispatch(
+      fetchAffiliateList({
+        idToken,
+        pageNo,
+        pageSize,
+        searchText,
+      }),
+    );
+  }, [pageNo, pageSize, , searchText, currentPage, dispatch]);
 
   useEffect(() => {
-    setFilterData(affiliateData)
-  }, [affiliateData])
+    setFilterData(affiliateData);
+  }, [affiliateData]);
   const handleRowClick = (affiliateId, email) => {
     const url = `/affiliate-marketing/affiliateMarketing-logs?email=${email}`;
     navigate(url);
   };
 
-
   const [isUserDetailOpened, setIsUserDetailOpened] = useState(false);
-  const [id, setId] = useState()
+  const [id, setId] = useState();
   const handleViewDetailsBtn = (id) => {
     setIsUserDetailOpened(!isUserDetailOpened);
-    setId(id)
-    console.log(id)
+    setId(id);
+    console.log(id);
   };
 
   function triggerChange(page, updatedPageSize) {
@@ -61,38 +62,86 @@ const AffiliateMarketing = ({ userData }) => {
 
   const columns = [
     {
-      title: 'ID',
-      dataIndex: 'id',
+      title: "ID",
+      dataIndex: "id",
       render: (text, record) => (
-        <div onClick={() => handleRowClick(record.id, record.email)} className="country_flag_div">
-          <img src={text.flag} alt="flag" />
+        <div
+          onClick={() => handleRowClick(record.id, record.email)}
+          className="country_flag_div"
+        >
+          <img
+            src={text.flag}
+            alt="flag"
+          />
           {text}
         </div>
       ),
     },
     {
-      title: 'Full Name',
-      dataIndex: 'fullname',
+      title: "Full Name",
+      dataIndex: "fullname",
       render: (text, record) => (
         <div onClick={() => handleRowClick(record.id, record.email)}>
           {text
-            ?.split(' ')
+            ?.split(" ")
             .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ')}
+            .join(" ")}
         </div>
       ),
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
+      title: "Email",
+      dataIndex: "email",
       render: (text, record) => (
-        <div onClick={() => handleRowClick(record.id, record.email)} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div
+          onClick={() => handleRowClick(record.id, record.email)}
+          style={{display: "flex", alignItems: "center", gap: "12px"}}
+        >
           {text
-            ?.split(' ')
+            ?.split(" ")
             .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ')}
+            .join(" ")}
         </div>
       ),
+    },
+    {
+      title: "Country",
+      dataIndex: "country",
+      key: "country",
+      render: (country) => {
+        console.log(country, "country");
+        const countryName = country;
+        const countryCode = lookup.byCountry(countryName);
+        if (countryCode) {
+          return (
+            <div className="country_name_wrapper">
+              <ReactCountryFlag
+                countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
+                svg={true}
+                aria-label={countryName}
+              />
+              <span>{countryName}</span>
+            </div>
+          );
+        } else {
+          return <span>{countryName}</span>;
+        }
+      },
+    },
+    {
+      title: "Comission Earned",
+      dataIndex: "comission_earned",
+      key: "comission_earned",
+    },
+    {
+      title: "200K Challenge",
+      dataIndex: "200k_challenge",
+      key: "200k_challenge",
+    },
+    {
+      title: "300K Challenge",
+      dataIndex: "300k_challenge",
+      key: "300k_challenge",
     },
     {
       title: "Referred List",
@@ -126,7 +175,7 @@ const AffiliateMarketing = ({ userData }) => {
 
   const handleSearch = (e) => {
     if (e.key === "Enter") {
-      console.log(searchText , e.key)
+      console.log(searchText, e.key);
       setSearchText(e.target.value);
     }
   };
@@ -165,31 +214,34 @@ const AffiliateMarketing = ({ userData }) => {
             placeholder="Search..."
             className="search_input"
             onKeyDown={(e) => handleSearch(e)}
-
           />
           <div className="searchImg">
-            <img src={searchIcon} alt="searchIcon" />
+            <img
+              src={searchIcon}
+              alt="searchIcon"
+            />
           </div>
         </div>
         <div className="export_btn">
-          <Button
-            onClick={() =>
-              navigate("/affiliate-marketing/create-affiliate-code")
-            }
-          >
-            <img src={exportBtnIcon} alt="create_btn_icon" />
+          <Button onClick={() => navigate("/affiliate-marketing/create-affiliate-code")}>
+            <img
+              src={exportBtnIcon}
+              alt="create_btn_icon"
+            />
             Create
           </Button>
         </div>
       </div>
       {isLoading && <LoaderOverlay />}
-      <AntTable data={filterData} columns={columns} 
-            totalPages={Math.ceil(totalItems / pageSize)}
-            totalItems={totalItems}
-            pageSize={pageSize}
-            CurrentPageNo={pageNo}
-            setPageSize={setPageSize}
-            triggerChange={triggerChange}
+      <AntTable
+        data={filterData}
+        columns={columns}
+        totalPages={Math.ceil(totalItems / pageSize)}
+        totalItems={totalItems}
+        pageSize={pageSize}
+        CurrentPageNo={pageNo}
+        setPageSize={setPageSize}
+        triggerChange={triggerChange}
       />
 
       {isUserDetailOpened && isUserDetailOpened === true ? (
