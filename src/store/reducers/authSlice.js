@@ -6,7 +6,8 @@ const initialState = {
   idToken: null,
   refreshToken: null,
   isLoading: false,
-  searchDates: [dayjs().subtract(7, 'day'), dayjs()],
+  searchDates: [ dayjs().subtract(7, 'day').format('YYYY-MM-DD'),
+  dayjs().format('YYYY-MM-DD')],
 };
 
 const authSlice = createSlice({

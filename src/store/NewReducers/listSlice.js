@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getUserList, ipLogsReq } from '../../utils/api/apis';
+import { baseUrl, changeUserStatus, getUserList, ipLogsReq } from '../../utils/api/apis';
 import { returnErrors } from '../reducers/error';
+import axios from 'axios';
+import { returnMessages } from '../reducers/message';
 
 export const fetchUserList = createAsyncThunk(
   'list/fetchUserList',
@@ -22,9 +24,9 @@ export const fetchUserList = createAsyncThunk(
 
 export const fetchIpLogs = createAsyncThunk(
   'list/fetchIpLogs',
-  async ({ idToken, search, blocked, currentPage }, { dispatch, rejectWithValue }) => {
+  async ({ idToken, search, currentPage }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await ipLogsReq(idToken, search, blocked, currentPage);
+      const response = await ipLogsReq(idToken, search, currentPage);
       if (response?.status < 399) {
         return response?.data;
       } else {
@@ -37,6 +39,28 @@ export const fetchIpLogs = createAsyncThunk(
     }
   }
 );
+
+
+// Thunk to toggle active status of a user
+export const toggleActiveUser = createAsyncThunk(
+  'user/toggleActiveUser',
+  async ({ id, note = '', idToken }, { rejectWithValue, dispatch }) => {
+    try {
+
+
+      const response = await changeUserStatus(idToken, note , id);
+      dispatch(returnMessages('Status Changes Successfully'));
+      console.log(response)
+        return response;
+
+
+    } catch (error) {
+      dispatch(returnErrors("Error", 400)); 
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 
 const listSlice = createSlice({
   name: 'list',

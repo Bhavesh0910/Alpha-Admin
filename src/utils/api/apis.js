@@ -616,7 +616,7 @@ const getUserList = async (idToken, searchText , pageNo , pageSize, authType, ac
     params: params,
   };
 
-  const url = `${baseUrl}auth/admin/user-list/`;
+  const url = `${baseUrl}user-list/`;
 
   let output;
   await axios
@@ -895,17 +895,20 @@ const getPaymentListOLD = async (idToken, status) => {
 };
 
 // for user status
-const changeUserStatus = async (idToken, email, data) => {
+const changeUserStatus = async (idToken, note = '' , id) => {
   let config = {
     headers: {
       Authorization: `Bearer ${idToken}`,
     },
   };
+  const payload = new FormData();
+  payload.append('id', id);
+  payload.append('note', note);
   let output;
   await axios
     .post(
-      `${baseUrl}auth/admin/change-user-status/?email=${email}`,
-      data,
+      `${baseUrl}v2/deactivate/user/`,
+      payload,
       config
     )
     .then((res) => {
@@ -1925,14 +1928,12 @@ const CreateTradingAccountReq = async (idToken, data) => {
 
 
 // IP logs
-const ipLogsReq = async (idToken, search, blocked, currentPage) => {
+const ipLogsReq = async (idToken, search, currentPage) => {
   const params = {
     page: currentPage,
     page_size: 20,
   };
-  if (blocked) {
-    params.blocked = blocked;
-  }
+
   if (search) {
     params.search = search;
     params.page = 1;
@@ -1945,7 +1946,7 @@ const ipLogsReq = async (idToken, search, blocked, currentPage) => {
       },
       params: params,
     };
-    const response = await axios.get(`${baseUrl}auth/admin/ip-logs/`, config);
+    const response = await axios.get(`${baseUrl}v2/ip-logs/`, config);
     return response;
   } catch (error) {
     return error;
