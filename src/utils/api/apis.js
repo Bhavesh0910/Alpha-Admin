@@ -1,17 +1,14 @@
 import axios from "axios";
-import { retry } from "redux-saga/effects";
-import { returnErrors } from "../../store/reducers/error";
-import { setIsLoading } from "../../store/reducers/authSlice";
-
-
+import {retry} from "redux-saga/effects";
+import {returnErrors} from "../../store/reducers/error";
+import {setIsLoading} from "../../store/reducers/authSlice";
 
 //  Acg Futures Admin
 // export const baseUrl = "http://35.177.123.105/";
 export const baseUrl = "https://backend.alphacapitalgroup.uk/";
 
-
 export const alphaNewLogin = async (payload, dispatch) => {
-  const { email, password } = payload;
+  const {email, password} = payload;
 
   try {
     const response = await axios.post(`${baseUrl}adm/email/signin/`, {
@@ -22,22 +19,7 @@ export const alphaNewLogin = async (payload, dispatch) => {
   } catch (err) {
     throw err;
   }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+};
 
 const signupRequest = async (formdata) => {
   const response = await axios.post(`${baseUrl}auth/register/`, formdata);
@@ -117,7 +99,7 @@ const updateUserAddress = async (idToken, data) => {
   return output;
 };
 
-const updateUserDetailsRequest = async ({ formData, idToken }) => {
+const updateUserDetailsRequest = async ({formData, idToken}) => {
   let config = {
     headers: {
       Authorization: `Bearer ${idToken}`,
@@ -158,7 +140,6 @@ const loadUser = async (idToken) => {
 
 //funding
 
-
 const getFundingDetails = async (idToken) => {
   let config = {
     headers: {
@@ -180,16 +161,8 @@ const getFundingDetails = async (idToken) => {
   return output;
 };
 
-
 //support
-const getSupportTableDetails = async (
-  idToken,
-  pageNumber,
-  type,
-  severity,
-  status,
-  search
-) => {
+const getSupportTableDetails = async (idToken, pageNumber, type, severity, status, search) => {
   const params = {
     page: pageNumber,
     page_size: 50,
@@ -229,10 +202,7 @@ const getSupportTableDetails = async (
 
   return output;
 };
-const getSupportTableDetailsNew = async (
-  idToken,
-  searchText, pageNo, pageSize, activeTab
-) => {
+const getSupportTableDetailsNew = async (idToken, searchText, pageNo, pageSize, activeTab) => {
   // const params = {
   //   page: pageNo,
   //   page_size: 50,
@@ -258,11 +228,11 @@ const getSupportTableDetailsNew = async (
     // params: params,
   };
   let output;
-  console.log("Active : ",activeTab);
+  console.log("Active : ", activeTab);
   // searchText=searchText || "";
   // pageNo= pageNo || "", pageSize, activeTab
   await axios
-    .get(`${baseUrl}account/admin/contracts/?search=${searchText}&status=${activeTab==="all" ? "" : activeTab}&page=${pageNo}&page_size=${pageSize}`, config)
+    .get(`${baseUrl}account/admin/contracts/?search=${searchText}&status=${activeTab === "all" ? "" : activeTab}&page=${pageNo}&page_size=${pageSize}`, config)
     .then((res) => {
       output = res.data;
       return output;
@@ -341,10 +311,7 @@ const getCertificatesDetails = async (idToken, pageNumber, phase, search) => {
   };
 
   try {
-    const response = await axios.get(
-      `${baseUrl}certificate/admin/all/`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}certificate/admin/all/`, config);
     return response;
   } catch (error) {
     return error;
@@ -353,16 +320,7 @@ const getCertificatesDetails = async (idToken, pageNumber, phase, search) => {
 
 // TraderList
 
-const getAllTradersRequest = async (
-  idToken,
-  searchValue,
-  pageNumber,
-  phase,
-  active,
-  competition,
-  tab,
-  dispatch
-) => {
+const getAllTradersRequest = async (idToken, searchValue, pageNumber, phase, active, competition, tab, dispatch) => {
   try {
     const params = {
       page: pageNumber,
@@ -398,10 +356,7 @@ const getAllTradersRequest = async (
       params: params,
     };
 
-    const response = await axios.get(
-      `${baseUrl}account/admin/accounts-list/`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}account/admin/accounts-list/`, config);
 
     if (response?.status < 399) return response.data;
     if (response.response?.status > 399) {
@@ -435,10 +390,7 @@ const getSearchTradersRequest = async (idToken, competition, search) => {
       params: params,
     };
 
-    const response = await axios.get(
-      `${baseUrl}account/admin/accounts-list/`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}account/admin/accounts-list/`, config);
     return response.data;
   } catch (error) {
     console.error("Error:", error);
@@ -457,10 +409,7 @@ const traderAffiliateRefList = async (idToken, id) => {
       //   affiliate_code_id: id,
       // },
     };
-    const response = await axios.get(
-      `${baseUrl}affiliates/admin/referred-list/${id}`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}affiliates/admin/referred-list/${id}`, config);
     return response.data;
   } catch (error) {
     console.error("Error in getting trader ref list", error);
@@ -530,7 +479,7 @@ const sendCredential = async (idToken, login_id) => {
 
   return output;
 };
-const getAffiliateListV2 = async (idToken, pageNo , pageSize , search) => {
+const getAffiliateListV2 = async (idToken, pageNo, pageSize, search) => {
   // console.log("search", search);
   const params = {
     page: pageNo,
@@ -564,19 +513,11 @@ const postAffiliateDetails = async (idToken, data) => {
         "Content-Type": "application/json",
       },
     };
-    const response = await axios.post(
-      `${baseUrl}affiliates/admin/v2/create-link/`,
-      data,
-      config
-    );
+    const response = await axios.post(`${baseUrl}affiliates/admin/v2/create-link/`, data, config);
     if (response.status === 201 || response.status === 200) {
       return response.data;
     } else {
-      console.error(
-        "POST request for affiliate data failed:",
-        response.status,
-        response.data
-      );
+      console.error("POST request for affiliate data failed:", response.status, response.data);
       throw new Error("POST request failed");
     }
   } catch (error) {
@@ -586,7 +527,7 @@ const postAffiliateDetails = async (idToken, data) => {
 };
 
 // User List
-const getUserList = async (idToken, searchText , pageNo , pageSize, authType, active) => {
+const getUserList = async (idToken, searchText, pageNo, pageSize, authType, active) => {
   const params = {
     page: pageNo,
     page_size: 21,
@@ -603,7 +544,7 @@ const getUserList = async (idToken, searchText , pageNo , pageSize, authType, ac
     params.search = searchText;
     params.page = 1;
   }
-  console.log(authType)
+  console.log(authType);
   if (authType) {
     params.auth_type = authType;
     params.page = 1;
@@ -663,13 +604,7 @@ const postAdminLogin = async (idToken, value) => {
 };
 
 //Payout Apis
-const getPayoutListRequest = async (
-  idToken,
-  search,
-  method,
-  payoutType,
-  currentPage
-) => {
+const getPayoutListRequest = async (idToken, search, method, payoutType, currentPage) => {
   const params = {
     page: currentPage,
     page_size: 20,
@@ -719,11 +654,7 @@ const generatePayoutRequest = async (idToken, data) => {
     },
   };
   try {
-    const response = await axios.put(
-      `${baseUrl}user/admin/payout/${data.id}/`,
-      data?.data,
-      config
-    );
+    const response = await axios.put(`${baseUrl}user/admin/payout/${data.id}/`, data?.data, config);
     return response;
   } catch (error) {
     return error;
@@ -736,11 +667,7 @@ const generatePayoutRequestNew = async (idToken, data) => {
     },
   };
   try {
-    const response = await axios.post(
-      `${baseUrl}user/admin/payout/`,
-      data,
-      config
-    );
+    const response = await axios.post(`${baseUrl}user/admin/payout/`, data, config);
     return response;
   } catch (error) {
     return error;
@@ -793,7 +720,7 @@ const getPaymentList = async (idToken, search, status, plan, currentPage) => {
 const getAffiliateCodelist = async (idToken, search, currentPage) => {
   const params = {
     page: currentPage,
-    page_size: 21,
+    page_size: 20,
   };
 
   // if (status) {
@@ -814,7 +741,7 @@ const getAffiliateCodelist = async (idToken, search, currentPage) => {
     params: params,
   };
 
-  const url = `${baseUrl}affiliates/admin/affiliate-code-list/v2/`;
+  const url = `${baseUrl}v2/list/affiliate-code/`;
 
   let output;
   await axios
@@ -832,12 +759,11 @@ const getAffiliateCodelist = async (idToken, search, currentPage) => {
   return output;
 };
 
-const getCodelistV2 = async (idToken, pageNo , pageSize ,  email) => {
+const getCodelistV2 = async (idToken, pageNo, pageSize, email) => {
   const params = {
     page: pageNo,
     page_size: pageSize,
   };
-
 
   if (email) {
     params.affiliate = email;
@@ -895,22 +821,18 @@ const getPaymentListOLD = async (idToken, status) => {
 };
 
 // for user status
-const changeUserStatus = async (idToken, note = '' , id) => {
+const changeUserStatus = async (idToken, note = "", id) => {
   let config = {
     headers: {
       Authorization: `Bearer ${idToken}`,
     },
   };
   const payload = new FormData();
-  payload.append('id', id);
-  payload.append('note', note);
+  payload.append("id", id);
+  payload.append("note", note);
   let output;
   await axios
-    .post(
-      `${baseUrl}v2/deactivate/user/`,
-      payload,
-      config
-    )
+    .post(`${baseUrl}v2/deactivate/user/`, payload, config)
     .then((res) => {
       output = res;
 
@@ -975,10 +897,7 @@ const getRiskManagement = async (idToken) => {
     },
   };
   try {
-    const response = await axios.get(
-      `${baseUrl}account/admin/risk-management/`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}account/admin/risk-management/`, config);
     return response;
   } catch (error) {
     return error;
@@ -987,7 +906,7 @@ const getRiskManagement = async (idToken) => {
 
 //coupon
 
-const getCouponDetails = async ({ idToken, inputText }) => {
+const getCouponDetails = async ({idToken, inputText}) => {
   const params = {};
   if (inputText) {
     params.coupon = inputText;
@@ -1023,11 +942,7 @@ const postCouponDetails = async (idToken, data) => {
         "Content-Type": "application/json",
       },
     };
-    const response = await axios.post(
-      `${baseUrl}payment/admin/coupon/`,
-      data,
-      config
-    );
+    const response = await axios.post(`${baseUrl}payment/admin/coupon/`, data, config);
 
     return response;
   } catch (error) {
@@ -1060,20 +975,12 @@ const updateCouponDetails = async (idToken, data) => {
   };
 
   try {
-    const response = await axios.patch(
-      `${baseUrl}payment/admin/coupon/?coupon=${data.id}`,
-      data,
-      config
-    );
+    const response = await axios.patch(`${baseUrl}payment/admin/coupon/?coupon=${data.id}`, data, config);
 
     if (response.status === 201 || response.status === 200) {
       return response.data;
     } else {
-      console.error(
-        "PATCH request for coupon data failed:",
-        response.status,
-        response.data
-      );
+      console.error("PATCH request for coupon data failed:", response.status, response.data);
       throw new Error("PATCH request failed");
     }
   } catch (error) {
@@ -1114,20 +1021,12 @@ const postAdvDetails = async (idToken, data) => {
       },
     };
 
-    const response = await axios.post(
-      `${baseUrl}marketing/admin/marketing/`,
-      data,
-      config
-    );
+    const response = await axios.post(`${baseUrl}marketing/admin/marketing/`, data, config);
 
     if (response.status === 201 || response.status === 200) {
       return response.data;
     } else {
-      console.error(
-        "POST request for adv data failed:",
-        response.status,
-        response.data
-      );
+      console.error("POST request for adv data failed:", response.status, response.data);
       throw new Error("POST request failed");
     }
   } catch (error) {
@@ -1203,7 +1102,7 @@ const getCompDetails = async (idToken) => {
   return output;
 };
 
-export const getOneCompDetails = async (idToken , id) => {
+export const getOneCompDetails = async (idToken, id) => {
   let config = {
     headers: {
       Authorization: `Bearer ${idToken}`,
@@ -1225,12 +1124,11 @@ export const getOneCompDetails = async (idToken , id) => {
   return output;
 };
 
-
 const postCompDetails = async (idToken, formData) => {
   try {
     const response = await axios.post(`${baseUrl}adm/competition/`, formData, {
       headers: {
-        Authorization: `Bearer ${idToken}`
+        Authorization: `Bearer ${idToken}`,
         // "Content-Type": "multipart/form-data",
       },
     });
@@ -1261,8 +1159,8 @@ const deleteCompDetails = async (idToken, id) => {
   }
 };
 
-const updateCompDetails = async (idToken, id , data) => {
-  console.log(data , id)
+const updateCompDetails = async (idToken, id, data) => {
+  console.log(data, id);
   const apiUrl = `${baseUrl}adm/competition/${id}`;
 
   const config = {
@@ -1338,10 +1236,7 @@ const getPlansDetails = async (idToken) => {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get(
-      `${baseUrl}account/admin/challenges/`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}account/admin/challenges/`, config);
     return response.data;
   } catch (error) {
     return error;
@@ -1370,26 +1265,18 @@ const getChallengesDetails = async (idToken) => {
   return output;
 };
 
-const postPlansDetails = async ({ idToken, data }) => {
+const postPlansDetails = async ({idToken, data}) => {
   try {
     let config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.post(
-      `${baseUrl}account/admin/challenges/`,
-      data,
-      config
-    );
+    const response = await axios.post(`${baseUrl}account/admin/challenges/`, data, config);
     if (response.status === 201 || response.status === 200) {
       return response;
     } else {
-      console.error(
-        "POST request for plans data failed:",
-        response.status,
-        response.data
-      );
+      console.error("POST request for plans data failed:", response.status, response.data);
     }
   } catch (error) {
     return error;
@@ -1397,7 +1284,7 @@ const postPlansDetails = async ({ idToken, data }) => {
   }
 };
 
-const updatePlansDetails = async ({ idToken, data, id }) => {
+const updatePlansDetails = async ({idToken, data, id}) => {
   const apiUrl = `${baseUrl}account/admin/challenges/${id}`;
 
   const config = {
@@ -1422,7 +1309,7 @@ const updatePlansDetails = async ({ idToken, data, id }) => {
   return output;
 };
 
-const deletePlansDetails = async ({ idToken, id }) => {
+const deletePlansDetails = async ({idToken, id}) => {
   const apiUrl = `${baseUrl}account/admin/challenges/${id}`;
 
   const config = {
@@ -1474,19 +1361,11 @@ const postPlansTableDetails = async (idToken, data) => {
         "Content-Type": "application/json",
       },
     };
-    const response = await axios.post(
-      `${baseUrl}account/admin/plans/`,
-      data,
-      config
-    );
+    const response = await axios.post(`${baseUrl}account/admin/plans/`, data, config);
     if (response.status === 201 || response.status === 200) {
       return response;
     } else {
-      console.error(
-        "POST request for plans data failed:",
-        response.status,
-        response.data
-      );
+      console.error("POST request for plans data failed:", response.status, response.data);
     }
   } catch (error) {
     return error;
@@ -1501,10 +1380,7 @@ const getFundingEvaluationPlansRequest = async (idToken) => {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get(
-      `${baseUrl}account/funding-evaluation/`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}account/funding-evaluation/`, config);
     return response.data;
   } catch (error) {
     throw error;
@@ -1534,10 +1410,7 @@ const getCompetitionListRequest = async (idToken) => {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get(
-      `${baseUrl}account/competition-list/`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}account/competition-list/`, config);
     return response.data;
   } catch (error) {
     throw error;
@@ -1551,11 +1424,7 @@ const enterCompetitionRequest = async (idToken, body) => {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.post(
-      `${baseUrl}account/participate-competition/`,
-      body,
-      config
-    );
+    const response = await axios.post(`${baseUrl}account/participate-competition/`, body, config);
     return response;
   } catch (error) {
     return error;
@@ -1569,25 +1438,14 @@ const getLeaderboardDetailsReq = async (idToken, id) => {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get(
-      `${baseUrl}user/competition/${id}/`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}user/competition/${id}/`, config);
     return response;
   } catch (error) {
     return error;
   }
 };
 
-const getUserAccountListRequest = async (idToken,
-  searchValue,
-  pageNumber,
-  phase,
-  active,
-  competition,
-  tab,
-  dispatch
-) => {
+const getUserAccountListRequest = async (idToken, searchValue, pageNumber, phase, active, competition, tab, dispatch) => {
   try {
     const params = {
       page: pageNumber,
@@ -1623,10 +1481,7 @@ const getUserAccountListRequest = async (idToken,
       params: params,
     };
 
-    const response = await axios.get(
-      `${baseUrl}account/admin/accounts-list/`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}account/admin/accounts-list/`, config);
 
     if (response?.status < 399) return response.data;
     if (response.response?.status > 399) {
@@ -1643,11 +1498,9 @@ const getUserAccountListRequest = async (idToken,
       results: [],
     };
   }
-
-
 };
 
-const getAccountMetricsRequest = async ({ idToken, loginId, dispatch }) => {
+const getAccountMetricsRequest = async ({idToken, loginId, dispatch}) => {
   try {
     let config = {
       headers: {
@@ -1655,10 +1508,7 @@ const getAccountMetricsRequest = async ({ idToken, loginId, dispatch }) => {
       },
     };
 
-    const response = await axios.get(
-      `${baseUrl}account/admin/metrics/${loginId}`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}account/admin/metrics/${loginId}`, config);
     if (response.status >= 400) {
       throw new Error(response);
     }
@@ -1668,17 +1518,14 @@ const getAccountMetricsRequest = async ({ idToken, loginId, dispatch }) => {
     throw error;
   }
 };
-const getBalanceChartRequest = async ({ idToken, loginId }) => {
+const getBalanceChartRequest = async ({idToken, loginId}) => {
   try {
     let config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get(
-      `${baseUrl}account/balance-equity/${loginId}`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}account/balance-equity/${loginId}`, config);
 
     return response.data;
   } catch (error) {
@@ -1724,11 +1571,7 @@ const createAwardRequest = async (idToken, data, dispatch) => {
       Authorization: `Bearer ${idToken}`,
     },
   };
-  const response = await axios.post(
-    `${baseUrl}account/admin/award/`,
-    data,
-    config
-  );
+  const response = await axios.post(`${baseUrl}account/admin/award/`, data, config);
 
   if (response.status < 399) {
     return response;
@@ -1742,11 +1585,7 @@ const updateAwardRequest = async (idToken, data, dispatch) => {
       Authorization: `Bearer ${idToken}`,
     },
   };
-  const response = await axios.patch(
-    `${baseUrl}account/admin/award/`,
-    data,
-    config
-  );
+  const response = await axios.patch(`${baseUrl}account/admin/award/`, data, config);
 
   if (response.status < 399) {
     return response;
@@ -1762,11 +1601,7 @@ const upgradeUserAccountReq = async (idToken, data) => {
       Authorization: `Bearer ${idToken}`,
     },
   };
-  const response = await axios.post(
-    `${baseUrl}account/admin/create-account/`,
-    data,
-    config
-  );
+  const response = await axios.post(`${baseUrl}account/admin/create-account/`, data, config);
   return response;
 };
 const upgradeFundedUserAccountReq = async (idToken, data) => {
@@ -1775,11 +1610,7 @@ const upgradeFundedUserAccountReq = async (idToken, data) => {
       Authorization: `Bearer ${idToken}`,
     },
   };
-  const response = await axios.post(
-    `${baseUrl}account/admin/funded-account-create/`,
-    data,
-    config
-  );
+  const response = await axios.post(`${baseUrl}account/admin/funded-account-create/`, data, config);
   return response;
 };
 const generateContractRequest = async (idToken, id, data) => {
@@ -1788,11 +1619,7 @@ const generateContractRequest = async (idToken, id, data) => {
       Authorization: `Bearer ${idToken}`,
     },
   };
-  const response = await axios.post(
-    `${baseUrl}account/admin/generate-contract/${id}`,
-    data,
-    config
-  );
+  const response = await axios.post(`${baseUrl}account/admin/generate-contract/${id}`, data, config);
   return response;
 };
 const updateUserAccountReq = async (idToken, data) => {
@@ -1801,11 +1628,7 @@ const updateUserAccountReq = async (idToken, data) => {
       Authorization: `Bearer ${idToken}`,
     },
   };
-  const response = await axios.patch(
-    `${baseUrl}account/admin/update-account/`,
-    data,
-    config
-  );
+  const response = await axios.patch(`${baseUrl}account/admin/update-account/`, data, config);
   return response;
 };
 
@@ -1815,10 +1638,7 @@ const getOverviewReq = async (idToken, phase) => {
       Authorization: `Bearer ${idToken}`,
     },
   };
-  const response = await axios.get(
-    `${baseUrl}account/admin/account-overview/?phase=${phase}`,
-    config
-  );
+  const response = await axios.get(`${baseUrl}account/admin/account-overview/?phase=${phase}`, config);
   return response;
 };
 
@@ -1831,10 +1651,7 @@ const UserSearchReq = async (idToken, search) => {
         "Content-Type": "application/json",
       },
     };
-    const response = await axios.get(
-      `${baseUrl}auth/admin/search-user/?search=${search}`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}auth/admin/search-user/?search=${search}`, config);
     if (response.status === 201 || response.status === 200) {
       return response;
     } else {
@@ -1871,11 +1688,7 @@ const CreateCertificate = async (idToken, data) => {
       },
     };
 
-    const response = await axios.post(
-      `${baseUrl}certificate/admin/create/`,
-      data,
-      config
-    );
+    const response = await axios.post(`${baseUrl}certificate/admin/create/`, data, config);
     if (response.status === 201 || response.status === 200) {
       return response;
     } else {
@@ -1894,10 +1707,7 @@ const EligibleCertificateAccount = async (idToken, email) => {
         "Content-Type": "application/json",
       },
     };
-    const response = await axios.get(
-      `${baseUrl}certificate/admin/elible-certificates-acccounts/?email=${email}`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}certificate/admin/elible-certificates-acccounts/?email=${email}`, config);
     if (response.status === 201 || response.status === 200) {
       return response;
     } else {
@@ -1915,17 +1725,12 @@ const CreateTradingAccountReq = async (idToken, data) => {
     },
   };
   try {
-    const response = await axios.post(
-      `${baseUrl}account/admin/create-account/`,
-      data,
-      config
-    );
+    const response = await axios.post(`${baseUrl}account/admin/create-account/`, data, config);
     return response;
   } catch (error) {
     return error;
   }
 };
-
 
 // IP logs
 const ipLogsReq = async (idToken, search, currentPage) => {

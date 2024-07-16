@@ -4,7 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchAffiliateList} from "../../store/NewReducers/affiliateSlice";
+import {fetchNewAffiliateCodeList} from "../../store/NewReducers/affiliateSlice";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
 import "./AffiliateMarketing.scss";
@@ -25,19 +25,18 @@ const AffiliateMarketing = ({userData}) => {
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
   const {affiliateData, currentPage, totalPages, totalItems, isLoading} = useSelector((state) => state.affiliate);
-  const idToken = useSelector((state) => state.auth.idToken);
+  const {idToken} = useSelector((state) => state.auth);
+
+  const newCodeData = useSelector((state) => state.affiliate.newCodeListData);
 
   console.log(totalItems, totalPages);
   useEffect(() => {
     dispatch(
-      fetchAffiliateList({
+      fetchNewAffiliateCodeList({
         idToken,
-        pageNo,
-        pageSize,
-        searchText,
       }),
     );
-  }, [pageNo, pageSize, , searchText, currentPage, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     setFilterData(affiliateData);

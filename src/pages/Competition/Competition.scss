@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: space-between;
     h3 {
-      color: #FFF;
+      color: #fff;
       font-family: "Nunito Sans";
       font-size: 20px;
       font-style: normal;
@@ -22,17 +22,22 @@
     align-items: center;
     justify-content: space-between;
   }
-  .create_btn{
+  .create_btn {
     background: transparent !important;
     border-radius: 10px;
-    border: 1px solid #04D9FF;
-    color: #fff;    
+    border: 1px solid #04d9ff;
+    color: #fff;
     max-width: 155px;
   }
   .competition_data {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
+
+    @media only screen and (max-width: 1200px) {
+      grid-template-columns: 100%;
+    }
+
     .competition_card_container {
       display: flex;
       padding: 20px;
@@ -40,7 +45,7 @@
       gap: 20px;
       border-radius: 20px;
       border-radius: 20px;
-      background: var(--white, #FFF);
+      background: var(--white, #fff);
       color: #1e1e1e;
       .header_section {
         display: flex;
@@ -94,6 +99,12 @@
           align-items: center;
           justify-content: space-between;
 
+          @media only screen and (max-width: 630px) {
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+          }
+
           > div {
             flex: 1;
           }
@@ -108,6 +119,10 @@
 
           .status_box {
             border-right: 1px solid #252a29;
+
+            @media only screen and (max-width: 630px) {
+              border-right: 0;
+            }
 
             .label {
               color: var(--Paragraph-text-colour, #a6a6a6);
@@ -132,17 +147,20 @@
             .ongoing {
               border-radius: var(--Corner-Radius, 10px);
               border: 1px solid var(--sucess, #009017);
-              background: var(--Success-Body, #CDFFDD);            }
+              background: var(--Success-Body, #cdffdd);
+            }
 
             .upcoming {
               border-radius: var(--Corner-Radius, 10px);
-              border: 1px solid var(--Brand-1, #04D9FF);
-              background: var(--new-body, #C5FFFF);            }
+              border: 1px solid var(--Brand-1, #04d9ff);
+              background: var(--new-body, #c5ffff);
+            }
 
             .ended {
               border-radius: var(--Corner-Radius, 10px);
-              border: 1px solid var(--Failed, #F20000);
-              background: var(--Failed-body, #FFE1E1);            }
+              border: 1px solid var(--Failed, #f20000);
+              background: var(--Failed-body, #ffe1e1);
+            }
           }
           .participants_info {
             justify-content: flex-end;
@@ -164,6 +182,11 @@
           width: 100%;
           grid-template-columns: repeat(3, 1fr);
           gap: 10px;
+
+          @media only screen and (max-width: 630px) {
+            grid-template-columns: 100%;
+          }
+
           .prize_box {
             display: flex;
             flex-direction: column;
@@ -171,9 +194,9 @@
             align-items: center;
             padding: 15px;
             border-radius: 20px;
-            background: var(--Box-1, #27313E);
+            background: var(--Box-1, #27313e);
             .label {
-              color: var(--white, #FFF);
+              color: var(--white, #fff);
               font-family: "Nunito Sans";
               font-size: 14px;
               font-style: normal;
@@ -200,7 +223,7 @@
       align-items: center;
       border-radius: 10px;
       background: var(--Brand, #04d9ff);
-      color: #12181F;
+      color: #12181f;
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -209,8 +232,6 @@
     }
   }
 }
-
-
 
 .edit_modal {
   display: flex;
@@ -223,8 +244,8 @@
   border-radius: var(--Outside-box, 10px);
   position: relative;
 
-  .ant-btn-default{
-   color: #09090b !important;
+  .ant-btn-default {
+    color: #09090b !important;
   }
   .ant-input {
     margin-top: 10px !important;
@@ -276,7 +297,7 @@
       background-color: #75ebc3;
     }
   }
-  label{
+  label {
     color: #09090b;
   }
 }
