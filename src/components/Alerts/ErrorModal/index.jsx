@@ -1,8 +1,8 @@
 import React from "react";
 import "./style.scss";
-import errorModalIcon from "../../../assets/icons/error-modal-icon.png";
-import { useDispatch, useSelector } from "react-redux";
-import { clearErrors } from "../../../store/reducers/error";
+import errorModalIcon from "../../../assets/icons/error-modal-icon.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {clearErrors} from "../../../store/reducers/error";
 
 const ErrorModal = () => {
   const [open, setOpen] = React.useState(false);
@@ -14,7 +14,7 @@ const ErrorModal = () => {
     dispatch(clearErrors());
   };
 
-  const { title, msg, status } = useSelector((state) => state.error);
+  const {title, msg, status} = useSelector((state) => state.error);
 
   React.useEffect(() => {
     setOpen(true);
@@ -26,21 +26,28 @@ const ErrorModal = () => {
 
   return msg && status ? (
     <div className="error-modal-overlay">
-      <div className="error-modal-container">
-        <div className="error-modal-icon">
-          <img src={errorModalIcon} alt="errorModalIcon" />
+      <div className="error_modal_wrapper">
+        <div className="error_modal_container_top">
+          <div className="error_icon">
+            <img
+              src={errorModalIcon}
+              alt="errorModalIcon"
+            />
+          </div>
         </div>
-        <div className="error-modal-info">
-          <h2 className="modal-name">Error!</h2>
-          <p className="modal-description">
-            Oh no<br></br>
-            {msg}
-          </p>
-        </div>
-        <div className="error-modal-button">
-          <button onClick={() => handleClose()} className="modal-button">
-            Try Again
-          </button>
+        <div className="error-modal-container">
+          <div className="error_modal_container_bottom">
+            <h1>Error</h1>
+            <p> {msg}</p>
+          </div>
+          <div className="error-modal-button">
+            <button
+              onClick={() => handleClose()}
+              className="modal-button"
+            >
+              Try Again
+            </button>
+          </div>
         </div>
       </div>
     </div>

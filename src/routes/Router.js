@@ -42,6 +42,7 @@ import CreateAffiliateCode from "../components/AffiliateMarketing/CreateAffiliat
 import CreateCoupon from "../pages/Coupon/CreateCoupon/CreateCoupon";
 import FundingEvaluationLogs from "../pages/FundingEvaluation/FundingEvaluationLogs/FundingEvaluationLogs";
 import CreateCompetition from "../pages/Competition/CreateCompetition/CreateCompetition";
+import StageManager2 from "../pages/StageManager2/StageManager2";
 
 function Router() {
   return (
@@ -147,10 +148,19 @@ function Router() {
 
           <Route
             exact={true}
-            path="/stage-manager"
+            path="/stage-manager/stage-1"
             element={
-              <PageLayout headerName="Stage Manager">
+              <PageLayout headerName="Support">
                 <StageManager />
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/stage-manager/stage-2"
+            element={
+              <PageLayout headerName="Support">
+                <StageManager2 />
               </PageLayout>
             }
           />
@@ -177,7 +187,7 @@ function Router() {
 
           <Route
             exact={true}
-            path="/funded"
+            path="/support/funded"
             element={
               <PageLayout headerName="Funded">
                 <Funded />

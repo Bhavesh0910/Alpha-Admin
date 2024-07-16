@@ -225,12 +225,8 @@ const Payment = () => {
     if (dates) {
       query = query + `&start_date=${dates[0]}&end_date=${dates[1]}`;
     }
-    // if (phase !== "") {
-    //   let phaseQuery = phase === "Free Trail" ? "&free_trail=1" : "&status=Funded&status=Evalution";
-    //   query = query + phaseQuery;
-    // }
 
-    dispatch(paymentListReq({ idToken,query,dispatch}));
+    dispatch(paymentListReq({ idToken, query, dispatch }));
   }
 
   const handleSearch = (value) => {
@@ -370,7 +366,7 @@ const Payment = () => {
       </Card>
 
       {isModalVisible === true ? (
-        <CalendarModal idToken={idToken} handleCloseModal={handleCloseModal} />
+        <CalendarModal idToken={idToken} status={activeTab} handleCloseModal={handleCloseModal} />
       ) : (
         ""
       )}
@@ -380,26 +376,35 @@ const Payment = () => {
 
 export default Payment;
 
-const CalendarModal = ({ idToken, handleCloseModal }) => {
+const CalendarModal = ({ idToken, status, handleCloseModal }) => {
 
   const { exportLink } = useSelector(state => state.payment);
   const { searchDates } = useSelector(state => state.auth)
-  const [dates, setdates] = useState(searchDates);
+  const [dates, setdates] = useState(null);
   const onRangeChange = (selectedDates) => {
-    setdates(selectedDates.map((value) => value.format("YYYY-MM-DD")));
+    setdates(selectedDates.map((value) => value.format("DD/MMM/YYYY")));
   };
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(paymentExportsReq({ idToken, dates, dispatch }));
+    let query = `?start_date=${dates && dates[0]}&end_date=${dates && dates[1]}&status=${status === "all" ? "" : status === "paid" ? 1 : 0}`
+    if (dates) {
+      dispatch(paymentExportsReq({ idToken, query, dispatch }));
+    }
   }, [dates])
+
+  useEffect(() => {
+    if (exportLink) {
+      handleCloseModal();
+    }
+  }, [exportLink])
 
   const rangePresets = [
     { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
     { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
     { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
     { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
-    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] }, // Assuming "All time" covers a very long period
+    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] },
   ];
 
   const [placement, SetPlacement] = useState("bottomLeft");

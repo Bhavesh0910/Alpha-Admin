@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import "./StageManager.scss";
+import "./StageManager2.scss";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import {Button, DatePicker, Dropdown, Menu, Select, Tooltip, notification} from "antd";
 import searchIcon from "../../assets/icons/searchIcon.svg";
@@ -19,11 +19,11 @@ import {Link} from "react-router-dom";
 import moment from "moment";
 import {setActiveAccount, setActiveUser} from "../../store/reducers/accountSlice";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-const {RangePicker} = DatePicker;
 
 const {Option} = Select;
+const {RangePicker} = DatePicker;
 
-const StageManager = () => {
+const StageManager2 = () => {
   const type = "1_step";
   // const [category, setCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -297,7 +297,7 @@ const StageManager = () => {
   return (
     <div className="stageManager_container">
       <div className="header_wrapper">
-        <h2>Stage 1</h2>
+        <h2>Stage 2</h2>
         <Button
           // onClick={() => navigate("payments-view-logs")}
           className="view_logs__btn standard_button"
@@ -394,4 +394,4 @@ const StageManager = () => {
   );
 };
 
-export default StageManager;
+export default StageManager2;

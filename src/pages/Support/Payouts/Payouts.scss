@@ -165,4 +165,9 @@
       background: var(--Inner-box-BG, #141a17);
     }
   }
+
+  .modal_wrapper {
+    border-radius: var(--table-box, 20px);
+    background: var(--Brand-2, #12181f);
+  }
 }

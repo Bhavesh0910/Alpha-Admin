@@ -7,9 +7,11 @@ import searchIcon from "../../../assets/icons/searchIcon.svg";
 import {useNavigate} from "react-router-dom";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import {useSelector} from "react-redux";
+import ReactCountryFlag from "react-country-flag";
 const {Option} = Select;
 const {RangePicker} = DatePicker;
 const KYC = () => {
+  const lookup = require("country-code-lookup");
   const {idToken, searchDates} = useSelector((state) => state.auth);
   const [searchText, setSearchText] = useState("");
   const [activeTab, setActiveTab] = useState("all");
@@ -48,47 +50,44 @@ const KYC = () => {
       title: "Sumsub Status",
       dataIndex: "sumsubStatus",
       key: "sumsubStatus",
-      render: (text) => (
-        <span
-          style={{
-            padding: "5px 10px",
-            borderRadius: "5px",
-            backgroundColor: "#28a745",
-            color: "#1E1E1E",
-          }}
-        >
-          {text}
-        </span>
-      ),
+      render: (text) => <div className={`sumsubStatus_indicator ${text === "approved" ? "approved" : text === "in_progress" ? "in_progress" : text === "in_progress" ? "in_review" : ""}`}>{text}</div>,
     },
     {
       title: "Admin Review",
       dataIndex: "adminReview",
       key: "adminReview",
-      render: (text) => (
-        <span
-          style={{
-            padding: "5px 10px",
-            borderRadius: "5px",
-            backgroundColor: "#ffc107",
-            color: "#000",
-          }}
-        >
-          {text}
-        </span>
-      ),
+      render: (text) => <div className={`adminStatus_indicator ${text === "approved" ? "approved" : text === "in_progress" ? "in_progress" : text === "in_progress" ? "in_review" : ""}`}>{text}</div>,
     },
     {
       title: "Country",
       dataIndex: "country",
       key: "country",
+      render: (country) => {
+        console.log(country, "country");
+        const countryName = country;
+        const countryCode = lookup.byCountry(countryName);
+        if (countryCode) {
+          return (
+            <div className="country_name_wrapper">
+              <ReactCountryFlag
+                countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
+                svg={true}
+                aria-label={countryName}
+              />
+              <span>{countryName}</span>
+            </div>
+          );
+        } else {
+          return <span>{countryName}</span>;
+        }
+      },
     },
     {
       title: "Contract",
       dataIndex: "contract",
       key: "contract",
       render: (text) => (
-        <span>
+        <span style={{cursor: "pointer"}}>
           <DownloadToPC />
         </span>
       ),
@@ -101,9 +100,9 @@ const KYC = () => {
       emailId: "tanya.hill@example.com",
       accountNumber: "2798",
       date: "4/4/18",
-      sumsubStatus: "Approved",
-      adminReview: "In Progress",
-      country: "UK",
+      sumsubStatus: "approved",
+      adminReview: "in_progress",
+      country: "United States",
       contract: "icon", // This should be replaced with the actual path or identifier for the contract icon
     },
   ];

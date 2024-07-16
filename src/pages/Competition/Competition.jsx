@@ -1,29 +1,16 @@
-import {
-  Button,
-  Pagination,
-  Modal,
-  Input,
-  DatePicker,
-  message,
-  Dropdown,
-  Menu,
-} from "antd";
-import React, { useEffect, useState } from "react";
+import {Button, Pagination, Modal, Input, DatePicker, message, Dropdown, Menu} from "antd";
+import React, {useEffect, useState} from "react";
 import threeDotsIcon from "../../assets/icons/menu_3dots_icon.svg";
 import "./Competition.scss";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
-import {
-  fetchCompDetails,
-  fetchCompetitionDetail,
-  updateCompetition,
-} from "../../store/NewReducers/competitionSlice";
+import {fetchCompDetails, fetchCompetitionDetail, updateCompetition} from "../../store/NewReducers/competitionSlice";
 import TextArea from "antd/es/input/TextArea";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import { deleteCompDetails } from "../../utils/api/apis";
-import { returnMessages } from "../../store/reducers/message";
-import { returnErrors } from "../../store/reducers/error";
+import {deleteCompDetails} from "../../utils/api/apis";
+import {returnMessages} from "../../store/reducers/message";
+import {returnErrors} from "../../store/reducers/error";
 import dayjs from "dayjs";
 
 const Competition = () => {
@@ -33,7 +20,7 @@ const Competition = () => {
   const navigate = useNavigate();
   const idToken = useSelector((state) => state.auth.idToken);
   const dispatch = useDispatch();
-  const { compData, isLoading, error } = useSelector((state) => state.comp);
+  const {compData, isLoading, error} = useSelector((state) => state.comp);
   const fundingData = useSelector((state) => state.funding.fundingData);
 
   useEffect(() => {
@@ -52,12 +39,7 @@ const Competition = () => {
     setActiveTab(key);
   };
 
-  const filteredData =
-    activeTab === "upcoming"
-      ? upcomingComps
-      : activeTab === "ongoing"
-      ? ongoingComps
-      : endedComps;
+  const filteredData = activeTab === "upcoming" ? upcomingComps : activeTab === "ongoing" ? ongoingComps : endedComps;
 
   const paginatedData = filteredData?.slice(
     (pageNo - 1) * pageSize,
@@ -124,14 +106,21 @@ const Competition = () => {
         showQuickJumper
         showTotal={(total) => `Total ${total} items`}
       />
-      {error && <div className="error">{error}</div>}
+      {error && (
+        <p
+          className="error"
+          style={{color: "#fff"}}
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 };
 
 export default Competition;
 
-const CompetitionCard = ({ item }) => {
+const CompetitionCard = ({item}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [formValues, setFormValues] = useState({});
   const dispatch = useDispatch();
@@ -184,7 +173,7 @@ const CompetitionCard = ({ item }) => {
     });
   };
 
-  const handleMenuClick = ({ key }) => {
+  const handleMenuClick = ({key}) => {
     if (key === "edit") {
       handleEdit();
     } else if (key === "delete") {
@@ -193,7 +182,10 @@ const CompetitionCard = ({ item }) => {
   };
 
   const menu = (
-    <Menu className="competition_card_dropdown" onClick={handleMenuClick}>
+    <Menu
+      className="competition_card_dropdown"
+      onClick={handleMenuClick}
+    >
       <Menu.Item key="edit">Edit</Menu.Item>
       <Menu.Item key="delete">Delete</Menu.Item>
     </Menu>
@@ -203,9 +195,12 @@ const CompetitionCard = ({ item }) => {
     <div className="competition_card_container">
       <div className="header_section">
         <h4>{item.name}</h4>
-        <Dropdown overlay={menu} trigger={["click"]}>
+        <Dropdown
+          overlay={menu}
+          trigger={["click"]}
+        >
           <img
-            style={{ cursor: "pointer" }}
+            style={{cursor: "pointer"}}
             className="threeDotMenu"
             src={threeDotsIcon}
             alt="threeDotMenu"
@@ -222,17 +217,7 @@ const CompetitionCard = ({ item }) => {
         <div className="bottomSection">
           <div className="status_box">
             <p className="label">Status</p>
-            <p
-              className={`status_value ${
-                status === "ongoing"
-                  ? "ongoing"
-                  : status === "upcoming"
-                  ? "upcoming"
-                  : "ended"
-              }`}
-            >
-              {status}
-            </p>
+            <p className={`status_value ${status === "ongoing" ? "ongoing" : status === "upcoming" ? "upcoming" : "ended"}`}>{status}</p>
           </div>
           <div className="participants_info">
             <p className="label">Accounts allowed to participate</p>
@@ -283,7 +268,7 @@ const CompetitionCard = ({ item }) => {
   );
 };
 
-const EditCompetitionForm = ({ initialValues, onClose }) => {
+const EditCompetitionForm = ({initialValues, onClose}) => {
   const [formValues, setFormValues] = useState(initialValues);
   const dispatch = useDispatch();
   const idToken = useSelector((state) => state.auth.idToken);
@@ -293,12 +278,12 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
   }, [initialValues]);
 
   const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    setFormValues({ ...formValues, [id]: value });
+    const {id, value} = e.target;
+    setFormValues({...formValues, [id]: value});
   };
 
   const handleDateChange = (date, dateString, field) => {
-    setFormValues({ ...formValues, [field]: dateString });
+    setFormValues({...formValues, [field]: dateString});
   };
 
   const handleSubmit = (e) => {
@@ -317,7 +302,7 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
 
     console.log(updatedData)
 
-    dispatch(updateCompetition({ idToken, id: formValues.id, updatedData }))
+    dispatch(updateCompetition({idToken, id: formValues.id, updatedData}))
       .then(() => {
         onClose();
       })
@@ -327,7 +312,10 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
   };
 
   return (
-    <form className="edit_competition_form" onSubmit={handleSubmit}>
+    <form
+      className="edit_competition_form"
+      onSubmit={handleSubmit}
+    >
       <div className="form_group">
         <label htmlFor="competition_name">Competition Name</label>
         <Input
@@ -432,7 +420,10 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
         />
       </div>
       <div className="form_group">
-        <Button className="standard_button" htmlType="submit">
+        <Button
+          className="standard_button"
+          htmlType="submit"
+        >
           Update Competition
         </Button>
       </div>

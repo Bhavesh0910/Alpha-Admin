@@ -13,7 +13,7 @@
       align-items: center;
 
       h3 {
-        color: var(--white, #1e1e1e);
+        color: var(--white, #fff);
         font-family: "Nunito Sans";
         font-size: 20px;
         font-style: normal;
@@ -34,12 +34,37 @@
           max-width: fit-content;
         }
 
-        @media only screen and (max-width: 570px) {
-          button {
-            padding: 4px 2px;
-          }
-        }
+        // @media only screen and (max-width: 570px) {
+        //   button {
+        //     padding: 4px 2px;
+        //   }
+        // }
       }
+    }
+  }
+
+  .sumsubStatus_indicator,
+  .adminStatus_indicator {
+    display: flex;
+    max-width: 92px;
+    width: 100%;
+    padding: 6px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: var(--Corner-Radius, 10px);
+    border: 1px solid transparent;
+    background: transparent;
+
+    &.approved {
+      border: 1px solid var(--sucess, #009017);
+      background: var(--Success-Body, #cdffdd);
+    }
+
+    &.in_progress,
+    &.in_review {
+      border: 1px solid var(--In-progress, #f4ea0f);
+      background: var(--in-Progress-Body, #fffdcf);
     }
   }
 }
