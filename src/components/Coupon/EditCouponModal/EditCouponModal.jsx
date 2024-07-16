@@ -12,18 +12,15 @@ import { returnMessages } from "../../../store/reducers/message";
 const { Option } = Select;
 
 const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => {
-
   const [category, setCategory] = useState("Alpha Pro 5K");
   const dispatch = useDispatch();
 
-  const [editedData, setEditedData] = useState({});
+  const [editedData, setEditedData] = useState(editCouponData || {});
 
   const handleInputChange = (field, value) => {
     setEditedData((prev) => ({ ...prev, [field]: value }));
   };
-  useEffect(() => {
-    // console.log("Edited data : ", editedData);
-  }, [editedData])
+
   const handleCloseButton = () => {
     setIsEditModalVisible(false);
   };
@@ -39,18 +36,19 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
 
   const handleCategoryChange = (value) => {
     setCategory(value);
+    handleInputChange("challenge", value);
   };
 
   const handleDateChange = (date) => {
-    handleInputChange("expiry", date ? date.format("YYYY-MM-DD HH:mm:ss") : "");
+    handleInputChange("coupon_expiry", date ? date.format("YYYY-MM-DD HH:mm:ss") : "");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const id = editCouponData?.id;
     try {
-      dispatch(editCoupon({ idToken, id, body:editedData }))
-      console.log("idToken, id, editedData ",idToken, id, editedData )
+      dispatch(editCoupon({ idToken, id, body: editedData }));
+      console.log("idToken, id, editedData ", idToken, id, editedData);
       // await patchCoupon(idToken, editCouponData?.id, editedData);
       dispatch(returnMessages("Action Successful!", 200));
       handleCloseButton();
@@ -80,10 +78,10 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
             <div className="form_input_box">
               <label htmlFor="coupon_code">Coupon Code</label>
               <Input
-                id="coupon_code"
-                value={editedData?.code || editCouponData?.code || ""}
+                id="coupon_name"
+                value={editedData?.coupon_name || ""}
                 placeholder="Enter Coupon Code"
-                onChange={(e) => handleInputChange("code", e.target.value)}
+                onChange={(e) => handleInputChange("coupon_name", e.target.value)}
               />
             </div>
             <div className="form_input_box">
@@ -91,9 +89,8 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
               <Select
                 mode="multiple"
                 placeholder="Please select users"
-                // defaultValue={editedData.users || []}
-                defaultValue={[]}
-                onChange={(value) => handleInputChange("users", value)}
+                defaultValue={editedData?.Coupon_users || []}
+                onChange={(value) => handleInputChange("Coupon_users", value)}
                 options={options}
               />
             </div>
@@ -103,19 +100,19 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
               <label htmlFor="coupon_amount">Amount</label>
               <Input
                 id="coupon_amount"
-                value={editedData?.amount || editCouponData?.amount || 0}
+                value={editedData?.coupon_amount || ""}
                 placeholder="Enter Coupon Amount"
-                onChange={(e) => handleInputChange("amount", e.target.value)}
+                onChange={(e) => handleInputChange("coupon_amount", e.target.value)}
               />
             </div>
             <div className="form_input_box">
               <label htmlFor="coupon_percentage">Coupon Percentage</label>
               <Input
-                id="coupon_percentage"
+                id="coupon_percent"
                 placeholder="Enter Coupon Percentage"
                 prefix={<PercentageIcon />}
-                value={editedData?.percent || editCouponData?.percent || "0"}
-                onChange={(e) => handleInputChange("percent", e.target.value)}
+                value={editedData?.coupon_percent || ""}
+                onChange={(e) => handleInputChange("coupon_percent", e.target.value)}
               />
             </div>
             <div className="form_input_box">
@@ -124,11 +121,9 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
                 className="category_dropdown"
                 defaultValue={category}
                 onChange={handleCategoryChange}
-                value={editedData?.challenge || editCouponData?.challenge || ""}
+                value={editedData?.challenge || ""}
               >
-                {/* <Option value="Alpha Pro 5K">Alpha Pro 5K</Option>
-                <Option value="Alpha Pro 10K">Alpha Pro 10K</Option>
-                <Option value="Alpha Pro 20K">Alpha Pro 20K</Option> */}
+                {/* Add your options here */}
               </Select>
             </div>
             <div className="form_input_box">
@@ -140,7 +135,7 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
                 showTime={{
                   defaultValue: dayjs("00:00:00", "HH:mm:ss"),
                 }}
-                value={editedData.expiry ? moment(editedData.expiry) : null}
+                value={editedData?.coupon_expiry ? moment(editedData.coupon_expiry) : null}
                 onChange={handleDateChange}
               />
             </div>
@@ -148,19 +143,19 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
           <div className="footerSection">
             <div className="status_checkbox_wrapper">
               <Checkbox
-                checked={editedData?.is_active || editCouponData?.is_active || false}
+                checked={editedData?.is_active || false}
                 onChange={(e) => handleInputChange("is_active", e.target.checked)}
               >
                 Is Active
               </Checkbox>
               <Checkbox
-                checked={editedData?.public || editCouponData?.public || false}
+                checked={editedData?.public || false}
                 onChange={(e) => handleInputChange("public", e.target.checked)}
               >
                 Is Public
               </Checkbox>
             </div>
-            <Button className="save_changes_btn" onClick={(e) => handleSubmit(e)} type="submit">Save Changes</Button>
+            <Button className="save_changes_btn" onClick={handleSubmit} type="submit">Save Changes</Button>
           </div>
         </form>
       </div>

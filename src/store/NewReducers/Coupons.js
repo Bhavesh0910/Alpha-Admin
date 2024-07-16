@@ -129,8 +129,14 @@ export const { resetCoupons, setCouponRefresh } = couponSlice.actions;
 export default couponSlice.reducer;
 
 
-export async function getCouponsReq(idToken, activeTab, searchText, pageSize, pageNo, dates,) {
+export async function getCouponsReq(idToken, activeTab, searchText, pageSize = 20, pageNo = 1, dates,) {
+    let queries = []
+    queries.push(`page=${pageNo}`)
+    queries.push(`page_size=${pageSize}`)
 
+    // Search Box
+    searchText && queries.push(`search=${searchText}`)
+    const query = queries.join('&')
     try {
         const config = {
             headers: {
@@ -138,7 +144,7 @@ export async function getCouponsReq(idToken, activeTab, searchText, pageSize, pa
             },
         };
         // const res = axios.get(`${baseUrl}payment/admin/coupon/?start_date=${dates[0]}&end_date=${dates[1]}&search=${searchText}&status=${activeTab === "all" ? "" : activeTab}&page_size=${pageSize}&page_no=${pageNo}`, config);
-        const res = axios.get(`${baseUrl}payment/admin/coupon/?is_active=${activeTab}&coupon=${searchText ? searchText : ""}`, config);
+        const res = axios.get(`${baseUrl}v2/list/coupon/?${query}`, config);
 
         return res;
 
@@ -156,7 +162,7 @@ export async function patchCouponReq(idToken, id, body) {
             },
         };
 
-        const res = axios.patch(`${baseUrl}payment/admin/coupon/?coupon=${id}`, body, config);
+        const res = axios.patch(`${baseUrl}v2/create/coupon/`, body, config);
         return res;
 
     } catch (error) {
@@ -174,7 +180,7 @@ async function createCouponReq(idToken) {
         };
         // console.log("Search : ",idToken, pageSize, pageNo, searchText, activeTab, dates)
         // const res = axios.get(`${baseUrl}payment/admin/list/?start_date=${dates[0]}&end_date=${dates[1]}&search=${searchText}&status=${activeTab === "all" ? "" : activeTab}&page_size=${pageSize}&page_no=${pageNo}`, config);
-        const res = axios.post(`${baseUrl}payment/admin/v2/coupon`, config);
+        const res = axios.post(`${baseUrl}v2/create/coupon/`, config);
         return res;
 
     } catch (error) {

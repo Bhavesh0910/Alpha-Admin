@@ -10,29 +10,36 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCoupons } from "../../store/NewReducers/Coupons";
 import { returnErrors } from "../../store/reducers/error";
 import { render } from "react-saga";
+import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 const { Option } = Select;
 const Coupon = () => {
   const [searchText, setSearchText] = useState("");
-  const [activeTab, setActiveTab] = useState("");
+  const [activeTab, setActiveTab] = useState("all");
   const [category, setCategory] = useState("all");
 
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
-  const [editCouponData, setEditCouponData]= useState();
+  const [editCouponData, setEditCouponData] = useState();
 
   const { idToken } = useSelector(state => state.auth);
-  const { couponData, count,refresh } = useSelector(state => state.coupon)
+  const { couponData, isLoading , refresh } = useSelector(state => state.coupon)
+  const count = useSelector(state => state.coupon.couponData[0].count)
   const navigate = useNavigate();
 
+  const [filterData, setFilterData] = useState('')
+
+  console.log(couponData[0].results)
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchCoupons(idToken, activeTab, searchText);
-  }, [idToken, activeTab, searchText,refresh])
+    fetchCoupons(idToken, pageNo, pageSize, searchText);
+  }, [idToken, pageNo, pageSize, searchText, refresh])
 
-  function fetchCoupons(idToken, activeTab, searchText) {
-    dispatch(getCoupons({idToken,activeTab, searchText }));
+  function fetchCoupons(idToken, pageNo, pageSize, searchText) {
+    dispatch(getCoupons({ idToken, pageNo, pageSize, searchText }));
   }
+
+
 
   const handleSearch = (e) => {
     if (e.key === "Enter") {
@@ -45,8 +52,24 @@ const Coupon = () => {
   }
 
 
+  useEffect(() => {
+    if (activeTab === 'active') {
+      setFilterData(couponData[0]?.results.filter((item) => item.is_active === true))
+    }
+    else if (activeTab === 'inactive') {
+      setFilterData(couponData[0]?.results.filter((item) => item.is_active === false))
+    }
+    else {
+      setFilterData(couponData[0]?.results)
+    }
+    console.log(filterData)
+  }, [activeTab])
+
+
   const handleTabChange = (key) => {
     setActiveTab(key);
+
+
   };
 
   const handleCategoryChange = (value) => {
@@ -68,23 +91,23 @@ const Coupon = () => {
     },
     {
       title: "Coupon Code",
-      dataIndex: "code",
+      dataIndex: "coupon_name",
       key: "code",
     },
     {
       title: "Coupon Amount",
-      dataIndex: "amount",
+      dataIndex: "coupon_amount",
       key: "amount",
       render: (text) => `${text === null ? "-" : text}`
     },
     {
       title: "Coupon Expiry",
-      dataIndex: "expiry",
-      key: "expiry",
+      dataIndex: "coupon_expiry",
+      key: "coupon_expiry",
     },
     {
       title: "Coupon Percentage",
-      dataIndex: "percent",
+      dataIndex: "coupon_percent",
       key: "percent",
     },
     {
@@ -95,11 +118,11 @@ const Coupon = () => {
     },
     {
       title: "Single Use",
-      dataIndex: "single_use",
+      dataIndex: "multi_use",
       key: "single_use",
       render: (text) => (
         <div className="coupon_status_container">
-          {`${text === true ? "Yes" : "No"}`}
+          {`${text === true ? "No" : "Yes"}`}
         </div>
       )
     },
@@ -123,106 +146,107 @@ const Coupon = () => {
       key: "action",
       render: (text, record) => (
         <div className="actn_btn_container">
-          <div className={`${text === "private" ? "private" : "public"}`}>
+          {/* <div className={`${text === "private" ? "private" : "public"}`}>
             {text}
-          </div>
+          </div> */}
           <Button onClick={() => {
             setEditCouponData(record);
             editButtonClick();
           }}>
             Edit
-          </Button>        
+          </Button>
         </div>
       ),
     },
-    
-{
-  title: "Users",
-    dataIndex: "users",
+
+    {
+      title: "Users",
+      dataIndex: "users",
       key: "users",
-        render: (text) => (
-          <div className="actn_btn_container">
-            {text?.length}
-          </div>
-        ),
+      render: (text) => (
+        <div className="actn_btn_container">
+          {text?.length}
+        </div>
+      ),
     },
   ];
 
 
   return (
-  <div className="coupon_container">
-    <div className="header_wrapper">
-      <Button
-        onClick={() => navigate("coupon-logs")}
-        className="view_logs__btn standard_button"
-      >
-        View Logs
-      </Button>
-      <div className="header_row2">
-        <div className="search_box_wrapper">
-          <Select
-            className="category_dropdown"
-            defaultValue="all"
-            onChange={handleCategoryChange}
-          >
-            <Option value="all">All Categories</Option>
-            {/* <Option value="swift">Swift</Option>
+    <div className="coupon_container">
+      <div className="header_wrapper">
+        <Button
+          onClick={() => navigate("coupon-logs")}
+          className="view_logs__btn standard_button"
+        >
+          View Logs
+        </Button>
+        <div className="header_row2">
+          <div className="search_box_wrapper">
+            <Select
+              className="category_dropdown"
+              defaultValue="all"
+              onChange={handleCategoryChange}
+            >
+              <Option value="all">All Categories</Option>
+              {/* <Option value="swift">Swift</Option>
               <Option value="wire">Wire</Option> */}
-          </Select>
-          <input
-            placeholder="Search..."
-            className="search_input"
-            onKeyDown={(e) => handleSearch(e)}
-          />
-          <div className="searchImg">
-            <img src={searchIcon} alt="searchIcon" />
+            </Select>
+            <input
+              placeholder="Search..."
+              className="search_input"
+              onKeyDown={(e) => handleSearch(e)}
+            />
+            <div className="searchImg">
+              <img src={searchIcon} alt="searchIcon" />
+            </div>
+          </div>
+          <div className="filter_buttons">
+            <Button
+              className={activeTab === "all" ? "active" : ""}
+              onClick={() => handleTabChange("all")}
+            >
+              All
+            </Button>
+            <Button
+              className={activeTab === 'active' ? "active" : ""}
+              onClick={() => handleTabChange("active")}
+            >
+              Active
+            </Button>
+            <Button
+              className={activeTab === 'inactive' ? "active" : ""}
+              onClick={() => handleTabChange("inactive")}
+            >
+              Inactive
+            </Button>
+          </div>
+          <div className="create_coupon_btn">
+            <Button onClick={() => navigate("create-coupon")}>
+              Create Coupon
+            </Button>
           </div>
         </div>
-        <div className="filter_buttons">
-          <Button
-            className={activeTab === "" ? "active" : ""}
-            onClick={() => handleTabChange("")}
-          >
-            All
-          </Button>
-          <Button
-            className={activeTab ? "active" : ""}
-            onClick={() => handleTabChange(true)}
-          >
-            Active
-          </Button>
-          <Button
-            className={activeTab === false ? "active" : ""}
-            onClick={() => handleTabChange(false)}
-          >
-            Inactive
-          </Button>
-        </div>
-        <div className="create_coupon_btn">
-          <Button onClick={() => navigate("create-coupon")}>
-            Create Coupon
-          </Button>
-        </div>
       </div>
-    </div>
-    <AntTable
-      data={couponData || []}
-      columns={columns}
-      totalPages={Math.ceil(count / pageSize)}
-      totalItems={count}
-      pageSize={pageSize}
-      CurrentPageNo={pageNo}
-      setPageSize={setPageSize}
-      triggerChange={triggerChange}
-    />
+      {isLoading && <LoaderOverlay />}
+      <AntTable
+        data={filterData || []}
+        columns={columns}
+        totalPages={Math.ceil(count / pageSize)}
+        totalItems={count}
+        pageSize={pageSize}
+        CurrentPageNo={pageNo}
+        setPageSize={setPageSize}
+        triggerChange={triggerChange}
+      />
 
-    {isEditModalVisible === true ? (
-      <EditCouponModal editCouponData={editCouponData} idToken={idToken} setIsEditModalVisible={setIsEditModalVisible} />
-    ) : (
-      ""
-    )}
-  </div>
-);
+      {isEditModalVisible === true ? (
+        <EditCouponModal editCouponData={editCouponData} idToken={idToken} setIsEditModalVisible={setIsEditModalVisible} />
+      ) : (
+        ""
+      )}
+    </div>
+  );
 };
 
 export default Coupon;
