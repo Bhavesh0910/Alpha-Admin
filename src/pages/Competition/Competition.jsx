@@ -43,19 +43,10 @@ const Competition = () => {
 
   const today = moment();
 
-  const ongoingComps =
-    compData?.filter(
-      (comp) =>
-        moment(comp?.end_Date) > today && moment(comp?.start_date) < today
-    ) || [];
+  const ongoingComps = compData?.Ongoing
 
-  const upcomingComps =
-    compData?.filter((comp) => moment(comp?.start_date) > today) || [];
-  const comps = compData?.filter((comp) => moment(comp?.end_Date) < today);
-
-  const endedComps =
-    compData?.filter((comp) => moment(comp?.end_Date) < today) || [];
-
+  const upcomingComps = compData?.Upcoming
+  const endedComps = compData?.End
   const handleTabChange = (key) => {
     setPageNo(1);
     setActiveTab(key);
@@ -68,7 +59,7 @@ const Competition = () => {
       ? ongoingComps
       : endedComps;
 
-  const paginatedData = filteredData.slice(
+  const paginatedData = filteredData?.slice(
     (pageNo - 1) * pageSize,
     pageNo * pageSize
   );
@@ -116,12 +107,12 @@ const Competition = () => {
         </Button>
       </div>
       <div className="competition_data">
-        {paginatedData.map((item, index) => (
+        {paginatedData?.map((item, index) => (
           <CompetitionCard key={index} item={item} />
         ))}
       </div>
       <Pagination
-        total={filteredData.length}
+        total={filteredData?.length}
         pageSize={pageSize}
         current={pageNo}
         onChange={(page) => setPageNo(page)}
@@ -149,24 +140,16 @@ const CompetitionCard = ({ item }) => {
   const today = moment();
 
   let status;
-  if (moment(item.end_date) < today) {
+  if (moment(item.End_Date) < today) {
     status = "ended";
-  } else if (moment(item.start_date) > today) {
+  } else if (moment(item.Start_date) > today) {
     status = "upcoming";
   } else {
     status = "ongoing";
   }
-
   const handleEdit = () => {
-    console.log(item.id);
-    dispatch(fetchCompetitionDetail({ idToken, id: item.id }))
-      .then((response) => {
-        setFormValues(response.payload);
-        setIsModalVisible(true);
-      })
-      .catch((error) => {
-        console.error("Failed to fetch competition details:", error);
-      });
+    setFormValues(item);
+    setIsModalVisible(true);
   };
 
   const handleModalClose = () => {
@@ -232,9 +215,9 @@ const CompetitionCard = ({ item }) => {
       <div className="competition_info">
         <div className="topSection">
           <p className="label">Validity</p>
-          <p className="value">{item.start_date}</p>
+          <p className="value">{item.Start_date}</p>
           <p className="label">to</p>
-          <p className="value">{item.end_Date}</p>
+          <p className="value">{item.End_Date}</p>
         </div>
         <div className="bottomSection">
           <div className="status_box">
@@ -264,7 +247,7 @@ const CompetitionCard = ({ item }) => {
         <div className="prizes_wrapper">
           <div className="prize_box first_prize">
             <p className="label">1st</p>
-            <p className="value">{item.first_prize}</p>
+            <p className="value">{item.First_prize}</p>
           </div>
           <div className="prize_box second_prize">
             <p className="label">2nd</p>
@@ -272,7 +255,7 @@ const CompetitionCard = ({ item }) => {
           </div>
           <div className="prize_box third_prize">
             <p className="label">3rd</p>
-            <p className="value">{item.third_prize}</p>
+            <p className="value">{item.Third_prize}</p>
           </div>
         </div>
       </div>
@@ -321,8 +304,18 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const updatedData = {
-      ...formValues,
-    };
+      competition_name: formValues.competition_name,
+      challenge: formValues.challenge,
+      Schedule_competition: moment(formValues.Schedule_competition).format("YYYY-MM-DD"),
+      Start_date: moment(formValues.Start_date).format("YYYY-MM-DD"),
+      End_Date: moment(formValues.End_Date).format("YYYY-MM-DD"),
+      First_prize: formValues.First_prize,
+      second_prize: formValues.second_prize,
+      Third_prize: formValues.Third_prize,
+      // total_contestants: formValues.total_contestants,
+      Competition_rules: formValues.Competition_rules    };
+
+    console.log(updatedData)
 
     dispatch(updateCompetition({ idToken, id: formValues.id, updatedData }))
       .then(() => {
@@ -339,7 +332,7 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
         <label htmlFor="competition_name">Competition Name</label>
         <Input
           id="name"
-          value={formValues.name}
+          value={formValues.competition_name}
           onChange={handleInputChange}
           required
         />
@@ -358,8 +351,8 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
         <DatePicker
           id="schedule_competition"
           value={
-            formValues.schedule_competition
-              ? dayjs(formValues.schedule_competition)
+            formValues.Schedule_competition
+              ? dayjs(formValues.Schedule_competition)
               : null
           }
           onChange={(date, dateString) =>
@@ -373,7 +366,7 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
           <label htmlFor="start_date">Start Date</label>
           <DatePicker
             id="start_date"
-            value={formValues.start_date ? dayjs(formValues.start_date) : null}
+            value={formValues.Start_date ? dayjs(formValues.Start_date) : null}
             onChange={(date, dateString) =>
               handleDateChange(date, dateString, "start_date")
             }
@@ -384,7 +377,7 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
           <label htmlFor="end_date">End Date</label>
           <DatePicker
             id="end_date"
-            value={formValues.end_Date ? dayjs(formValues.end_Date) : null}
+            value={formValues.End_Date ? dayjs(formValues.End_Date) : null}
             onChange={(date, dateString) =>
               handleDateChange(date, dateString, "end_date")
             }
@@ -396,7 +389,7 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
         <label htmlFor="first_prize">First Prize</label>
         <Input
           id="first_prize"
-          value={formValues.first_prize}
+          value={formValues.First_prize}
           onChange={handleInputChange}
           required
         />
@@ -414,12 +407,12 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
         <label htmlFor="third_prize">Third Prize</label>
         <Input
           id="third_prize"
-          value={formValues.third_prize}
+          value={formValues.Third_prize}
           onChange={handleInputChange}
           required
         />
       </div>
-      <div className="form_group">
+      {/* <div className="form_group">
         <label htmlFor="total_contestants">Total Contestants</label>
         <Input
           id="total_contestants"
@@ -427,12 +420,12 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
           onChange={handleInputChange}
           required
         />
-      </div>
+      </div> */}
       <div className="form_group">
         <label htmlFor="competition_rules">Competition Rules</label>
         <TextArea
           id="rules"
-          value={formValues.rules}
+          value={formValues.Competition_rules}
           onChange={handleInputChange}
           rows={4}
           required

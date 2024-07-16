@@ -51,7 +51,7 @@ const CreateCompetition = () => {
       "first_prize",
       "second_prize",
       "third_prize",
-      "total_contestants",
+      // "total_contestants",
     ];
 
     for (let field of requiredFields) {
@@ -61,17 +61,19 @@ const CreateCompetition = () => {
       }
     }
 
-    const formData = new FormData();
-    formData.append("name", formValues.competition_name);
-    formData.append("challenge", formValues.challenge_name);
-    formData.append("schedule_competition", moment(formValues.schedule_competition).format("YYYY-MM-DD"));
-    formData.append("start_date", moment(formValues.start_date).format("YYYY-MM-DD"));
-    formData.append("end_Date", moment(formValues.end_date).format("YYYY-MM-DD"));
-    formData.append("first_prize", formValues.first_prize);
-    formData.append("second_prize", formValues.second_prize);
-    formData.append("third_prize", formValues.third_prize);
-    formData.append("total_contestants", formValues.total_contestants);
-    formData.append("rules", formValues.rules);
+    const formData = {
+      competition_name: formValues.competition_name,
+      challenge: formValues.challenge_name,
+      Schedule_competition: moment(formValues.schedule_competition).format("YYYY-MM-DD"),
+      Start_date: moment(formValues.start_date).format("YYYY-MM-DD"),
+      End_Date: moment(formValues.end_date).format("YYYY-MM-DD"),
+      First_prize: formValues.first_prize,
+      second_prize: formValues.second_prize,
+      Third_prize: formValues.third_prize,
+      // total_contestants: formValues.total_contestants,
+      Competition_rules: formValues.rules
+    };
+  
 
     try {
       dispatch(createCompetition({ idToken, formData }));

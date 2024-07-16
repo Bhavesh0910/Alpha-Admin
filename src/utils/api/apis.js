@@ -1189,7 +1189,7 @@ const getCompDetails = async (idToken) => {
   };
   let output;
   await axios
-    .get(`${baseUrl}account/admin/competitions/`, config)
+    .get(`${baseUrl}v2/get/competition/`, config)
     .then((res) => {
       output = res;
 
@@ -1228,10 +1228,10 @@ export const getOneCompDetails = async (idToken , id) => {
 
 const postCompDetails = async (idToken, formData) => {
   try {
-    const response = await axios.post(`${baseUrl}account/admin/competitions/`, formData, {
+    const response = await axios.post(`${baseUrl}adm/competition/`, formData, {
       headers: {
-        Authorization: `Bearer ${idToken}`,
-        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${idToken}`
+        // "Content-Type": "multipart/form-data",
       },
     });
     return response.data;
@@ -1241,7 +1241,7 @@ const postCompDetails = async (idToken, formData) => {
 };
 
 const deleteCompDetails = async (idToken, id) => {
-  const apiUrl = `${baseUrl}account/admin/competitions/${id}`;
+  const apiUrl = `${baseUrl}adm/competition/${id}`;
 
   const config = {
     headers: {
@@ -1263,7 +1263,7 @@ const deleteCompDetails = async (idToken, id) => {
 
 const updateCompDetails = async (idToken, id , data) => {
   console.log(data , id)
-  const apiUrl = `${baseUrl}account/admin/competitions/${id}`;
+  const apiUrl = `${baseUrl}adm/competition/${id}`;
 
   const config = {
     headers: {
