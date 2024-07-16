@@ -148,7 +148,7 @@ const getFundingDetails = async (idToken) => {
   };
   let output;
   await axios
-    .get(`${baseUrl}account/funding-evaluation/`, config)
+    .get(`${baseUrl}v2/challenges/admin/`, config)
     .then((res) => {
       output = res;
       return output;
@@ -1160,7 +1160,7 @@ const deleteCompDetails = async (idToken, id) => {
 };
 
 const updateCompDetails = async (idToken, id, data) => {
-  console.log(data, id);
+  console.log(data, id)
   const apiUrl = `${baseUrl}adm/competition/${id}`;
 
   const config = {
@@ -1727,8 +1727,22 @@ const CreateTradingAccountReq = async (idToken, data) => {
       Authorization: `Bearer ${idToken}`,
     },
   };
+  let endpoint;
+  if (data?.platform === "MT5") {
+    endpoint = "v2/account-create/admin/";
+  } else if (data?.platform === "C-Trader") {
+    endpoint = "v2/ctrader-account-create/admin/";
+  } else if (data?.platform === "Dx-Trader") {
+    endpoint = "v2/dxtrade-account-create/admin/";
+  } else {
+    throw new Error("Unsupported user type");
+  }
   try {
-    const response = await axios.post(`${baseUrl}account/admin/create-account/`, data, config);
+    const response = await axios.post(
+      `${baseUrl}${endpoint}`,
+      data,
+      config
+    );
     return response;
   } catch (error) {
     return error;
