@@ -24,23 +24,25 @@ const AffiliateMarketing = ({userData}) => {
 
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
-  const {affiliateData, currentPage, totalPages, totalItems, isLoading} = useSelector((state) => state.affiliate);
+  const {affiliateData, currentPage, totalPages, page_size, count, isLoading} = useSelector((state) => state.affiliate.newCodeListData);
   const {idToken} = useSelector((state) => state.auth);
 
   const newCodeData = useSelector((state) => state.affiliate.newCodeListData);
 
-  console.log(totalItems, totalPages);
+  console.log("page", newCodeData);
+
   useEffect(() => {
     dispatch(
       fetchNewAffiliateCodeList({
         idToken,
+        pageNo,
       }),
     );
-  }, [dispatch]);
+  }, [dispatch, pageNo]);
 
   useEffect(() => {
-    setFilterData(affiliateData);
-  }, [affiliateData]);
+    setFilterData(newCodeData?.results);
+  }, [newCodeData]);
   const handleRowClick = (affiliateId, email) => {
     const url = `/affiliate-marketing/affiliateMarketing-logs?email=${email}`;
     navigate(url);
@@ -235,8 +237,8 @@ const AffiliateMarketing = ({userData}) => {
       <AntTable
         data={filterData}
         columns={columns}
-        totalPages={Math.ceil(totalItems / pageSize)}
-        totalItems={totalItems}
+        totalPages={Math.ceil(count / pageSize)}
+        totalItems={count}
         pageSize={pageSize}
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}

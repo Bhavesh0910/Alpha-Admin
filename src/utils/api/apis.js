@@ -717,10 +717,10 @@ const getPaymentList = async (idToken, search, status, plan, currentPage) => {
   return output;
 };
 // affiliate codes list
-const getAffiliateCodelist = async (idToken, search, currentPage) => {
+const getAffiliateCodelist = async (idToken, pageNo, search, currentPage) => {
   const params = {
-    page: currentPage,
-    page_size: 20,
+    page: pageNo,
+    page_size: 10,
   };
 
   // if (status) {
