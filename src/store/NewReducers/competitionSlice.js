@@ -62,7 +62,6 @@ export const updateCompetition = createAsyncThunk(
     console.log(id , updatedData)
     try {
       const response = await updateCompDetails(idToken, id, updatedData);
-      dispatch(returnMessages('Successfully updated competition', 200));
       if (response?.status < 399) {
         dispatch(returnMessages('Successfully updated competition', 200));
         return response?.data;

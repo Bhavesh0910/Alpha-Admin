@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 // import themeReducer from "../utils/theme/slice";
-import rootReducer from "./reducers"; 
+import rootReducer from "./reducers";
 // import rootSaga from "./sagas"; 
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -14,6 +14,7 @@ const persistConfig = {
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 
 export const store = configureStore({
   reducer: persistedReducer,
