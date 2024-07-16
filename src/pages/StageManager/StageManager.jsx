@@ -1,85 +1,40 @@
-import React, {useState, useEffect} from "react";
-import "./StageManager.scss";
-import AntTable from "../../ReusableComponents/AntTable/AntTable";
-import {Button, DatePicker, Dropdown, Menu, Select, Tooltip, notification} from "antd";
-import searchIcon from "../../assets/icons/searchIcon.svg";
-import greenTickIcon from "../../assets/icons/greenTick.svg";
-import crossRedIcon from "../../assets/icons/cross_icon_red.svg";
-import {ReactComponent as CopyButton} from "../../assets/icons/copyButtonGray.svg";
-import {useDispatch, useSelector} from "react-redux";
-import {generateContractRequest, getSupportTableDetailsNew} from "../../utils/api/apis";
-import {returnErrors} from "../../store/reducers/error";
-import {setIsLoading} from "../../store/reducers/authSlice";
-import {returnMessages} from "../../store/reducers/message";
-import {toast} from "react-toastify";
-import CopyToClipboard from "react-copy-to-clipboard";
-import CrossMark from "../../assets/images/delete_14024972.png";
-import RightMark from "../../assets/images/check_5610944.png";
-import {Link} from "react-router-dom";
+import { Button, DatePicker, Dropdown, Menu, Select } from "antd";
 import moment from "moment";
-import {setActiveAccount, setActiveUser} from "../../store/reducers/accountSlice";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import searchIcon from "../../assets/icons/searchIcon.svg";
+import RightMark from "../../assets/images/check_5610944.png";
+import CrossMark from "../../assets/images/delete_14024972.png";
+import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-const {RangePicker} = DatePicker;
+import "./StageManager.scss";
+import { getStage1List } from "../../store/NewReducers/Support";
+const { RangePicker } = DatePicker;
 
-const {Option} = Select;
+const { Option } = Select;
 
 const StageManager = () => {
   const type = "1_step";
-  // const [category, setCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalTraders, setTotalTraders] = useState(0);
-  const [allTraders, setAllTraders] = useState([]);
-  // console.log(status, "statusstatusstatusstatus");
-  const [refresh, setRefresh] = useState(false);
-
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [totalItems, setTotalItems] = useState(1);
 
   const [activeTab, setActiveTab] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
 
-  const idToken = useSelector((state) => state.auth.idToken);
+  const { idToken } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
+  const { count, data } = useSelector(state => state.support)
+
   useEffect(() => {
-    fetchData(idToken, searchText, pageNo, pageSize, activeTab);
-  }, [refresh, searchText, pageNo, pageSize, activeTab]);
+    dispatch(getStage1List({ idToken, query: "" }))
+  }, [searchText, pageNo, pageSize, activeTab]);
 
-  const addPadding = (tableData, pageNumber) => {
-    const padding = [];
-    for (let index = 0; index < (pageNumber - 1) * 50; index++) {
-      padding.push({
-        id: `padding-${index}`,
-        name: "",
-        accountNumber: "",
-        startDate: "",
-        endDate: "",
-        percentageOfGoodTrades: "",
-        percentageOfBadTrades: "",
-      });
-    }
-
-    return [...padding, ...tableData];
-  };
-
-  const fetchData = async (idToken, searchText, pageNo, pageSize, activeTab) => {
-    setIsLoading(true);
-
-    try {
-      const data = await getSupportTableDetailsNew(idToken, searchText, pageNo, pageSize, activeTab);
-
-      setTotalTraders(data?.count);
-      setAllTraders(addPadding(data?.results, currentPage));
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      dispatch(returnErrors(error?.response?.data?.detail || "Something went Wrong!", 400));
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleCopyToClipboard = (text) => {
     toast("Copied email", {
@@ -154,7 +109,7 @@ const StageManager = () => {
         render: (text, row) => (
           <Link
             to="/trader-overview"
-            onClick={() => handleActiveAccount(row, "account")}
+          // onClick={() => handleActiveAccount(row, "account")}
           >
             {text ? text : "-"}
           </Link>
@@ -167,7 +122,7 @@ const StageManager = () => {
         render: (text, row) => (
           <Link
             to="/traders-list-2"
-            onClick={() => handleActiveAccount(row, "funded_account")}
+          // onClick={() => handleActiveAccount(row, "funded_account")}
           >
             {text ? text : "-"}
           </Link>
@@ -232,8 +187,8 @@ const StageManager = () => {
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item onClick={() => handleGenerateContract(row)}>{row.contract_issued ? "Revoke" : "Generate"} Contract</Menu.Item>
-                <Menu.Item onClick={() => handleGenerateContract(row, "reject")}>Reject Contract</Menu.Item>
+                {/* <Menu.Item onClick={() => handleGenerateContract(row)}>{row.contract_issued ? "Revoke" : "Generate"} Contract</Menu.Item> */}
+                {/* <Menu.Item onClick={() => handleGenerateContract(row, "reject")}>Reject Contract</Menu.Item> */}
               </Menu>
             }
             trigger={["click"]}
@@ -246,33 +201,6 @@ const StageManager = () => {
     [],
   );
 
-  const typename = type === "1_step" ? "1 Step id" : "2 Step id";
-  const handleActiveAccount = (row, msg) => {
-    row.original?.account && msg === "account"
-      ? dispatch(setActiveAccount(row.original.account))
-      : row.original?.account && msg === "funded_account"
-      ? dispatch(setActiveAccount(row.original?.funded_account))
-      : dispatch(setActiveAccount(null));
-    dispatch(setActiveUser({...row.original}));
-  };
-
-  const handleGenerateContract = async (row, action = "") => {
-    try {
-      const data = {
-        action: action ? action : row?.contract_issued ? "revoke" : "generate",
-      };
-      const response = await generateContractRequest(idToken, row?.id, data);
-      if (response?.data?.detail) {
-        dispatch(returnMessages(response?.data?.detail, response?.status));
-        setRefresh(!refresh);
-      } else {
-        dispatch(returnErrors(response?.response?.data?.detail, response?.response?.status));
-      }
-    } catch (error) {
-      console.error("Error in generating/rejecting contract:", error);
-      dispatch(returnErrors("Failed to perform action", 500));
-    }
-  };
   const handleSearch = (value) => {
     setPageNo(1);
     setPageSize(20);
@@ -289,8 +217,6 @@ const StageManager = () => {
   };
 
   function triggerChange(page, updatedPageSize) {
-    console.log("Updated page no : ", page);
-    console.log("Updated page no : ", updatedPageSize);
     setPageNo(page);
     setPageSize(updatedPageSize);
   }
@@ -375,16 +301,16 @@ const StageManager = () => {
           //  defaultValue={defaultDates}
           // onChange={updateDateRange}
           autoFocus
-          // presets={rangePresets}
+        // presets={rangePresets}
         />
       </div>
       {isLoading && <LoaderOverlay />}
 
       <AntTable
         columns={columns}
-        data={allTraders}
-        totalPages={Math.ceil(totalItems / pageSize)}
-        totalItems={totalTraders}
+        data={data || []}
+        totalPages={Math.ceil(count / pageSize)}
+        totalItems={count}
         pageSize={pageSize}
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}
