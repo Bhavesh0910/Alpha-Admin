@@ -123,6 +123,137 @@
   }
   .action_btn {
     max-width: 125px;
-    height: 31px;
+    min-height: 31px;
+  }
+  .comment-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .action_button {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+
+    .standard_button.custom {
+      min-height: 31px !important;
+    }
+    .standard_button:hover {
+      background: #04d9ff;
+      color: #000;
+    }
+
+    .reject_button {
+      display: flex;
+      height: 31px;
+      padding: 0px 20px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+
+      border-bottom: 1px solid var(--Stroke, #252a29);
+
+      border-radius: 10px;
+      border: 1px solid var(--Brand, #04d9ff);
+
+      color: var(--Text-white, #1e1e1e);
+      font-family: "Nunito Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+    }
+
+    .reject_button:hover {
+      border: 1px solid var(--Brand, #04d9ff);
+      color: var(--Text-white, #1e1e1e);
+      background: var(--Inner-box-BG, #04d9ff);
+    }
+  }
+
+  .modal_wrapper {
+    border-radius: var(--table-box, 20px);
+    background: var(--Brand-2, #12181f);
+  }
+  .account_metrics_btn {
+    display: flex;
+    max-height: 31px;
+    padding: 0px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border-radius: 10px;
+    border: 1px solid var(--Brand, #04d9ff);
+    color: var(--Text-white, #1e1e1e);
+    font-family: "Nunito Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+
+    &:hover {
+      border: 1px solid var(--Brand, #04d9ff) !important;
+      background: transparent !important;
+      color: var(--Text-white, #1e1e1e) !important;
+    }
+  }
+
+  .status_button,
+  .status_dropdown_option {
+    color: #1e1e1e !important;
+    border: 0;
+    background: transparent;
+    padding: 0 !important;
+
+    &:hover {
+      border: 0 !important;
+      background: transparent !important;
+      color: var(--Text-white, #1e1e1e) !important;
+    }
+    p {
+      display: flex;
+      width: 92px;
+      height: 31px;
+      padding: 6px 10px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      border-radius: var(--Corner-Radius, 10px);
+      border: 1px solid transparent;
+
+      &.in_progress {
+        border: 1px solid var(--In-progress, #f4ea0f);
+        background: var(--in-Progress-Body, #fffdcf);
+      }
+      &.approved {
+        border: 1px solid var(--sucess, #009017);
+        background: var(--Success-Body, #cdffdd);
+      }
+      &.flagged {
+        border: 1px solid #f26419;
+        background: var(--Flagged-Body, #ffddcb);
+      }
+      &.rejected {
+        border: 1px solid var(--Failed, #f20000);
+        background: var(--Failed-body, #ffe1e1);
+      }
+      &.new {
+        border: 1px solid var(--Brand-1, #04d9ff);
+        background: var(--new-body, #c5ffff);
+      }
+    }
+  }
+
+  .comment_box {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    p {
+      max-width: 252px;
+    }
   }
 }
