@@ -9,12 +9,14 @@ import {useNavigate} from "react-router-dom";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import {getKycList} from "../../../store/NewReducers/complianceList";
+import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 const {Option} = Select;
 const {RangePicker} = DatePicker;
 const KYC = () => {
   const lookup = require("country-code-lookup");
   const {idToken, searchDates} = useSelector((state) => state.auth);
   const [searchText, setSearchText] = useState("");
+  const [search, setSearch] = useState("");
   // const [status, setStatus] = useState("all");
   const [category, setCategory] = useState("all");
   const [dates, setDates] = useState(null);
@@ -24,12 +26,12 @@ const KYC = () => {
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
 
-  const {data, isLoading, count} = useSelector((state) => state.compliance);
+  const {data, isLoading: accountsLoading, count} = useSelector((state) => state.compliance);
 
   console.log(data, "data");
 
   useEffect(() => {
-    let query = `?page_no=${pageNo}&page_size=${pageSize}`;
+    let query = `?page=${pageNo}&page_size=${pageSize}`;
 
     if (dates && dates[0] !== null) {
       query += `&start_date=${dates[0]}&end_date=${dates[1]}`;
@@ -39,8 +41,14 @@ const KYC = () => {
       query += `&status=${status}`;
     }
 
+    if (searchText) {
+      query += `&search=${searchText}`;
+    }
+
+    console.log(query, "query");
+
     dispatch(getKycList({idToken, query, dispatch}));
-  }, [idToken, pageNo, pageSize, dates, status]);
+  }, [idToken, pageNo, pageSize, dates, status, searchText]);
 
   const handleSearch = (value) => {
     setPageNo(1);
@@ -95,13 +103,16 @@ const KYC = () => {
       title: "Admin Review",
       dataIndex: "admin_review",
       key: "admin_review",
-      render: (text) => (
-        <div
-          className={`adminStatus_indicator ${text === "Approved" ? "approved" : text === "Pending" ? "pending" : text === "in_progress" ? "in_progress" : text === "in_review" ? "in_review" : ""}`}
-        >
-          {text}
-        </div>
-      ),
+      render: (text) =>
+        text !== null ? (
+          <div
+            className={`adminStatus_indicator ${text === "Approved" ? "approved" : text === "Pending" ? "pending" : text === "in_progress" ? "in_progress" : text === "in_review" ? "in_review" : ""}`}
+          >
+            {text}
+          </div>
+        ) : (
+          "-"
+        ),
     },
     {
       title: "Country",
@@ -131,11 +142,14 @@ const KYC = () => {
       title: "Contract",
       dataIndex: "contract",
       key: "contract",
-      render: (text) => (
-        <span style={{cursor: "pointer"}}>
-          <DownloadToPC />
-        </span>
-      ),
+      render: (text) =>
+        text !== null ? (
+          <span style={{cursor: "pointer"}}>
+            <DownloadToPC />
+          </span>
+        ) : (
+          "-"
+        ),
     },
   ];
 
@@ -184,9 +198,20 @@ const KYC = () => {
             <input
               placeholder="Search..."
               className="search_input"
-              onKeyDown={(e) => handleSearch(e)}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                console.log("e : ", e.key === "Enter");
+                if (e.key === "Enter") {
+                  console.log("Searching.....");
+                  handleSearch(e.target.value);
+                }
+              }}
             />
-            <div className="searchImg">
+            <div
+              className="searchImg"
+              onClick={() => handleSearch(search)}
+            >
               <img
                 src={searchIcon}
                 alt="searchIcon"
@@ -227,16 +252,20 @@ const KYC = () => {
           </div>
         </div>
       </div>
-      <AntTable
-        data={data || []}
-        columns={columns}
-        totalPages={Math.ceil(count / pageSize)}
-        totalItems={count}
-        pageSize={pageSize}
-        CurrentPageNo={pageNo}
-        setPageSize={setPageSize}
-        triggerChange={triggerChange}
-      />
+      {accountsLoading ? (
+        <LoaderOverlay />
+      ) : (
+        <AntTable
+          data={data || []}
+          columns={columns}
+          totalPages={Math.ceil(count / pageSize)}
+          totalItems={count}
+          pageSize={pageSize}
+          CurrentPageNo={pageNo}
+          setPageSize={setPageSize}
+          triggerChange={triggerChange}
+        />
+      )}
     </div>
   );
 };
