@@ -8,6 +8,7 @@ import crossRedIcon from "../../assets/icons/cross_icon_red.svg";
 import {ReactComponent as CopyButton} from "../../assets/icons/copyButtonGray.svg";
 import {useDispatch, useSelector} from "react-redux";
 import {generateContractRequest, getSupportTableDetailsNew} from "../../utils/api/apis";
+import comment from "../../assets/icons/comment.svg";
 import {returnErrors} from "../../store/reducers/error";
 import {setIsLoading} from "../../store/reducers/authSlice";
 import {returnMessages} from "../../store/reducers/message";
@@ -19,11 +20,14 @@ import {Link} from "react-router-dom";
 import moment from "moment";
 import {setActiveAccount, setActiveUser} from "../../store/reducers/accountSlice";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
+import ReactCountryFlag from "react-country-flag";
+import {DownOutlined} from "@ant-design/icons";
 
 const {Option} = Select;
 const {RangePicker} = DatePicker;
 
 const StageManager2 = () => {
+  const lookup = require("country-code-lookup");
   const type = "1_step";
   // const [category, setCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -96,8 +100,45 @@ const StageManager2 = () => {
     });
   };
 
+  const handleStatusChange = (index, status) => {
+    // const newData = [...data];
+    // newData[index].status = status;
+    // setData(newData);
+  };
+  const statusMenu = (key) => (
+    <Menu onClick={(e) => handleStatusChange(key, e.key)}>
+      <Menu.Item key="New">New</Menu.Item>
+      <Menu.Item key="Approved">Approved</Menu.Item>
+      <Menu.Item key="In Progress">In Progress</Menu.Item>
+      <Menu.Item key="Rejected">Rejected</Menu.Item>
+    </Menu>
+  );
+
   const columns = React.useMemo(
     () => [
+      {
+        title: "Flag",
+        dataIndex: "country",
+        key: "country",
+        render: (country) => {
+          console.log(country, "country");
+          const countryName = country;
+          const countryCode = lookup.byCountry(countryName);
+          if (countryCode) {
+            return (
+              <div className="country_name_wrapper">
+                <ReactCountryFlag
+                  countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
+                  svg={true}
+                  aria-label={countryName}
+                />
+              </div>
+            );
+          } else {
+            return <span>{countryName}</span>;
+          }
+        },
+      },
       {
         title: "Email",
         dataIndex: "email",
@@ -190,6 +231,30 @@ const StageManager2 = () => {
         ),
       },
       {
+        title: "Email Generated",
+        dataIndex: "email_generated",
+        key: "email_generated",
+        render: (text, row) => (
+          <img
+            width={"25px"}
+            src={text || row.status === "approved" ? RightMark : CrossMark}
+            alt=""
+          />
+        ),
+      },
+      {
+        title: "Credential Generated",
+        dataIndex: "credential_generated",
+        key: "credential_generated",
+        render: (text, row) => (
+          <img
+            width={"25px"}
+            src={text || row.status === "approved" ? RightMark : CrossMark}
+            alt=""
+          />
+        ),
+      },
+      {
         title: "Contract Issued",
         dataIndex: "contract_issued",
         key: "contract_issued",
@@ -209,6 +274,18 @@ const StageManager2 = () => {
           <img
             width={"25px"}
             src={text ? RightMark : CrossMark}
+            alt=""
+          />
+        ),
+      },
+      {
+        title: "Payment",
+        dataIndex: "payment",
+        key: "payment`",
+        render: (text, row) => (
+          <img
+            width={"25px"}
+            src={text || row.status === "approved" ? RightMark : CrossMark}
             alt=""
           />
         ),
@@ -241,6 +318,74 @@ const StageManager2 = () => {
             <Button className="action_btn standard_button">Actions</Button>
           </Dropdown>
         ),
+      },
+      {
+        title: "Comment",
+        dataIndex: "comment",
+        key: "comment",
+        render: (text, record, index) => (
+          <div className="comment_box">
+            {/* <p>{highlightText(text, searchText)}</p> */}
+            <img
+              src={comment}
+              alt="comment"
+              className="edit-icon"
+              // onClick={() => openEditModal(text, index)}
+            />
+          </div>
+        ),
+      },
+      {
+        title: "Status",
+        dataIndex: "status",
+        key: "status",
+        render: (text, record, index) => (
+          <Dropdown
+            overlay={() => statusMenu(index)}
+            trigger={["click"]}
+          >
+            <Button
+              icon={<DownOutlined />}
+              className="status_button"
+              style={{
+                width: "120px",
+                display: "flex",
+                flexDirection: "row-reverse",
+                justifyContent: "space-between",
+                padding: "6px 10px",
+              }}
+            >
+              <p
+                className={
+                  text === "in-progress" ? "in_progress" : text === "approved" ? "approved" : text === "flagged" ? "flagged" : text === "dismissed" ? "dismissed" : text === "new" ? "new" : ""
+                }
+              >
+                {text === "in-progress" ? "In Progress" : text === "approved" ? "Approved" : text === "flagged" ? "Flagged" : text === "dismissed" ? "Dismissed" : text === "new" ? "New" : ""}
+              </p>
+            </Button>
+          </Dropdown>
+        ),
+      },
+      {
+        title: "Phase 1 ID",
+        dataIndex: "phase1_id",
+        key: "phase1_id",
+      },
+      {
+        title: "Detail",
+        dataIndex: "detail",
+        key: "detail",
+        render: (text) => {
+          <Button className="accnt_metrics_btn standard_button">Account Metrics</Button>;
+        },
+      },
+      {
+        title: "Action",
+        dataIndex: "action",
+        key: "action",
+        render: (text) => {
+          <Button className="action_btn standard_button">Create Account</Button>;
+        },
       },
     ],
     [],

@@ -1,40 +1,56 @@
-import { Button, DatePicker, Dropdown, Menu, Select } from "antd";
+import {Button, DatePicker, Dropdown, Menu, Select} from "antd";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {Link} from "react-router-dom";
+import {toast} from "react-toastify";
 import searchIcon from "../../assets/icons/searchIcon.svg";
+import comment from "../../assets/icons/comment.svg";
 import RightMark from "../../assets/images/check_5610944.png";
 import CrossMark from "../../assets/images/delete_14024972.png";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
+import {DownOutlined} from "@ant-design/icons";
 import "./StageManager.scss";
-import { getStage1List } from "../../store/NewReducers/Support";
-const { RangePicker } = DatePicker;
+import {getStage1List} from "../../store/NewReducers/Support";
+import ReactCountryFlag from "react-country-flag";
+const {RangePicker} = DatePicker;
 
-const { Option } = Select;
+const {Option} = Select;
 
 const StageManager = () => {
+  const lookup = require("country-code-lookup");
   const type = "1_step";
   const [currentPage, setCurrentPage] = useState(1);
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-
   const [activeTab, setActiveTab] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
 
-  const { idToken } = useSelector((state) => state.auth);
+  const {idToken} = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { count, data } = useSelector(state => state.support)
+  const {count, data} = useSelector((state) => state.support);
+
+  const handleStatusChange = (index, status) => {
+    // const newData = [...data];
+    // newData[index].status = status;
+    // setData(newData);
+  };
+  const statusMenu = (key) => (
+    <Menu onClick={(e) => handleStatusChange(key, e.key)}>
+      <Menu.Item key="New">New</Menu.Item>
+      <Menu.Item key="Approved">Approved</Menu.Item>
+      <Menu.Item key="In Progress">In Progress</Menu.Item>
+      <Menu.Item key="Rejected">Rejected</Menu.Item>
+    </Menu>
+  );
 
   useEffect(() => {
-    dispatch(getStage1List({ idToken, query: "" }))
+    dispatch(getStage1List({idToken, query: ""}));
   }, [searchText, pageNo, pageSize, activeTab]);
-
 
   const handleCopyToClipboard = (text) => {
     toast("Copied email", {
@@ -53,6 +69,29 @@ const StageManager = () => {
 
   const columns = React.useMemo(
     () => [
+      {
+        title: "Flag",
+        dataIndex: "country",
+        key: "country",
+        render: (country) => {
+          console.log(country, "country");
+          const countryName = country;
+          const countryCode = lookup.byCountry(countryName);
+          if (countryCode) {
+            return (
+              <div className="country_name_wrapper">
+                <ReactCountryFlag
+                  countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
+                  svg={true}
+                  aria-label={countryName}
+                />
+              </div>
+            );
+          } else {
+            return <span>{countryName}</span>;
+          }
+        },
+      },
       {
         title: "Email",
         dataIndex: "email",
@@ -109,7 +148,7 @@ const StageManager = () => {
         render: (text, row) => (
           <Link
             to="/trader-overview"
-          // onClick={() => handleActiveAccount(row, "account")}
+            // onClick={() => handleActiveAccount(row, "account")}
           >
             {text ? text : "-"}
           </Link>
@@ -122,7 +161,7 @@ const StageManager = () => {
         render: (text, row) => (
           <Link
             to="/traders-list-2"
-          // onClick={() => handleActiveAccount(row, "funded_account")}
+            // onClick={() => handleActiveAccount(row, "funded_account")}
           >
             {text ? text : "-"}
           </Link>
@@ -145,6 +184,30 @@ const StageManager = () => {
         ),
       },
       {
+        title: "Email Generated",
+        dataIndex: "email_generated",
+        key: "email_generated",
+        render: (text, row) => (
+          <img
+            width={"25px"}
+            src={text || row.status === "approved" ? RightMark : CrossMark}
+            alt=""
+          />
+        ),
+      },
+      {
+        title: "Credential Generated",
+        dataIndex: "credential_generated",
+        key: "credential_generated",
+        render: (text, row) => (
+          <img
+            width={"25px"}
+            src={text || row.status === "approved" ? RightMark : CrossMark}
+            alt=""
+          />
+        ),
+      },
+      {
         title: "Contract Issued",
         dataIndex: "contract_issued",
         key: "contract_issued",
@@ -164,6 +227,18 @@ const StageManager = () => {
           <img
             width={"25px"}
             src={text ? RightMark : CrossMark}
+            alt=""
+          />
+        ),
+      },
+      {
+        title: "Payment",
+        dataIndex: "payment",
+        key: "payment`",
+        render: (text, row) => (
+          <img
+            width={"25px"}
+            src={text || row.status === "approved" ? RightMark : CrossMark}
             alt=""
           />
         ),
@@ -196,6 +271,74 @@ const StageManager = () => {
             <Button className="action_btn standard_button">Actions</Button>
           </Dropdown>
         ),
+      },
+      {
+        title: "Comment",
+        dataIndex: "comment",
+        key: "comment",
+        render: (text, record, index) => (
+          <div className="comment_box">
+            {/* <p>{highlightText(text, searchText)}</p> */}
+            <img
+              src={comment}
+              alt="comment"
+              className="edit-icon"
+              // onClick={() => openEditModal(text, index)}
+            />
+          </div>
+        ),
+      },
+      {
+        title: "Status",
+        dataIndex: "status",
+        key: "status",
+        render: (text, record, index) => (
+          <Dropdown
+            overlay={() => statusMenu(index)}
+            trigger={["click"]}
+          >
+            <Button
+              icon={<DownOutlined />}
+              className="status_button"
+              style={{
+                width: "120px",
+                display: "flex",
+                flexDirection: "row-reverse",
+                justifyContent: "space-between",
+                padding: "6px 10px",
+              }}
+            >
+              <p
+                className={
+                  text === "in-progress" ? "in_progress" : text === "approved" ? "approved" : text === "flagged" ? "flagged" : text === "dismissed" ? "dismissed" : text === "new" ? "new" : ""
+                }
+              >
+                {text === "in-progress" ? "In Progress" : text === "approved" ? "Approved" : text === "flagged" ? "Flagged" : text === "dismissed" ? "Dismissed" : text === "new" ? "New" : ""}
+              </p>
+            </Button>
+          </Dropdown>
+        ),
+      },
+      {
+        title: "Phase 1 ID",
+        dataIndex: "phase1_id",
+        key: "phase1_id",
+      },
+      {
+        title: "Detail",
+        dataIndex: "detail",
+        key: "detail",
+        render: (text) => {
+          <Button className="accnt_metrics_btn standard_button">Account Metrics</Button>;
+        },
+      },
+      {
+        title: "Action",
+        dataIndex: "action",
+        key: "action",
+        render: (text) => {
+          <Button className="action_btn standard_button">Create Account</Button>;
+        },
       },
     ],
     [],
@@ -301,7 +444,7 @@ const StageManager = () => {
           //  defaultValue={defaultDates}
           // onChange={updateDateRange}
           autoFocus
-        // presets={rangePresets}
+          // presets={rangePresets}
         />
       </div>
       {isLoading && <LoaderOverlay />}
@@ -316,6 +459,24 @@ const StageManager = () => {
         setPageSize={setPageSize}
         triggerChange={triggerChange}
       />
+      {/* <Modal
+        title={modalAction}
+        onCancel={() => setIsModalVisible(false)}
+        onOk={modalAction === "Edit" ? handleEditComment : handleAction}
+      >
+        {modalAction === "Edit" ? (
+          <Form.Item label="Edit Comment">
+            <Input.TextArea
+              value={editComment}
+              onChange={(e) => setEditComment(e.target.value)}
+            />
+          </Form.Item>
+        ) : (
+          <Form.Item label="Write your reason">
+            <Input.TextArea />
+          </Form.Item>
+        )}
+      </Modal> */}
     </div>
   );
 };

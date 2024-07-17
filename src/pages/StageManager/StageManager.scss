@@ -114,4 +114,15 @@
     background: transparent !important;
     border: 0;
   }
+
+  .accnt_metrics_btn {
+    max-width: 125px;
+    height: 31px;
+    border-radius: var(--Corner-Radius, 10px);
+    border: 1px solid var(--Brand-1, #04d9ff);
+  }
+  .action_btn {
+    max-width: 125px;
+    height: 31px;
+  }
 }
