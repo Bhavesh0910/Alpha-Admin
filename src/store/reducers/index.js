@@ -1,4 +1,4 @@
-import { combineReducers } from "redux";
+import {combineReducers} from "redux";
 
 import accountReducer from "./accountSlice";
 import advReducer from "./advSlice";
@@ -17,11 +17,12 @@ import affiliateReducer from "../NewReducers/affiliateSlice";
 import listReducer from '../NewReducers/listSlice'
 import riskReducer from '../NewReducers/riskSlice'
 import accountList from "../NewReducers/accountList";
-import payoutSlice from "../NewReducers/payout"
+import payoutSlice from "../NewReducers/payout";
 import accountMetrics from "../NewReducers/accountMetrics";
 import paymentSlice from "../NewReducers/payment";
 import couponSlice from "../NewReducers/Coupons";
 import SupportSlice from "../NewReducers/Support";
+import complianceList from "../NewReducers/complianceList";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -41,11 +42,12 @@ const rootReducer = combineReducers({
   list: listReducer,
   risk: riskReducer,
   accountList: accountList,
-  accountMetrics : accountMetrics,
-  payoutList:payoutSlice,
-  payment:paymentSlice,
-  coupon:couponSlice,
-  support:SupportSlice
+  accountMetrics: accountMetrics,
+  payoutList: payoutSlice,
+  payment: paymentSlice,
+  coupon: couponSlice,
+  support: SupportSlice,
+  compliance: complianceList,
 });
 
 export default rootReducer;

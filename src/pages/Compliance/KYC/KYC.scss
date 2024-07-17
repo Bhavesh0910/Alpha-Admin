@@ -62,6 +62,7 @@
     }
 
     &.in_progress,
+    &.pending,
     &.in_review {
       border: 1px solid var(--In-progress, #f4ea0f);
       background: var(--in-Progress-Body, #fffdcf);
