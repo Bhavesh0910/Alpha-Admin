@@ -1,62 +1,107 @@
 import {Button, DatePicker, Select} from "antd";
-import "./KYC.scss";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ReactComponent as DownloadToPC} from "../../../assets/icons/download_to_pc.svg";
+import "./KYC.scss";
 
-import searchIcon from "../../../assets/icons/searchIcon.svg";
-import {useNavigate} from "react-router-dom";
-import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import {useSelector} from "react-redux";
 import ReactCountryFlag from "react-country-flag";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import searchIcon from "../../../assets/icons/searchIcon.svg";
+import AntTable from "../../../ReusableComponents/AntTable/AntTable";
+import {getKycList} from "../../../store/NewReducers/complianceList";
 const {Option} = Select;
 const {RangePicker} = DatePicker;
 const KYC = () => {
   const lookup = require("country-code-lookup");
   const {idToken, searchDates} = useSelector((state) => state.auth);
   const [searchText, setSearchText] = useState("");
-  const [activeTab, setActiveTab] = useState("all");
+  // const [status, setStatus] = useState("all");
   const [category, setCategory] = useState("all");
-  const [dates, setDates] = useState(searchDates);
+  const [dates, setDates] = useState(null);
+  const [status, setStatus] = useState("all");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [pageNo, setPageNo] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+
+  const {data, isLoading, count} = useSelector((state) => state.compliance);
+
+  console.log(data, "data");
+
+  useEffect(() => {
+    let query = `?page_no=${pageNo}&page_size=${pageSize}`;
+
+    if (dates && dates[0] !== null) {
+      query += `&start_date=${dates[0]}&end_date=${dates[1]}`;
+    }
+
+    if (status && status !== "all") {
+      query += `&status=${status}`;
+    }
+
+    dispatch(getKycList({idToken, query, dispatch}));
+  }, [idToken, pageNo, pageSize, dates, status]);
+
   const handleSearch = (value) => {
+    setPageNo(1);
+    setPageSize(20);
     setSearchText(value);
   };
 
   const handleTabChange = (key) => {
-    setActiveTab(key);
+    setPageNo(1);
+    setStatus(key);
   };
 
   const handleCategoryChange = (value) => {
+    setPageNo(1);
     setCategory(value);
   };
+
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
 
   const columns = [
     {
       title: "Email ID",
-      dataIndex: "emailId",
-      key: "emailId",
+      dataIndex: "email",
+      key: "email",
     },
     {
       title: "Account Number",
-      dataIndex: "accountNumber",
-      key: "accountNumber",
+      dataIndex: "user",
+      key: "user",
     },
     {
       title: "Date",
-      dataIndex: "date",
-      key: "date",
+      dataIndex: "created_at",
+      key: "created_at",
     },
     {
       title: "Sumsub Status",
-      dataIndex: "sumsubStatus",
-      key: "sumsubStatus",
-      render: (text) => <div className={`sumsubStatus_indicator ${text === "approved" ? "approved" : text === "in_progress" ? "in_progress" : text === "in_progress" ? "in_review" : ""}`}>{text}</div>,
+      dataIndex: "admin_status",
+      key: "admin_status",
+      render: (text) => (
+        <div
+          className={`sumsubStatus_indicator ${text === "Approved" ? "approved" : text === "Pending" ? "pending" : text === "in_progress" ? "in_progress" : text === "in_review" ? "in_review" : ""}`}
+        >
+          {text}
+        </div>
+      ),
     },
     {
       title: "Admin Review",
-      dataIndex: "adminReview",
-      key: "adminReview",
-      render: (text) => <div className={`adminStatus_indicator ${text === "approved" ? "approved" : text === "in_progress" ? "in_progress" : text === "in_progress" ? "in_review" : ""}`}>{text}</div>,
+      dataIndex: "admin_review",
+      key: "admin_review",
+      render: (text) => (
+        <div
+          className={`adminStatus_indicator ${text === "Approved" ? "approved" : text === "Pending" ? "pending" : text === "in_progress" ? "in_progress" : text === "in_review" ? "in_review" : ""}`}
+        >
+          {text}
+        </div>
+      ),
     },
     {
       title: "Country",
@@ -78,7 +123,7 @@ const KYC = () => {
             </div>
           );
         } else {
-          return <span>{countryName}</span>;
+          return <span>{"-"}</span>;
         }
       },
     },
@@ -108,7 +153,11 @@ const KYC = () => {
   ];
 
   function updateDateRange(dates) {
-    // setDates(dates.map((date) => date.format("YYYY-MM-DD")));
+    if (dates) {
+      setDates(dates.map((date) => date.format("DD MMM YYYY")));
+    } else {
+      setDates([null, null]);
+    }
   }
 
   return (
@@ -117,7 +166,7 @@ const KYC = () => {
         <div className="heading_box">
           <h3>KYC</h3>{" "}
           <RangePicker
-            placeholder={dates}
+            // placeholder={dates}
             onChange={updateDateRange}
           />
         </div>
@@ -146,41 +195,47 @@ const KYC = () => {
           </div>
           <div className="filter_buttons">
             <Button
-              className={activeTab === "all" ? "active" : ""}
+              className={status === "all" ? "active" : ""}
               onClick={() => handleTabChange("all")}
             >
               All
             </Button>
-            <Button
-              className={activeTab === "new" ? "active" : ""}
+            {/* <Button
+              className={status === "new" ? "active" : ""}
               onClick={() => handleTabChange("new")}
             >
               New
-            </Button>
+            </Button> */}
             <Button
-              className={activeTab === "approved" ? "active" : ""}
-              onClick={() => handleTabChange("approved")}
+              className={status === "Approved" ? "active" : ""}
+              onClick={() => handleTabChange("Approved")}
             >
               Approved
             </Button>
             <Button
-              className={activeTab === "rejected" ? "active" : ""}
-              onClick={() => handleTabChange("rejected")}
+              className={status === "Rejected" ? "active" : ""}
+              onClick={() => handleTabChange("Rejected")}
             >
               Rejected
             </Button>
             <Button
-              className={activeTab === "in progress" ? "active" : ""}
-              onClick={() => handleTabChange("in_progress")}
+              className={status === "Pending" ? "active" : ""}
+              onClick={() => handleTabChange("Pending")}
             >
-              In Progress
+              Pending
             </Button>
           </div>
         </div>
       </div>
       <AntTable
-        data={dummyData}
+        data={data || []}
         columns={columns}
+        totalPages={Math.ceil(count / pageSize)}
+        totalItems={count}
+        pageSize={pageSize}
+        CurrentPageNo={pageNo}
+        setPageSize={setPageSize}
+        triggerChange={triggerChange}
       />
     </div>
   );
