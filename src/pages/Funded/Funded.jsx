@@ -18,6 +18,7 @@ const Funded = () => {
   const [editIndex, setEditIndex] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalAction, setModalAction] = useState("");
+
   const handleStatusChange = (index, status) => {
     // const newData = [...data];
     // newData[index].status = status;

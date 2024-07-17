@@ -1,9 +1,9 @@
 import {Button, DatePicker, Dropdown, Menu, Select} from "antd";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {Link, useLocation} from "react-router-dom";
+import {toast} from "react-toastify";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import comment from "../../assets/icons/comment.svg";
 import RightMark from "../../assets/images/check_5610944.png";
@@ -29,8 +29,8 @@ const StageManager = () => {
   const [search, setSearch] = useState("");
   const [dates, setDates] = useState(null);
 
-  const { idToken } = useSelector((state) => state.auth);
-  const { count, data, isLoading, stageStatusOptions } = useSelector(state => state.support);
+  const {idToken} = useSelector((state) => state.auth);
+  const {count, data, isLoading, stageStatusOptions} = useSelector((state) => state.support);
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -41,19 +41,17 @@ const StageManager = () => {
   }, [searchText, pageNo, pageSize, status, idToken, dates, location.pathname]);
 
   async function fetchStageList(idToken, pageNo, pageSize, searchText, status, dates) {
-
     let query = "";
     let type;
     let url;
     query = `?page=${pageNo}&page_size=${pageSize}`;
 
     if (location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2") {
-      location.pathname === "/support/stage-1" ? type = "Stage 1 Pass" : type = "Stage 2 Pass";
+      location.pathname === "/support/stage-1" ? (type = "Stage 1 Pass") : (type = "Stage 2 Pass");
       query += `&type=${type}`;
     } else {
-      location.pathname === "/support/funded" ? url = "v2/get/funded/list/" : url = "v2/get-payout/";
+      location.pathname === "/support/funded" ? (url = "v2/get/funded/list/") : (url = "v2/get-payout/");
     }
-
 
     if (searchText) {
       query += `&search=${searchText}`;
@@ -68,12 +66,27 @@ const StageManager = () => {
     //   query += `&search=${searchText}`;
     // }
 
-    dispatch(getStage1List({ idToken, query, url, dispatch }));
+    dispatch(getStage1List({idToken, query, url, dispatch}));
   }
 
   function updateDateRange(dates) {
-    setDates(dates.map(item => item.format("DD MMM YYYY")))
+    setDates(dates.map((item) => item.format("DD MMM YYYY")));
   }
+
+  const handleStatusChange = (index, status) => {
+    // const newData = [...data];
+    // newData[index].status = status;
+    // setData(newData);
+  };
+
+  const statusMenu = (key) => (
+    <Menu onClick={(e) => handleStatusChange(key, e.key)}>
+      <Menu.Item key="New">New</Menu.Item>
+      <Menu.Item key="Approved">Approved</Menu.Item>
+      <Menu.Item key="In Progress">In Progress</Menu.Item>
+      <Menu.Item key="Rejected">Rejected</Menu.Item>
+    </Menu>
+  );
 
   const handleCopyToClipboard = (text) => {
     toast("Copied email", {
@@ -438,14 +451,14 @@ const StageManager = () => {
           >
             All
           </Button>
-          {options?.map((item) =>
+          {options?.map((item) => (
             <Button
               className={status === `${item}` ? "active" : ""}
               onClick={() => handleTabChange(`${item}`)}
             >
               {item}
             </Button>
-          )}
+          ))}
         </div>
         <RangePicker
           // placeholder={dates}
