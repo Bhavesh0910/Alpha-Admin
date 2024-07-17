@@ -8,6 +8,7 @@ import crossRedIcon from "../../assets/icons/cross_icon_red.svg";
 import {ReactComponent as CopyButton} from "../../assets/icons/copyButtonGray.svg";
 import {useDispatch, useSelector} from "react-redux";
 import {generateContractRequest, getSupportTableDetailsNew} from "../../utils/api/apis";
+import comment from "../../assets/icons/comment.svg";
 import {returnErrors} from "../../store/reducers/error";
 import {setIsLoading} from "../../store/reducers/authSlice";
 import {returnMessages} from "../../store/reducers/message";
@@ -15,71 +16,38 @@ import {toast} from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import CrossMark from "../../assets/images/delete_14024972.png";
 import RightMark from "../../assets/images/check_5610944.png";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import moment from "moment";
 import {setActiveAccount, setActiveUser} from "../../store/reducers/accountSlice";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
+import ReactCountryFlag from "react-country-flag";
+import {DownOutlined} from "@ant-design/icons";
 
 const {Option} = Select;
 const {RangePicker} = DatePicker;
 
 const StageManager2 = () => {
-  const type = "1_step";
-  // const [category, setCategory] = useState("all");
+  const lookup = require("country-code-lookup");
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalTraders, setTotalTraders] = useState(0);
-  const [allTraders, setAllTraders] = useState([]);
-  // console.log(status, "statusstatusstatusstatus");
-  const [refresh, setRefresh] = useState(false);
-
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [totalItems, setTotalItems] = useState(1);
 
   const [activeTab, setActiveTab] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
 
-  const idToken = useSelector((state) => state.auth.idToken);
+  const { idToken } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
+  const { count, data } = useSelector(state => state.support);
+
+  const location = useLocation();
+
   useEffect(() => {
-    fetchData(idToken, searchText, pageNo, pageSize, activeTab);
-  }, [refresh, searchText, pageNo, pageSize, activeTab]);
+    // dispatch(getStage1List({ idToken, location,query: "" }))
+  }, [searchText, pageNo, pageSize, activeTab]);
 
-  const addPadding = (tableData, pageNumber) => {
-    const padding = [];
-    for (let index = 0; index < (pageNumber - 1) * 50; index++) {
-      padding.push({
-        id: `padding-${index}`,
-        name: "",
-        accountNumber: "",
-        startDate: "",
-        endDate: "",
-        percentageOfGoodTrades: "",
-        percentageOfBadTrades: "",
-      });
-    }
-
-    return [...padding, ...tableData];
-  };
-
-  const fetchData = async (idToken, searchText, pageNo, pageSize, activeTab) => {
-    setIsLoading(true);
-
-    try {
-      const data = await getSupportTableDetailsNew(idToken, searchText, pageNo, pageSize, activeTab);
-
-      setTotalTraders(data?.count);
-      setAllTraders(addPadding(data?.results, currentPage));
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      dispatch(returnErrors(error?.response?.data?.detail || "Something went Wrong!", 400));
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleCopyToClipboard = (text) => {
     toast("Copied email", {
@@ -96,8 +64,45 @@ const StageManager2 = () => {
     });
   };
 
+  const handleStatusChange = (index, status) => {
+    // const newData = [...data];
+    // newData[index].status = status;
+    // setData(newData);
+  };
+  const statusMenu = (key) => (
+    <Menu onClick={(e) => handleStatusChange(key, e.key)}>
+      <Menu.Item key="New">New</Menu.Item>
+      <Menu.Item key="Approved">Approved</Menu.Item>
+      <Menu.Item key="In Progress">In Progress</Menu.Item>
+      <Menu.Item key="Rejected">Rejected</Menu.Item>
+    </Menu>
+  );
+
   const columns = React.useMemo(
     () => [
+      {
+        title: "Flag",
+        dataIndex: "country",
+        key: "country",
+        render: (country) => {
+          console.log(country, "country");
+          const countryName = country;
+          const countryCode = lookup.byCountry(countryName);
+          if (countryCode) {
+            return (
+              <div className="country_name_wrapper">
+                <ReactCountryFlag
+                  countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
+                  svg={true}
+                  aria-label={countryName}
+                />
+              </div>
+            );
+          } else {
+            return <span>{countryName}</span>;
+          }
+        },
+      },
       {
         title: "Email",
         dataIndex: "email",
@@ -154,7 +159,7 @@ const StageManager2 = () => {
         render: (text, row) => (
           <Link
             to="/trader-overview"
-            onClick={() => handleActiveAccount(row, "account")}
+          // onClick={() => handleActiveAccount(row, "account")}
           >
             {text ? text : "-"}
           </Link>
@@ -167,7 +172,7 @@ const StageManager2 = () => {
         render: (text, row) => (
           <Link
             to="/traders-list-2"
-            onClick={() => handleActiveAccount(row, "funded_account")}
+          // onClick={() => handleActiveAccount(row, "funded_account")}
           >
             {text ? text : "-"}
           </Link>
@@ -187,6 +192,30 @@ const StageManager2 = () => {
           >
             {text ? text.replace(/_/g, " ") : "-"}
           </span>
+        ),
+      },
+      {
+        title: "Email Generated",
+        dataIndex: "email_generated",
+        key: "email_generated",
+        render: (text, row) => (
+          <img
+            width={"25px"}
+            src={text || row.status === "approved" ? RightMark : CrossMark}
+            alt=""
+          />
+        ),
+      },
+      {
+        title: "Credential Generated",
+        dataIndex: "credential_generated",
+        key: "credential_generated",
+        render: (text, row) => (
+          <img
+            width={"25px"}
+            src={text || row.status === "approved" ? RightMark : CrossMark}
+            alt=""
+          />
         ),
       },
       {
@@ -214,6 +243,18 @@ const StageManager2 = () => {
         ),
       },
       {
+        title: "Payment",
+        dataIndex: "payment",
+        key: "payment`",
+        render: (text, row) => (
+          <img
+            width={"25px"}
+            src={text || row.status === "approved" ? RightMark : CrossMark}
+            alt=""
+          />
+        ),
+      },
+      {
         title: "Date (created at)",
         dataIndex: "created_at",
         key: "created_at",
@@ -232,8 +273,8 @@ const StageManager2 = () => {
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item onClick={() => handleGenerateContract(row)}>{row.contract_issued ? "Revoke" : "Generate"} Contract</Menu.Item>
-                <Menu.Item onClick={() => handleGenerateContract(row, "reject")}>Reject Contract</Menu.Item>
+                {/* <Menu.Item onClick={() => handleGenerateContract(row)}>{row.contract_issued ? "Revoke" : "Generate"} Contract</Menu.Item> */}
+                {/* <Menu.Item onClick={() => handleGenerateContract(row, "reject")}>Reject Contract</Menu.Item> */}
               </Menu>
             }
             trigger={["click"]}
@@ -242,37 +283,78 @@ const StageManager2 = () => {
           </Dropdown>
         ),
       },
+      {
+        title: "Comment",
+        dataIndex: "comment",
+        key: "comment",
+        render: (text, record, index) => (
+          <div className="comment_box">
+            {/* <p>{highlightText(text, searchText)}</p> */}
+            <img
+              src={comment}
+              alt="comment"
+              className="edit-icon"
+              // onClick={() => openEditModal(text, index)}
+            />
+          </div>
+        ),
+      },
+      {
+        title: "Status",
+        dataIndex: "status",
+        key: "status",
+        render: (text, record, index) => (
+          <Dropdown
+            overlay={() => statusMenu(index)}
+            trigger={["click"]}
+          >
+            <Button
+              icon={<DownOutlined />}
+              className="status_button"
+              style={{
+                width: "120px",
+                display: "flex",
+                flexDirection: "row-reverse",
+                justifyContent: "space-between",
+                padding: "6px 10px",
+              }}
+            >
+              <p
+                className={
+                  text === "in-progress" ? "in_progress" : text === "approved" ? "approved" : text === "flagged" ? "flagged" : text === "dismissed" ? "dismissed" : text === "new" ? "new" : ""
+                }
+              >
+                {text === "in-progress" ? "In Progress" : text === "approved" ? "Approved" : text === "flagged" ? "Flagged" : text === "dismissed" ? "Dismissed" : text === "new" ? "New" : ""}
+              </p>
+            </Button>
+          </Dropdown>
+        ),
+      },
+      {
+        title: "Phase 1 ID",
+        dataIndex: "phase1_id",
+        key: "phase1_id",
+      },
+      {
+        title: "Detail",
+        dataIndex: "detail",
+        key: "detail",
+        render: (text) => {
+          <Button className="accnt_metrics_btn standard_button">Account Metrics</Button>;
+        },
+      },
+      {
+        title: "Action",
+        dataIndex: "action",
+        key: "action",
+        render: (text) => {
+          <Button className="action_btn standard_button">Create Account</Button>;
+        },
+      },
     ],
     [],
   );
 
-  const typename = type === "1_step" ? "1 Step id" : "2 Step id";
-  const handleActiveAccount = (row, msg) => {
-    row.original?.account && msg === "account"
-      ? dispatch(setActiveAccount(row.original.account))
-      : row.original?.account && msg === "funded_account"
-      ? dispatch(setActiveAccount(row.original?.funded_account))
-      : dispatch(setActiveAccount(null));
-    dispatch(setActiveUser({...row.original}));
-  };
-
-  const handleGenerateContract = async (row, action = "") => {
-    try {
-      const data = {
-        action: action ? action : row?.contract_issued ? "revoke" : "generate",
-      };
-      const response = await generateContractRequest(idToken, row?.id, data);
-      if (response?.data?.detail) {
-        dispatch(returnMessages(response?.data?.detail, response?.status));
-        setRefresh(!refresh);
-      } else {
-        dispatch(returnErrors(response?.response?.data?.detail, response?.response?.status));
-      }
-    } catch (error) {
-      console.error("Error in generating/rejecting contract:", error);
-      dispatch(returnErrors("Failed to perform action", 500));
-    }
-  };
   const handleSearch = (value) => {
     setPageNo(1);
     setPageSize(20);
@@ -289,8 +371,6 @@ const StageManager2 = () => {
   };
 
   function triggerChange(page, updatedPageSize) {
-    console.log("Updated page no : ", page);
-    console.log("Updated page no : ", updatedPageSize);
     setPageNo(page);
     setPageSize(updatedPageSize);
   }
@@ -382,9 +462,9 @@ const StageManager2 = () => {
 
       <AntTable
         columns={columns}
-        data={allTraders}
-        totalPages={Math.ceil(totalItems / pageSize)}
-        totalItems={totalTraders}
+        data={data || []}
+        totalPages={Math.ceil(count / pageSize)}
+        totalItems={count}
         pageSize={pageSize}
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}

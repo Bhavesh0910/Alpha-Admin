@@ -68,12 +68,12 @@ const items = [
       {
         key: "6-1",
         label: "Stage 1",
-        link: "/stage-manager/stage-1",
+        link: "/support/stage-1",
       },
       {
         key: "6-2",
         label: "Stage 2",
-        link: "/stage-manager/stage-2",
+        link: "/support/stage-2",
       },
       {
         key: "6-3",
