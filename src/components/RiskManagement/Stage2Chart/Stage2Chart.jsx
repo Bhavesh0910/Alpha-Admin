@@ -1,11 +1,11 @@
 import React, {useRef, useState} from "react";
 import ApexCharts from "react-apexcharts";
 import "./Stage2Chart.scss";
-const Stage2Chart = () => {
+const Stage2Chart = ({data}) => {
   const chartRef = useRef(null);
 
   const options = {
-    series: [1807, 8429],
+    series: [data?.pass_count, data?.fail_count],
     labels: ["Total Pass", "Total Fail"],
     colors: ["#A3EA93", "#F97F7F"],
     chart: {

@@ -44,6 +44,7 @@ const Coupon = () => {
   const handleSearch = (e) => {
     if (e.key === "Enter") {
       setSearchText(e.target.value);
+      setFilterData(couponData[0]?.results)
     }
   };
   function triggerChange(page, updatedPageSize) {
