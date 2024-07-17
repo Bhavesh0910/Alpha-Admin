@@ -102,7 +102,7 @@ function Router() {
             path="/support/payout"
             element={
               <PageLayout headerName="Payout">
-                <Payouts />
+                <StageManager />
               </PageLayout>
             }
           />
@@ -148,7 +148,7 @@ function Router() {
 
           <Route
             exact={true}
-            path="/stage-manager/stage-1"
+            path="/support/stage-1"
             element={
               <PageLayout headerName="Support">
                 <StageManager />
@@ -157,10 +157,10 @@ function Router() {
           />
           <Route
             exact={true}
-            path="/stage-manager/stage-2"
+            path="/support/stage-2"
             element={
               <PageLayout headerName="Support">
-                <StageManager2 />
+                <StageManager />
               </PageLayout>
             }
           />
@@ -190,7 +190,7 @@ function Router() {
             path="/support/funded"
             element={
               <PageLayout headerName="Funded">
-                <Funded />
+                <StageManager />
               </PageLayout>
             }
           />

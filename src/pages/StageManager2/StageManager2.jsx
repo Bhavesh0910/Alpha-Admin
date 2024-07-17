@@ -16,7 +16,7 @@ import {toast} from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import CrossMark from "../../assets/images/delete_14024972.png";
 import RightMark from "../../assets/images/check_5610944.png";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import moment from "moment";
 import {setActiveAccount, setActiveUser} from "../../store/reducers/accountSlice";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
@@ -28,62 +28,26 @@ const {RangePicker} = DatePicker;
 
 const StageManager2 = () => {
   const lookup = require("country-code-lookup");
-  const type = "1_step";
-  // const [category, setCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalTraders, setTotalTraders] = useState(0);
-  const [allTraders, setAllTraders] = useState([]);
-  // console.log(status, "statusstatusstatusstatus");
-  const [refresh, setRefresh] = useState(false);
-
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [totalItems, setTotalItems] = useState(1);
 
   const [activeTab, setActiveTab] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
 
-  const idToken = useSelector((state) => state.auth.idToken);
+  const { idToken } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
+  const { count, data } = useSelector(state => state.support);
+
+  const location = useLocation();
+
   useEffect(() => {
-    fetchData(idToken, searchText, pageNo, pageSize, activeTab);
-  }, [refresh, searchText, pageNo, pageSize, activeTab]);
+    // dispatch(getStage1List({ idToken, location,query: "" }))
+  }, [searchText, pageNo, pageSize, activeTab]);
 
-  const addPadding = (tableData, pageNumber) => {
-    const padding = [];
-    for (let index = 0; index < (pageNumber - 1) * 50; index++) {
-      padding.push({
-        id: `padding-${index}`,
-        name: "",
-        accountNumber: "",
-        startDate: "",
-        endDate: "",
-        percentageOfGoodTrades: "",
-        percentageOfBadTrades: "",
-      });
-    }
-
-    return [...padding, ...tableData];
-  };
-
-  const fetchData = async (idToken, searchText, pageNo, pageSize, activeTab) => {
-    setIsLoading(true);
-
-    try {
-      const data = await getSupportTableDetailsNew(idToken, searchText, pageNo, pageSize, activeTab);
-
-      setTotalTraders(data?.count);
-      setAllTraders(addPadding(data?.results, currentPage));
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      dispatch(returnErrors(error?.response?.data?.detail || "Something went Wrong!", 400));
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleCopyToClipboard = (text) => {
     toast("Copied email", {
@@ -195,7 +159,7 @@ const StageManager2 = () => {
         render: (text, row) => (
           <Link
             to="/trader-overview"
-            onClick={() => handleActiveAccount(row, "account")}
+          // onClick={() => handleActiveAccount(row, "account")}
           >
             {text ? text : "-"}
           </Link>
@@ -208,7 +172,7 @@ const StageManager2 = () => {
         render: (text, row) => (
           <Link
             to="/traders-list-2"
-            onClick={() => handleActiveAccount(row, "funded_account")}
+          // onClick={() => handleActiveAccount(row, "funded_account")}
           >
             {text ? text : "-"}
           </Link>
@@ -309,8 +273,8 @@ const StageManager2 = () => {
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item onClick={() => handleGenerateContract(row)}>{row.contract_issued ? "Revoke" : "Generate"} Contract</Menu.Item>
-                <Menu.Item onClick={() => handleGenerateContract(row, "reject")}>Reject Contract</Menu.Item>
+                {/* <Menu.Item onClick={() => handleGenerateContract(row)}>{row.contract_issued ? "Revoke" : "Generate"} Contract</Menu.Item> */}
+                {/* <Menu.Item onClick={() => handleGenerateContract(row, "reject")}>Reject Contract</Menu.Item> */}
               </Menu>
             }
             trigger={["click"]}
@@ -391,33 +355,6 @@ const StageManager2 = () => {
     [],
   );
 
-  const typename = type === "1_step" ? "1 Step id" : "2 Step id";
-  const handleActiveAccount = (row, msg) => {
-    row.original?.account && msg === "account"
-      ? dispatch(setActiveAccount(row.original.account))
-      : row.original?.account && msg === "funded_account"
-      ? dispatch(setActiveAccount(row.original?.funded_account))
-      : dispatch(setActiveAccount(null));
-    dispatch(setActiveUser({...row.original}));
-  };
-
-  const handleGenerateContract = async (row, action = "") => {
-    try {
-      const data = {
-        action: action ? action : row?.contract_issued ? "revoke" : "generate",
-      };
-      const response = await generateContractRequest(idToken, row?.id, data);
-      if (response?.data?.detail) {
-        dispatch(returnMessages(response?.data?.detail, response?.status));
-        setRefresh(!refresh);
-      } else {
-        dispatch(returnErrors(response?.response?.data?.detail, response?.response?.status));
-      }
-    } catch (error) {
-      console.error("Error in generating/rejecting contract:", error);
-      dispatch(returnErrors("Failed to perform action", 500));
-    }
-  };
   const handleSearch = (value) => {
     setPageNo(1);
     setPageSize(20);
@@ -434,8 +371,6 @@ const StageManager2 = () => {
   };
 
   function triggerChange(page, updatedPageSize) {
-    console.log("Updated page no : ", page);
-    console.log("Updated page no : ", updatedPageSize);
     setPageNo(page);
     setPageSize(updatedPageSize);
   }
@@ -527,9 +462,9 @@ const StageManager2 = () => {
 
       <AntTable
         columns={columns}
-        data={allTraders}
-        totalPages={Math.ceil(totalItems / pageSize)}
-        totalItems={totalTraders}
+        data={data || []}
+        totalPages={Math.ceil(count / pageSize)}
+        totalItems={count}
         pageSize={pageSize}
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}

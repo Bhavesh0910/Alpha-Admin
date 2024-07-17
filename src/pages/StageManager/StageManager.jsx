@@ -1,9 +1,9 @@
 import {Button, DatePicker, Dropdown, Menu, Select} from "antd";
 import moment from "moment";
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {Link} from "react-router-dom";
-import {toast} from "react-toastify";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import comment from "../../assets/icons/comment.svg";
 import RightMark from "../../assets/images/check_5610944.png";
@@ -20,37 +20,60 @@ const {Option} = Select;
 
 const StageManager = () => {
   const lookup = require("country-code-lookup");
-  const type = "1_step";
-  const [currentPage, setCurrentPage] = useState(1);
+
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [activeTab, setActiveTab] = useState("all");
+
+  const [status, setStatus] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
+  const [dates, setDates] = useState(null);
 
-  const {idToken} = useSelector((state) => state.auth);
+  const { idToken } = useSelector((state) => state.auth);
+  const { count, data, isLoading, stageStatusOptions } = useSelector(state => state.support);
+
+  const location = useLocation();
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const {count, data} = useSelector((state) => state.support);
-
-  const handleStatusChange = (index, status) => {
-    // const newData = [...data];
-    // newData[index].status = status;
-    // setData(newData);
-  };
-  const statusMenu = (key) => (
-    <Menu onClick={(e) => handleStatusChange(key, e.key)}>
-      <Menu.Item key="New">New</Menu.Item>
-      <Menu.Item key="Approved">Approved</Menu.Item>
-      <Menu.Item key="In Progress">In Progress</Menu.Item>
-      <Menu.Item key="Rejected">Rejected</Menu.Item>
-    </Menu>
-  );
+  const options = stageStatusOptions || location.pathname === "/support/funded" ? ["New", "Approved", "Rejected", "Flagged"] : ["New", "Approved", "Failed", "Pending"];
 
   useEffect(() => {
-    dispatch(getStage1List({idToken, query: ""}));
-  }, [searchText, pageNo, pageSize, activeTab]);
+    fetchStageList(idToken, pageNo, pageSize, searchText, status, dates);
+  }, [searchText, pageNo, pageSize, status, idToken, dates, location.pathname]);
+
+  async function fetchStageList(idToken, pageNo, pageSize, searchText, status, dates) {
+
+    let query = "";
+    let type;
+    let url;
+    query = `?page=${pageNo}&page_size=${pageSize}`;
+
+    if (location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2") {
+      location.pathname === "/support/stage-1" ? type = "Stage 1 Pass" : type = "Stage 2 Pass";
+      query += `&type=${type}`;
+    } else {
+      location.pathname === "/support/funded" ? url = "v2/get/funded/list/" : url = "v2/get-payout/";
+    }
+
+
+    if (searchText) {
+      query += `&search=${searchText}`;
+    }
+    if (status && status !== "all") {
+      query += `&status=${status}`;
+    }
+    if (dates) {
+      query += `&start_date=${dates[0]}&end_date=${dates[1]}`;
+    }
+    // if (search) {
+    //   query += `&search=${searchText}`;
+    // }
+
+    dispatch(getStage1List({ idToken, query, url, dispatch }));
+  }
+
+  function updateDateRange(dates) {
+    setDates(dates.map(item => item.format("DD MMM YYYY")))
+  }
 
   const handleCopyToClipboard = (text) => {
     toast("Copied email", {
@@ -352,7 +375,7 @@ const StageManager = () => {
 
   const handleTabChange = (key) => {
     setPageNo(1);
-    setActiveTab(key);
+    setStatus(key);
   };
 
   const handleCategoryChange = (value) => {
@@ -366,7 +389,7 @@ const StageManager = () => {
   return (
     <div className="stageManager_container">
       <div className="header_wrapper">
-        <h2>Stage 1</h2>
+        <h2>{location.pathname.split("/")[2].charAt(0).toUpperCase() + location.pathname.split("/")[2].slice(1)}</h2>
         <Button
           // onClick={() => navigate("payments-view-logs")}
           className="view_logs__btn standard_button"
@@ -407,42 +430,27 @@ const StageManager = () => {
             />
           </div>
         </div>
+
         <div className="filter_buttons">
           <Button
-            className={activeTab === "all" ? "active" : ""}
+            className={status === "all" ? "active" : ""}
             onClick={() => handleTabChange("all")}
           >
             All
           </Button>
-          <Button
-            className={activeTab === "new" ? "active" : ""}
-            onClick={() => handleTabChange("new")}
-          >
-            New
-          </Button>
-          <Button
-            className={activeTab === "approved" ? "active" : ""}
-            onClick={() => handleTabChange("approved")}
-          >
-            Approved
-          </Button>
-          <Button
-            className={activeTab === "inprogress" ? "active" : ""}
-            onClick={() => handleTabChange("in_progress")}
-          >
-            In Progress
-          </Button>
-          <Button
-            className={activeTab === "rejected" ? "active" : ""}
-            onClick={() => handleTabChange("rejected")}
-          >
-            Rejected
-          </Button>
-        </div>{" "}
+          {options?.map((item) =>
+            <Button
+              className={status === `${item}` ? "active" : ""}
+              onClick={() => handleTabChange(`${item}`)}
+            >
+              {item}
+            </Button>
+          )}
+        </div>
         <RangePicker
           // placeholder={dates}
           //  defaultValue={defaultDates}
-          // onChange={updateDateRange}
+          onChange={updateDateRange}
           autoFocus
           // presets={rangePresets}
         />
