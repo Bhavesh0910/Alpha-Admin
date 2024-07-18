@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { Breadcrumb, Button, Input, Select, Spin } from "antd";
-import { ReactComponent as PercentageIcon } from "../../../assets/icons/precentage_icon_white.svg";
+import React, {useState} from "react";
+import {Breadcrumb, Button, Input, Select, Spin} from "antd";
+import {ReactComponent as PercentageIcon} from "../../../assets/icons/precentage_icon_white.svg";
 import "./CreateAffiliateCode.scss";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { createAffiliateCode, fetchCodeList } from "../../../store/NewReducers/affiliateSlice";
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {createAffiliateCode, fetchCodeList} from "../../../store/NewReducers/affiliateSlice";
 import axios from "axios";
-import { UserSearchReq, baseUrl } from "../../../utils/api/apis";
-import { returnErrors } from "../../../store/reducers/error";
+import {UserSearchReq, baseUrl} from "../../../utils/api/apis";
+import {returnErrors} from "../../../store/reducers/error";
 
-const { Option } = Select;
+const {Option} = Select;
 
 const CreateAffiliateCode = () => {
   const [isSpinner, setIsSpinner] = useState(false);
@@ -20,7 +20,7 @@ const CreateAffiliateCode = () => {
     percent_repeat: 0,
   });
 
-  const [emailOpts, setEmailOpts] = useState([{ label: "", value: "" }]);
+  const [emailOpts, setEmailOpts] = useState([{label: "", value: ""}]);
   const [isLoading, setIsLoading] = useState(false);
   const idToken = useSelector((state) => state.auth.idToken);
   const createdLink = useSelector((state) => state.affiliate.createdLink);
@@ -36,12 +36,12 @@ const CreateAffiliateCode = () => {
         userArray.push({
           label: item?.email,
           value: item?.email,
-        })
+        }),
       );
 
       setEmailOpts(userArray);
     } else {
-      if (response.response.data.message) {
+      if (response?.response?.data?.message) {
         return;
       }
       let msg = response?.response?.data?.detail || "Something went wrong";
@@ -49,7 +49,7 @@ const CreateAffiliateCode = () => {
     }
   };
   const handleInputChange = (value) => {
-    if (typeof value === 'string') {
+    if (typeof value === "string") {
       fetch(value);
     }
   };
@@ -69,13 +69,12 @@ const CreateAffiliateCode = () => {
     }
     setIsSpinner(true);
     try {
-       dispatch(createAffiliateCode({ idToken, couponData }));
+      dispatch(createAffiliateCode({idToken, couponData}));
       setIsSpinner(false);
     } catch (error) {
       setIsSpinner(false);
       console.error("Failed to create affiliate code:", error);
     }
-    
   };
 
   return (
@@ -109,7 +108,10 @@ const CreateAffiliateCode = () => {
               dropdownClassName="react-select-dropdown"
             >
               {emailOpts.map((option) => (
-                <Option key={option.value} value={option.value}>
+                <Option
+                  key={option.value}
+                  value={option.value}
+                >
                   {option.label}
                 </Option>
               ))}
@@ -121,9 +123,7 @@ const CreateAffiliateCode = () => {
               className="affiliate_input"
               placeholder="Enter Affiliate Code"
               value={couponData.code}
-              onChange={(e) =>
-                setCouponData((prev) => ({ ...prev, code: e.target.value }))
-              }
+              onChange={(e) => setCouponData((prev) => ({...prev, code: e.target.value}))}
             />
           </div>
         </div>
@@ -173,4 +173,4 @@ const CreateAffiliateCode = () => {
   );
 };
 
-export default CreateAffiliateCode
+export default CreateAffiliateCode;

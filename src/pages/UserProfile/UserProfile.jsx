@@ -7,6 +7,7 @@ import {setUser} from "../../store/reducers/userSlice";
 import profileImg from "../../assets/images/user.png";
 import editBtn from "../../assets/icons/editBtnIcon.svg";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
+import {getUserProfileData} from "../../store/NewReducers/userProfileSlice";
 
 const {Title} = Typography;
 const {Option} = Select;
@@ -19,7 +20,10 @@ const UserProfile = () => {
 
   const {idToken} = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const userDetails = useSelector((state) => state.user);
+
+  const {data, isLoading: accountsLoading} = useSelector((state) => state.userProfile);
+
+  console.log(data, "userDetailssssss");
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -31,32 +35,19 @@ const UserProfile = () => {
   });
 
   useEffect(() => {
-    if (idToken) {
-      setIsLoading(true);
-      getUserDetailsReq(idToken)
-        .then((response) => {
-          dispatch(setUser(response));
-          console.log("User details fetched:", response);
-        })
-        .catch((error) => {
-          console.error("Error fetching user details:", error);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
+    dispatch(getUserProfileData({idToken, dispatch}));
   }, [dispatch, idToken]);
 
   useEffect(() => {
     setFormData({
-      first_name: userDetails.first_name || "",
-      last_name: userDetails.last_name || "",
-      contact: userDetails.contact || "+91 ",
-      email: userDetails.email || "",
-      selectedCountry: userDetails.country || "",
-      city: userDetails.city || "",
+      first_name: data?.data?.first_name || "",
+      last_name: data?.data?.last_name || "",
+      contact: data?.data?.contact || "+91 ",
+      email: data?.data?.email || "",
+      selectedCountry: data?.data?.country || "",
+      city: data?.data?.city || "",
     });
-  }, [userDetails]);
+  }, [data]);
 
   const handleCategoryChange = (value) => {
     setCategory(value);
@@ -110,8 +101,8 @@ const UserProfile = () => {
                 </button>
               </div>
               <div>
-                <span>{userDetails?.first_name}</span>
-                <p>{userDetails?.email}</p>
+                <span>{data?.data?.first_name}</span>
+                <p>{data?.data?.email}</p>
               </div>
             </div>
             <Button

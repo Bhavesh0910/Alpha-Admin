@@ -138,10 +138,10 @@ const affiliateSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchNewAffiliateCodeList.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.newCodeListData = action.payload;
         state.totalPages = Math.ceil(action.payload.count / 20);
         state.totalItems = action.payload?.count;
+        state.isLoading = false;
       })
       .addCase(fetchNewAffiliateCodeList.rejected, (state, action) => {
         state.isLoading = false;

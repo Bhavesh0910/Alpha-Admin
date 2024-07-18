@@ -14,8 +14,8 @@ import userReducer from "./userSlice";
 
 import fundingReducer from "../NewReducers/fundingSlice";
 import affiliateReducer from "../NewReducers/affiliateSlice";
-import listReducer from '../NewReducers/listSlice'
-import riskReducer from '../NewReducers/riskSlice'
+import listReducer from "../NewReducers/listSlice";
+import riskReducer from "../NewReducers/riskSlice";
 import accountList from "../NewReducers/accountList";
 import payoutSlice from "../NewReducers/payout";
 import accountMetrics from "../NewReducers/accountMetrics";
@@ -23,6 +23,7 @@ import paymentSlice from "../NewReducers/payment";
 import couponSlice from "../NewReducers/Coupons";
 import SupportSlice from "../NewReducers/Support";
 import complianceList from "../NewReducers/complianceList";
+import getUserProfileData from "../NewReducers/userProfileSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -48,6 +49,7 @@ const rootReducer = combineReducers({
   coupon: couponSlice,
   support: SupportSlice,
   compliance: complianceList,
+  userProfile: getUserProfileData,
 });
 
 export default rootReducer;

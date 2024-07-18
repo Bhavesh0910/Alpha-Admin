@@ -513,7 +513,9 @@ const postAffiliateDetails = async (idToken, data) => {
         "Content-Type": "application/json",
       },
     };
-    const response = await axios.post(`${baseUrl}affiliates/admin/v2/create-link/`, data, config);
+
+    // const response = await axios.post(`${baseUrl}affiliates/admin/v2/create-link/`, data, config);
+    const response = await axios.post(`${baseUrl}v2/create/affiliate-code/`, data, config);
     if (response.status === 201 || response.status === 200) {
       return response.data;
     } else {
@@ -717,10 +719,10 @@ const getPaymentList = async (idToken, search, status, plan, currentPage) => {
   return output;
 };
 // affiliate codes list
-const getAffiliateCodelist = async (idToken, pageNo, search, currentPage) => {
+const getAffiliateCodelist = async (idToken, pageNo, pageSize, search, currentPage) => {
   const params = {
     page: pageNo,
-    page_size: 10,
+    page_size: pageSize,
   };
 
   // if (status) {
@@ -1192,7 +1194,7 @@ const deleteCompDetails = async (idToken, id) => {
 };
 
 const updateCompDetails = async (idToken, id, data) => {
-  console.log(data, id)
+  console.log(data, id);
   const apiUrl = `${baseUrl}adm/competition/${id}`;
 
   const config = {
@@ -1683,10 +1685,7 @@ const UserSearchReq = async (idToken, search) => {
         "Content-Type": "application/json",
       },
     };
-    const response = await axios.get(
-      `${baseUrl}v2/users/list/?${search}`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}v2/users/list/?${search}`, config);
     if (response.status === 201 || response.status === 200) {
       return response;
     } else {
@@ -1770,11 +1769,7 @@ const CreateTradingAccountReq = async (idToken, data) => {
     throw new Error("Unsupported user type");
   }
   try {
-    const response = await axios.post(
-      `${baseUrl}${endpoint}`,
-      data,
-      config
-    );
+    const response = await axios.post(`${baseUrl}${endpoint}`, data, config);
     return response;
   } catch (error) {
     return error;

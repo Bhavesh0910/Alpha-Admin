@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Button, DatePicker, Select} from "antd";
 import {Link, useNavigate} from "react-router-dom";
 import searchIcon from "../../assets/icons/searchIcon.svg";
@@ -29,20 +29,25 @@ const AffiliateMarketing = ({userData}) => {
 
   const newCodeData = useSelector((state) => state.affiliate.newCodeListData);
 
-  console.log("page", newCodeData);
+  console.log("isLoading", isLoading);
 
   useEffect(() => {
     dispatch(
       fetchNewAffiliateCodeList({
         idToken,
         pageNo,
+        pageSize,
+        searchText,
       }),
     );
-  }, [dispatch, pageNo]);
+  }, [dispatch, pageNo, searchText, pageSize, isLoading, category]);
+
+  const searchRef = useRef();
 
   useEffect(() => {
     setFilterData(newCodeData?.results);
   }, [newCodeData]);
+
   const handleRowClick = (affiliateId, email) => {
     const url = `/affiliate-marketing/affiliateMarketing-logs?email=${email}`;
     navigate(url);
@@ -61,32 +66,62 @@ const AffiliateMarketing = ({userData}) => {
     setPageSize(updatedPageSize);
   }
 
+  const highlightText = (text, search) => {
+    if (!search) return text;
+    const regex = new RegExp(`(${search})`, "gi");
+    const parts = String(text)?.split(regex);
+    return (
+      <>
+        {parts.map((part, index) =>
+          regex.test(part) ? (
+            <span
+              key={index}
+              className="highlight"
+            >
+              {part}
+            </span>
+          ) : (
+            part
+          ),
+        )}
+      </>
+    );
+  };
+
   const columns = [
+    // {
+    //   title: "ID",
+    //   dataIndex: "id",
+    //   render: (text, record) => (
+    //     <div
+    //       onClick={() => handleRowClick(record.id, record.email)}
+    //       className="country_flag_div"
+    //     >
+    //       <img
+    //         src={text.flag}
+    //         alt="flag"
+    //       />
+    //       {text}
+    //     </div>
+    //   ),
+    // },
     {
-      title: "ID",
-      dataIndex: "id",
-      render: (text, record) => (
-        <div
-          onClick={() => handleRowClick(record.id, record.email)}
-          className="country_flag_div"
-        >
-          <img
-            src={text.flag}
-            alt="flag"
-          />
-          {text}
-        </div>
-      ),
-    },
-    {
-      title: "Full Name",
-      dataIndex: "fullname",
+      title: "Name",
+      dataIndex: "name",
       render: (text, record) => (
         <div onClick={() => handleRowClick(record.id, record.email)}>
-          {text
-            ?.split(" ")
-            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(" ")}
+          {category === "name" || category === "all"
+            ? highlightText(
+                text
+                  ?.split(" ")
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" "),
+                searchText,
+              )
+            : text
+                ?.split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ")}
         </div>
       ),
     },
@@ -98,52 +133,71 @@ const AffiliateMarketing = ({userData}) => {
           onClick={() => handleRowClick(record.id, record.email)}
           style={{display: "flex", alignItems: "center", gap: "12px"}}
         >
-          {text
-            ?.split(" ")
-            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(" ")}
+          {category === "email" || category === "all"
+            ? highlightText(
+                text
+                  ?.split(" ")
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" "),
+                searchText,
+              )
+            : text
+                ?.split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ")}
         </div>
       ),
     },
+    // {
+    //   title: "Country",
+    //   dataIndex: "country",
+    //   key: "country",
+    //   render: (country) => {
+    //     console.log(country, "country");
+    //     const countryName = country;
+    //     const countryCode = lookup.byCountry(countryName);
+    //     if (countryCode) {
+    //       return (
+    //         <div className="country_name_wrapper">
+    //           <ReactCountryFlag
+    //             countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
+    //             svg={true}
+    //             aria-label={countryName}
+    //           />
+    //           <span>{countryName}</span>
+    //         </div>
+    //       );
+    //     } else {
+    //       return <span>{countryName}</span>;
+    //     }
+    //   },
+    // },
     {
-      title: "Country",
-      dataIndex: "country",
-      key: "country",
-      render: (country) => {
-        console.log(country, "country");
-        const countryName = country;
-        const countryCode = lookup.byCountry(countryName);
-        if (countryCode) {
-          return (
-            <div className="country_name_wrapper">
-              <ReactCountryFlag
-                countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
-                svg={true}
-                aria-label={countryName}
-              />
-              <span>{countryName}</span>
-            </div>
-          );
-        } else {
-          return <span>{countryName}</span>;
-        }
-      },
+      title: "Referred Count",
+      dataIndex: "referred_count",
+      key: "referred_count",
     },
     {
-      title: "Comission Earned",
-      dataIndex: "comission_earned",
-      key: "comission_earned",
+      title: "Coupon Discount",
+      dataIndex: "coupon_discount",
+      key: "coupon_discount",
     },
-    {
-      title: "200K Challenge",
-      dataIndex: "200k_challenge",
-      key: "200k_challenge",
-    },
-    {
-      title: "300K Challenge",
-      dataIndex: "300k_challenge",
-      key: "300k_challenge",
-    },
+    // {
+    //   title: "Created",
+    //   dataIndex: "created",
+    //   key: "created",
+    //   render: (text, record) => <p>{record.created}</p>,
+    // },
+    // {
+    //   title: "200K Challenge",
+    //   dataIndex: "200k_challenge",
+    //   key: "200k_challenge",
+    // },
+    // {
+    //   title: "300K Challenge",
+    //   dataIndex: "300k_challenge",
+    //   key: "300k_challenge",
+    // },
     {
       title: "Referred List",
       dataIndex: "referredList",
@@ -175,10 +229,15 @@ const AffiliateMarketing = ({userData}) => {
   ];
 
   const handleSearch = (e) => {
+    console.log("search1", e.target.value);
     if (e.key === "Enter") {
       console.log(searchText, e.key);
       setSearchText(e.target.value);
     }
+  };
+
+  const handleClick = () => {
+    setSearchText(searchRef.current.value);
   };
 
   const handleTabChange = (key) => {
@@ -187,6 +246,10 @@ const AffiliateMarketing = ({userData}) => {
 
   const handleCategoryChange = (value) => {
     setCategory(value);
+  };
+
+  const handleSearchButtonClick = () => {
+    setSearchText(searchText);
   };
 
   return (
@@ -208,15 +271,19 @@ const AffiliateMarketing = ({userData}) => {
             onChange={handleCategoryChange}
           >
             <Option value="all">All Categories</Option>
-            <Option value="swift">Swift</Option>
-            <Option value="wire">Wire</Option>
+            <Option value="name">Name</Option>
+            <Option value="email">Email</Option>
           </Select>
           <input
             placeholder="Search..."
             className="search_input"
             onKeyDown={(e) => handleSearch(e)}
+            ref={searchRef}
           />
-          <div className="searchImg">
+          <div
+            className="searchImg"
+            onClick={(e) => handleClick(e)}
+          >
             <img
               src={searchIcon}
               alt="searchIcon"
@@ -233,17 +300,20 @@ const AffiliateMarketing = ({userData}) => {
           </Button>
         </div>
       </div>
-      {isLoading && <LoaderOverlay />}
-      <AntTable
-        data={filterData}
-        columns={columns}
-        totalPages={Math.ceil(count / pageSize)}
-        totalItems={count}
-        pageSize={pageSize}
-        CurrentPageNo={pageNo}
-        setPageSize={setPageSize}
-        triggerChange={triggerChange}
-      />
+      {isLoading ? (
+        <LoaderOverlay />
+      ) : (
+        <AntTable
+          data={filterData}
+          columns={columns}
+          totalPages={Math.ceil(count / pageSize)}
+          totalItems={count}
+          pageSize={pageSize}
+          CurrentPageNo={pageNo}
+          setPageSize={setPageSize}
+          triggerChange={triggerChange}
+        />
+      )}
 
       {isUserDetailOpened && isUserDetailOpened === true ? (
         <div className="userDetails_container">
