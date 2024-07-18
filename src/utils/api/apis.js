@@ -924,6 +924,21 @@ export const getStageChart = async (idToken, stage , startDate, endDate) => {
 };
 
 
+export const getFundingChart = async (idToken, startDate, endDate) => {
+
+  try {
+    const response = await axios.get(`${baseUrl}v2/account-overview/funding-chart/?start_date=${startDate}&end_date=${endDate}`, {
+
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 const getRiskManagement = async (idToken) => {
   let config = {
     headers: {
@@ -935,6 +950,62 @@ const getRiskManagement = async (idToken) => {
     return response;
   } catch (error) {
     return error;
+  }
+};
+
+
+//general logs
+
+export const getGeneralLog = async (idToken, pageNo, pageSize, search = '') => {
+  const queries = [];
+  queries.push(`page=${pageNo}`);
+  queries.push(`page_size=${pageSize}`);
+  if (search) {
+    queries.push(`search=${search}`);
+  }
+  const query = queries.join('&');
+  try{
+  const response = await axios.get(`${baseUrl}Generallog/?${query}`, {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  });
+  return response.data;
+} catch (error) {
+  return error;
+}
+};
+
+
+//user support
+
+export const updateUserEmail = async (idToken, payload) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  };
+  try {
+    const response = await axios.post(`${baseUrl}update/user/email/`, payload, config);
+    return response;
+  } catch (error) {
+    console.error("Error updating user email:", error);
+    throw error;
+  }
+};
+
+export const requestPayout = async (idToken, payload) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  };
+  try {
+    const response = await axios.post(`${baseUrl}payments/admin/request_payout/`, payload, config);
+    return response;
+  } catch (error) {
+    console.error("Error requesting payout:", error);
+    throw error;
   }
 };
 

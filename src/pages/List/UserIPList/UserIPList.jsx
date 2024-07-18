@@ -129,11 +129,11 @@ const UserIPList = () => {
             </div>
           </div>
 
-
+{/* 
           <Radio.Group value={activeTab} onChange={(e) => setActiveTab(e.target.value)}>
             <Radio.Button value="allowed">Allowed</Radio.Button>
             <Radio.Button value="blocked">Blocked</Radio.Button>
-          </Radio.Group>
+          </Radio.Group> */}
         </div>
         {isLoading && <LoaderOverlay />}
         <AntTable data={ipLogsData} columns={columns} />

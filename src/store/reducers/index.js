@@ -16,6 +16,8 @@ import fundingReducer from "../NewReducers/fundingSlice";
 import affiliateReducer from "../NewReducers/affiliateSlice";
 import listReducer from "../NewReducers/listSlice";
 import riskReducer from "../NewReducers/riskSlice";
+import generalReducer from "../NewReducers/generalSlice";
+import usReducer from "../NewReducers/usSlice";
 import accountList from "../NewReducers/accountList";
 import payoutSlice from "../NewReducers/payout";
 import accountMetrics from "../NewReducers/accountMetrics";
@@ -42,6 +44,8 @@ const rootReducer = combineReducers({
   affiliate: affiliateReducer,
   list: listReducer,
   risk: riskReducer,
+  general: generalReducer,
+  usSlice: usReducer,
   accountList: accountList,
   accountMetrics: accountMetrics,
   payoutList: payoutSlice,

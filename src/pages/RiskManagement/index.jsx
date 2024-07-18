@@ -9,7 +9,7 @@ import StageStatisticsChart from "../../components/RiskManagement/StageStatistic
 import dayjs from "dayjs";
 import Stage2Chart from "../../components/RiskManagement/Stage2Chart/Stage2Chart";
 import Stage2Statistics from "../../components/RiskManagement/Stage2Statistics/Stage2Statistics";
-import { fetchAccountOverviewStats, fetchStageChart } from "../../store/NewReducers/riskSlice";
+import { fetchAccountOverviewStats, fetchFundingChart, fetchStageChart } from "../../store/NewReducers/riskSlice";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
 const { Title } = Typography;
@@ -17,15 +17,16 @@ const { RangePicker } = DatePicker;
 
 function RiskManagement() {
   const dispatch = useDispatch();
-  const { accountOverviewData, stage1ChartData, stage2ChartData, isLoading, error } = useSelector((state) => state.risk);
+  const { accountOverviewData, stage1ChartData, stage2ChartData, fundingChartData ,  isLoading, error } = useSelector((state) => state.risk);
   const idToken = useSelector((state) => state.auth.idToken);
 
-  console.log(stage1ChartData, stage2ChartData)
+  console.log(stage1ChartData, stage2ChartData , fundingChartData)
   const onRangeChange = (dates) => {
     if (dates && idToken) {
       const startDate = dates[0].format("DD MMM YYYY");
       const endDate = dates[1].format("DD MMM YYYY");
       dispatch(fetchAccountOverviewStats({ idToken, startDate, endDate }));
+      // dispatch(fetchFundingChart({ idToken, startDate, endDate }));
       dispatch(fetchStageChart({ idToken, stage: 1, startDate, endDate }));
       dispatch(fetchStageChart({ idToken, stage: 2, startDate, endDate }));
     }
@@ -57,22 +58,22 @@ function RiskManagement() {
       {isLoading && <LoaderOverlay />}
       <div className="row1_box">
         {accountOverviewData &&
-        <>
-        <div className="pieChart_container">
-          <PieChart data={accountOverviewData?.stage1} />
-        </div>
-        <div className="pieChart_container">
-          <Stage2Chart data={accountOverviewData?.stage2} />
-        </div>
-        </>
-}
-        <div className="fundingTotalProgress_container">
+          <>
+            <div className="pieChart_container">
+              <PieChart data={accountOverviewData?.stage1} />
+            </div>
+            <div className="pieChart_container">
+              <Stage2Chart data={accountOverviewData?.stage2} />
+            </div>
+          </>
+        }
+        {/* <div className="fundingTotalProgress_container">
           <FundingTotalProgress data={accountOverviewData?.fundingTotalProgressData} />
-        </div>
+        </div> */}
       </div>
-      <div className="row2_box">
+      {/* <div className="row2_box">
         <AccountProfitChart data={accountOverviewData?.accountProfitChartData} />
-      </div>
+      </div> */}
       {stage1ChartData &&
         <div className="row3_box">
           <StageStatisticsChart data={stage1ChartData} />
