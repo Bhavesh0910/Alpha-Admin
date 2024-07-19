@@ -173,21 +173,24 @@ const AccountOverview = () => {
           <div>
             <h2>Trading Objective</h2>
           </div>
-          <div>
-            <div>Minimum days - 3</div>
-            <button>In Progress</button>
-          </div>
-          <div>
-            <div>Minimum days - 3</div>
-            <button>In Progress</button>
-          </div>
-          <div>
-            <div>Minimum days - 3</div>
-            <button>In Progress</button>
-          </div>
-          <div>
-            <div>Minimum days - 3</div>
-            <button>In Progress</button>
+
+          <div className="bottom_main_right_inner">
+            <div>
+              <div>Minimum days - 3</div>
+              <button>In Progress</button>
+            </div>
+            <div>
+              <div>Minimum days - 3</div>
+              <button>In Progress</button>
+            </div>
+            <div>
+              <div>Minimum days - 3</div>
+              <button>In Progress</button>
+            </div>
+            <div>
+              <div>Minimum days - 3</div>
+              <button>In Progress</button>
+            </div>
           </div>
         </div>
       </div>

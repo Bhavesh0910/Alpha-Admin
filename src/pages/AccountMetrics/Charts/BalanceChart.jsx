@@ -122,7 +122,7 @@ const BalanceChart = ({PerformanceChart}) => {
         data: balancedata || [],
       },
     ]);
-  }, [dummyData]);
+  }, []);
 
   return (
     <div id="chart">
