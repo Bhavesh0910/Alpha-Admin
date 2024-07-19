@@ -3,8 +3,6 @@ import "./CountryWiseOverview.scss";
 import CountryWiseOverviewTable from "../../components/CountryWiseOverview/CountryWiseOverviewTable/CountryWiseOverviewTable";
 import PaymentChart from "../../components/CountryWiseOverview/PaymentChart/PaymentChart";
 import PayoutChart from "../../components/CountryWiseOverview/PayoutChart/PayoutChart";
-import ErrorModal from "../../components/Alerts/ErrorModal";
-import SuccessModal from "../../components/Alerts/SuccessModal";
 
 const CountryWiseOverview = () => {
   return (

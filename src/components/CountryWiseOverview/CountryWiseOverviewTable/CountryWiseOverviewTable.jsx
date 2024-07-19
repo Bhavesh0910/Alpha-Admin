@@ -1,170 +1,74 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./CountryWiseOverviewTable.scss";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import dayjs from "dayjs";
 import {Button, DatePicker} from "antd";
 import AccountRangeSlider from "./AccountRangeSlider/AccountRangeSlider";
 import rangeIcon from "../../../assets/icons/range_icon_gray.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {countryWiseListReq} from "../../../store/NewReducers/countryWise";
 const {RangePicker} = DatePicker;
 const CountryWiseOverviewTable = () => {
+  const dispatch = useDispatch();
+  const {idToken} = useSelector((state) => state.auth);
+  const {listData, count} = useSelector((state) => state.countryWise);
+  const [dates, setDates] = useState(null);
+  const [pageNo, setPageNo] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+
+  useEffect(() => {
+    // let query = `?page=${pageNo}&page_size=${pageSize}`;
+    let query = "";
+    if (dates) {
+      query += `?start_date=${dates[0]}&end_date=${dates[1]}`;
+    }
+    dispatch(countryWiseListReq({idToken, query, dispatch}));
+  }, [dates, idToken]);
+
   const columns = [
-    {
-      title: "",
-      dataIndex: "",
-      key: "",
-      render: (text, record, index) => {
-        return <div className="index_cell">{index + 1}</div>;
-      },
-    },
     {
       title: "Country",
       dataIndex: "country",
       key: "country",
     },
     {
-      title: "No. Of Payment",
-      dataIndex: "noOfPayment",
-      key: "noOfPayment",
+      title: "Total Payments($)",
+      dataIndex: "payment_total_amount",
+      key: "totalPayments",
+      render: (text) => (text ? Number(text).toFixed(2) : "-"),
     },
     {
-      title: "Total Payments($)",
-      dataIndex: "totalPayments",
-      key: "totalPayments",
+      title: "Payment Count",
+      dataIndex: "payment_total_count",
+      key: "totalAccounts",
+      render: (text) => text || "-",
     },
     {
       title: "Total Payouts($)",
-      dataIndex: "totalPayouts",
+      dataIndex: "payout_total_amount",
       key: "totalPayouts",
+      render: (text) => (text ? Number(text).toFixed(2) : "-"),
     },
     {
-      title: "Total No. Of Account",
-      dataIndex: "totalAccounts",
-      key: "totalAccounts",
-    },
-    {
-      title: "Total No. Of Violence",
-      dataIndex: "totalViolence",
-      key: "totalViolence",
-    },
-    {
-      title: "Total No. Of Breached Accounts",
-      dataIndex: "breachedAccounts",
-      key: "breachedAccounts",
+      title: "Payouts Count",
+      dataIndex: "payout_total_count",
+      key: "totalPayouts",
+      render: (text) => text || "-",
     },
   ];
 
-  const dummyData = [
-    {
-      key: 1,
-      country: "Japan",
-      noOfPayment: 56,
-      totalPayments: "$778.35",
-      totalPayouts: "$106.58",
-      totalAccounts: 78,
-      totalViolence: 18,
-      breachedAccounts: 8,
-    },
-    {
-      key: 2,
-      country: "Iceland",
-      noOfPayment: 36,
-      totalPayments: "$106.58",
-      totalPayouts: "$328.85",
-      totalAccounts: 36,
-      totalViolence: 26,
-      breachedAccounts: 12,
-    },
-    {
-      key: 3,
-      country: "Japan",
-      noOfPayment: 86,
-      totalPayments: "$778.35",
-      totalPayouts: "$778.35",
-      totalAccounts: 86,
-      totalViolence: 6,
-      breachedAccounts: 5,
-    },
-    {
-      key: 4,
-      country: "India",
-      noOfPayment: 78,
-      totalPayments: "$328.85",
-      totalPayouts: "$778.35",
-      totalAccounts: 78,
-      totalViolence: 10,
-      breachedAccounts: 12,
-    },
-    {
-      key: 5,
-      country: "Bahrain",
-      noOfPayment: 56,
-      totalPayments: "$406.27",
-      totalPayouts: "$854.08",
-      totalAccounts: 56,
-      totalViolence: 8,
-      breachedAccounts: 8,
-    },
-    {
-      key: 6,
-      country: "India",
-      noOfPayment: 46,
-      totalPayments: "$293.01",
-      totalPayouts: "$219.78",
-      totalAccounts: 78,
-      totalViolence: 8,
-      breachedAccounts: 6,
-    },
-    {
-      key: 7,
-      country: "Guinea",
-      noOfPayment: 56,
-      totalPayments: "$475.22",
-      totalPayouts: "$351.02",
-      totalAccounts: 56,
-      totalViolence: 6,
-      breachedAccounts: 2,
-    },
-    {
-      key: 8,
-      country: "Poland",
-      noOfPayment: 78,
-      totalPayments: "$219.78",
-      totalPayouts: "$293.01",
-      totalAccounts: 78,
-      totalViolence: 18,
-      breachedAccounts: 3,
-    },
-    {
-      key: 9,
-      country: "Monaco",
-      noOfPayment: 56,
-      totalPayments: "$779.58",
-      totalPayouts: "$406.27",
-      totalAccounts: 56,
-      totalViolence: 26,
-      breachedAccounts: 6,
-    },
-    {
-      key: 10,
-      country: "Brazil",
-      noOfPayment: 78,
-      totalPayments: "$351.02",
-      totalPayouts: "$779.58",
-      totalAccounts: 56,
-      totalViolence: 16,
-      breachedAccounts: 5,
-    },
-  ];
-
-  const onRangeChange = (dates, dateStrings) => {
+  const handleDateChange = (dates, dateStrings) => {
     if (dates) {
-      // console.log("From: ", dates[0], ", to: ", dates[1]);
-      // console.log("From: ", dateStrings[0], ", to: ", dateStrings[1]);
+      setDates(dates.map((item) => item.format("YYYY-MM-DD")));
     } else {
-      // console.log("Clear");
+      setDates(dates);
     }
   };
 
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
   const rangePresets = [
     {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
     {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
@@ -204,12 +108,19 @@ const CountryWiseOverviewTable = () => {
         </div>
         <RangePicker
           presets={rangePresets}
-          onChange={onRangeChange}
+          onChange={handleDateChange}
         />
       </div>
       <AntTable
-        data={dummyData}
+        data={listData || []}
         columns={columns}
+        serverSide={false}
+        // totalPages={Math.ceil(count / pageSize)}
+        // totalItems={count}
+        // pageSize={pageSize}
+        // CurrentPageNo={pageNo}
+        // setPageSize={setPageSize}
+        // triggerChange={triggerChange}
       />
     </div>
   );
