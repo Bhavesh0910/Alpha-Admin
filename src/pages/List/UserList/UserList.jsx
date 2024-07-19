@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./UserList.scss";
-import { Table, Input, Select, Button, Modal, Tooltip, message, Dropdown, Menu, Radio } from "antd";
+import { Table, Input, Select, Button, Modal, Tooltip, message, Radio } from "antd";
 import moment from "moment";
 import { CopyOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { fetchUserList , toggleActiveUser } from "../../../store/NewReducers/listSlice";
+import { fetchUserList, toggleActiveUser } from "../../../store/NewReducers/listSlice";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
@@ -37,7 +37,7 @@ const UserListTable = () => {
           pageNo,
           pageSize,
           authType,
-          active,
+          active: active ? 1 : 0
         })
       );
     }
@@ -45,28 +45,38 @@ const UserListTable = () => {
 
   const handleSearch = (e) => {
     if (e.key === "Enter") {
-      console.log(searchText, e.key);
       setSearchText(e.target.value);
     }
   };
 
-  const handleResetClick = () => {};
+  const handleResetClick = () => {
+    setSearchText("");
+  };
 
   const handleCategoryChange = (value) => {
     setCategory(value);
   };
 
   const handleStatusChange = async (user) => {
-    const id = user.id; // Assuming the user object has an id property
-    const note = user.is_active ? "Deactivating user" : "Activating user";
-    try {
-       dispatch(toggleActiveUser({ id, note, idToken }));
-      dispatch(returnMessages(`User ${user.is_active ? "blocked" : "activated"} successfully.`));
-      // Refetch the user list after status change
-      dispatch(fetchUserList({ idToken, searchText, pageNo, pageSize, authType, active }));
-    } catch (error) {
-      dispatch(returnErrors("Error changing user status."));
-    }
+    confirm({
+      title: `Are you sure you want to ${user.is_active ? "block" : "activate"} this user?`,
+      icon: <ExclamationCircleOutlined />,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: async () => {
+        const id = user.id; 
+        const note = user.is_active ? "Deactivating user" : "Activating user";
+        try {
+           dispatch(toggleActiveUser({ id, note, idToken }));
+          dispatch(returnMessages(`User ${user.is_active ? "blocked" : "activated"} successfully.`));
+          dispatch(fetchUserList({ idToken, searchText, pageNo, pageSize, authType, active }));
+        } catch (error) {
+          dispatch(returnErrors("Error changing user status."));
+        }
+      },
+      onCancel() {},
+    });
   };
 
   const handleResetPassword = async (email) => {
@@ -90,17 +100,18 @@ const UserListTable = () => {
 
   const onChangeActive = (e) => {
     setPageNo(1);
-    e.target.value === true ? setActive(null) : setActive(true);
+    setActive(e.target.value);
   };
 
   const onChangeAuthType = (e) => {
     setPageNo(1);
     setAuthType(e.target.value);
   };
-  function triggerChange(page, updatedPageSize) {
+
+  const triggerChange = (page, updatedPageSize) => {
     setPageNo(page);
     setPageSize(updatedPageSize);
-  }
+  };
 
   const columns = [
     {
@@ -113,7 +124,7 @@ const UserListTable = () => {
             <Tooltip title="Copy email">
               <Button
                 type="link"
-                icon={<CopyOutlined style={{color: "#04D9FF"}} />}
+                icon={<CopyOutlined style={{ color: "#04D9FF" }} />}
                 onClick={() => message.success("Copied email")}
               />
             </Tooltip>
@@ -134,7 +145,7 @@ const UserListTable = () => {
     {
       title: "Auth type",
       dataIndex: "auth_type",
-      render: (text, record) => <span style={{textTransform: "capitalize"}}>{text}</span>,
+      render: (text, record) => <span style={{ textTransform: "capitalize" }}>{text}</span>,
     },
     {
       title: "Country",
@@ -148,19 +159,21 @@ const UserListTable = () => {
     {
       title: "Active",
       dataIndex: "is_active",
-      render: (text, record) => <span className={`status_wrapper ${record.is_active ? "active" : "blocked"}`}>{record.is_active ? "Active" : "Blocked"}</span>,
+      render: (text, record) => (
+        <span className={`status_wrapper ${record.is_active ? "active" : "blocked"}`}>
+          {record.is_active ? "Active" : "Blocked"}
+        </span>
+      ),
     },
     {
       title: "Action",
       dataIndex: "actions",
       render: (_, record) => (
-      <div className="action_wrapper">
-     
-     <Button onClick={() => handleStatusChange(record)}>
-       {record.is_active ? "Block" : "Activate"}
-     </Button>
- 
-   </div>
+        <div className="action_wrapper">
+          <Button onClick={() => handleStatusChange(record)}>
+            {record.is_active ? "Block" : "Activate"}
+          </Button>
+        </div>
       ),
     },
   ];
@@ -193,19 +206,15 @@ const UserListTable = () => {
             </div>
           </div>
           <div className="table_header_filter_radio">
-            <Radio.Group value={authType} onChange={onChangeAuthType}>
+            {/* <Radio.Group value={authType} onChange={onChangeAuthType}>
               <Radio.Button value={null}>All</Radio.Button>
               <Radio.Button value="email">Email</Radio.Button>
               <Radio.Button value="google">Google</Radio.Button>
-            </Radio.Group>
+            </Radio.Group> */}
 
-            <Radio.Group value={active}>
-              <Radio.Button onClick={() => { active === true ? setActive(null) : setActive(true); }} value={true}>
-                Active
-              </Radio.Button>
-              <Radio.Button onClick={() => { active === false ? setActive(null) : setActive(false); }} value={false}>
-                Inactive
-              </Radio.Button>
+            <Radio.Group value={active} onChange={onChangeActive}>
+              <Radio.Button value={true}>Active</Radio.Button>
+              <Radio.Button value={false}>Inactive</Radio.Button>
             </Radio.Group>
           </div>
         </div>

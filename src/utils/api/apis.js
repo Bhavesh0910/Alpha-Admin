@@ -535,12 +535,12 @@ const getUserList = async (idToken, searchText, pageNo, pageSize, authType, acti
     page_size: 21,
   };
   if (active) {
-    params.active = "True";
+    params.is_active = 1
   } else {
-    params.active = "False";
+    params.is_active = 0;
   }
   if (active === null) {
-    delete params.active;
+    delete params.is_active;
   }
   if (searchText) {
     params.search = searchText;
@@ -1071,6 +1071,24 @@ const deleteCouponDetails = async (idToken, couponCode) => {
   }
 };
 
+
+export const getLeaderboardDetails = async (idToken, id) => {
+
+  const apiUrl = `${baseUrl}v2/competition/leaderboard/?competition_id=${id}`;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  };
+  try {
+    const response = await axios.get(apiUrl, config);
+    console.log(response)
+    return response
+  } catch (error) {
+    console.error("An error occurred ", error);
+  }
+};
 const updateCouponDetails = async (idToken, data) => {
   const config = {
     headers: {

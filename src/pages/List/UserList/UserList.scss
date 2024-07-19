@@ -11,6 +11,10 @@ gap: 10px;
         border-radius: var(--Corner-Radius, 10px);
         border: 1px solid var(--Green, #A3EA93); 
     }
+    .status_wrapper.blocked{
+      border-radius: var(--Corner-Radius, 10px);
+      border: 1px solid var(--Green, red); 
+  }
     .header_wrapper {
         display: flex;
         flex-direction: row;

@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {getCompDetails, postCompDetails, getOneCompDetails, updateCompDetails} from "../../utils/api/apis";
+import {getCompDetails, postCompDetails, getOneCompDetails, updateCompDetails, getLeaderboardDetails} from "../../utils/api/apis";
 import {returnErrors} from "../reducers/error";
 import {returnMessages} from "../reducers/message";
 
@@ -18,6 +18,20 @@ export const fetchCompDetails = createAsyncThunk("comp/fetchCompDetails", async 
   }
 });
 
+export const fetchLeaderboard = createAsyncThunk("comp/fetchLeaderboard", async ({idToken, competitionId}, {dispatch, rejectWithValue}) => {
+  try {
+    const response = await getLeaderboardDetails(idToken, competitionId);
+    if (response?.status < 399) {
+      return response?.data;
+    } else {
+      const msg = "Failed to fetch leaderboard details";
+      dispatch(returnErrors(msg, 400));
+      return rejectWithValue(msg);
+    }
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
+});
 export const fetchCompetitionDetail = createAsyncThunk("comp/fetchCompetitionDetail", async ({idToken, id}, {dispatch, rejectWithValue}) => {
   try {
     const response = await getOneCompDetails(idToken, id);
@@ -66,6 +80,7 @@ export const updateCompetition = createAsyncThunk("comp/updateCompetition", asyn
 const initialState = {
   compData: [],
   competitionDetail: null,
+  leaderboardData: null,
   isLoading: false,
   error: null,
 };
@@ -79,6 +94,9 @@ const compSlice = createSlice({
     },
     clearCompetitionDetail: (state) => {
       state.competitionDetail = null;
+    },
+    clearLeaderboardData: (state) => {
+      state.leaderboardData = null;
     },
   },
   extraReducers: (builder) => {
@@ -102,7 +120,6 @@ const compSlice = createSlice({
       .addCase(fetchCompetitionDetail.fulfilled, (state, action) => {
         state.isLoading = false;
         state.competitionDetail = action.payload;
-        console.log(state.competitionDetail);
       })
       .addCase(fetchCompetitionDetail.rejected, (state, action) => {
         state.isLoading = false;
@@ -131,10 +148,22 @@ const compSlice = createSlice({
       .addCase(updateCompetition.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
+      })
+      .addCase(fetchLeaderboard.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchLeaderboard.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.leaderboardData = action.payload;
+      })
+      .addCase(fetchLeaderboard.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || action.error.message;
       });
   },
 });
 
-export const {deleteComp, clearCompetitionDetail} = compSlice.actions;
+export const {deleteComp, clearCompetitionDetail, clearLeaderboardData} = compSlice.actions;
 
 export default compSlice.reducer;
