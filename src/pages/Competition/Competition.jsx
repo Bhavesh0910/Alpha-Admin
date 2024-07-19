@@ -5,7 +5,7 @@ import "./Competition.scss";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
-import {fetchCompDetails, fetchCompetitionDetail, updateCompetition} from "../../store/NewReducers/competitionSlice";
+import {fetchCompDetails, fetchCompetitionDetail, fetchLeaderboard, updateCompetition} from "../../store/NewReducers/competitionSlice";
 import TextArea from "antd/es/input/TextArea";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 import {baseUrl, deleteCompDetails, getLeaderboardDetails} from "../../utils/api/apis";
@@ -147,10 +147,11 @@ const CompetitionCard = ({item}) => {
     dispatch(fetchCompDetails(idToken));
   };
 
-  const handleLeaderboard = (id) => {
-    console.log(idToken)
-  getLeaderboardDetails(idToken , id)
-  }
+  const handleLeaderboard = async (id) => {
+    console.log(id)
+    dispatch(fetchLeaderboard({idToken, competitionId: id}));
+  };
+
   const handleDelete = async (id) => {
     const confirmDelete = Modal.confirm({
       title: "Delete",
