@@ -826,9 +826,10 @@ input:-webkit-autofill:active {
   justify-content: flex-start;
 
   img {
-    width: 33px !important;
-    height: 26px !important;
+    width: 27px !important;
+    height: 27px !important;
     border-radius: 100% !important;
+    object-fit: cover;
   }
 }
 

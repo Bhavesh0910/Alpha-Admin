@@ -1,18 +1,4 @@
 .AccountMetrics_main {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
-  .AccountMetrics_header {
-    display: flex;
-    justify-content: space-between;
-  }
-  .breadcrums {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
   .accountMetrics_wrapper_top {
     display: flex;
     gap: 20px;
