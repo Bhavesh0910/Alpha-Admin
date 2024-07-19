@@ -1071,6 +1071,25 @@ const deleteCouponDetails = async (idToken, couponCode) => {
   }
 };
 
+
+export const getLeaderboardDetails = async (idToken, id) => {
+
+  console.log(idToken)
+  const apiUrl = `${baseUrl}v2/competition/leaderboard/?competition_id=${id}`;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  };
+  try {
+    const response = await axios.get(apiUrl, config);
+    console.log(response)
+    return response
+  } catch (error) {
+    console.error("An error occurred ", error);
+  }
+};
 const updateCouponDetails = async (idToken, data) => {
   const config = {
     headers: {

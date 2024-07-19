@@ -8,10 +8,11 @@ import moment from "moment";
 import {fetchCompDetails, fetchCompetitionDetail, updateCompetition} from "../../store/NewReducers/competitionSlice";
 import TextArea from "antd/es/input/TextArea";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import {deleteCompDetails} from "../../utils/api/apis";
+import {baseUrl, deleteCompDetails, getLeaderboardDetails} from "../../utils/api/apis";
 import {returnMessages} from "../../store/reducers/message";
 import {returnErrors} from "../../store/reducers/error";
 import dayjs from "dayjs";
+import axios from "axios";
 
 const Competition = () => {
   const [activeTab, setActiveTab] = useState("upcoming");
@@ -146,6 +147,10 @@ const CompetitionCard = ({item}) => {
     dispatch(fetchCompDetails(idToken));
   };
 
+  const handleLeaderboard = (id) => {
+    console.log(idToken)
+  getLeaderboardDetails(idToken , id)
+  }
   const handleDelete = async (id) => {
     const confirmDelete = Modal.confirm({
       title: "Delete",
@@ -244,7 +249,7 @@ const CompetitionCard = ({item}) => {
           </div>
         </div>
       </div>
-      <Button className="view_board">View Leaderboard</Button>
+      <Button onClick={() => handleLeaderboard(item.id)} className="view_board">View Leaderboard</Button>
       <Modal
         className="edit_modal"
         title="Edit Competition"
