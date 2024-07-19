@@ -53,7 +53,7 @@ function TraderOverview() {
         query = query + `&start_date=${dates[0]}&end_date=${dates[1]}`;
       }
       if (phase !== "") {
-        let phaseQuery = phase === "Free Trail" ? "&free_trail=1" : "&status=Funded&status=Evalution";
+        let phaseQuery = phase === "Free Trail" ? "&free_trial=1" : "&status=Funded&status=Evalution";
         query = query + phaseQuery;
       }
 
@@ -80,6 +80,7 @@ function TraderOverview() {
   };
 
   const onChangePhase = (e) => {
+    setPageNo(1);
     setPhase(e.target.value);
   };
 
@@ -139,7 +140,7 @@ function TraderOverview() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedTrader, setSelectedTrader] = useState(null);
 
-  const columns = [
+  const columns = useMemo(()=>[
     {
       title: "Name",
       dataIndex: "name",
@@ -147,19 +148,11 @@ function TraderOverview() {
       width: 150,
       render: (text) => highlightText(text, searchText),
     },
-    // {
-    //   title: "Country",
-    //   dataIndex: "country",
-    //   key: "country",
-    //   width: 150,
-    //   render: (text) => highlightText(text, searchText),
-    // },
     {
       title: "Country",
       dataIndex: "country",
       key: "country",
       render: (country) => {
-        console.log(country, "country");
         const countryName = country;
         const countryCode = lookup.byCountry(countryName);
         if (countryCode) {
@@ -277,7 +270,7 @@ function TraderOverview() {
         </div>
       ),
     },
-  ];
+  ],[])
 
   const handleBlock = (record) => {
     setSelectedTrader(record);
@@ -294,14 +287,21 @@ function TraderOverview() {
 
   function updateDateRange(dates) {
     setPageNo(1);
-    setPageSize(20);
-    setDates(dates.map((date) => date.format("DD MMM YYYY")));
+    if(dates){
+      setDates(dates.map((date) => date.format("DD MMM YYYY")));
+    }else{
+      setDates(null);
+    }
   }
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
     setPageSize(updatedPageSize);
   }
+
+  useEffect(() => {
+    console.log("PageNo overview : ", pageNo);
+  }, [pageNo]);
 
   return (
     <div className="trader-overview">

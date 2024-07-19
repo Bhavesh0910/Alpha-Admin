@@ -6,10 +6,8 @@ import {useNavigate} from "react-router-dom";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import "./Coupon.scss";
 import EditCouponModal from "../../components/Coupon/EditCouponModal/EditCouponModal";
-import {useDispatch, useSelector} from "react-redux";
-import {getCoupons} from "../../store/NewReducers/Coupons";
-import {returnErrors} from "../../store/reducers/error";
-import {render} from "react-saga";
+import { useDispatch, useSelector } from "react-redux";
+import { getCoupons } from "../../store/NewReducers/Coupons";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 const {Option} = Select;
 const Coupon = () => {
@@ -21,9 +19,9 @@ const Coupon = () => {
   const [pageNo, setPageNo] = useState(1);
   const [editCouponData, setEditCouponData] = useState();
 
-  const {idToken} = useSelector((state) => state.auth);
-  const {couponData, isLoading, refresh} = useSelector((state) => state.coupon);
-  const count = useSelector((state) => state.coupon?.couponData[0]?.count);
+  const { idToken } = useSelector(state => state.auth);
+  const { couponData, isLoading , refresh } = useSelector(state => state.coupon)
+  const count = useSelector(state => state.coupon?.couponData[0]?.count)
   const navigate = useNavigate();
 
   const [filterData, setFilterData] = useState("");
@@ -218,8 +216,8 @@ const Coupon = () => {
       <AntTable
         data={filterData || []}
         columns={columns}
-        totalPages={Math.ceil(count / pageSize)}
-        totalItems={count}
+        totalPages={Math.ceil(count || 1 / pageSize)}
+        totalItems={count || 1}
         pageSize={pageSize}
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}

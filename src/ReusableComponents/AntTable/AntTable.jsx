@@ -1,30 +1,74 @@
 import React, {useState, useEffect} from "react";
 import {Table} from "antd";
 import "./AntTable.scss";
+import {useLocation} from "react-router-dom";
 
-const AntTable = ({triggerChange, data, columns, totalItems, pageSize, setPageSize, CurrentPageNo, isExpandable, expandedRowRender}) => {
-  const [pagination, setPagination] = useState({
-    current: CurrentPageNo,
-    pageSize,
-    total: totalItems,
+const AntTable = ({serverSide = true, triggerChange, data, columns, totalItems, pageSize, setPageSize, CurrentPageNo, isExpandable, ExpandedComp, rowId}) => {
+  const [pagination, setPagination] = useState(() => {
+    if (serverSide) {
+      return {current: CurrentPageNo, pageSize, total: totalItems};
+    } else {
+      return {current: 1, pageSize: 10, total: data.length};
+    }
   });
 
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+  const location = useLocation();
   const handlePageChange = (page, updatedPageSize) => {
-    setPagination((prev) => ({
-      ...prev,
-      current: page,
-      pageSize: updatedPageSize,
-    }));
-    setPageSize(updatedPageSize);
-    triggerChange(page, updatedPageSize);
+    if (serverSide) {
+      setPagination((prev) => ({
+        ...prev,
+        current: page,
+        pageSize: updatedPageSize,
+      }));
+      setPageSize(updatedPageSize);
+      triggerChange(page, updatedPageSize);
+    } else {
+      setPagination((prev) => ({
+        ...prev,
+        current: page,
+        pageSize: updatedPageSize,
+      }));
+    }
   };
 
   useEffect(() => {
-    setPagination((prev) => ({
-      ...prev,
-      total: totalItems,
-    }));
+    if (serverSide) {
+      setPagination((prev) => ({
+        ...prev,
+        total: totalItems,
+      }));
+    } else {
+      setPagination((prev) => ({
+        ...prev,
+        current: 1,
+        total: data.length,
+      }));
+    }
   }, [totalItems]);
+
+  const handleExpand = (expanded, record) => {
+    if (expanded) {
+      console.log("Expanded : ", expanded);
+      console.log("Expanded : ", record);
+      setExpandedRowKeys(location.pathname === "/support/funded" ? [record.login_id] : [record.id]);
+    } else {
+      setExpandedRowKeys([]);
+    }
+  };
+
+  console.log("Current rowId:", getRowKey());
+  console.log("Data structure example:", data[0]);
+  console.log("isExpandable", isExpandable);
+  console.log("expandedRowKeys", expandedRowKeys);
+
+  function getRowKey() {
+    if (location.pathname === "/support/funded") {
+      return "login_id";
+    } else {
+      return "id";
+    }
+  }
 
   return (
     <div className="ant_table_container">
@@ -32,25 +76,28 @@ const AntTable = ({triggerChange, data, columns, totalItems, pageSize, setPageSi
         columns={columns}
         dataSource={data}
         pagination={{
-          current: pagination.current,
+          current: serverSide ? CurrentPageNo : pagination.current,
           pageSize: pagination.pageSize,
           total: pagination.total,
           showSizeChanger: true,
           showQuickJumper: true,
-          showTotal: (total) => `Total ${totalItems} items`,
+          showTotal: (total) => `Total ${serverSide ? totalItems : data?.length} items`,
           onChange: handlePageChange,
         }}
         scroll={{
           y: "100%",
           x: "max-content",
         }}
-        rowKey="key"
+        // rowKey={(record) => record[getRowKey()]}
+        rowKey={rowId}
         size={"large"}
         scrollToFirstRowOnChange={true}
         expandable={
-          isExpandable && expandedRowRender
+          isExpandable
             ? {
-                expandedRowRender: expandedRowRender,
+                expandedRowRender: (record) => <ExpandedComp record={record} />,
+                expandedRowKeys: expandedRowKeys,
+                onExpand: handleExpand,
               }
             : undefined
         }

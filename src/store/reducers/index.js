@@ -25,6 +25,7 @@ import paymentSlice from "../NewReducers/payment";
 import couponSlice from "../NewReducers/Coupons";
 import SupportSlice from "../NewReducers/Support";
 import complianceList from "../NewReducers/complianceList";
+import countryWiseSlice from "../NewReducers/countryWise";
 import getUserProfileData from "../NewReducers/userProfileSlice";
 
 const rootReducer = combineReducers({
@@ -53,6 +54,7 @@ const rootReducer = combineReducers({
   coupon: couponSlice,
   support: SupportSlice,
   compliance: complianceList,
+  countryWise: countryWiseSlice,
   userProfile: getUserProfileData,
 });
 

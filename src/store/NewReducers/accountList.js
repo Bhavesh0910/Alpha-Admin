@@ -49,7 +49,6 @@ const accountSlice = createSlice({
         state.isError = false;
       })
       .addCase(accountList.fulfilled, (state, action) => {
-        console.log("Action payload oof acc slice : ",action.payload)
         state.isLoading = false;
         state.data = action.payload?.results; // Update state with fetched data
         state.totalItems = action.payload?.count; // Update state with fetched data

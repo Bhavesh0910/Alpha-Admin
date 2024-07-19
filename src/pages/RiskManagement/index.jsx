@@ -20,6 +20,8 @@ function RiskManagement() {
   const { accountOverviewData, stage1ChartData, stage2ChartData, fundingChartData ,  isLoading, error } = useSelector((state) => state.risk);
   const idToken = useSelector((state) => state.auth.idToken);
 
+  
+
   console.log(stage1ChartData, stage2ChartData , fundingChartData)
   const onRangeChange = (dates) => {
     if (dates && idToken) {

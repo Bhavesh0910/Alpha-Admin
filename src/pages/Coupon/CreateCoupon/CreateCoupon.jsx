@@ -44,7 +44,7 @@ const CreateCoupon = () => {
     console.log(response)
     if (response?.status < 399) {
       let userArray = [];
-      response?.data.results.map((item) =>
+      response?.data?.results.map((item) =>
         userArray.push({
           label: item?.email,
           value: item?.id,

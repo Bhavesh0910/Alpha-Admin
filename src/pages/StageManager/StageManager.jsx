@@ -1,4 +1,4 @@
-import {Button, DatePicker, Dropdown, Menu, Select, Modal, Form, Input} from "antd";
+import {Button, DatePicker, Dropdown, Menu, Select, Modal, Form, Input, Table} from "antd";
 import moment from "moment";
 import React, {useEffect, useMemo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,8 +12,9 @@ import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 import {DownOutlined} from "@ant-design/icons";
 import "./StageManager.scss";
-import {getStage1List} from "../../store/NewReducers/Support";
+import {supportListReq, nestedTableDataReq} from "../../store/NewReducers/Support";
 import ReactCountryFlag from "react-country-flag";
+import dayjs from "dayjs";
 const {RangePicker} = DatePicker;
 
 const {Option} = Select;
@@ -33,16 +34,32 @@ const StageManager = () => {
   const [modalAction, setModalAction] = useState("");
   const {idToken} = useSelector((state) => state.auth);
   const {count, data, isLoading, stageStatusOptions} = useSelector((state) => state.support);
-
+  const [fetchUpdate, setFetchUpdate] = useState(true);
   const location = useLocation();
   const dispatch = useDispatch();
-  const options = stageStatusOptions || location.pathname === "/support/funded" ? ["New", "Approved", "Rejected", "Flagged"] : ["New", "Approved", "Failed", "Pending"];
+  const options = stageStatusOptions || location.pathname === "/support/funded" ? ["In Progress", "Approved", "Failed", "Pending"] : ["New", "Approved", "Rejected", "Flagged"];
 
   useEffect(() => {
+    // console.log("Fetching UseEffect");
     fetchStageList(idToken, pageNo, pageSize, searchText, status, dates);
-  }, [searchText, pageNo, pageSize, status, idToken, dates, location.pathname]);
+  }, [searchText, pageNo, pageSize, status, idToken, dates, fetchUpdate]);
+
+  useEffect(() => {
+    // console.log("Indirect Update ");
+    setDates(null);
+    setPageNo(1);
+    setPageSize(20);
+    setSearchText("");
+    setSearch("");
+    setStatus("all");
+    setFetchUpdate((prev) => !prev);
+    // console.log(window.onload)
+  }, [location.pathname]);
+
+  // console.log("Location : ",location.pathname);
 
   async function fetchStageList(idToken, pageNo, pageSize, searchText, status, dates) {
+    // console.log("Fteching...");
     let query = "";
     let type;
     let url;
@@ -62,23 +79,36 @@ const StageManager = () => {
       query += `&status=${status}`;
     }
     if (dates) {
-      query += `&start_date=${dates[0]}&end_date=${dates[1]}`;
+      query += `&start_date=${dates[0].format("DD MMM YYYY")}&end_date=${dates[1].format("DD MMM YYYY")}`;
     }
-    // if (search) {
-    //   query += `&search=${searchText}`;
-    // }
-
-    dispatch(getStage1List({idToken, query, url, dispatch}));
+    dispatch(supportListReq({idToken, query, url, dispatch}));
   }
 
   function updateDateRange(dates) {
-    setDates(dates.map((item) => item.format("DD MMM YYYY")));
+    setPageNo(1);
+    if (dates) {
+      setDates(dates);
+      // setDates(dates?.map((item) => item.format("DD MMM YYYY")));
+    } else {
+      setDates(null);
+    }
   }
 
   const handleStatusChange = (index, status) => {
     // const newData = [...data];
     // newData[index].status = status;
     // setData(newData);
+  };
+
+  const handleSearch = (value) => {
+    setPageNo(1);
+    setPageSize(20);
+    setSearchText(value);
+  };
+
+  const handleTabChange = (key) => {
+    setPageNo(1);
+    setStatus(key);
   };
 
   const openEditModal = (comment, index) => {
@@ -129,13 +159,6 @@ const StageManager = () => {
     });
   };
 
-  // const columns = React.useMemo(
-  //   () => [
-
-  //   ],
-  //   [],
-  // );
-
   const columns = useMemo(() => {
     switch (location.pathname) {
       case "/support/stage-1":
@@ -146,7 +169,6 @@ const StageManager = () => {
             dataIndex: "country",
             key: "country",
             render: (country) => {
-              console.log(country, "country");
               const countryName = country;
               const countryCode = lookup.byCountry(countryName);
               if (countryCode) {
@@ -164,6 +186,7 @@ const StageManager = () => {
               }
             },
           },
+          // Table.EXPAND_COLUMN,
           {
             title: "Email",
             dataIndex: "email",
@@ -207,15 +230,16 @@ const StageManager = () => {
               </div>
             ),
           },
+          // Table.SELECTION_COLUMN,
           {
             title: "Full Name",
-            dataIndex: "full_name",
-            key: "full_name",
+            dataIndex: "username",
+            key: "username",
             render: (text) => (text ? text : "-"),
           },
           {
             title: "Account",
-            dataIndex: "account",
+            dataIndex: "account_id",
             key: "account",
             render: (text, row) => (
               <Link
@@ -243,22 +267,35 @@ const StageManager = () => {
             title: "Status",
             dataIndex: "status",
             key: "status",
-            render: (text) => (
-              <span
-                style={{
-                  textWrap: "nowrap",
-                  textTransform: "capitalize",
-                  color: text === "approved" ? "#209829" : text === "rejected" ? "#FA4D4D" : text === "new" ? "#00000" : "#FFB100",
-                }}
+            render: (text, record, index) => (
+              <Dropdown
+                overlay={() => statusMenu(index)}
+                trigger={["click"]}
               >
-                {text ? text.replace(/_/g, " ") : "-"}
-              </span>
+                <Button
+                  icon={<DownOutlined />}
+                  className="status_button"
+                  style={{
+                    width: "120px",
+                    display: "flex",
+                    flexDirection: "row-reverse",
+                    justifyContent: "space-between",
+                    padding: "6px 10px",
+                  }}
+                >
+                  <p
+                    className={text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "pending" : ""}
+                  >
+                    {text}
+                  </p>
+                </Button>
+              </Dropdown>
             ),
           },
           {
             title: "Email Generated",
-            dataIndex: "email_generated",
-            key: "email_generated",
+            dataIndex: "email_sent",
+            key: "email_sent",
             render: (text, row) => (
               <img
                 width={"25px"}
@@ -281,8 +318,8 @@ const StageManager = () => {
           },
           {
             title: "Contract Issued",
-            dataIndex: "contract_issued",
-            key: "contract_issued",
+            dataIndex: "issue_contract",
+            key: "issue_contract",
             render: (text, row) => (
               <img
                 width={"25px"}
@@ -293,8 +330,8 @@ const StageManager = () => {
           },
           {
             title: "KYC Verified",
-            dataIndex: "kyc_verified",
-            key: "kyc_verified",
+            dataIndex: "is_kyc_verified",
+            key: "is_kyc_verified",
             render: (text) => (
               <img
                 width={"25px"}
@@ -305,8 +342,8 @@ const StageManager = () => {
           },
           {
             title: "Payment",
-            dataIndex: "payment",
-            key: "payment`",
+            dataIndex: "is_payment_verified",
+            key: "is_payment_verified",
             render: (text, row) => (
               <img
                 width={"25px"}
@@ -327,22 +364,24 @@ const StageManager = () => {
             key: "updated_at",
             render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
           },
-
           {
             title: "Comment",
             dataIndex: "comment",
             key: "comment",
-            render: (text, record, index) => (
-              <div className="comment_box">
-                {/* <p>{highlightText(text, searchText)}</p> */}
-                <img
-                  src={comment}
-                  alt="comment"
-                  className="edit-icon"
-                  // onClick={() => openEditModal(text, index)}
-                />
-              </div>
-            ),
+            render: (text, record, index) =>
+              text ? (
+                <div className="comment_box">
+                  <p>{text}</p>
+                  <img
+                    src={comment}
+                    alt="comment"
+                    className="edit-icon"
+                    onClick={() => openEditModal(text, index)}
+                  />
+                </div>
+              ) : (
+                "-"
+              ),
           },
           {
             title: "Status",
@@ -366,7 +405,7 @@ const StageManager = () => {
                 >
                   <p
                     className={
-                      text === "in-progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Flagged" ? "flagged" : text === "Rejected" ? "rejected" : text === "New" ? "new" : ""
+                      text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Flagged" ? "flagged" : text === "Rejected" ? "rejected" : text === "New" ? "new" : ""
                     }
                   >
                     {text === "in_progress" ? "In Progress" : text === "Approved" ? "Approved" : text === "Flagged" ? "Flagged" : text === "Rejected" ? "Rejected" : text === "New" ? "New" : ""}
@@ -377,8 +416,13 @@ const StageManager = () => {
           },
           {
             title: "Phase 1 ID",
-            dataIndex: "phase1_id",
-            key: "phase1_id",
+            dataIndex: "subject",
+            key: "subject",
+            render: (text) => "-",
+            // text.split(" ")[0].split("(")[1].slice(0, -1)
+            // console.log("Text : ", text.split(" ")[0].split("(")[1].slice(0, -1))
+            // return text.split(" ").split("(");
+            // }
           },
           {
             title: "Details",
@@ -419,49 +463,58 @@ const StageManager = () => {
           },
           {
             title: "Account Number",
-            dataIndex: "accountNumber",
+            dataIndex: "login_id",
             key: "accountNumber",
           },
           {
             title: "Max Loss",
-            dataIndex: "maxLoss",
-            key: "maxLoss",
+            dataIndex: "stats",
+            key: "stats",
+            render: (text) => (text?.max_loss ? text?.max_loss.toFixed(2) : "-"),
           },
           {
             title: "Daily Loss",
-            dataIndex: "dailyLoss",
-            key: "dailyLoss",
+            dataIndex: "stats",
+            key: "stats",
+            render: (text) => (text?.max_daily_loss ? text?.max_daily_loss?.toFixed(2) : "-"),
           },
           {
             title: "Profit",
-            dataIndex: "profit",
-            key: "profit",
+            dataIndex: "stats",
+            key: "stats",
+            render: (text) => (text?.profit ? text?.profit?.toFixed(2) : "-"),
           },
           {
             title: "Balance",
-            dataIndex: "balance",
-            key: "balance",
+            dataIndex: "stats",
+            key: "stats",
+            render: (text) => {
+              return text?.balance ? text?.balance : "-";
+            },
           },
           {
             title: "Comment",
             dataIndex: "comment",
             key: "comment",
-            render: (text, record, index) => (
-              <div className="comment_box">
-                <p>{(text, searchText)}</p>
-                <img
-                  src={comment}
-                  alt="comment"
-                  className="edit-icon"
-                  onClick={() => openEditModal(text, index)}
-                />
-              </div>
-            ),
+            render: (text, record, index) =>
+              text ? (
+                <div className="comment_box">
+                  <p>{text}</p>
+                  <img
+                    src={comment}
+                    alt="comment"
+                    className="edit-icon"
+                    onClick={() => openEditModal(text, index)}
+                  />
+                </div>
+              ) : (
+                "-"
+              ),
           },
           {
             title: "Status",
-            dataIndex: "status",
-            key: "status",
+            dataIndex: "progress",
+            key: "progress",
             render: (text, record, index) => (
               <Dropdown
                 overlay={() => statusMenu(index)}
@@ -479,11 +532,9 @@ const StageManager = () => {
                   }}
                 >
                   <p
-                    className={
-                      text === "in-progress" ? "in_progress" : text === "approved" ? "approved" : text === "flagged" ? "flagged" : text === "dismissed" ? "dismissed" : text === "new" ? "new" : ""
-                    }
+                    className={text === "All" ? "all" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "pending" : text === "In Progress" ? "in_progress" : ""}
                   >
-                    {text === "in-progress" ? "In Progress" : text === "approved" ? "Approved" : text === "flagged" ? "Flagged" : text === "dismissed" ? "Dismissed" : text === "new" ? "New" : ""}
+                    {text}
                   </p>
                 </Button>
               </Dropdown>
@@ -493,11 +544,13 @@ const StageManager = () => {
             title: "Phase 1 ID",
             dataIndex: "phase1Id",
             key: "phase1Id",
+            render: (text) => (text ? text : "-"),
           },
           {
             title: "Funded ID",
             dataIndex: "fundedId",
             key: "fundedId",
+            render: (text) => (text ? text : "-"),
           },
           {
             title: "Details",
@@ -511,8 +564,8 @@ const StageManager = () => {
         return [
           {
             title: "Email",
-            dataIndex: "email",
-            key: "email",
+            dataIndex: "user_email",
+            key: "user_email",
             render: (text) => <span>{text}</span>,
           },
           {
@@ -523,8 +576,8 @@ const StageManager = () => {
           },
           {
             title: "Username",
-            dataIndex: "username",
-            key: "username",
+            dataIndex: "user_name",
+            key: "user_name",
             render: (text) => <span>{text}</span>,
           },
           {
@@ -547,8 +600,8 @@ const StageManager = () => {
           },
           {
             title: "Payment Mode",
-            dataIndex: "payment_mode",
-            key: "payment_mode",
+            dataIndex: "method",
+            key: "method",
             render: (text) => <span>{text}</span>,
           },
           {
@@ -561,7 +614,7 @@ const StageManager = () => {
             title: "Bonus",
             dataIndex: "bonus",
             key: "bonus",
-            render: (text) => <span>{text}%</span>,
+            render: (text) => (text ? <span>{text}%</span> : "-"),
           },
           {
             title: "Amount",
@@ -575,18 +628,12 @@ const StageManager = () => {
             key: "status",
             render: (text, record, index) => (
               <Dropdown
-                overlay={() => statusMenu(record, index)}
+                overlay={() => statusMenu(index)}
                 trigger={["click"]}
-                className="status_dropdown_option"
-                // onClick={() => handleStatusChange(text, record, index)}
               >
                 <Button
                   icon={<DownOutlined />}
-                  className={`status-button ${
-                    text === "in_progress" ? "in_progress" : text === "approved" ? "approved" : text === "accepted" ? "accepted" : text === "rejected" ? "rejected" : text === "new" ? "new" : ""
-                  }
-        
-                      `}
+                  className="status_button"
                   style={{
                     width: "120px",
                     display: "flex",
@@ -595,9 +642,8 @@ const StageManager = () => {
                     padding: "6px 10px",
                   }}
                 >
-                  <p className="status_text">
-                    {text === "in_progress" ? "In progress" : text === "approved" ? "Approved" : text === "accepted" ? "Accepted" : text === "rejected" ? "Rejected" : text === "new" ? "New" : ""}
-                  </p>
+                  {/* "New", "Approved", "Rejected", "Flagged" */}
+                  <p className={text === "New" ? "new" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Flagged" ? "rejected" : ""}>{text}</p>
                 </Button>
               </Dropdown>
             ),
@@ -634,19 +680,6 @@ const StageManager = () => {
         break;
     }
   }, [location.pathname]);
-
-  console.log(columns, "columns");
-
-  const handleSearch = (value) => {
-    setPageNo(1);
-    setPageSize(20);
-    setSearchText(value);
-  };
-
-  const handleTabChange = (key) => {
-    setPageNo(1);
-    setStatus(key);
-  };
 
   const handleCategoryChange = (value) => {
     // setCategory(value);
@@ -718,8 +751,7 @@ const StageManager = () => {
           ))}
         </div>
         <RangePicker
-          // placeholder={dates}
-          //  defaultValue={defaultDates}
+          value={dates ? [dayjs(dates[0], "YYYY-MM-DD"), dayjs(dates[0], "YYYY-MM-DD")] : null}
           onChange={updateDateRange}
           autoFocus
           // presets={rangePresets}
@@ -736,9 +768,14 @@ const StageManager = () => {
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}
         triggerChange={triggerChange}
+        isExpandable={true}
+        expandedRowRender={"hello"}
+        ExpandedComp={ExpandedRowData}
+        rowId={location.pathname === "/support/funded" ? "login_id" : "id"}
       />
       <Modal
         title={modalAction}
+        open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         onOk={modalAction === "Edit" ? handleEditComment : handleAction}
       >
@@ -760,3 +797,77 @@ const StageManager = () => {
 };
 
 export default StageManager;
+
+function ExpandedRowData({record}) {
+  const location = useLocation();
+  const [url, setUrl] = useState();
+  const {idToken} = useSelector((state) => state.auth);
+  const {nestedTableData, isLoading} = useSelector((state) => state.support);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    switch (location.pathname) {
+      case "/support/stage-1":
+      case "/support/stage-2":
+        setUrl(`support/admin/get//details/${record.id}/`);
+        break;
+      case "/support/funded":
+        setUrl(`v2/get/funded/details/${record.login_id}/`);
+        break;
+      case "/support/payout":
+        setUrl(`v2/get-payout-details/${record.id}/`);
+        break;
+      default:
+        break;
+    }
+  }, [record]);
+
+  useEffect(() => {
+    let flag = location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2" ? true : false;
+    console.log(flag);
+    dispatch(nestedTableDataReq({idToken, url, flag, dispatch}));
+  }, [url]);
+  console.log(nestedTableData, "nested");
+  return (
+    <>
+      {isLoading ? (
+        "Loading..."
+      ) : (
+        <div className="nestedTable">
+          <div>
+            <div>Martingle</div>
+            <div>{nestedTableData?.contact}</div>
+          </div>
+          <div>
+            <div>Max Loss</div>
+            <div>{nestedTableData?.contact}</div>
+          </div>
+          <div>
+            <div>Max Daily Loss</div>
+            <div>{nestedTableData?.contact}</div>
+          </div>
+          <div>
+            <div>Min Trading Day</div>
+            <div>{nestedTableData?.contact}</div>
+          </div>
+          <div>
+            <div>Purchased date</div>
+            <div>{nestedTableData?.contact}</div>
+          </div>
+          <div>
+            <div>Account Started</div>
+            <div>{nestedTableData?.contact}</div>
+          </div>
+          <div>
+            <div>Risk Report</div>
+            <div>{nestedTableData?.contact}</div>
+          </div>
+          <div>
+            <div>Account Passed</div>
+            <div>{nestedTableData?.contact}</div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
