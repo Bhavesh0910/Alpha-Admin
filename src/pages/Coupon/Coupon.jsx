@@ -1,17 +1,17 @@
-import { Button, Select } from "antd";
-import React, { useEffect, useState } from "react";
+import {Button, Select} from "antd";
+import React, {useEffect, useState} from "react";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import arrowIcon from "../../assets/icons/status_arrow_left_white.svg";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import "./Coupon.scss";
 import EditCouponModal from "../../components/Coupon/EditCouponModal/EditCouponModal";
-import { useDispatch, useSelector } from "react-redux";
-import { getCoupons } from "../../store/NewReducers/Coupons";
-import { returnErrors } from "../../store/reducers/error";
-import { render } from "react-saga";
+import {useDispatch, useSelector} from "react-redux";
+import {getCoupons} from "../../store/NewReducers/Coupons";
+import {returnErrors} from "../../store/reducers/error";
+import {render} from "react-saga";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-const { Option } = Select;
+const {Option} = Select;
 const Coupon = () => {
   const [searchText, setSearchText] = useState("");
   const [activeTab, setActiveTab] = useState("all");
@@ -21,30 +21,27 @@ const Coupon = () => {
   const [pageNo, setPageNo] = useState(1);
   const [editCouponData, setEditCouponData] = useState();
 
-  const { idToken } = useSelector(state => state.auth);
-  const { couponData, isLoading , refresh } = useSelector(state => state.coupon)
-  const count = useSelector(state => state.coupon.couponData[0].count)
+  const {idToken} = useSelector((state) => state.auth);
+  const {couponData, isLoading, refresh} = useSelector((state) => state.coupon);
+  const count = useSelector((state) => state.coupon?.couponData[0]?.count);
   const navigate = useNavigate();
 
-  const [filterData, setFilterData] = useState('')
+  const [filterData, setFilterData] = useState("");
 
-  console.log(couponData[0].results)
   const dispatch = useDispatch();
 
   useEffect(() => {
     fetchCoupons(idToken, pageNo, pageSize, searchText);
-  }, [idToken, pageNo, pageSize, searchText, refresh])
+  }, [idToken, pageNo, pageSize, searchText, refresh]);
 
   function fetchCoupons(idToken, pageNo, pageSize, searchText) {
-    dispatch(getCoupons({ idToken, pageNo, pageSize, searchText }));
+    dispatch(getCoupons({idToken, pageNo, pageSize, searchText}));
   }
-
-
 
   const handleSearch = (e) => {
     if (e.key === "Enter") {
       setSearchText(e.target.value);
-      setFilterData(couponData[0]?.results)
+      setFilterData(couponData[0]?.results);
     }
   };
   function triggerChange(page, updatedPageSize) {
@@ -52,25 +49,19 @@ const Coupon = () => {
     setPageSize(updatedPageSize);
   }
 
-
   useEffect(() => {
-    if (activeTab === 'active') {
-      setFilterData(couponData[0]?.results.filter((item) => item.is_active === true))
+    if (activeTab === "active") {
+      setFilterData(couponData[0]?.results.filter((item) => item.is_active === true));
+    } else if (activeTab === "inactive") {
+      setFilterData(couponData[0]?.results.filter((item) => item.is_active === false));
+    } else {
+      setFilterData(couponData[0]?.results);
     }
-    else if (activeTab === 'inactive') {
-      setFilterData(couponData[0]?.results.filter((item) => item.is_active === false))
-    }
-    else {
-      setFilterData(couponData[0]?.results)
-    }
-    console.log(filterData)
-  }, [activeTab])
-
+    console.log(filterData);
+  }, [activeTab]);
 
   const handleTabChange = (key) => {
     setActiveTab(key);
-
-
   };
 
   const handleCategoryChange = (value) => {
@@ -82,7 +73,6 @@ const Coupon = () => {
   const editButtonClick = () => {
     setIsEditModalVisible(!isEditModalVisible);
   };
-
 
   const columns = [
     {
@@ -99,7 +89,7 @@ const Coupon = () => {
       title: "Coupon Amount",
       dataIndex: "coupon_amount",
       key: "amount",
-      render: (text) => `${text === null ? "-" : text}`
+      render: (text) => `${text === null ? "-" : text}`,
     },
     {
       title: "Coupon Expiry",
@@ -115,17 +105,13 @@ const Coupon = () => {
       title: "Challenge",
       dataIndex: "challenge",
       key: "challenge",
-      render: (text) => `${text === null ? "-" : text}`
+      render: (text) => `${text === null ? "-" : text}`,
     },
     {
       title: "Single Use",
       dataIndex: "multi_use",
       key: "single_use",
-      render: (text) => (
-        <div className="coupon_status_container">
-          {`${text === true ? "No" : "Yes"}`}
-        </div>
-      )
+      render: (text) => <div className="coupon_status_container">{`${text === true ? "No" : "Yes"}`}</div>,
     },
     {
       title: "Status",
@@ -133,11 +119,12 @@ const Coupon = () => {
       key: "is_active",
       render: (text) => (
         <div className="coupon_status_container">
-          <p className={`${text === true ? "active" : "inactive"}`}>
-            {`${text === true ? "Active" : "Inactive"}`}
-          </p>
+          <p className={`${text === true ? "active" : "inactive"}`}>{`${text === true ? "Active" : "Inactive"}`}</p>
 
-          <img src={arrowIcon} alt="arrow_icon" />
+          <img
+            src={arrowIcon}
+            alt="arrow_icon"
+          />
         </div>
       ),
     },
@@ -150,10 +137,12 @@ const Coupon = () => {
           {/* <div className={`${text === "private" ? "private" : "public"}`}>
             {text}
           </div> */}
-          <Button onClick={() => {
-            setEditCouponData(record);
-            editButtonClick();
-          }}>
+          <Button
+            onClick={() => {
+              setEditCouponData(record);
+              editButtonClick();
+            }}
+          >
             Edit
           </Button>
         </div>
@@ -164,14 +153,9 @@ const Coupon = () => {
       title: "Users",
       dataIndex: "users",
       key: "users",
-      render: (text) => (
-        <div className="actn_btn_container">
-          {text?.length}
-        </div>
-      ),
+      render: (text) => <div className="actn_btn_container">{text?.length}</div>,
     },
   ];
-
 
   return (
     <div className="coupon_container">
@@ -199,7 +183,10 @@ const Coupon = () => {
               onKeyDown={(e) => handleSearch(e)}
             />
             <div className="searchImg">
-              <img src={searchIcon} alt="searchIcon" />
+              <img
+                src={searchIcon}
+                alt="searchIcon"
+              />
             </div>
           </div>
           <div className="filter_buttons">
@@ -210,22 +197,20 @@ const Coupon = () => {
               All
             </Button>
             <Button
-              className={activeTab === 'active' ? "active" : ""}
+              className={activeTab === "active" ? "active" : ""}
               onClick={() => handleTabChange("active")}
             >
               Active
             </Button>
             <Button
-              className={activeTab === 'inactive' ? "active" : ""}
+              className={activeTab === "inactive" ? "active" : ""}
               onClick={() => handleTabChange("inactive")}
             >
               Inactive
             </Button>
           </div>
           <div className="create_coupon_btn">
-            <Button onClick={() => navigate("create-coupon")}>
-              Create Coupon
-            </Button>
+            <Button onClick={() => navigate("create-coupon")}>Create Coupon</Button>
           </div>
         </div>
       </div>
@@ -242,7 +227,11 @@ const Coupon = () => {
       />
 
       {isEditModalVisible === true ? (
-        <EditCouponModal editCouponData={editCouponData} idToken={idToken} setIsEditModalVisible={setIsEditModalVisible} />
+        <EditCouponModal
+          editCouponData={editCouponData}
+          idToken={idToken}
+          setIsEditModalVisible={setIsEditModalVisible}
+        />
       ) : (
         ""
       )}
