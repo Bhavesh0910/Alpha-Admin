@@ -1,0 +1,15 @@
+.result_by_days {
+    
+    .charts_container {
+        display: flex;
+        gap: 20px;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .chart_wrapper {
+        width: 100%;
+        border-radius: var(--table-box, 20px);
+        background: var(--Table-box-selected, #F5F5F5);
+    }
+}
