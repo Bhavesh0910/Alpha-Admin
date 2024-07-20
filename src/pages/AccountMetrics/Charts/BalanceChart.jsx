@@ -129,7 +129,7 @@ const BalanceChart = ({PerformanceChart}) => {
       <ReactApexChart
         options={options}
         series={series}
-        height={250}
+        height={"100%"}
       />
     </div>
   );

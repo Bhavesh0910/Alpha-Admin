@@ -7,7 +7,7 @@ import BalanceChart from "../../Charts/BalanceChart";
 import ProfitChart from "../../Charts/ProfitChart";
 
 const AccountOverview = () => {
-  const [charts, setCharts] = useState("");
+  const [charts, setCharts] = useState("BalanceChart");
   const [pageNos, setPageNos] = useState(1);
   const onChangeActive = (e) => {
     setPageNos(1);
@@ -20,15 +20,17 @@ const AccountOverview = () => {
       <div className="accountMetrics_wrapper_top">
         {/* Inner 1st */}
         <div className="top_left_div">
-          <div>
+          <div className="top_left_div_upper">
             <div>
               <img
                 src={profileIcon}
                 alt="profileIcon"
               />
             </div>
-            <h2>Alpha Capital Group - Alpha pro Stage 1 - Shaquille Boreland</h2>
-            <p>1640105</p>
+            <div>
+              <h2>Alpha Capital Group - Alpha pro Stage 1 - Shaquille Boreland</h2>
+              <p>1640105</p>
+            </div>
           </div>
           <div className="top_left_div_buttons">
             <button>Evaluation</button>
@@ -60,7 +62,7 @@ const AccountOverview = () => {
         </div>
 
         <div className="top_right_div">
-          <div className="top_right_div_header">
+          <div className="accountMetrics_wrapper_header">
             <h2>Daily Summary</h2>
           </div>
           <div className="top_right_div_lower">
@@ -107,88 +109,117 @@ const AccountOverview = () => {
               </Radio.Group>
             </div>
 
-            <div style={{width: "100%"}}>
-              {charts === "" && (
+            <div className="charts_div">
+              {/* {charts === "" && (
                 <>
                   <BalanceChart />
                 </>
-              )}
+              )} */}
               {charts === "BalanceChart" && <BalanceChart />}
               {charts === "ProfitChart" && <ProfitChart />}
             </div>
           </div>
           <div className="bottom_main_left_satistic">
-            <div className="header">
+            <div className="accountMetrics_wrapper_header">
               <h2>Statistic</h2>
             </div>
             <div className="bottom_main_left_satistic_inner">
-              <div>
-                <p>Equity</p>
-                <h3>100000</h3>
+              <div className="bottom_main_left_satistic_inner_one">
+                <div>
+                  <p>Equity</p>
+                  <h3>100000</h3>
+                </div>
+                <div>
+                  <p>Balance</p>
+                  <h3>100000</h3>
+                </div>
+                <div>
+                  <p>No. of trades</p>
+                  <h3>-</h3>
+                </div>
+                <div>
+                  <p>Lots</p>
+                  <h3>-</h3>
+                </div>
+                <div>
+                  <p>Win rate</p>
+                  <h3>-</h3>
+                </div>
+                <div>
+                  <p>Highest</p>
+                  <h3>-</h3>
+                </div>
               </div>
-              <div>
-                <p>Balance</p>
-                <h3>100000</h3>
+              <div className="bottom_main_left_satistic_inner_two">
+                <div>
+                  <p>Average profit</p>
+                  <h3>$0</h3>
+                </div>
+                <div>
+                  <p>Average loss</p>
+                  <h3>$0</h3>
+                </div>
+                <div>
+                  <p>Average RRR</p>
+                  <h3>0.00</h3>
+                </div>
+                <div>
+                  <p>Martingale Status</p>
+                  <button>Success</button>
+                </div>
+                <div>
+                  <p>Martingale Count</p>
+                  <h3>0</h3>
+                </div>
               </div>
-              <div>
-                <p>No. of trades</p>
-                <h3>-</h3>
-              </div>
-              <div>
-                <p>Lots</p>
-                <h3>-</h3>
-              </div>
-              <div>
-                <p>Win rate</p>
-                <h3>-</h3>
-              </div>
-              <div>
-                <p>Highest</p>
-                <h3>-</h3>
-              </div>
-              <div>
-                <p>Average profit</p>
-                <h3>$0</h3>
-              </div>
-              <div>
-                <p>Average loss</p>
-                <h3>$0</h3>
-              </div>
-              <div>
-                <p>Average RRR</p>
-                <h3>0.00</h3>
-              </div>
-              <div>
-                <p>Martingale Status</p>
-                <button>Success</button>
-              </div>
-              <div>
-                <p>Martingale Count</p>
-                <h3>0</h3>
-              </div>
+            </div>
+            <div className="bottom_main_left_satistic_lower">
+              <h3>Last Updated:</h3>
+              <p>Thu Jul 18 GMT+0530 (India Standard Time)</p>
             </div>
           </div>
         </div>
         <div className="bottom_main_right">
-          <div>
+          <div className="accountMetrics_wrapper_header">
             <h2>Trading Objective</h2>
           </div>
 
           <div className="bottom_main_right_inner">
             <div>
-              <div>Minimum days - 3</div>
+              <div>
+                <h4>
+                  Minimum days - 3 <span>{">"}</span>
+                </h4>
+              </div>
               <button>In Progress</button>
             </div>
             <div>
-              <div>Minimum days - 3</div>
+              <div>
+                <h4>
+                  Profit $8,000 <span>{">"}</span>
+                </h4>
+                <p>Results : $0</p>
+              </div>
               <button>In Progress</button>
             </div>
+
             <div>
-              <div>Minimum days - 3</div>
+              <div>
+                <h4>
+                  Max Loss $10,000 <span>{">"}</span>
+                </h4>
+                <p>Results : $0</p>
+              </div>
               <button>In Progress</button>
             </div>
+
             <div>
-              <div>Minimum days - 3</div>
+              <div>
+                <h4>
+                  Max Daily Loss $5,000 <span>{">"}</span>
+                </h4>
+                <p>Remaining : 5000.00</p>
+              </div>
               <button>In Progress</button>
             </div>
           </div>

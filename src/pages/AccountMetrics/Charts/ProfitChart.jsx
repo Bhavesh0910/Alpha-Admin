@@ -176,7 +176,7 @@ const ProfitChart = ({data, ProfitData}) => {
       <ReactApexChart
         options={Options}
         series={Series}
-        height={250}
+        height={"100%"}
       />
     </div>
   );
