@@ -58,7 +58,7 @@ const AntTable = ({serverSide = true, triggerChange, data, columns, totalItems, 
   };
 
   console.log("Current rowId:", getRowKey());
-  console.log("Data structure example:", data[0]);
+  // console.log("Data structure example:", data[0]);
   console.log("isExpandable", isExpandable);
   console.log("expandedRowKeys", expandedRowKeys);
 

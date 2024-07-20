@@ -32,7 +32,7 @@ const AccountMetrics = () => {
                     className="page_header"
                     to="/"
                   >
-                    Competition List
+                    Trader View
                   </Link>
                 ),
               },
@@ -42,7 +42,7 @@ const AccountMetrics = () => {
                     className="breadcrumb"
                     to=""
                   >
-                    Create Competition
+                    id
                   </Link>
                 ),
               },

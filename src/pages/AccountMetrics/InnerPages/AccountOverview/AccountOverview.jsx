@@ -1,6 +1,6 @@
 import {Breadcrumb, Radio, Tabs} from "antd";
 import React, {useState} from "react";
-import "./style.scss";
+import "./AccountOverview.scss";
 import {Link} from "react-router-dom";
 import profileIcon from "../../../../assets/icons/profileIcon.svg";
 import BalanceChart from "../../Charts/BalanceChart";
