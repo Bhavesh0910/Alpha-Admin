@@ -1,0 +1,19 @@
+.account_metrics_analysis {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .standard_heading {
+        color: var(--Text, #1E1E1E);
+        font-family: "Nunito Sans";
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    .analysis_box {
+        padding: 20px;
+        border-radius: var(--table-box, 20px);
+        background: var(--white, #FFF);
+    }
+}
