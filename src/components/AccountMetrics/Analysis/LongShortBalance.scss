@@ -1,65 +1,152 @@
-.long_short_balance{
-    .databox_wrapper{
-      display: grid;
-      grid-template-columns: repeat(5 , 1fr);
-      grid-gap: 20px;
-      margin-top: 20px;
-
+.long_short_balance {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .databox_wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 20px;
+    margin-top: 20px;
+  }
+  .databox {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-right: 1px solid #d2d2d2;
+    &:last-child {
+      border-right: none !important;
     }
-    .databox{
-        padding:0 20px;
+    .db_header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      h3 {
+        color: var(--Text-2, #686868);
+        font-family: "Nunito Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+      }
+    }
+
+    .title {
+      font-family: "Nunito Sans";
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 24px; /* 150% */
+    }
+    .title.long {
+      color: #5f9d51;
+    }
+    .title.short {
+      color: #e92b37;
+    }
+
+    .value {
+      color: var(--Text, #1e1e1e);
+
+      font-family: "Nunito Sans";
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px; /* 120% */
+    }
+
+    .data_wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+  }
+
+  .long_short_balance_charts {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+
+    .tabs_wrapper {
+      width: auto;
+    }
+
+    .long_balance_chart {
+      display: flex;
+      padding: 20px;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 11px;
+      height: 410px;
+      flex: 1;
+
+      border-radius: var(--table-box, 20px);
+      background: #fff;
+
+      .chart {
+        // padding: 20px;
+        border-radius: 8px;
+        width: 100%;
+        height: 100%;
+      }
+
+      .long_balance_chart_header_tabs {
+        width: 100%;
         display: flex;
-        flex-direction: column;
-        gap: 20px;
-        border-right: 1px solid #D2D2D2;
-        &:last-child{
-            border-right: none !important;
-          }
-        .db_header{
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            h3{
-                color: var(--Text-2, #686868);
-                font-family: "Nunito Sans";
-                font-size: 14px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: normal;  
-            }
-        }
+        justify-content: space-between;
+        align-items: center;
 
-        .title{
-       
-            font-family: "Nunito Sans";
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 600;
-            line-height: 24px; /* 150% */
-        }
-        .title.long{
-            color: #5F9D51;
-        }
-        .title.short{
-            color: #E92B37; 
-        }
-
-        .value{
-            color: var(--Text, #1E1E1E);
-   
+        .long_balance_chart_header {
+          h2 {
+            color: #000;
             font-family: "Nunito Sans";
             font-size: 20px;
             font-style: normal;
             font-weight: 700;
-            line-height: 24px; /* 120% */ 
+            line-height: normal;
+          }
         }
-
-        .data_wrapper{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
+      }
     }
+
+    .short_balance_chart {
+      display: flex;
+      padding: 20px;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 11px;
+      height: 410px;
+      flex: 1;
+      border-radius: var(--table-box, 20px);
+      background: #fff;
+
+      .chart {
+        padding: 20px;
+        border-radius: 8px;
+        width: 100%;
+        height: 100%;
+      }
+
+      .short_balance_chart_header_tabs {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .short_balance_chart_header {
+          h2 {
+            color: #000;
+            font-family: "Nunito Sans";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+          }
+        }
+      }
+    }
+  }
 }
