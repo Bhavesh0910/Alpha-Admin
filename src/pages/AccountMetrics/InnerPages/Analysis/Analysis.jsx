@@ -6,9 +6,11 @@ import ResultByDays from '../../../../components/AccountMetrics/Analysis/ResultB
 import LongShortComparision from '../../../../components/AccountMetrics/Analysis/LongShortComparision';
 import ResultByPositionSize from '../../../../components/AccountMetrics/Analysis/ResultByPositionSize';
 import TradeDayAnalysis from '../../../../components/AccountMetrics/Analysis/TradeDayAnalysis';
+import ResultByTradeDuration from '../../../../components/AccountMetrics/Analysis/ResultByTradeDuration';
+import ResultByOpenHour from '../../../../components/AccountMetrics/Analysis/ResultByOpenHour';
 
 const Analysis = () => {
-  const [selectedView, setSelectedView] = useState('');
+  const [selectedView, setSelectedView] = useState('longShortBalance');
 
   const handleRadioChange = (e) => {
     setSelectedView(e.target.value);
@@ -31,9 +33,8 @@ const Analysis = () => {
        {selectedView === "longShortComparison" && <LongShortComparision />}
        {selectedView === "resultByPositionSize" && <ResultByPositionSize />}
       {selectedView === "tradingDaysAnalysis" && <TradeDayAnalysis />}
-      {/* {selectedView === "resultByPositionSize" && <ResultByPositionSize />}
       {selectedView === "resultByTradeDuration" && <ResultByTradeDuration />}
-      {selectedView === "resultByOpenHour" && <ResultByOpenHour />}   */}
+      {selectedView === "resultByOpenHour" && <ResultByOpenHour />}  
     </div>
   );
 };
