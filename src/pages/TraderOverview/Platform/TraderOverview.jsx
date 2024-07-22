@@ -140,14 +140,22 @@ function TraderOverview() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedTrader, setSelectedTrader] = useState(null);
 
+  console.log(platform)
   const columns = useMemo(()=>[
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
       width: 150,
-      render: (text) => highlightText(text, searchText),
-    },
+      render: (value , record) => {
+        return (
+          <p
+           onClick={() => navigate(`/account-analysis/${record.login_id}/${platform}`)}
+          >
+            {value}
+          </p>
+        );
+      }    },
     {
       title: "Country",
       dataIndex: "country",
@@ -176,7 +184,7 @@ function TraderOverview() {
       dataIndex: "login_id",
       key: "login_id",
       width: 100,
-      render: (text) => highlightText(text, searchText),
+      render: (text) => <p  onClick={() => navigate(`/account-analysis/${text}`)}>{highlightText(text, searchText)}</p>
     },
     {
       title: "Balance",
@@ -270,7 +278,7 @@ function TraderOverview() {
         </div>
       ),
     },
-  ],[])
+  ], [navigate, platform]);
 
   const handleBlock = (record) => {
     setSelectedTrader(record);

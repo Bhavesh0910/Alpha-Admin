@@ -1,7 +1,7 @@
 import {Breadcrumb, Radio, Tabs} from "antd";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./style.scss";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import profileIcon from "../../assets/icons/profileIcon.svg";
 import BalanceChart from "./Charts/BalanceChart";
 import ProfitChart from "./Charts/ProfitChart";
@@ -9,6 +9,8 @@ import AccountOverview from "./InnerPages/AccountOverview/AccountOverview";
 import Insights from "./InnerPages/Insights/Insights";
 import TraderJournal from "./InnerPages/TraderJournal/TraderJournal";
 import Analysis from "./InnerPages/Analysis/Analysis";
+import { fetchAccountDetails, fetchAccountInsights, fetchObjectives, fetchTradeJournal, fetchTradingAccountOverview } from "../../store/NewReducers/amSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const AccountMetrics = () => {
   const [status, setStatus] = useState("");
@@ -17,6 +19,20 @@ const AccountMetrics = () => {
     setPageNo(1);
     setStatus(e.target.value);
   };
+  const { login_id , platform } = useParams();
+  console.log(login_id , platform) 
+  const idToken = useSelector((state) => state.auth.idToken);
+  const dispatch = useDispatch();
+  const { tradingAccountOverview, accountDetails, objectives, accountInsights , isLoading, error } = useSelector(state => state.accountMetrics);
+  useEffect(() => {
+    dispatch(fetchTradingAccountOverview({ login_id, platform, idToken }));
+    dispatch(fetchAccountDetails({ login_id, platform, idToken }));
+    dispatch(fetchObjectives({ login_id, platform, idToken }));
+    // dispatch(fetchAccountInsights({ login_id , platform ,idToken }));
+    dispatch(fetchTradeJournal({ login_id , platform , idToken  }));
+  }, [dispatch, login_id, platform, idToken]);
+
+
 
   return (
     <>
@@ -42,7 +58,7 @@ const AccountMetrics = () => {
                     className="breadcrumb"
                     to=""
                   >
-                    id
+                    {login_id}
                   </Link>
                 ),
               },
@@ -67,9 +83,9 @@ const AccountMetrics = () => {
           </Button> */}
         </div>
 
-        {status === "" && <AccountOverview />}
-        {status === "Insights" && <Insights />}
-        {status === "Trader_Journal" && <TraderJournal />}
+        {status === "" && <AccountOverview overview={tradingAccountOverview} accountDetails={accountDetails} objectives={objectives} />}
+        {status === "Insights" && <Insights login_id={login_id} platform={platform} />}
+        {status === "Trader_Journal" && <TraderJournal login_id={login_id} platform={platform} />}
         {status === "Analysis" && <Analysis />}
       </div>
     </>

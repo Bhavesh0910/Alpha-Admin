@@ -18,6 +18,7 @@ import listReducer from "../NewReducers/listSlice";
 import riskReducer from "../NewReducers/riskSlice";
 import generalReducer from "../NewReducers/generalSlice";
 import usReducer from "../NewReducers/usSlice";
+import amReducer from "../NewReducers/amSlice";
 import accountList from "../NewReducers/accountList";
 import payoutSlice from "../NewReducers/payout";
 import accountMetrics from "../NewReducers/accountMetrics";
@@ -48,7 +49,7 @@ const rootReducer = combineReducers({
   general: generalReducer,
   usSlice: usReducer,
   accountList: accountList,
-  accountMetrics: accountMetrics,
+  accountMetrics: amReducer,
   payoutList: payoutSlice,
   payment: paymentSlice,
   coupon: couponSlice,

@@ -1,14 +1,25 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./Insights.scss";
 import {Radio} from "antd";
+import { fetchAccountInsights } from "../../../../store/NewReducers/amSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-const Insights = () => {
+const Insights = ({login_id , platform}) => {
   const [insightTab, setInsightTab] = useState("");
   const [pageNo, setPageNo] = useState(1);
   const onChangeActive = (e) => {
     setPageNo(1);
     setInsightTab(e.target.value);
   };
+
+  console.log(login_id , platform) 
+  const idToken = useSelector((state) => state.auth.idToken);
+  const dispatch = useDispatch();
+  const {accountInsights , isLoading, error } = useSelector(state => state.accountMetrics);
+  useEffect(() => {
+
+    dispatch(fetchAccountInsights({ login_id , platform ,idToken }));
+  }, [dispatch, login_id, platform, idToken]);
 
   return (
     <>
