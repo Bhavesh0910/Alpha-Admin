@@ -5,14 +5,17 @@ import {Link} from "react-router-dom";
 import profileIcon from "../../../../assets/icons/profileIcon.svg";
 import BalanceChart from "../../Charts/BalanceChart";
 import ProfitChart from "../../Charts/ProfitChart";
+import { dollarUS, formatDate } from "../../../../utils/helpers/string";
 
-const AccountOverview = () => {
+const AccountOverview = ({overview , accountDetails , objectives}) => {
   const [charts, setCharts] = useState("BalanceChart");
   const [pageNos, setPageNos] = useState(1);
   const onChangeActive = (e) => {
     setPageNos(1);
     setCharts(e.target.value);
   };
+
+  console.log(objectives)
 
   return (
     <div className="accountMetrics_wrapper">
@@ -28,31 +31,31 @@ const AccountOverview = () => {
               />
             </div>
             <div>
-              <h2>Alpha Capital Group - Alpha pro Stage 1 - Shaquille Boreland</h2>
-              <p>1640105</p>
+              <h2>{accountDetails?.name}</h2>
+              <p>{accountDetails?.login_id}</p>
             </div>
           </div>
           <div className="top_left_div_buttons">
-            <button>Evaluation</button>
-            <button>In Progress</button>
+            <button>{accountDetails?.status}</button>
+            <button>{accountDetails?.progress}</button>
           </div>
 
           <div className="top_left_div_lower">
             <div>
               <p>Start Date</p>
-              <h3>18 Jul 2024</h3>
+              <h3>{formatDate(accountDetails?.start_date)}</h3>
             </div>
             <div>
               <p>End Date</p>
-              <h3>N/A</h3>
+              <h3>{formatDate(accountDetails?.expiry_date)}</h3>
             </div>
             <div>
               <p>Account Size</p>
-              <h3>$100,000</h3>
+              <h3> { accountDetails?.challenge?.account_balance ? dollarUS(accountDetails?.challenge?.account_balance) : '0'}</h3>
             </div>
             <div>
               <p>Equity</p>
-              <h3>$100,000</h3>
+              <h3>{accountDetails?.equity ?  dollarUS(accountDetails?.equity) : '0'}</h3>
             </div>
             <div>
               <p>No. of Trades</p>
@@ -87,8 +90,8 @@ const AccountOverview = () => {
               <h3>$00</h3>
             </div>
             <div>
-              <p>Gain</p>
-              <h3>$00</h3>
+              <p>Leverage</p>
+              <h3>{accountDetails?.challenge?.Leverage}</h3>
             </div>
           </div>
         </div>
@@ -127,11 +130,11 @@ const AccountOverview = () => {
               <div className="bottom_main_left_satistic_inner_one">
                 <div>
                   <p>Equity</p>
-                  <h3>100000</h3>
+                  <h3>{accountDetails?.equity ?  dollarUS(accountDetails?.equity) : '0'}</h3>
                 </div>
                 <div>
                   <p>Balance</p>
-                  <h3>100000</h3>
+                  <h3> { accountDetails?.challenge?.account_balance ? dollarUS(accountDetails?.challenge?.account_balance) : '0'}</h3>
                 </div>
                 <div>
                   <p>No. of trades</p>
@@ -165,11 +168,11 @@ const AccountOverview = () => {
                 </div>
                 <div>
                   <p>Martingale Status</p>
-                  <button>Success</button>
+                  <button>{accountDetails?.martingale}</button>
                 </div>
                 <div>
                   <p>Martingale Count</p>
-                  <h3>0</h3>
+                  <h3>{accountDetails?.martingale_count}</h3>
                 </div>
               </div>
             </div>

@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {Table, Button} from "antd";
 import "./TraderJournal.scss";
 import AntTable from "../../../../ReusableComponents/AntTable/AntTable";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTradeJournal } from "../../../../store/NewReducers/amSlice";
 
-const TraderJournal = () => {
+const TraderJournal = ({login_id , platform}) => {
+
+  const idToken = useSelector((state) => state.auth.idToken);
+  const dispatch = useDispatch();
+  const {  tradeJournal , isLoading, error } = useSelector(state => state.accountMetrics);
+  useEffect(() => {
+    dispatch(fetchTradeJournal({ login_id , platform , idToken  }));
+  }, [dispatch, login_id, platform, idToken]);
+
+
   const columns = [
     {
       title: "Id",
