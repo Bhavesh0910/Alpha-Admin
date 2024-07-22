@@ -48,24 +48,23 @@ const AccountMetrics = () => {
               },
             ]}
           />
-          <div className="trader-overview-header-right tabs_wrapper">
-            <Radio.Group
-              value={status}
-              onChange={onChangeActive}
-            >
-              <Radio.Button value="">Account Overview</Radio.Button>
-              <Radio.Button value="Insights">Insights</Radio.Button>
-              <Radio.Button value="Trader_Journal">Trader Journal</Radio.Button>
-              <Radio.Button value="Analysis">Analysis</Radio.Button>
-            </Radio.Group>
 
-            {/* <Button
+          <Radio.Group
+            value={status}
+            onChange={onChangeActive}
+          >
+            <Radio.Button value="">Account Overview</Radio.Button>
+            <Radio.Button value="Insights">Insights</Radio.Button>
+            <Radio.Button value="Trader_Journal">Trader Journal</Radio.Button>
+            <Radio.Button value="Analysis">Analysis</Radio.Button>
+          </Radio.Group>
+
+          {/* <Button
             // onClick={() => navigate("view-logs")}
             className="view_logs__btn standard_button"
           >
             View Logs
           </Button> */}
-          </div>
         </div>
 
         {status === "" && <AccountOverview />}

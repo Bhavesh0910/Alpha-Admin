@@ -532,10 +532,10 @@ const postAffiliateDetails = async (idToken, data) => {
 const getUserList = async (idToken, searchText, pageNo, pageSize, authType, active) => {
   const params = {
     page: pageNo,
-    page_size: 21,
+    page_size: pageSize,
   };
   if (active) {
-    params.is_active = 1
+    params.is_active = 1;
   } else {
     params.is_active = 0;
   }
@@ -1062,9 +1062,7 @@ const deleteCouponDetails = async (idToken, couponCode) => {
   }
 };
 
-
 export const getLeaderboardDetails = async (idToken, id) => {
-
   const apiUrl = `${baseUrl}v2/competition/leaderboard/?competition_id=${id}`;
 
   const config = {
@@ -1074,8 +1072,8 @@ export const getLeaderboardDetails = async (idToken, id) => {
   };
   try {
     const response = await axios.get(apiUrl, config);
-    console.log(response)
-    return response
+    console.log(response);
+    return response;
   } catch (error) {
     console.error("An error occurred ", error);
   }

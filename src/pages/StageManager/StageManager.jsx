@@ -15,6 +15,7 @@ import "./StageManager.scss";
 import {supportListReq, nestedTableDataReq} from "../../store/NewReducers/Support";
 import ReactCountryFlag from "react-country-flag";
 import dayjs from "dayjs";
+import {formatDate, formatDateTime, formatDateTimeNew, FormatUSD} from "../../utils/helpers/string";
 const {RangePicker} = DatePicker;
 
 const {Option} = Select;
@@ -768,7 +769,7 @@ const StageManager = () => {
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}
         triggerChange={triggerChange}
-        isExpandable={true}
+        isExpandable={location.pathname === "/support/payout" ? false : true}
         expandedRowRender={"hello"}
         ExpandedComp={ExpandedRowData}
         rowId={location.pathname === "/support/funded" ? "login_id" : "id"}
@@ -828,6 +829,9 @@ function ExpandedRowData({record}) {
     dispatch(nestedTableDataReq({idToken, url, flag, dispatch}));
   }, [url]);
   console.log(nestedTableData, "nested");
+
+  const martingleStatus = nestedTableData?.martingale?.status || nestedTableData?.martingale_status;
+
   return (
     <>
       {isLoading ? (
@@ -836,35 +840,36 @@ function ExpandedRowData({record}) {
         <div className="nestedTable">
           <div>
             <div>Martingle</div>
-            <div>{nestedTableData?.contact}</div>
+            {/* <div>{nestedTableData?.contact}</div> */}
+            <button className={`${martingleStatus === "Success" ? "status_success" : "notButton"}`}>Success</button>
           </div>
           <div>
             <div>Max Loss</div>
-            <div>{nestedTableData?.contact}</div>
+            <p>{FormatUSD(nestedTableData?.drawdown_result?.max_loss?.result || nestedTableData?.max_loss || 0)}</p>
           </div>
           <div>
             <div>Max Daily Loss</div>
-            <div>{nestedTableData?.contact}</div>
+            <p>{FormatUSD(nestedTableData?.drawdown_result?.max_daily_loss?.result || nestedTableData?.max_daily_loss || 0)}</p>
           </div>
           <div>
             <div>Min Trading Day</div>
-            <div>{nestedTableData?.contact}</div>
+            <p>{nestedTableData?.trading_days?.result || "-"}</p>
           </div>
           <div>
             <div>Purchased date</div>
-            <div>{nestedTableData?.contact}</div>
+            <p>{nestedTableData?.purchase_date || "-"}</p>
           </div>
-          <div>
+          <div className="date_time">
             <div>Account Started</div>
-            <div>{nestedTableData?.contact}</div>
+            <p>{formatDateTimeNew(nestedTableData?.start_date || "-")}</p>
           </div>
           <div>
             <div>Risk Report</div>
-            <div>{nestedTableData?.contact}</div>
+            <p>{nestedTableData?.risk_reports || "-"}</p>
           </div>
-          <div>
+          <div className="date_time">
             <div>Account Passed</div>
-            <div>{nestedTableData?.contact}</div>
+            <p>{formatDateTimeNew(nestedTableData?.pass_date || "-")}</p>
           </div>
         </div>
       )}

@@ -18,6 +18,9 @@ const UserProfile = () => {
   const [category, setCategory] = useState("Alpha Pro 5K");
   const [isLoading, setIsLoading] = useState(false);
 
+  const [countryCode, setCountryCode] = useState("+91");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   const {idToken} = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -42,11 +45,14 @@ const UserProfile = () => {
     setFormData({
       first_name: data?.data?.first_name || "",
       last_name: data?.data?.last_name || "",
-      contact: data?.data?.contact || "+91 ",
+      // contact: data?.data?.Contact_number || "+91 ",
       email: data?.data?.email || "",
-      selectedCountry: data?.data?.country || "",
-      city: data?.data?.city || "",
+      selectedCountry: data?.data?.Country || "",
+      city: data?.data?.City || "",
     });
+
+    setCountryCode(data?.data?.Contact_number?.split(" ")[1] || "+91");
+    setPhoneNumber(data?.data?.Contact_number?.split(" ")[0] || "");
   }, [data]);
 
   const handleCategoryChange = (value) => {
@@ -137,29 +143,18 @@ const UserProfile = () => {
               <label htmlFor="contact_number">Contact Number</label>
               <Space.Compact>
                 <Input
-                  style={{width: "20%"}}
+                  style={{width: "30%"}}
                   placeholder="Country Code"
                   disabled={!isEditableProfile}
-                  value={formData.contact.split(" ")[0]}
-                  className="contact_input"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      contact: `${e.target.value} ${formData.contact.split(" ")[1]}`,
-                    })
-                  }
+                  value={countryCode}
+                  onChange={(e) => setCountryCode(e.target.value)}
                 />
                 <Input
-                  style={{width: "80%"}}
+                  style={{width: "70%"}}
                   placeholder="Phone Number"
                   disabled={!isEditableProfile}
-                  value={formData.contact.split(" ")[1]}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      contact: ` ${e.target.value}`,
-                    })
-                  }
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </Space.Compact>
             </div>

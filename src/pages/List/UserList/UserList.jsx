@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./UserList.scss";
-import { Table, Input, Select, Button, Modal, Tooltip, message, Radio } from "antd";
+import {Table, Input, Select, Button, Modal, Tooltip, message, Radio} from "antd";
 import moment from "moment";
-import { CopyOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import {CopyOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
+import {useDispatch, useSelector} from "react-redux";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { fetchUserList, toggleActiveUser } from "../../../store/NewReducers/listSlice";
+import {fetchUserList, toggleActiveUser} from "../../../store/NewReducers/listSlice";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import { returnMessages } from "../../../store/reducers/message";
-import { returnErrors } from "../../../store/reducers/error";
+import {returnMessages} from "../../../store/reducers/message";
+import {returnErrors} from "../../../store/reducers/error";
+import ReactCountryFlag from "react-country-flag";
 
-const { confirm } = Modal;
-const { Search } = Input;
-const { Option } = Select;
+const {confirm} = Modal;
+const {Search} = Input;
+const {Option} = Select;
 
 const UserListTable = () => {
+  const lookup = require("country-code-lookup");
+
   const dispatch = useDispatch();
   const idToken = useSelector((state) => state.auth.idToken);
   const [searchText, setSearchText] = useState("");
@@ -26,7 +29,7 @@ const UserListTable = () => {
   const [pageNo, setPageNo] = useState(1);
   const [category, setCategory] = useState("all");
 
-  const { tableData, currentPage, totalPages, totalItems, isLoading } = useSelector((state) => state.list);
+  const {tableData, currentPage, totalPages, totalItems, isLoading} = useSelector((state) => state.list);
 
   useEffect(() => {
     if (idToken) {
@@ -37,8 +40,8 @@ const UserListTable = () => {
           pageNo,
           pageSize,
           authType,
-          active: active ? 1 : 0
-        })
+          active: active ? 1 : 0,
+        }),
       );
     }
   }, [dispatch, idToken, searchText, pageNo, pageSize, authType, active]);
@@ -65,12 +68,12 @@ const UserListTable = () => {
       okType: "danger",
       cancelText: "No",
       onOk: async () => {
-        const id = user.id; 
+        const id = user.id;
         const note = user.is_active ? "Deactivating user" : "Activating user";
         try {
-           dispatch(toggleActiveUser({ id, note, idToken }));
+          dispatch(toggleActiveUser({id, note, idToken}));
           dispatch(returnMessages(`User ${user.is_active ? "blocked" : "activated"} successfully.`));
-          dispatch(fetchUserList({ idToken, searchText, pageNo, pageSize, authType, active }));
+          dispatch(fetchUserList({idToken, searchText, pageNo, pageSize, authType, active}));
         } catch (error) {
           dispatch(returnErrors("Error changing user status."));
         }
@@ -124,7 +127,7 @@ const UserListTable = () => {
             <Tooltip title="Copy email">
               <Button
                 type="link"
-                icon={<CopyOutlined style={{ color: "#04D9FF" }} />}
+                icon={<CopyOutlined style={{color: "#04D9FF"}} />}
                 onClick={() => message.success("Copied email")}
               />
             </Tooltip>
@@ -145,34 +148,41 @@ const UserListTable = () => {
     {
       title: "Auth type",
       dataIndex: "auth_type",
-      render: (text, record) => <span style={{ textTransform: "capitalize" }}>{text}</span>,
+      render: (text, record) => <span style={{textTransform: "capitalize"}}>{text}</span>,
     },
     {
       title: "Country",
       dataIndex: "country",
-      render: (text, record) => (
-        <Tooltip title={record.country || "N/A"}>
-          <span>{record.country}</span>
-        </Tooltip>
-      ),
+      render: (country) => {
+        const countryName = country;
+        const countryCode = lookup.byCountry(countryName);
+        if (countryCode) {
+          return (
+            <div className="country_name_wrapper">
+              <ReactCountryFlag
+                countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
+                svg={true}
+                aria-label={countryName}
+              />
+              <p>{countryName}</p>
+            </div>
+          );
+        } else {
+          return <span>{countryName || "N/A"}</span>;
+        }
+      },
     },
     {
       title: "Active",
       dataIndex: "is_active",
-      render: (text, record) => (
-        <span className={`status_wrapper ${record.is_active ? "active" : "blocked"}`}>
-          {record.is_active ? "Active" : "Blocked"}
-        </span>
-      ),
+      render: (text, record) => <span className={`status_wrapper ${record.is_active ? "active" : "blocked"}`}>{record.is_active ? "Active" : "Blocked"}</span>,
     },
     {
       title: "Action",
       dataIndex: "actions",
       render: (_, record) => (
         <div className="action_wrapper">
-          <Button onClick={() => handleStatusChange(record)}>
-            {record.is_active ? "Block" : "Activate"}
-          </Button>
+          <Button onClick={() => handleStatusChange(record)}>{record.is_active ? "Block" : "Activate"}</Button>
         </div>
       ),
     },
@@ -202,7 +212,10 @@ const UserListTable = () => {
               onKeyDown={(e) => handleSearch(e)}
             />
             <div className="searchImg">
-              <img src={searchIcon} alt="searchIcon" />
+              <img
+                src={searchIcon}
+                alt="searchIcon"
+              />
             </div>
           </div>
           <div className="table_header_filter_radio">
@@ -212,7 +225,10 @@ const UserListTable = () => {
               <Radio.Button value="google">Google</Radio.Button>
             </Radio.Group> */}
 
-            <Radio.Group value={active} onChange={onChangeActive}>
+            <Radio.Group
+              value={active}
+              onChange={onChangeActive}
+            >
               <Radio.Button value={true}>Active</Radio.Button>
               <Radio.Button value={false}>Inactive</Radio.Button>
             </Radio.Group>

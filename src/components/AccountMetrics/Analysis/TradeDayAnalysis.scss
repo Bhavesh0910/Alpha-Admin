@@ -1,38 +1,60 @@
 .trade_day_analysis {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .databox_wrapper {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 20px;
+    margin-top: 20px;
+
+    @media (max-width: 1150px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 550px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+  .databox {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    .databox_wrapper{
-        display: grid;
-        grid-template-columns: repeat(6 , 1fr);
-        grid-gap: 20px;
-        margin-top: 20px;
+    border-right: 1px solid #d2d2d2;
+    &:last-child {
+      border-right: none !important;
     }
-    .databox {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        border-right: 1px solid #D2D2D2;
-        &:last-child{
-            border-right: none !important;
-        }
-        
-        .title {
-            color: var(--Text-2, #686868);
-            font-family: "Nunito Sans";
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: normal;
-        }
-        .value{
-            color: var(--Text, #1E1E1E);
-    
-            font-family: "Nunito Sans";
-            font-size: 20px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 24px; /* 120% */  
-        }
+
+    @media (max-width: 1150px) {
+      &:nth-child(2),
+      &:nth-child(4) {
+        border-right: none !important;
+      }
     }
+    @media (max-width: 550px) {
+      border-bottom: 1px solid #d2d2d2 !important;
+      border-right: none !important;
+      padding-bottom: 10px;
+      &:last-child {
+        border-bottom: none !important;
+      }
+    }
+
+    .title {
+      color: var(--Text-2, #686868);
+      font-family: "Nunito Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+    .value {
+      color: var(--Text, #1e1e1e);
+
+      font-family: "Nunito Sans";
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px; /* 120% */
+    }
+  }
 }

@@ -113,6 +113,11 @@
             border: 1px solid var(--Brand-1, #04d9ff);
             background: var(--new-body, #c5ffff);
           }
+          .in_progress {
+            border-radius: var(--Corner-Radius, 10px);
+            border: 1px solid var(--In-progress, #f4ea0f);
+            background: var(--in-Progress-Body, #fffdcf);
+          }
         }
 
         .top_left_div_lower {

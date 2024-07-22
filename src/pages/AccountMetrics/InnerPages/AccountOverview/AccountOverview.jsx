@@ -34,7 +34,7 @@ const AccountOverview = () => {
           </div>
           <div className="top_left_div_buttons">
             <button>Evaluation</button>
-            <button>In Progress</button>
+            <button className="in_progress">In Progress</button>
           </div>
 
           <div className="top_left_div_lower">

@@ -6,6 +6,15 @@
   .AccountMetrics_header {
     display: flex;
     justify-content: space-between;
+
+    .tabs_wrapper {
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      flex-direction: column;
+      gap: 20px;
+    }
   }
   .breadcrums {
     display: flex;

@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export function capitalizeFirstLetter(str) {
   return str.slice(0, 1).toUpperCase() + str.slice(1, str.length);
 }
@@ -103,4 +105,13 @@ export const dollarUS = (number, maximumSignificantDigits = 10) => {
     maximumSignificantDigits,
     minimumFractionDigits: 2,
   }).format(number);
+};
+
+export const formatDateTimeNew = (dateTime) => {
+  if (!dateTime) return "";
+
+  const formattedDateTime = moment(dateTime).format("D MMM YYYY");
+  const formattedTime = moment(dateTime).format("HH:mm:ss");
+
+  return `${formattedDateTime} ${formattedTime}`;
 };

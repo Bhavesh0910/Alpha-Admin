@@ -213,7 +213,8 @@
       background: transparent !important;
       color: var(--Text-white, #1e1e1e) !important;
     }
-    p,.status-button {
+    p,
+    .status-button {
       display: flex;
       width: 92px;
       height: 31px;
@@ -258,10 +259,47 @@
   }
 }
 
-
-.nestedTable{
+.nestedTable {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
+
+  button.status_success {
+    display: flex;
+    width: 114px;
+    padding: 6px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+
+    border-radius: var(--Corner-Radius, 10px);
+    border: 1px solid var(--sucess, #009017);
+    background: var(--Success-Body, #cdffdd);
+
+    color: var(--text, #141414);
+    font-family: "Nunito Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+  .notButton {
+    display: none;
+  }
+
+  p {
+    color: var(--Brand-2, #12181f);
+    font-family: "Nunito Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-top: 10px;
+  }
+
+  .date_time {
+    max-width: 109px;
+  }
 }
