@@ -1,21 +1,12 @@
 import React from "react";
 import "./PayoutChart.scss";
 import Chart from "react-apexcharts";
-const PayoutChart = () => {
+const PayoutChart = ({chartData}) => {
   const options = {
     chart: {
       type: "pie",
     },
-    labels: [
-      "Japan",
-      "Iceland",
-      "India",
-      "Guinea",
-      "Poland",
-      "Brazil",
-      "Bahrain",
-      "Monaco",
-    ],
+    labels: chartData?.labels || [],
     colors: [
       "#9A60B4",
       "#315CDE",
@@ -25,6 +16,7 @@ const PayoutChart = () => {
       "#EE6666",
       "#73C0DE",
       "#3BA272",
+      "#FC8452",
       "#FC8452",
     ],
 
@@ -39,7 +31,8 @@ const PayoutChart = () => {
     dataLabels: {
       formatter(val, opts) {
         const name = opts.w.globals.labels[opts.seriesIndex];
-        return [name, val.toFixed(1) + "%"];
+        // return [name,val.toFixed(1) + "%"];
+        return [val.toFixed(1) + "%"];
       },
     },
     legend: {
@@ -62,7 +55,7 @@ const PayoutChart = () => {
     },
   };
 
-  const series = [20, 18, 15, 14, 12, 10, 8, 3]; // Dummy data similar to the data in the image
+  const series = chartData?.series || []; // Dummy data similar to the data in the image
 
   return (
     <div className="payoutChart_wrapper">
