@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./RevenueManagement.scss";
 import Infobox from "../../components/RevenueManagement/Infobox/Infobox";
 import StatisticChart from "../../components/RevenueManagement/StatisticChart/StatisticChart";
 import FundedAccGraph from "../../components/RevenueManagement/FundedAccGraph/FundedAccGraph";
 import PayoutPaymentTable from "../../components/RevenueManagement/PayoutPaymentTable/PayoutPaymentTable";
-import { Button, DatePicker } from "antd";
+import {Button, DatePicker} from "antd";
 import dayjs from "dayjs";
-const { RangePicker } = DatePicker;
+const {RangePicker} = DatePicker;
 const RevenueManagement = () => {
   const [activeTab, setActiveTab] = useState("payments");
 
@@ -22,16 +22,19 @@ const RevenueManagement = () => {
     }
   };
   const rangePresets = [
-    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
-    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
-    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
-    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
-    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] }, // Assuming "All time" covers a very long period
+    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
+    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
+    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
+    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
+    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]}, // Assuming "All time" covers a very long period
   ];
   return (
     <div className="revenueManagement_container">
       <div className="header_wrapper">
-        <RangePicker presets={rangePresets} onChange={onRangeChange} />
+        <RangePicker
+          presets={rangePresets}
+          onChange={onRangeChange}
+        />
       </div>
       <div className="row1_box">
         <Infobox />

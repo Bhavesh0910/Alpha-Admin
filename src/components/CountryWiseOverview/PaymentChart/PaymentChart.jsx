@@ -2,13 +2,14 @@ import React from "react";
 import Chart from "react-apexcharts";
 import "./PaymentChart.scss";
 
-const PaymentChart = () => {
+const PaymentChart = ({chartData}) => {
   const options = {
     chart: {
       type: "pie",
     },
-    labels: ["Japan", "Iceland", "India", "Guinea", "Poland", "Brazil", "Bahrain", "Monaco"],
-    colors: ["#9A60B4", "#315CDE", "#FAC858", "#B2DC9F", "#6B54C6", "#EE6666", "#73C0DE", "#3BA272", "#FC8452"],
+    // labels: ["Japan", "Iceland", "India", "Guinea", "Poland", "Brazil", "Bahrain", "Monaco"],
+    labels: chartData?.labels || [],
+    colors: ["#9A60B4", "#315CDE", "#FAC858", "#B2DC9F", "#6B54C6", "#EE6666", "#73C0DE", "#3BA272", "#FC8452","#FC8452"],
 
     plotOptions: {
       pie: {
@@ -20,8 +21,9 @@ const PaymentChart = () => {
 
     dataLabels: {
       formatter(val, opts) {
-        const name = opts.w.globals.labels[opts.seriesIndex];
-        return [name, val.toFixed(1) + "%"];
+        const name = opts?.w?.globals.labels[opts?.seriesIndex];
+        // return [name, val.toFixed(1) + "%"];
+        return [ val.toFixed(1) + "%"];
       },
     },
     legend: {
@@ -44,7 +46,8 @@ const PaymentChart = () => {
     },
   };
 
-  const series = [20, 18, 15, 14, 12, 10, 8, 3]; // Dummy data similar to the data in the image
+  // const series = [20, 18, 15, 14, 12, 10, 8, 3]; // Dummy data similar to the data in the image
+  const series = chartData?.series || []; // Dummy data similar to the data in the image
 
   return (
     <div className="paymentChart_wrapper">

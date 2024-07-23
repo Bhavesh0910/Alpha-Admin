@@ -54,19 +54,19 @@ const GeneralLog = () => {
       title: "Category",
       dataIndex: "category",
       key: "category",
-      render: (text) => text || "N/A",
+      render: (text) => text || "-",
     },
     {
       title: "Event",
       dataIndex: "event",
       key: "event",
-      render: (text) => text || "N/A",
+      render: (text) => text || "-",
     },
     {
       title: "Reference",
       dataIndex: "reference",
       key: "reference",
-      render: (text) => text || "N/A",
+      render: (text) => text || "-",
     },
     {
       title: "Description",
