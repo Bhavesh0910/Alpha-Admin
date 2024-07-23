@@ -5,6 +5,10 @@ import {Radio} from "antd";
 import LongBalanceChart from "./Charts/BalanceChart";
 import NoOfTrades from "./Charts/NoOfTrades";
 import BalanceChart from "./Charts/BalanceChart";
+import resultIcon from "../../../assets/icons/resultIcon.svg";
+import Winrate from "../../../assets/icons/Winrate.svg";
+import averageProfit from "../../../assets/icons/averageProfit.svg";
+import RRR from "../../../assets/icons/RRR.svg";
 
 const dataBoxes = [
   {
@@ -14,22 +18,22 @@ const dataBoxes = [
   },
   {
     header: "Results",
-    icon: TradesIcon,
+    icon: resultIcon,
     data: {long: "$500000", short: "$300000"},
   },
   {
     header: "Win Rate",
-    icon: TradesIcon,
+    icon: Winrate,
     data: {long: "$1000", short: "$800"},
   },
   {
     header: "Average Profit",
-    icon: TradesIcon,
+    icon: averageProfit,
     data: {long: "75%", short: "65%"},
   },
   {
     header: "RRR",
-    icon: TradesIcon,
+    icon: RRR,
     data: {long: "25%", short: "35%"},
   },
 ];

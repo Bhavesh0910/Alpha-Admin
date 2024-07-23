@@ -26,7 +26,7 @@ const Insights = ({ login_id, platform }) => {
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>{error}</div>;
   }
 
   return (

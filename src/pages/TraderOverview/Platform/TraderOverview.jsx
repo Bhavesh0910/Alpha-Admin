@@ -149,7 +149,7 @@ function TraderOverview() {
       width: 150,
       render: (value , record) => {
         return (
-          <p
+          <p style={{cursor:'pointer'}}
            onClick={() => navigate(`/account-analysis/${record.login_id}/${platform}`)}
           >
             {value}

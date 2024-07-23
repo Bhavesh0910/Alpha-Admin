@@ -9,8 +9,9 @@ import AccountOverview from "./InnerPages/AccountOverview/AccountOverview";
 import Insights from "./InnerPages/Insights/Insights";
 import TraderJournal from "./InnerPages/TraderJournal/TraderJournal";
 import Analysis from "./InnerPages/Analysis/Analysis";
-import { fetchAccountDetails, fetchAccountInsights, fetchObjectives, fetchTradeJournal, fetchTradingAccountOverview } from "../../store/NewReducers/amSlice";
+import { fetchAccountDetails, fetchAccountInsights, fetchObjectives, fetchPerformanceChart, fetchTradeJournal, fetchTradingAccountOverview } from "../../store/NewReducers/amSlice";
 import { useDispatch, useSelector } from "react-redux";
+import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
 const AccountMetrics = () => {
   const [status, setStatus] = useState("");
@@ -23,13 +24,16 @@ const AccountMetrics = () => {
   console.log(login_id , platform) 
   const idToken = useSelector((state) => state.auth.idToken);
   const dispatch = useDispatch();
-  const { tradingAccountOverview, accountDetails, objectives, accountInsights , isLoading, error } = useSelector(state => state.accountMetrics);
+  const { tradingAccountOverview, accountDetails, objectives, performanceChart ,  accountInsights , isLoading, error } = useSelector(state => state.accountMetrics);
+
+  console.log(performanceChart)
   useEffect(() => {
     dispatch(fetchTradingAccountOverview({ login_id, platform, idToken }));
     dispatch(fetchAccountDetails({ login_id, platform, idToken }));
     dispatch(fetchObjectives({ login_id, platform, idToken }));
+    dispatch(fetchPerformanceChart({ login_id , idToken }));
     // dispatch(fetchAccountInsights({ login_id , platform ,idToken }));
-    dispatch(fetchTradeJournal({ login_id , platform , idToken  }));
+    // dispatch(fetchTradeJournal({ login_id , platform , idToken  }));
   }, [dispatch, login_id, platform, idToken]);
 
 
@@ -82,8 +86,9 @@ const AccountMetrics = () => {
             View Logs
           </Button> */}
         </div>
+        {isLoading && <LoaderOverlay />}
 
-        {status === "" && <AccountOverview overview={tradingAccountOverview} accountDetails={accountDetails} objectives={objectives} />}
+        {status === "" && <AccountOverview overview={tradingAccountOverview} accountDetails={accountDetails} objectives={objectives} performanceChart={performanceChart} />}
         {status === "Insights" && <Insights login_id={login_id} platform={platform} />}
         {status === "Trader_Journal" && <TraderJournal login_id={login_id} platform={platform} />}
         {status === "Analysis" && <Analysis />}

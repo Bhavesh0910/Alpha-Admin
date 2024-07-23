@@ -1079,9 +1079,9 @@ export const getObjectives = async (login_id, platform, idToken) => {
   }
 };
 
-export const getPerformanceChart = async (login_id, platform, idToken) => {
+export const getPerformanceChart = async (login_id,  idToken) => {
   try {
-    const response = await axios.get(`${baseUrl}v2/account-metrics/performance-chart/${login_id}/?platform=${platform}`, {
+    const response = await axios.get(`${baseUrl}v2/account-metrics/performance-chart/${login_id}`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },

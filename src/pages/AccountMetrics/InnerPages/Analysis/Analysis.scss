@@ -18,4 +18,27 @@
         border-radius: var(--table-box, 20px);
         background: var(--white, #FFF);
     }
+    .ant-radio-group {
+    
+        overflow: auto;
+      
+        /* Custom scrollbar */
+        scrollbar-width: thin;
+        scrollbar-color: #04D9FF transparent; /* thumb color, track color */
+      }
+      
+      .ant-radio-group::-webkit-scrollbar {
+        width: 6px; /* width of the scrollbar */
+      }
+      
+      .ant-radio-group::-webkit-scrollbar-track {
+        background: transparent; /* color of the track */
+      }
+      
+      .ant-radio-group::-webkit-scrollbar-thumb {
+        background-color: #04D9FF; /* color of the scrollbar thumb */
+        border-radius: 3px; /* roundness of the thumb */
+        border: 1px solid #04D9FF; /* border around the thumb */
+      }
+      
 }

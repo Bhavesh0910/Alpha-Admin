@@ -38,9 +38,11 @@ export const fetchAccountInsights = createAsyncThunk(
   async ({ login_id, platform, idToken }, { dispatch, rejectWithValue }) => {
     try {
       const response = await getAccountInsights(login_id, platform, idToken);
+      console.log(response)
       return response;
     } catch (error) {
-      const msg = error.response?.data?.detail || 'Error fetching account insights';
+      console.log(error.response.data)
+      const msg = error.response?.data?.message || 'Error fetching account insights';
       dispatch(returnErrors(msg, 400));
       return rejectWithValue(msg);
     }
@@ -82,7 +84,7 @@ export const fetchPerformanceChart = createAsyncThunk(
   'amSlice/fetchPerformanceChart',
   async ({ login_id, platform, idToken }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await getPerformanceChart(login_id, platform, idToken);
+      const response = await getPerformanceChart(login_id, idToken);
       return response;
     } catch (error) {
       const msg = error.response?.data?.detail || 'Error fetching performance chart';
