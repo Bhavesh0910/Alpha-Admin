@@ -50,6 +50,22 @@
       line-height: normal;
     }
 
+    .status_in_progress {
+      border-radius: var(--Corner-Radius, 10px);
+      border: 1px solid var(--In-progress, #f4ea0f);
+      background: var(--in-Progress-Body, #fffdcf);
+    }
+    .status_succcess {
+      border-radius: var(--Corner-Radius, 10px);
+      border: 1px solid var(--sucess, #009017);
+      background: var(--Success-Body, #cdffdd);
+    }
+    .status_failed {
+      border-radius: var(--Corner-Radius, 10px);
+      border: 1px solid var(--In-progress, #f4260f);
+      background: var(--in-Progress-Body, #f33b32);
+    }
+
     .accountMetrics_wrapper_top {
       display: flex;
       gap: 20px;
@@ -318,16 +334,25 @@
           width: 100%;
           height: 100%;
           justify-content: space-between;
-          div {
-            display: flex;
+          .bottom_main_right_inner_div {
             padding: 20px;
+            display: flex;
             justify-content: space-between;
             align-items: center;
             flex: 1 0 0;
             align-self: stretch;
+            gap: 10px;
 
             border-radius: var(--table-box, 20px);
             background: var(--Table-box-selected, #f5f5f5);
+
+            div {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: flex-start;
+              gap: 20px;
+            }
 
             button {
               display: flex;
@@ -339,14 +364,6 @@
               border-radius: var(--Corner-Radius, 10px);
               border: 1px solid var(--In-progress, #f4ea0f);
               background: var(--in-Progress-Body, #fffdcf);
-            }
-
-            div {
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: flex-start;
-              gap: 20px;
             }
           }
         }

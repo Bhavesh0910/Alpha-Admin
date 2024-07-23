@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 import profileIcon from "../../../../assets/icons/profileIcon.svg";
 import BalanceChart from "../../Charts/BalanceChart";
 import ProfitChart from "../../Charts/ProfitChart";
-import {dollarUS, formatDate} from "../../../../utils/helpers/string";
+import {dollarUS, formatDate, FormatUSD} from "../../../../utils/helpers/string";
 
 const AccountOverview = ({overview, accountDetails, objectives}) => {
   const [charts, setCharts] = useState("BalanceChart");
@@ -15,7 +15,7 @@ const AccountOverview = ({overview, accountDetails, objectives}) => {
     setCharts(e.target.value);
   };
 
-  console.log(objectives);
+  console.log(objectives, "objectives");
 
   return (
     <div className="accountMetrics_wrapper">
@@ -37,7 +37,7 @@ const AccountOverview = ({overview, accountDetails, objectives}) => {
           </div>
           <div className="top_left_div_buttons">
             <button>{accountDetails?.status}</button>
-            <button>{accountDetails?.progress}</button>
+            <button className="in_progress">{accountDetails?.progress}</button>
           </div>
 
           <div className="top_left_div_lower">
@@ -74,24 +74,24 @@ const AccountOverview = ({overview, accountDetails, objectives}) => {
               <h3>$00</h3>
             </div>
             <div>
-              <p>Gain</p>
-              <h3>$00</h3>
-            </div>
-            <div>
-              <p>Gain</p>
-              <h3>$00</h3>
-            </div>
-            <div>
-              <p>Gain</p>
-              <h3>$00</h3>
-            </div>
-            <div>
-              <p>Gain</p>
+              <p>Daily</p>
               <h3>$00</h3>
             </div>
             <div>
               <p>Leverage</p>
-              <h3>{accountDetails?.challenge?.Leverage}</h3>
+              <h3>1:{accountDetails?.challenge?.Leverage}</h3>
+            </div>
+            <div>
+              <p>Abs Gain</p>
+              <h3>$00</h3>
+            </div>
+            <div>
+              <p>Monthly</p>
+              <h3>$00</h3>
+            </div>
+            <div>
+              <p>Drawdown</p>
+              <h3>$00</h3>
             </div>
           </div>
         </div>
@@ -113,11 +113,6 @@ const AccountOverview = ({overview, accountDetails, objectives}) => {
             </div>
 
             <div className="charts_div">
-              {/* {charts === "" && (
-                <>
-                  <BalanceChart />
-                </>
-              )} */}
               {charts === "BalanceChart" && <BalanceChart />}
               {charts === "ProfitChart" && <ProfitChart />}
             </div>
@@ -188,42 +183,69 @@ const AccountOverview = ({overview, accountDetails, objectives}) => {
           </div>
 
           <div className="bottom_main_right_inner">
-            <div>
+            <div className="bottom_main_right_inner_div">
               <div>
                 <h4>
-                  Minimum days - 3 <span>{">"}</span>
+                  Minimum days - {objectives?.trading_days?.target} <span>{">"}</span>
                 </h4>
               </div>
-              <button>In Progress</button>
-            </div>
-            <div>
-              <div>
-                <h4>
-                  Profit $8,000 <span>{">"}</span>
-                </h4>
-                <p>Results : $0</p>
-              </div>
-              <button>In Progress</button>
+              <button className={`${objectives?.trading_days?.status === "In Progress" ? "status_in_progress" : objectives?.trading_days?.status === "Success" ? "status_succcess" : "status_failed"}`}>
+                {objectives?.trading_days?.status}
+              </button>
             </div>
 
-            <div>
+            <div className="bottom_main_right_inner_div">
               <div>
                 <h4>
-                  Max Loss $10,000 <span>{">"}</span>
+                  Profit {FormatUSD(objectives?.profit_target?.target)} <span>{">"}</span>
                 </h4>
-                <p>Results : $0</p>
+                <p>Results : {FormatUSD(objectives?.profit_target?.result)}</p>
               </div>
-              <button>In Progress</button>
+              <button
+                className={`${objectives?.profit_target?.status === "In Progress" ? "status_in_progress" : objectives?.profit_target?.status === "Success" ? "status_succcess" : "status_failed"}`}
+              >
+                {objectives?.profit_target?.status}
+              </button>
             </div>
 
-            <div>
+            <div className="bottom_main_right_inner_div">
               <div>
                 <h4>
-                  Max Daily Loss $5,000 <span>{">"}</span>
+                  Max Loss {FormatUSD(objectives?.drawdown_result?.max_loss?.target || 0)} <span>{">"}</span>
                 </h4>
-                <p>Remaining : 5000.00</p>
+                <p>Results : {FormatUSD(objectives?.drawdown_result?.max_loss?.result || 0)}</p>
               </div>
-              <button>In Progress</button>
+              <button
+                className={`${
+                  objectives?.drawdown_result?.max_loss?.status === "In Progress"
+                    ? "status_in_progress"
+                    : objectives?.drawdown_result?.max_loss?.status === "Success"
+                    ? "status_succcess"
+                    : "status_failed"
+                }`}
+              >
+                {objectives?.drawdown_result?.max_loss?.status}
+              </button>
+            </div>
+
+            <div className="bottom_main_right_inner_div">
+              <div>
+                <h4>
+                  Max Daily Loss {FormatUSD(objectives?.drawdown_result?.max_daily_loss?.target || 0)} <span>{">"}</span>
+                </h4>
+                <p>Remaining : {FormatUSD(objectives?.drawdown_result?.max_daily_loss?.remaining || 0)}</p>
+              </div>
+              <button
+                className={`${
+                  objectives?.drawdown_result?.max_daily_loss?.status === "In Progress"
+                    ? "status_in_progress"
+                    : objectives?.drawdown_result?.max_daily_loss?.status === "Success"
+                    ? "status_succcess"
+                    : "status_failed"
+                }`}
+              >
+                {objectives?.drawdown_result?.max_daily_loss?.status}
+              </button>
             </div>
           </div>
         </div>

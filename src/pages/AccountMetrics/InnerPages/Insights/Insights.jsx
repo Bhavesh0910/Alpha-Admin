@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import "./Insights.scss";
 import {Radio} from "antd";
-import { fetchAccountInsights } from "../../../../store/NewReducers/amSlice";
-import { useDispatch, useSelector } from "react-redux";
+import {fetchAccountInsights} from "../../../../store/NewReducers/amSlice";
+import {useDispatch, useSelector} from "react-redux";
 
-const Insights = ({login_id , platform}) => {
+const Insights = ({login_id, platform}) => {
   const [insightTab, setInsightTab] = useState("");
   const [pageNo, setPageNo] = useState(1);
   const onChangeActive = (e) => {
@@ -12,13 +12,12 @@ const Insights = ({login_id , platform}) => {
     setInsightTab(e.target.value);
   };
 
-  console.log(login_id , platform) 
+  console.log(login_id, platform);
   const idToken = useSelector((state) => state.auth.idToken);
   const dispatch = useDispatch();
-  const {accountInsights , isLoading, error } = useSelector(state => state.accountMetrics);
+  const {accountInsights, isLoading, error} = useSelector((state) => state.accountMetrics);
   useEffect(() => {
-
-    dispatch(fetchAccountInsights({ login_id , platform ,idToken }));
+    dispatch(fetchAccountInsights({login_id, platform, idToken}));
   }, [dispatch, login_id, platform, idToken]);
 
   return (
@@ -48,66 +47,66 @@ const Insights = ({login_id , platform}) => {
                 <p>16</p>
               </div>
               <div>
-                <p>Trades</p>
+                <p>Profitability</p>
                 <p>16</p>
               </div>
               <div>
-                <p>Trades</p>
+                <p>Pips</p>
                 <p>16</p>
               </div>
               <div>
-                <p>Trades</p>
+                <p>Average Win</p>
                 <p>16</p>
               </div>
               <div>
-                <p>Trades</p>
+                <p>Average Loss</p>
                 <p>16</p>
               </div>
               <div>
-                <p>Trades</p>
+                <p>Lots</p>
                 <p>16</p>
               </div>
               <div>
-                <p>Trades</p>
+                <p>Commissions</p>
                 <p>16</p>
               </div>
               <div>
-                <p>Trades</p>
+                <p>Profit Factor</p>
                 <p>16</p>
               </div>
             </div>
 
             <div className="insights_main_right">
               <div>
-                <p>Trades</p>
+                <p>Longs Won:</p>
                 <p>16</p>
               </div>
               <div>
-                <p>Trades</p>
+                <p>Shorts Won:</p>
                 <p>16</p>
               </div>
               <div>
-                <p>Trades</p>
+                <p>Best Trade</p>
                 <p>16</p>
               </div>
               <div>
-                <p>Trades</p>
+                <p>Worst Trade</p>
                 <p>16</p>
               </div>
               <div>
-                <p>Trades</p>
+                <p>Best Trade (Pips)</p>
                 <p>16</p>
               </div>
               <div>
-                <p>Trades</p>
+                <p>Worst Trade (Pips)</p>
                 <p>16</p>
               </div>
               <div>
-                <p>Trades</p>
+                <p>Avg. Trade Lenghth</p>
                 <p>16</p>
               </div>
               <div>
-                <p>Trades</p>
+                <p>Expectancy</p>
                 <p>16</p>
               </div>
             </div>
