@@ -1,8 +1,6 @@
-// store/slices/amSlice.js
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { returnErrors } from '../reducers/error';
-import { getAccountDetails, getAccountInsights, getTradeJournal, getTradingAccountOverview, getObjectives } from '../../utils/api/apis';
+import { getAccountDetails, getAccountInsights, getTradeJournal, getTradingAccountOverview, getObjectives, getPerformanceChart } from '../../utils/api/apis';
 
 // Thunk for fetching trading account overview
 export const fetchTradingAccountOverview = createAsyncThunk(
@@ -79,6 +77,21 @@ export const fetchObjectives = createAsyncThunk(
   }
 );
 
+// Thunk for fetching performance chart
+export const fetchPerformanceChart = createAsyncThunk(
+  'amSlice/fetchPerformanceChart',
+  async ({ login_id, platform, idToken }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await getPerformanceChart(login_id, platform, idToken);
+      return response;
+    } catch (error) {
+      const msg = error.response?.data?.detail || 'Error fetching performance chart';
+      dispatch(returnErrors(msg, 400));
+      return rejectWithValue(msg);
+    }
+  }
+);
+
 const amSlice = createSlice({
   name: 'amSlice',
   initialState: {
@@ -87,11 +100,11 @@ const amSlice = createSlice({
     accountInsights: null,
     tradeJournal: null,
     objectives: null,
+    performanceChart: null,
     isLoading: false,
     error: null,
   },
   reducers: {
-    // You can add reducers here if needed
   },
   extraReducers: (builder) => {
     builder
@@ -152,6 +165,18 @@ const amSlice = createSlice({
         state.objectives = action.payload;
       })
       .addCase(fetchObjectives.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchPerformanceChart.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchPerformanceChart.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.performanceChart = action.payload;
+      })
+      .addCase(fetchPerformanceChart.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
