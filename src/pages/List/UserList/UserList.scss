@@ -52,10 +52,13 @@
   .status_wrapper.active {
     border-radius: var(--Corner-Radius, 10px);
     border: 1px solid var(--Green, #a3ea93);
+    background: var(--Success-Body, #cdffdd);
+
   }
   .status_wrapper.blocked {
     border-radius: var(--Corner-Radius, 10px);
     border: 1px solid var(--Green, red);
+    background:none;
   }
   .header_wrapper {
     display: flex;

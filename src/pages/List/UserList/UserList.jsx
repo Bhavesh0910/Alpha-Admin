@@ -137,19 +137,19 @@ const UserListTable = () => {
     },
     {
       title: "Name",
-      dataIndex: "name",
-      render: (text, record) => <span>{record.first_name ? `${record.first_name} ${record.last_name}` : "-"}</span>,
+      dataIndex: "full_name",
+      render: (text, record) => <span>{text}</span>,
     },
     {
       title: "Date joined",
       dataIndex: "date_joined",
       render: (text) => <span>{moment(text).format("ll")}</span>,
     },
-    {
-      title: "Auth type",
-      dataIndex: "auth_type",
-      render: (text, record) => <span style={{textTransform: "capitalize"}}>{text}</span>,
-    },
+    // {
+    //   title: "Auth type",
+    //   dataIndex: "auth_type",
+    //   render: (text, record) => <span style={{textTransform: "capitalize"}}>{text}</span>,
+    // },
     {
       title: "Country",
       dataIndex: "country",

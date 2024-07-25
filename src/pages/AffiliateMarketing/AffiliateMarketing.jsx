@@ -24,7 +24,7 @@ const AffiliateMarketing = ({userData}) => {
 
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
-  const {affiliateData, currentPage, totalPages, page_size, count, isLoading} = useSelector((state) => state.affiliate.newCodeListData);
+  const {affiliateData, currentPage, totalPages, totalItems, page_size, count, isLoading} = useSelector((state) => state.affiliate);
   const {idToken} = useSelector((state) => state.auth);
 
   const newCodeData = useSelector((state) => state.affiliate.newCodeListData);
@@ -40,7 +40,7 @@ const AffiliateMarketing = ({userData}) => {
         searchText,
       }),
     );
-  }, [dispatch, pageNo, searchText, pageSize, isLoading, category]);
+  }, [dispatch, pageNo, searchText, pageSize]);
 
   const searchRef = useRef();
 
@@ -306,8 +306,8 @@ const AffiliateMarketing = ({userData}) => {
         <AntTable
           data={filterData}
           columns={columns}
-          totalPages={Math.ceil(count / pageSize)}
-          totalItems={count}
+          totalPages={Math.ceil(totalItems / pageSize)}
+          totalItems={totalItems}
           pageSize={pageSize}
           CurrentPageNo={pageNo}
           setPageSize={setPageSize}

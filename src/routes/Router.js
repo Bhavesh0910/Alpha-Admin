@@ -126,7 +126,15 @@ function Router() {
               </PageLayout>
             }
           />
-
+          <Route
+            exact={true}
+            path="/account-analysis/:login_id"
+            element={
+              <PageLayout headerName="Account Analysis">
+                <AccountMetrics />
+              </PageLayout>
+            }
+          />
           <Route
             exact={true}
             path="/funding-evaluation/*"

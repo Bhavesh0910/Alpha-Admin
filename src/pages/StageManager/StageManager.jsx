@@ -2,7 +2,7 @@ import {Button, DatePicker, Dropdown, Menu, Select, Modal, Form, Input, Table} f
 import moment from "moment";
 import React, {useEffect, useMemo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Link, useLocation} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import comment from "../../assets/icons/comment.svg";
@@ -145,6 +145,8 @@ const StageManager = () => {
     </Menu>
   );
 
+  const navigate = useNavigate()
+
   const handleCopyToClipboard = (text) => {
     toast("Copied email", {
       position: "top-right",
@@ -241,7 +243,7 @@ const StageManager = () => {
           {
             title: "Account",
             dataIndex: "account_id",
-            key: "account",
+            key: "account_id",
             render: (text, row) => (
               <Link
                 to="/trader-overview"
@@ -429,7 +431,10 @@ const StageManager = () => {
             title: "Details",
             dataIndex: "details",
             key: "details",
-            render: () => <Button className="account_metrics_btn">Account Metrics</Button>,
+            render: (text , record) => 
+            <Button 
+            onClick={() => navigate(`/account-analysis/${record.account_id}`)}
+            className="account_metrics_btn">Account Metrics</Button>,
           },
           {
             title: "Action",
