@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CreateCompetition.scss";
-import { Breadcrumb, Button, DatePicker, Input, message } from "antd";
+import { Breadcrumb, Button, DatePicker, Input, message, Select } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import TextArea from "antd/es/input/TextArea";
@@ -9,14 +9,31 @@ import { createCompetition } from "../../../store/NewReducers/competitionSlice";
 import { returnMessages } from "../../../store/reducers/message";
 import { returnErrors } from "../../../store/reducers/error";
 import dayjs from "dayjs";
+import { getChallenges } from "../../../utils/api/apis";
+
+const { Option } = Select;
 
 const CreateCompetition = () => {
   const dispatch = useDispatch();
   const idToken = useSelector((state) => state.auth.idToken);
+  const [challenges, setChallenges] = useState([]);
+
+  useEffect(() => {
+    fetchChallenges();
+  }, [idToken]);
+
+  const fetchChallenges = async () => {
+    try {
+      const res = await getChallenges(idToken);
+      setChallenges(res?.data);
+    } catch (error) {
+      console.log("Error fetching challenges:", error);
+    }
+  };
 
   const [formValues, setFormValues] = useState({
     competition_name: "",
-    challenge_name: "",
+    challenge: "", // Change to store challenge id
     schedule_competition: null,
     start_date: null,
     end_date: null,
@@ -38,13 +55,16 @@ const CreateCompetition = () => {
     setFormValues({ ...formValues, [id]: dateString });
   };
 
+  const handleChallengeSelect = (value) => {
+    setFormValues({ ...formValues, challenge: value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validation
     const requiredFields = [
       "competition_name",
-      "challenge_name",
       "schedule_competition",
       "start_date",
       "end_date",
@@ -63,7 +83,7 @@ const CreateCompetition = () => {
 
     const formData = {
       competition_name: formValues.competition_name,
-      challenge: formValues.challenge_name,
+      challenge: formValues.challenge,
       Schedule_competition: moment(formValues.schedule_competition).format("YYYY-MM-DD"),
       Start_date: moment(formValues.start_date).format("YYYY-MM-DD"),
       End_Date: moment(formValues.end_date).format("YYYY-MM-DD"),
@@ -71,8 +91,9 @@ const CreateCompetition = () => {
       second_prize: formValues.second_prize,
       Third_prize: formValues.third_prize,
       // total_contestants: formValues.total_contestants,
-      Competition_rules: formValues.rules
+      Competition_rules: formValues.rules,
     };
+
   
 
     try {
@@ -113,13 +134,23 @@ const CreateCompetition = () => {
               />
             </div>
             <div className="form_input_box">
-              <label htmlFor="challenge_name">Challenge</label>
-              <Input
-                id="challenge_name"
-                placeholder="Type Challenge"
-                value={formValues.challenge_name}
-                onChange={handleInputChange}
-              />
+              <label htmlFor="challenge_id">Challenge</label>
+              <Select
+                id="challenge_id"
+                placeholder="Select Challenge"
+                onChange={handleChallengeSelect}
+              >
+                {Object.keys(challenges).map((category) => (
+                  
+                  <React.Fragment key={category}>
+                      {challenges[category].map((challenge) => (
+                        <Option key={challenge.id} value={challenge.id}>
+                          {challenge.name}
+                        </Option>
+                      ))}
+                  </React.Fragment>
+                ))}
+              </Select>
             </div>
             <div className="form_input_box">
               <label htmlFor="total_contestants">Total Contestants</label>
@@ -151,13 +182,7 @@ const CreateCompetition = () => {
             </div>
             <div className="form_input_box">
               <label htmlFor="end_date">End Date</label>
-              {/* <DatePicker
-                format="YYYY-MM-DD"
-                disabledDate={(current) => current && current < moment().endOf("day")}
-                value={formValues.end_date ? moment(formValues.end_date) : null}
-                onChange={(date, dateString) => handleDateChange(date, dateString, "end_date")}
-              /> */}
-                    <DatePicker
+              <DatePicker
                 format="YYYY-MM-DD"
                 disabledDate={disabledDate}
                 onChange={(date, dateString) => handleDateChange(date, dateString, "end_date")}

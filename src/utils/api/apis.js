@@ -4,7 +4,7 @@ import {returnErrors} from "../../store/reducers/error";
 import {setIsLoading} from "../../store/reducers/authSlice";
 
 //  Acg Futures Admin
-// export const baseUrl = "http://35.177.123.105/";
+// export const baseUrl = "http://13.42.34.37/";
 export const baseUrl = "https://backend.alphacapitalgroup.uk/";
 
 export const alphaNewLogin = async (payload, dispatch) => {
@@ -1316,6 +1316,28 @@ export const getOneCompDetails = async (idToken, id) => {
   let output;
   await axios
     .get(`${baseUrl}account/admin/competitions/${id}`, config)
+    .then((res) => {
+      output = res;
+
+      return output;
+    })
+    .catch(function (error) {
+      output = error;
+      return output;
+    });
+
+  return output;
+};
+
+export const getChallenges = async (idToken) => {
+  let config = {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  };
+  let output;
+  await axios
+    .get(`${baseUrl}v2/challenges/admin/`, config)
     .then((res) => {
       output = res;
 

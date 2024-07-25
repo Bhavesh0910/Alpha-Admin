@@ -274,7 +274,7 @@ const CompetitionCard = ({item}) => {
   );
 };
 
-const EditCompetitionForm = ({initialValues, onClose}) => {
+const EditCompetitionForm = ({ initialValues, onClose }) => {
   const [formValues, setFormValues] = useState(initialValues);
   const dispatch = useDispatch();
   const idToken = useSelector((state) => state.auth.idToken);
@@ -284,12 +284,12 @@ const EditCompetitionForm = ({initialValues, onClose}) => {
   }, [initialValues]);
 
   const handleInputChange = (e) => {
-    const {id, value} = e.target;
-    setFormValues({...formValues, [id]: value});
+    const { id, value } = e.target;
+    setFormValues({ ...formValues, [id]: value });
   };
 
   const handleDateChange = (date, dateString, field) => {
-    setFormValues({...formValues, [field]: dateString});
+    setFormValues({ ...formValues, [field]: dateString });
   };
 
   const handleSubmit = (e) => {
@@ -303,12 +303,10 @@ const EditCompetitionForm = ({initialValues, onClose}) => {
       First_prize: formValues.First_prize,
       second_prize: formValues.second_prize,
       Third_prize: formValues.Third_prize,
-      // total_contestants: formValues.total_contestants,
-      Competition_rules: formValues.Competition_rules    };
+      Competition_rules: formValues.Competition_rules,
+    };
 
-    console.log(updatedData)
-
-    dispatch(updateCompetition({idToken, id: formValues.id, updatedData}))
+    dispatch(updateCompetition({ idToken, id: formValues.id, updatedData }))
       .then(() => {
         onClose();
       })
@@ -318,14 +316,11 @@ const EditCompetitionForm = ({initialValues, onClose}) => {
   };
 
   return (
-    <form
-      className="edit_competition_form"
-      onSubmit={handleSubmit}
-    >
+    <form className="edit_competition_form" onSubmit={handleSubmit}>
       <div className="form_group">
         <label htmlFor="competition_name">Competition Name</label>
         <Input
-          id="name"
+          id="competition_name"
           value={formValues.competition_name}
           onChange={handleInputChange}
           required
@@ -382,7 +377,7 @@ const EditCompetitionForm = ({initialValues, onClose}) => {
       <div className="form_group">
         <label htmlFor="first_prize">First Prize</label>
         <Input
-          id="first_prize"
+          id="First_prize"
           value={formValues.First_prize}
           onChange={handleInputChange}
           required
@@ -398,7 +393,7 @@ const EditCompetitionForm = ({initialValues, onClose}) => {
         />
       </div>
       <div className="form_group">
-        <label htmlFor="third_prize">Third Prize</label>
+        <label htmlFor="Third_prize">Third Prize</label>
         <Input
           id="third_prize"
           value={formValues.Third_prize}
@@ -406,19 +401,10 @@ const EditCompetitionForm = ({initialValues, onClose}) => {
           required
         />
       </div>
-      {/* <div className="form_group">
-        <label htmlFor="total_contestants">Total Contestants</label>
-        <Input
-          id="total_contestants"
-          value={formValues.total_contestants}
-          onChange={handleInputChange}
-          required
-        />
-      </div> */}
       <div className="form_group">
         <label htmlFor="competition_rules">Competition Rules</label>
         <TextArea
-          id="rules"
+          id="Competition_rules"
           value={formValues.Competition_rules}
           onChange={handleInputChange}
           rows={4}
@@ -426,10 +412,7 @@ const EditCompetitionForm = ({initialValues, onClose}) => {
         />
       </div>
       <div className="form_group">
-        <Button
-          className="standard_button"
-          htmlType="submit"
-        >
+        <Button className="standard_button" htmlType="submit">
           Update Competition
         </Button>
       </div>

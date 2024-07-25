@@ -7,9 +7,9 @@ import { returnErrors } from "../reducers/error";
 // Define the async thunk for account list
 export const createCoupon = createAsyncThunk(
     "coupon/create",
-    async ({ idToken, dispatch }, { rejectWithValue }) => {
+    async ({ idToken, couponData , dispatch }, { rejectWithValue }) => {
         try {
-            const response = await createCouponReq(idToken);
+            const response = await createCouponReq(idToken , couponData);
             return response; // Assuming accountListReq returns an object with data property
         } catch (error) {
             console.log("Error : ", error);
@@ -162,7 +162,7 @@ export async function patchCouponReq(idToken, id, body) {
             },
         };
 
-        const res = axios.patch(`${baseUrl}v2/create/coupon/`, body, config);
+        const res = axios.put(`${baseUrl}v2/create/coupon/`, body, config);
         return res;
 
     } catch (error) {
@@ -170,7 +170,7 @@ export async function patchCouponReq(idToken, id, body) {
     }
 }
 
-async function createCouponReq(idToken) {
+async function createCouponReq(idToken , couponData) {
 
     try {
         const config = {
@@ -180,7 +180,7 @@ async function createCouponReq(idToken) {
         };
         // console.log("Search : ",idToken, pageSize, pageNo, searchText, activeTab, dates)
         // const res = axios.get(`${baseUrl}payment/admin/list/?start_date=${dates[0]}&end_date=${dates[1]}&search=${searchText}&status=${activeTab === "all" ? "" : activeTab}&page_size=${pageSize}&page_no=${pageNo}`, config);
-        const res = axios.post(`${baseUrl}v2/create/coupon/`, config);
+        const res = axios.post(`${baseUrl}v2/create/coupon/`, couponData , config );
         return res;
 
     } catch (error) {

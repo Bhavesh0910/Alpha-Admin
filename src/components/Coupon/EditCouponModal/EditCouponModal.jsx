@@ -9,6 +9,9 @@ import { editCoupon, patchCoupon, setCouponRefresh } from "../../../store/NewRed
 import { useDispatch } from "react-redux";
 import { returnErrors } from "../../../store/reducers/error";
 import { returnMessages } from "../../../store/reducers/message";
+import axios from "axios"; // Import axios for API requests
+import { getChallenges } from "../../../utils/api/apis";
+
 const { Option } = Select;
 
 const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => {
@@ -16,6 +19,20 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
   const dispatch = useDispatch();
 
   const [editedData, setEditedData] = useState(editCouponData || {});
+  const [challenges, setChallenges] = useState([]); 
+
+  useEffect(() => {
+    fetchChallenges(); 
+  }, []);
+
+  const fetchChallenges = async () => {
+    try {
+      const response = await getChallenges(idToken)
+      setChallenges(response.data);
+    } catch (error) {
+      console.error("Error fetching challenges:", error);
+    }
+  };
 
   const handleInputChange = (field, value) => {
     setEditedData((prev) => ({ ...prev, [field]: value }));
@@ -47,7 +64,7 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
     e.preventDefault();
     const id = editCouponData?.id;
     try {
-      dispatch(editCoupon({ idToken, id, body: editedData }));
+      dispatch(editCoupon({ idToken, id, body: editCouponData }));
       console.log("idToken, id, editedData ", idToken, id, editedData);
       // await patchCoupon(idToken, editCouponData?.id, editedData);
       dispatch(returnMessages("Action Successful!", 200));
@@ -123,7 +140,16 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
                 onChange={handleCategoryChange}
                 value={editedData?.challenge || ""}
               >
-                {/* Add your options here */}
+                  {Object.keys(challenges).map((category) => (
+                  
+                  <React.Fragment key={category}>
+                      {challenges[category].map((challenge) => (
+                        <Option key={challenge.id} value={challenge.id}>
+                          {challenge.name}
+                        </Option>
+                      ))}
+                  </React.Fragment>
+                ))}
               </Select>
             </div>
             <div className="form_input_box">

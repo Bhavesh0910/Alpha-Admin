@@ -14,10 +14,11 @@ const {Option} = Select;
 const CreateAffiliateCode = () => {
   const [isSpinner, setIsSpinner] = useState(false);
   const [couponData, setCouponData] = useState({
-    email: "",
-    code: "",
-    percentage: 0,
-    percent_repeat: 0,
+    email: '',
+    code: '',
+    aff_percentage: 0,
+    repeat_percent: 0,
+    coupon_percent: 0
   });
 
   const [emailOpts, setEmailOpts] = useState([{label: "", value: ""}]);
@@ -30,14 +31,13 @@ const CreateAffiliateCode = () => {
     setIsLoading(true);
     const response = await UserSearchReq(idToken, value);
     setIsLoading(false);
-    if (response?.status < 399) {
-      let userArray = [];
-      response.data.map((item) =>
-        userArray.push({
+ 
+
+      if (response?.status < 399) {
+        const userArray = response?.data?.results?.map((item) => ({
           label: item?.email,
-          value: item?.email,
-        }),
-      );
+          value: item?.id,
+        }));
 
       setEmailOpts(userArray);
     } else {
@@ -110,7 +110,7 @@ const CreateAffiliateCode = () => {
               {emailOpts.map((option) => (
                 <Option
                   key={option.value}
-                  value={option.value}
+                  value={option.label}
                 >
                   {option.label}
                 </Option>
@@ -138,7 +138,7 @@ const CreateAffiliateCode = () => {
               onChange={(e) =>
                 setCouponData((prev) => ({
                   ...prev,
-                  percentage: e.target.value,
+                  aff_percentage: e.target.value,
                 }))
               }
             />
@@ -153,12 +153,20 @@ const CreateAffiliateCode = () => {
               onChange={(e) =>
                 setCouponData((prev) => ({
                   ...prev,
-                  percent_repeat: e.target.value,
+                  repeat_percent: e.target.value,
                 }))
               }
             />
           </div>
         </div>
+        <div className="form_input">
+            <label htmlFor="coupon_percent">Discount (%)</label>
+            <Input
+              type="number"
+              value={couponData.coupon_percent}
+              onChange={(e) => setCouponData((prev) => ({ ...prev, coupon_percent: e.target.value }))}
+            />
+          </div>
         <div className="create_button_wrapper">
           <Button
             className="standard_button"

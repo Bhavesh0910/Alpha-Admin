@@ -188,6 +188,8 @@ const AccountOverview = ({overview, accountDetails, objectives , performanceChar
                 <h4>
                   Minimum days - {objectives?.trading_days?.target} <span>{">"}</span>
                 </h4>
+                <p>Results : {objectives?.trading_days?.result || 0}</p>
+
               </div>
               <button className={`${objectives?.trading_days?.status === "In Progress" ? "status_in_progress" : objectives?.trading_days?.status === "Success" ? "status_succcess" : "status_failed"}`}>
                 {objectives?.trading_days?.status}
