@@ -9,11 +9,12 @@ import {getAccountList, getAccountListSuccess} from "../../../store/reducers/acc
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import {setDefaultLoginId, accountList} from "../../../store/NewReducers/accountList";
+import {setDefaultLoginId, accountList, changeAccountStatus, deleteAcount} from "../../../store/NewReducers/accountList";
 import {clearPersistedData} from "../../../store/configureStore";
 import dayjs from "dayjs";
 import {formatDate} from "fullcalendar/index.js";
 import ReactCountryFlag from "react-country-flag";
+import {changeAccountStatusApi} from "../../../utils/apis/accountsApi";
 const {Title} = Typography;
 const {Option} = Select;
 const {RangePicker} = DatePicker;
@@ -29,6 +30,9 @@ function TraderOverview() {
 
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
+
+  const [action, setAction] = useState(null);
+  const [reason, setReason] = useState("");
 
   const [phase, setPhase] = useState("");
   const {idToken, searchDates} = useSelector((state) => state.auth);
@@ -73,6 +77,20 @@ function TraderOverview() {
   };
 
   const navigate = useNavigate();
+
+  function updateDateRange(dates) {
+    setPageNo(1);
+    if (dates) {
+      setDates(dates.map((date) => date.format("DD MMM YYYY")));
+    } else {
+      setDates(null);
+    }
+  }
+
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
 
   const onChangeActive = (e) => {
     setPageNo(1);
@@ -140,176 +158,168 @@ function TraderOverview() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedTrader, setSelectedTrader] = useState(null);
 
-  console.log(platform)
-  const columns = useMemo(()=>[
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      width: 150,
-      render: (value , record) => {
-        return (
-          <p style={{cursor:'pointer'}}
-           onClick={() => navigate(`/account-analysis/${record.login_id}/${platform}`)}
-          >
-            {value}
-          </p>
-        );
-      }    },
-    {
-      title: "Country",
-      dataIndex: "country",
-      key: "country",
-      render: (country) => {
-        const countryName = country;
-        const countryCode = lookup.byCountry(countryName);
-        if (countryCode) {
+  const columns = useMemo(
+    () => [
+      {
+        title: "Name",
+        dataIndex: "name",
+        key: "name",
+        width: 150,
+        render: (value, record) => {
           return (
-            <div className="country_name_wrapper">
-              <ReactCountryFlag
-                countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
-                svg={true}
-                aria-label={countryName}
-              />
-              <span>{countryName}</span>
-            </div>
+            <p
+              style={{cursor: "pointer"}}
+              onClick={() => navigate(`/account-analysis/${record.login_id}/${platform}`)}
+            >
+              {value}
+            </p>
           );
-        } else {
-          return <span>{countryName}</span>;
-        }
+        },
       },
-    },
-    {
-      title: "Account Number",
-      dataIndex: "login_id",
-      key: "login_id",
-      width: 100,
-      render: (text) => <p  onClick={() => navigate(`/account-analysis/${text}`)}>{highlightText(text, searchText)}</p>
-    },
-    {
-      title: "Balance",
-      dataIndex: "balance",
-      key: "balance",
-      width: 150,
-      render: (startingBalance) => <span>${parseFloat(startingBalance).toLocaleString()}</span>,
-    },
-    {
-      title: "Equity",
-      dataIndex: "equity",
-      key: "equity",
-      width: 150,
-      render: (equity) => <span>{equity}</span>,
-    },
-    {
-      title: "Leverage",
-      dataIndex: "leverage",
-      key: "leverage",
-      width: 150,
-      render: (leverage) => <span>1:{leverage}</span>,
-    },
-    {
-      title: "Start Date",
-      dataIndex: "start_date",
-      key: "start_date",
-      width: 150,
-      render: (startDate) => <span>{formatDate(startDate)}</span>,
-    },
-    {
-      title: "End Date",
-      dataIndex: "expiry_date",
-      key: "expiry_date",
-      width: 150,
-      render: (expiryDate) => <span>{expiryDate ? formatDate(expiryDate) : "-"}</span>,
-    },
-    {
-      title: "Trader Type",
-      dataIndex: "status",
-      key: "status",
-      width: 150,
-      // render: (text) => highlightText(text, searchText),
-      render: (text) => <p className={`status_text ${text === "Evaluation" ? "evaluation" : "free_trial"}`}>{highlightText(text, searchText)}</p>,
-    },
-    {
-      title: "Status",
-      dataIndex: "user_is_active",
-      key: "user_is_active",
-      width: 150,
-      render: (text) => (text ? "UnBlocked" : "Blocked"),
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
-      width: 200,
-      render: (_, record) => (
-        <div className="btn-wrapper">
-          {
-            record.user_is_active ? (
+      {
+        title: "Country",
+        dataIndex: "country",
+        key: "country",
+        render: (country) => {
+          const countryName = country;
+          const countryCode = lookup.byCountry(countryName);
+          if (countryCode) {
+            return (
+              <div className="country_name_wrapper">
+                <ReactCountryFlag
+                  countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
+                  svg={true}
+                  aria-label={countryName}
+                />
+                <span>{countryName}</span>
+              </div>
+            );
+          } else {
+            return <span>{countryName}</span>;
+          }
+        },
+      },
+      {
+        title: "Account Number",
+        dataIndex: "login_id",
+        key: "login_id",
+        width: 100,
+        render: (text) => {
+          highlightText(text, searchText);
+        },
+      },
+      {
+        title: "Balance",
+        dataIndex: "balance",
+        key: "balance",
+        width: 150,
+        render: (startingBalance) => <span>${parseFloat(startingBalance).toLocaleString()}</span>,
+      },
+      {
+        title: "Equity",
+        dataIndex: "equity",
+        key: "equity",
+        width: 150,
+        render: (equity) => <span>{equity}</span>,
+      },
+      {
+        title: "Leverage",
+        dataIndex: "leverage",
+        key: "leverage",
+        width: 150,
+        render: (leverage) => <span>1:{leverage}</span>,
+      },
+      {
+        title: "Start Date",
+        dataIndex: "start_date",
+        key: "start_date",
+        width: 150,
+        render: (startDate) => <span>{formatDate(startDate)}</span>,
+      },
+      {
+        title: "End Date",
+        dataIndex: "expiry_date",
+        key: "expiry_date",
+        width: 150,
+        render: (expiryDate) => <span>{expiryDate ? formatDate(expiryDate) : "-"}</span>,
+      },
+      {
+        title: "Trader Type",
+        dataIndex: "status",
+        key: "status",
+        width: 150,
+        // render: (text) => highlightText(text, searchText),
+        render: (text) => <p className={`status_text ${text === "Evaluation" ? "evaluation" : "free_trial"}`}>{highlightText(text, searchText)}</p>,
+      },
+      {
+        title: "Status",
+        dataIndex: "user_is_active",
+        key: "user_is_active",
+        width: 150,
+        render: (text) => (text ? "UnBlocked" : "Blocked"),
+      },
+      {
+        title: "Action",
+        dataIndex: "action",
+        key: "action",
+        width: 200,
+        render: (_, record) => (
+          <div className="btn-wrapper">
+            {record.user_is_active ? (
               <Button
                 className="btn-block"
-                onClick={() => handleBlock(record)}
+                onClick={() => handleAction("Block", record)}
               >
                 Block
               </Button>
             ) : (
               <Button
                 className="btn-unblock"
-                onClick={() => handleBlock(record)}
+                onClick={() => handleAction("UnBlock", record)}
               >
                 Unblock
               </Button>
-            )
+            )}
+            <Button
+              className="btn-delete"
+              onClick={() => handleAction("Delete", record)}
+              danger
+            >
+              Delete
+            </Button>
+          </div>
+        ),
+      },
+    ],
+    [navigate, platform],
+  );
 
-            //UNCOMMENT THIS AND COMMENT UPPER PART ONLY TO CHECK CSS OF UNBLOCK BUTTON AFTER THAT REVERT TO NORMAL
-            // <Button className="btn-unblock" onClick={() => handleBlock(record)}>
-            //   Unblock
-            // </Button>
-            // :
-            // <Button className="btn-block" onClick={() => handleBlock(record)}>
-            //   Block
-            // </Button>
-          }
-          <Button
-            className="btn-delete"
-            danger
-          >
-            Delete
-          </Button>
-        </div>
-      ),
-    },
-  ], [navigate, platform]);
-
-  const handleBlock = (record) => {
+  function handleAction(action, record) {
+    setAction(action);
     setSelectedTrader(record);
-    showModal();
+    setIsModalVisible(true);
+    console.log(action, record, "here");
+  }
+  const handleBlock = () => {
+    dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.id, note: reason}, dispatch}));
+    setIsModalVisible(false);
   };
 
-  const showModal = () => {
-    setIsModalVisible(true);
+  const handleUnBlock = () => {
+    dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.id, note: reason}, dispatch}));
+    setIsModalVisible(false);
+  };
+
+  const handleDelete = () => {
+    console.log("handleDelete");
+    console.log(platform, "plaform");
+    dispatch(deleteAcount({idToken, body: {login_id: selectedTrader?.login_id}, platform, dispatch}));
+    setIsModalVisible(false);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
-  function updateDateRange(dates) {
-    setPageNo(1);
-    if(dates){
-      setDates(dates.map((date) => date.format("DD MMM YYYY")));
-    }else{
-      setDates(null);
-    }
-  }
-
-  function triggerChange(page, updatedPageSize) {
-    setPageNo(page);
-    setPageSize(updatedPageSize);
-  }
-
-  useEffect(() => {
-    console.log("PageNo overview : ", pageNo);
-  }, [pageNo]);
 
   return (
     <div className="trader-overview">
@@ -419,7 +429,7 @@ function TraderOverview() {
         )}
 
         <Modal
-          title={`Block Account`}
+          title={`${action} Account`}
           visible={isModalVisible}
           onCancel={handleCancel}
           centered
@@ -438,16 +448,21 @@ function TraderOverview() {
                 key="block"
                 type="primary"
                 danger
-                onClick={handleCancel}
+                onClick={action === "Block" ? handleBlock : action === "UnBlock" ? handleUnBlock : handleDelete}
               >
-                Block
+                {action === "Block" ? "Block" : action === "UnBlock" ? "UnBlock" : "Delete"}
               </Button>
             </div>,
           ]}
         >
           <div className="modal-content">
             <p className="modal-title">Write Your Reason</p>
-            <textarea placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."></textarea>
+            <textarea
+              onChange={(e) => {
+                setReason(e.target.value);
+              }}
+              placeholder="Write your reason here.."
+            ></textarea>
           </div>
         </Modal>
       </Card>

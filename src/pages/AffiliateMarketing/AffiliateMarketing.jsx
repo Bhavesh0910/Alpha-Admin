@@ -25,11 +25,13 @@ const AffiliateMarketing = ({userData}) => {
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
   const {affiliateData, currentPage, totalPages, totalItems, page_size, count, isLoading} = useSelector((state) => state.affiliate);
+  // const {affiliateData, currentPage, totalPages, page_size, count, isLoading} = useSelector((state) => state.affiliate.newCodeListData);
+  // const {count, isLoading} = useSelector((state) => state.affiliate);
   const {idToken} = useSelector((state) => state.auth);
 
   const newCodeData = useSelector((state) => state.affiliate.newCodeListData);
 
-  console.log("isLoading", isLoading);
+  // console.log("isLoading", isLoading);
 
   useEffect(() => {
     dispatch(
@@ -40,7 +42,7 @@ const AffiliateMarketing = ({userData}) => {
         searchText,
       }),
     );
-  }, [dispatch, pageNo, searchText, pageSize]);
+  }, [dispatch, pageNo, searchText, pageSize, newCodeData?.isLoading, category]);
 
   const searchRef = useRef();
 
@@ -300,14 +302,14 @@ const AffiliateMarketing = ({userData}) => {
           </Button>
         </div>
       </div>
-      {isLoading ? (
+      {newCodeData?.isLoading ? (
         <LoaderOverlay />
       ) : (
         <AntTable
-          data={filterData}
+          data={filterData || []}
           columns={columns}
-          totalPages={Math.ceil(totalItems / pageSize)}
-          totalItems={totalItems}
+          totalPages={Math.ceil(newCodeData?.count / pageSize)}
+          totalItems={newCodeData?.count}
           pageSize={pageSize}
           CurrentPageNo={pageNo}
           setPageSize={setPageSize}

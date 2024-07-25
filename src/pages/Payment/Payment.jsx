@@ -206,7 +206,7 @@ const Payment = () => {
                 href={record?.invoice}
                 target="_blank"
               >
-                <Button className="btn-block">{"In Voice"}</Button>
+                <Button className="btn-block">{"Invoice"}</Button>
               </a>
             </div>
           ) : (

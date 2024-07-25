@@ -49,18 +49,11 @@ const AntTable = ({serverSide = true, triggerChange, data, columns, totalItems, 
 
   const handleExpand = (expanded, record) => {
     if (expanded) {
-      console.log("Expanded : ", expanded);
-      console.log("Expanded : ", record);
       setExpandedRowKeys(location.pathname === "/support/funded" ? [record.login_id] : [record.id]);
     } else {
       setExpandedRowKeys([]);
     }
   };
-
-  console.log("Current rowId:", getRowKey());
-  // console.log("Data structure example:", data[0]);
-  console.log("isExpandable", isExpandable);
-  console.log("expandedRowKeys", expandedRowKeys);
 
   function getRowKey() {
     if (location.pathname === "/support/funded") {

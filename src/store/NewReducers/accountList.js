@@ -1,23 +1,42 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { accountListReq } from "../../utils/apis/accountsApi";
-import { returnErrors } from "../reducers/error";
-import { returnMessages } from "../reducers/message";
-import { PURGE } from "redux-persist";
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import {accountListReq, changeAccountStatusApi, deleteAcountApi} from "../../utils/apis/accountsApi";
+import {returnErrors} from "../reducers/error";
+import {returnMessages} from "../reducers/message";
+
+export const changeAccountStatus = createAsyncThunk("accounts/changeAccountStatus", async ({idToken, body, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await changeAccountStatusApi(idToken, body);
+    dispatch(returnMessages(response?.message || "Action Performed SuccessFully!", 200));
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error.response.data.details || "Action Failed, Try again!", 400));
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const deleteAcount = createAsyncThunk("accounts/deleteAcount", async ({idToken, body, platform, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await deleteAcountApi(idToken, body, platform);
+    console.log(response);
+    dispatch(returnMessages(response?.message || "Action Performed SuccessFully!", 200));
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error.response.data.details || "Action Failed, Try again!", 400));
+    return rejectWithValue(error.response.data);
+  }
+});
 
 // Define the async thunk for account list
-export const accountList = createAsyncThunk(
-  "accounts/fetchAccountList",
-  async ({ idToken, query, platform, dispatch }, { rejectWithValue }) => {
-    try {
 
-      const response = await accountListReq(idToken, query, platform);
-      return response;
-    } catch (error) {
-      dispatch(returnErrors("Error Fetching List...", 400));
-      return rejectWithValue(error.response.data);
-    }
+export const accountList = createAsyncThunk("accounts/fetchAccountList", async ({idToken, query, platform, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await accountListReq(idToken, query, platform);
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error.response.data.details || "Error Fetching Accounts, Try again!", 400));
+    return rejectWithValue(error.response.data);
   }
-);
+});
 
 const accountSlice = createSlice({
   name: "accounts",
@@ -50,22 +69,42 @@ const accountSlice = createSlice({
       })
       .addCase(accountList.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload?.results; // Update state with fetched data
-        state.totalItems = action.payload?.count; // Update state with fetched data
+        state.data = action.payload?.results;
+        state.totalItems = action.payload?.count;
       })
       .addCase(accountList.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       })
-    //   .addCase(PURGE, (state) => {
-    //     state.isLoading= false;
-    //     state.isError= false;
-    //     state.payoutData= [];
-    // });
+      .addCase(changeAccountStatus.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(changeAccountStatus.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // state.data = action.payload?.results;
+        // state.totalItems = action.payload?.count;
+      })
+      .addCase(changeAccountStatus.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(deleteAcount.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(deleteAcount.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // state.data = action.payload?.results;
+        // state.totalItems = action.payload?.count;
+      })
+      .addCase(deleteAcount.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      });
   },
 });
 
 // Export the async thunk and any reducers if needed
-export const { resetAccountList, setDefaultLoginId, setLoginList } = accountSlice.actions;
+export const {resetAccountList, setDefaultLoginId, setLoginList} = accountSlice.actions;
 export default accountSlice.reducer;
-
