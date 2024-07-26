@@ -200,7 +200,7 @@ const CompetitionCard = ({item}) => {
   return (
     <div className="competition_card_container">
       <div className="header_section">
-        <h4>{item.name}</h4>
+        <h4>{item.competition_name}</h4>
         <Dropdown
           overlay={menu}
           trigger={["click"]}

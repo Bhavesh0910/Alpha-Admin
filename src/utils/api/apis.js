@@ -510,12 +510,11 @@ const postAffiliateDetails = async (idToken, data) => {
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data", 
       },
     };
 
-    // const response = await axios.post(`${baseUrl}affiliates/admin/v2/create-link/`, data, config);
-    const response = await axios.post(`${baseUrl}v2/create/affiliate-code/`, data, config);
+    const response = await axios.post(`${baseUrl}create/affiliate-code/`, data, config);
     if (response.status === 201 || response.status === 200) {
       return response.data;
     } else {
@@ -527,6 +526,7 @@ const postAffiliateDetails = async (idToken, data) => {
     throw error;
   }
 };
+
 
 // User List
 const getUserList = async (idToken, searchText, pageNo, pageSize, authType, active) => {
@@ -921,10 +921,13 @@ export const getStageChart = async (idToken, stage, startDate, endDate) => {
 
 export const getFundingChart = async (idToken, startDate, endDate) => {
   try {
-    const response = await axios.get(`${baseUrl}v2/account-overview/funding-chart/?start_date=${startDate}&end_date=${endDate}`, {
+    const response = await axios.get(`${baseUrl}v2/account-overview/funding-chart/?start_date=${startDate}&end_date=${endDate}&account_sizes=10k`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
+      // headers: {
+        // "x-api-key": idToken,
+      // },
     });
     return response;
   } catch (error) {
@@ -1002,39 +1005,40 @@ export const requestPayout = async (idToken, payload) => {
 
 //acc metrics
 
+
 export const getTradingAccountOverview = async (login_id, platform, idToken) => {
-  let platformName = platform === "trader-accounts" ? "mt5" : platform === "ctrader-accounts" ? "ctrader" : "dxtrade";
-  console.log(platformName);
+  let platformName = platform === 'trader-accounts' ? 'mt5' : platform === 'ctrader-accounts' ? 'ctrader' : 'dxtrade'
+  console.log(platformName)
   try {
     const response = await axios.get(`${baseUrl}trading-account/overview/${login_id}`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
     });
-    return response.data;
+    return response.data; 
   } catch (error) {
-    console.error("Error fetching trading account overview:", error);
+    console.error('Error fetching trading account overview:', error);
     throw error;
   }
 };
 
 export const getAccountDetails = async (login_id, platform, idToken) => {
-  let platformName = platform === "trader-accounts" ? "mt5" : platform === "ctrader-accounts" ? "ctrader" : "dxtrade";
+  let platformName = platform === 'trader-accounts' ? 'mt5' : platform === 'ctrader-accounts' ? 'ctrader' : 'dxtrade'
   try {
     const response = await axios.get(`${baseUrl}v2/account-details/${login_id}/?platform=${platformName}`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
     });
-    return response.data;
+    return response.data; 
   } catch (error) {
-    console.error("Error fetching account details:", error);
-    throw error;
+    console.error('Error fetching account details:', error);
+    throw error; 
   }
 };
 
 export const getAccountInsights = async (login_id, platform, idToken) => {
-  let platformName = platform === "trader-accounts" ? "mt5" : platform === "ctrader-accounts" ? "ctrader" : "dxtrade";
+  let platformName = platform === 'trader-accounts' ? 'mt5' : platform === 'ctrader-accounts' ? 'ctrader' : 'dxtrade'
   try {
     const response = await axios.get(`${baseUrl}v2/account-insights/${login_id}/?platform=${platformName}`, {
       headers: {
@@ -1043,13 +1047,13 @@ export const getAccountInsights = async (login_id, platform, idToken) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching account insights:", error);
+    console.error('Error fetching account insights:', error);
     throw error;
   }
 };
 
-export const getTradeJournal = async (login_id, platform = "mt5", idToken) => {
-  let platformName = platform === "trader-accounts" ? "mt5" : platform === "ctrader-accounts" ? "ctrader" : "dxtrade";
+export const getTradeJournal = async (login_id, platform = 'mt5' , idToken) => {
+  let platformName = platform === 'trader-accounts' ? 'mt5' : platform === 'ctrader-accounts' ? 'ctrader' : 'dxtrade'
   try {
     const response = await axios.get(`${baseUrl}v2/account/datewise-histroy/${login_id}/?platform=${platformName}`, {
       headers: {
@@ -1058,13 +1062,13 @@ export const getTradeJournal = async (login_id, platform = "mt5", idToken) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching trade journal:", error);
+    console.error('Error fetching trade journal:', error);
     throw error;
   }
 };
 
 export const getObjectives = async (login_id, platform, idToken) => {
-  let platformName = platform === "trader-accounts" ? "mt5" : platform === "ctrader-accounts" ? "ctrader" : "dxtrade";
+  let platformName = platform === 'trader-accounts' ? 'mt5' : platform === 'ctrader-accounts' ? 'ctrader' : 'dxtrade'
   try {
     const response = await axios.get(`${baseUrl}v2/account/objectives/${login_id}/?platform=${platformName}`, {
       headers: {
@@ -1073,12 +1077,12 @@ export const getObjectives = async (login_id, platform, idToken) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching objectives:", error);
+    console.error('Error fetching objectives:', error);
     throw error;
   }
 };
 
-export const getPerformanceChart = async (login_id, idToken) => {
+export const getPerformanceChart = async (login_id,  idToken) => {
   try {
     const response = await axios.get(`${baseUrl}v2/account-metrics/performance-chart/${login_id}`, {
       headers: {
@@ -1087,7 +1091,7 @@ export const getPerformanceChart = async (login_id, idToken) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching performance chart:", error);
+    console.error('Error fetching performance chart:', error);
     throw error;
   }
 };
@@ -1397,7 +1401,7 @@ const updateCompDetails = async (idToken, id, data) => {
   };
   let output;
   await axios
-    .patch(apiUrl, data, config)
+    .put(apiUrl, data, config)
     .then((res) => {
       output = res.data;
       return output;
@@ -1726,6 +1730,7 @@ const getUserAccountListRequest = async (idToken, searchValue, pageNumber, phase
   }
 };
 
+
 const getAccountMetricsRequest = async ({idToken, loginId, dispatch}) => {
   try {
     let config = {
@@ -1947,7 +1952,7 @@ const EligibleCertificateAccount = async (idToken, email) => {
 const CreateTradingAccountReq = async (idToken, data) => {
   let config = {
     headers: {
-      "x-api-key": idToken,
+      Authorization: `Bearer ${idToken}`,
     },
   };
   let endpoint;

@@ -28,7 +28,7 @@ function RiskManagement() {
       const startDate = dates[0].format("DD MMM YYYY");
       const endDate = dates[1].format("DD MMM YYYY");
       dispatch(fetchAccountOverviewStats({ idToken, startDate, endDate }));
-      // dispatch(fetchFundingChart({ idToken, startDate, endDate }));
+      dispatch(fetchFundingChart({ idToken, startDate, endDate }));
       dispatch(fetchStageChart({ idToken, stage: 1, startDate, endDate }));
       dispatch(fetchStageChart({ idToken, stage: 2, startDate, endDate }));
     }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./CreateCoupon.scss";
-import crossIcon from "../../../assets/icons/cross_icon_white.svg";
 import { Breadcrumb, Button, Checkbox, DatePicker, Input, Select } from "antd";
 import { ReactComponent as PercentageIcon } from "../../../assets/icons/precentage_icon_white.svg";
 import dayjs from "dayjs";
@@ -8,13 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { createCoupon } from "../../../store/NewReducers/Coupons";
 import { Link } from "react-router-dom";
 import { returnErrors } from "../../../store/reducers/error";
-import { UserSearchReq } from "../../../utils/api/apis";
+import { UserSearchReq, getChallenges } from "../../../utils/api/apis";
 
-const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 const CreateCoupon = () => {
-  const [category, setCategory] = useState("Alpha Pro 5K");
+  const [category, setCategory] = useState();
   const [date, setDate] = useState();
   const [size, setSize] = useState("middle");
   const [isLoading, setIsLoading] = useState(false);
@@ -26,34 +24,53 @@ const CreateCoupon = () => {
   const [percent, setPercent] = useState();
   const [isActivate, setIsActivate] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
+  const [challenges, setChallenges] = useState({});
   const timeoutRef = useRef(null);
+
+  const { idToken } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Fetch challenges on component mount
+    const fetchChallenges = async () => {
+      try {
+        const res = await getChallenges(idToken);
+        setChallenges(res?.data || {});
+      } catch (error) {
+        console.log("Error fetching challenges:", error);
+        dispatch(returnErrors("Failed to fetch challenges", 500));
+      }
+    };
+
+    fetchChallenges();
+  }, [idToken, dispatch]);
 
   useEffect(() => {
     console.log("Date : ", date);
     console.log("options : ", options);
     console.log("users : ", users);
     console.log("emails : ", emails);
-  }, [date, options, users])
-  const { idToken } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+    console.log("challenges : ", challenges);
+  }, [date, options, users, challenges]);
 
   const fetch = async (value) => {
     setIsLoading(true);
-    const response = await UserSearchReq(idToken, value);
-    setIsLoading(false);
-    console.log(response)
-    if (response?.status < 399) {
-      let userArray = [];
-      response?.data?.results.map((item) =>
-        userArray.push({
+    try {
+      const response = await UserSearchReq(idToken, value);
+      setIsLoading(false);
+      if (response?.status < 399) {
+        let userArray = response?.data?.results.map((item) => ({
           label: item?.email,
           value: item?.id,
-        })
-      );
-      setOptions(userArray);
-    } else {
-      const msg = response.response.data.message || "Something went wrong";
-      dispatch(returnErrors(msg, 400));
+        }));
+        setOptions(userArray);
+      } else {
+        const msg = response.response.data.message || "Something went wrong";
+        dispatch(returnErrors(msg, 400));
+      }
+    } catch (error) {
+      setIsLoading(false);
+      dispatch(returnErrors("Failed to fetch users", 500));
     }
   };
 
@@ -111,30 +128,20 @@ const CreateCoupon = () => {
     setEmails(selectedLabels);
   };
 
-
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const couponData = {
-      // code,
-      // users,
-      // amount:couponAmount,
-      // percent,
-      // // category,
-      // emails,
-      // expiry:date,
-      // // isActivate,
-      // // isPublic,
       coupon_name: code,
       Coupon_user: users,
       coupon_amount: couponAmount,
       coupon_percent: percent,
-      challenge: null,
+      challenge: category,  // Directly use the challenge ID
       coupon_expiry: date,
       public: isPublic,
       is_active: isActivate
     };
-    console.log("Here...")
-    console.log(idToken, couponData, dispatch)
+    console.log("Here...");
+    console.log(idToken, couponData, dispatch);
     dispatch(createCoupon({ idToken, couponData, dispatch }));
   };
 
@@ -205,26 +212,32 @@ const CreateCoupon = () => {
               />
             </div>
             <div className="form_input_box">
-              <label htmlFor="coupon_code">Challenge</label>
+              <label htmlFor="challenge_id">Challenge</label>
               <Select
-                className="category_dropdown"
+                id="challenge_id"
+                placeholder="Select Challenge"
                 value={category}
                 onChange={handleCategoryChange}
               >
-                <Option value="Alpha Pro 5K">Alpha Pro 5K</Option>
-                <Option value="Alpha Pro 10K">Alpha Pro 10K</Option>
-                <Option value="Alpha Pro 20K">Alpha Pro 20K</Option>
+                {Object.keys(challenges).map((category) => (
+                  <React.Fragment key={category}>
+                    {challenges[category].map((challenge) => (
+                      <Option key={challenge.id} value={challenge.id}>
+                        {challenge.name}
+                      </Option>
+                    ))}
+                  </React.Fragment>
+                ))}
               </Select>
             </div>
             <div className="form_input_box">
-              <label htmlFor="coupon_code">Coupon Expiry</label>
+              <label htmlFor="coupon_expiry">Coupon Expiry</label>
               <DatePicker
-                // format="YYYY-MM-DD HH:mm:ss"
                 format="YYYY-MM-DD HH:mm:ss"
                 disabledDate={disabledDate}
                 disabledTime={disabledDateTime}
                 showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
-                onChange={(value) => setDate(value.format("YYYY-MM-DD"))}
+                onChange={(value) => setDate(value ? value.format("YYYY-MM-DD") : null)}
               />
             </div>
           </div>

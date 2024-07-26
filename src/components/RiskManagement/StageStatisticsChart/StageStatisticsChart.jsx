@@ -28,13 +28,7 @@ const StageStatisticsChart = ({ data }) => {
   };
 
   const option = {
-    title: {
-      left: "center",
-      text: "Stage Statistics",
-      textStyle: {
-        color: "#1E1E1E",
-      },
-    },
+
     tooltip: {
       trigger: "axis",
     },

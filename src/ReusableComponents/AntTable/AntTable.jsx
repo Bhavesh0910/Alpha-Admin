@@ -1,19 +1,32 @@
-import React, {useState, useEffect} from "react";
-import {Table} from "antd";
+import React, { useState, useEffect } from "react";
+import { Table } from "antd";
 import "./AntTable.scss";
-import {useLocation} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-const AntTable = ({serverSide = true, triggerChange, data, columns, totalItems, pageSize, setPageSize, CurrentPageNo, isExpandable, ExpandedComp, rowId}) => {
+const AntTable = ({
+  serverSide = true,
+  triggerChange,
+  data,
+  columns,
+  totalItems,
+  pageSize,
+  setPageSize,
+  CurrentPageNo,
+  isExpandable,
+  expandedRowRender,
+  rowId
+}) => {
   const [pagination, setPagination] = useState(() => {
     if (serverSide) {
-      return {current: CurrentPageNo, pageSize, total: totalItems};
+      return { current: CurrentPageNo, pageSize, total: totalItems };
     } else {
-      return {current: 1, pageSize: 10, total: data.length};
+      return { current: 1, pageSize: 10, total: data.length };
     }
   });
 
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
   const location = useLocation();
+
   const handlePageChange = (page, updatedPageSize) => {
     if (serverSide) {
       setPagination((prev) => ({
@@ -49,19 +62,11 @@ const AntTable = ({serverSide = true, triggerChange, data, columns, totalItems, 
 
   const handleExpand = (expanded, record) => {
     if (expanded) {
-      setExpandedRowKeys(location.pathname === "/support/funded" ? [record.login_id] : [record.id]);
+      setExpandedRowKeys([record[rowId]]);
     } else {
       setExpandedRowKeys([]);
     }
   };
-
-  function getRowKey() {
-    if (location.pathname === "/support/funded") {
-      return "login_id";
-    } else {
-      return "id";
-    }
-  }
 
   return (
     <div className="ant_table_container">
@@ -81,14 +86,13 @@ const AntTable = ({serverSide = true, triggerChange, data, columns, totalItems, 
           y: "100%",
           x: "max-content",
         }}
-        // rowKey={(record) => record[getRowKey()]}
         rowKey={rowId}
         size={"large"}
         scrollToFirstRowOnChange={true}
         expandable={
           isExpandable
             ? {
-                expandedRowRender: (record) => <ExpandedComp record={record} />,
+                expandedRowRender: expandedRowRender,
                 expandedRowKeys: expandedRowKeys,
                 onExpand: handleExpand,
               }

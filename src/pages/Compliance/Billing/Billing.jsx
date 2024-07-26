@@ -1,30 +1,30 @@
-import {Button, DatePicker, Select} from "antd";
-import React, {useEffect, useState} from "react";
+import { Button, DatePicker, Select } from "antd";
+import React, { useEffect, useState } from "react";
 import "./Billing.scss";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import notVerifiedIcon from "../../../assets/icons/notverified_red_circleIcon.svg";
 import verifiedIcon from "../../../assets/icons/verified_green_circleIcon.svg";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import {useDispatch, useSelector} from "react-redux";
-import {getBillingList} from "../../../store/NewReducers/complianceList";
+import { useDispatch, useSelector } from "react-redux";
+import { getBillingList } from "../../../store/NewReducers/complianceList";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-const {Option} = Select;
-const {RangePicker} = DatePicker;
+const { Option } = Select;
+const { RangePicker } = DatePicker;
 const Billing = () => {
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [category, setCategory] = useState("all");
   const [isExpandable, setIsExpandable] = useState(true);
-  const {idToken, searchDates} = useSelector((state) => state.auth);
+  const { idToken, searchDates } = useSelector((state) => state.auth);
   const [dates, setDates] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [status, setStatus] = useState("all");
-  const {data, isLoading: accountsLoading, count} = useSelector((state) => state.compliance);
+  const { data, isLoading: accountsLoading, count } = useSelector((state) => state.compliance);
 
   useEffect(() => {
     let query = `?page=${pageNo}&page_size=${pageSize}`;
@@ -37,7 +37,7 @@ const Billing = () => {
       query += `&search=${searchText}`;
     }
 
-    dispatch(getBillingList({idToken, query, dispatch}));
+    dispatch(getBillingList({ idToken, query, dispatch }));
   }, [idToken, pageNo, pageSize, dates, searchText]);
 
   console.log(data, "data");
@@ -88,7 +88,7 @@ const Billing = () => {
           <img
             src={text === false ? notVerifiedIcon : verifiedIcon}
             alt="verified"
-            style={{width: 20, height: 20, marginLeft: "13px"}}
+            style={{ width: 20, height: 20, marginLeft: "13px" }}
           />
         </span>
       ),
@@ -242,11 +242,11 @@ const expandedRowRender = (record) => (
     </div>
     <div className="description_box">
       <label className="label">Date: </label>
-      {/* <p className="value">{record.description.Date}</p> */}
+      <p className="value">{record?.Date}</p>
     </div>
     <div className="description_box">
       <label className="label">Account Number: </label>
-      {/* <p className="value">{record.description.account_number}</p> */}
+      <p className="value">{record?.account_number}</p>
     </div>
     <div className="description_box">
       <label className="label">Amount: </label>
@@ -262,16 +262,16 @@ const expandedRowRender = (record) => (
     </div>
     <div className="description_box">
       <label className="label">Billing Type: </label>
-      {/* <p className="value profit_share_btn standard_button">{record.description.billing_Type}</p> */}
+      <p className="value profit_share_btn standard_button">{record?.billing_type}</p>
     </div>
     <div className="description_box">
       <label className="label">Status: </label>
-      {/* <p
-        className={`status_indicator ${
-          record.description.Status === "approved" ? "approved" : record.description.Status === "in_progress" ? "in_progress" : record.description.Status === "in_progress" ? "in_review" : ""
-        }`}
+      {/* <p style={{cursor:'pointer'}}
+        className={`status_indicator ${record?.verified === true ? "approved" : "in_review"
+          }`}
       >
-        {record.description.Status}
+        {record?.verified === true ? "Approved" : "In Progress"
+        }
       </p> */}
     </div>
   </div>

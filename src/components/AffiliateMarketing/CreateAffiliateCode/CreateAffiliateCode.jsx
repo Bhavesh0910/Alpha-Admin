@@ -1,15 +1,14 @@
-import React, {useState} from "react";
-import {Breadcrumb, Button, Input, Select, Spin} from "antd";
-import {ReactComponent as PercentageIcon} from "../../../assets/icons/precentage_icon_white.svg";
+import React, { useState } from "react";
+import { Breadcrumb, Button, Input, Select, Spin } from "antd";
+import { ReactComponent as PercentageIcon } from "../../../assets/icons/precentage_icon_white.svg";
 import "./CreateAffiliateCode.scss";
-import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {createAffiliateCode, fetchCodeList} from "../../../store/NewReducers/affiliateSlice";
-import axios from "axios";
-import {UserSearchReq, baseUrl} from "../../../utils/api/apis";
-import {returnErrors} from "../../../store/reducers/error";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { createAffiliateCode, fetchCodeList } from "../../../store/NewReducers/affiliateSlice";
+import { UserSearchReq, baseUrl } from "../../../utils/api/apis";
+import { returnErrors } from "../../../store/reducers/error";
 
-const {Option} = Select;
+const { Option } = Select;
 
 const CreateAffiliateCode = () => {
   const [isSpinner, setIsSpinner] = useState(false);
@@ -27,27 +26,31 @@ const CreateAffiliateCode = () => {
   const createdLink = useSelector((state) => state.affiliate.createdLink);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const fetch = async (value) => {
     setIsLoading(true);
-    const response = await UserSearchReq(idToken, value);
-    setIsLoading(false);
- 
-
+    try {
+      const response = await UserSearchReq(idToken, value);
+      setIsLoading(false);
       if (response?.status < 399) {
         const userArray = response?.data?.results?.map((item) => ({
           label: item?.email,
           value: item?.id,
         }));
-
-      setEmailOpts(userArray);
-    } else {
-      if (response?.response?.data?.message) {
-        return;
+        setEmailOpts(userArray);
+      } else {
+        if (response?.response?.data?.message) {
+          return;
+        }
+        let msg = response?.response?.data?.detail || "Something went wrong";
+        dispatch(returnErrors(msg, 400));
       }
-      let msg = response?.response?.data?.detail || "Something went wrong";
-      dispatch(returnErrors(msg, 400));
+    } catch (error) {
+      setIsLoading(false);
+      dispatch(returnErrors("Failed to fetch users. Please try again.", 400));
     }
   };
+
   const handleInputChange = (value) => {
     if (typeof value === "string") {
       fetch(value);
@@ -62,14 +65,22 @@ const CreateAffiliateCode = () => {
   };
 
   const handleSubmit = async () => {
-    // console.log(couponData)
     if (couponData.code === "" || couponData.email === "") {
       alert("Please enter a Coupon Code and Email");
       return;
     }
+
+    // Create a new FormData object
+    const formData = new FormData();
+    formData.append('email', couponData.email);
+    formData.append('code', couponData.code);
+    formData.append('aff_percentage', couponData.aff_percentage);
+    formData.append('repeat_percent', couponData.repeat_percent);
+    formData.append('coupon_percent', couponData.coupon_percent);
+
     setIsSpinner(true);
     try {
-      dispatch(createAffiliateCode({idToken, couponData}));
+      await dispatch(createAffiliateCode({ idToken, couponData: formData }));
       setIsSpinner(false);
     } catch (error) {
       setIsSpinner(false);
@@ -134,7 +145,7 @@ const CreateAffiliateCode = () => {
               type="number"
               placeholder="0"
               prefix={<PercentageIcon />}
-              value={couponData.percentage}
+              value={couponData.aff_percentage}
               onChange={(e) =>
                 setCouponData((prev) => ({
                   ...prev,
@@ -149,7 +160,7 @@ const CreateAffiliateCode = () => {
               type="number"
               placeholder="0"
               prefix={<PercentageIcon />}
-              value={couponData.percent_repeat}
+              value={couponData.repeat_percent}
               onChange={(e) =>
                 setCouponData((prev) => ({
                   ...prev,
