@@ -1952,9 +1952,13 @@ const EligibleCertificateAccount = async (idToken, email) => {
 const CreateTradingAccountReq = async (idToken, data) => {
   let config = {
     headers: {
-      Authorization: `Bearer ${idToken}`,
+      "x-api-key": idToken,
+      // Authorization: `Bearer ${idToken}`,
+      "Content-Type": "application/json"
     },
   };
+
+  // config.headers['x-api-key'] = idToken;
   let endpoint;
   if (data?.platform === "MT5") {
     endpoint = "v2/account-create/admin/";

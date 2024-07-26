@@ -1,15 +1,15 @@
-import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-import { Button, Input, Select, Spin } from "antd";
+import {EyeInvisibleOutlined, EyeTwoTone} from "@ant-design/icons";
+import {Button, Input, Select, Spin} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import "./UserSupport.scss";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { updateUserEmailThunk, requestPayoutThunk } from "../../store/NewReducers/usSlice";
-import { returnErrors } from "../../store/reducers/error";
-import { UserSearchReq } from "../../utils/api/apis";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {updateUserEmailThunk, requestPayoutThunk} from "../../store/NewReducers/usSlice";
+import {returnErrors} from "../../store/reducers/error";
+import {UserSearchReq} from "../../utils/api/apis";
 
-const { Option } = Select;
+const {Option} = Select;
 
 const UserSupport = () => {
   const [activeTab, setActiveTab] = useState("change_email");
@@ -19,15 +19,15 @@ const UserSupport = () => {
   const [emailOpts, setEmailOpts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { fundingData } = useSelector(state => state.funding);
+  const {fundingData} = useSelector((state) => state.funding);
 
   // Form state variables
-  const [currentEmail, setCurrentEmail] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newEmail, setNewEmail] = useState('');
-  const [loginId, setLoginId] = useState('');
-  const [amount, setAmount] = useState('');
-  const [reason, setReason] = useState('');
+  const [currentEmail, setCurrentEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [loginId, setLoginId] = useState("");
+  const [amount, setAmount] = useState("");
+  const [reason, setReason] = useState("");
 
   // User search by email
   const fetch = async (value) => {
@@ -53,9 +53,7 @@ const UserSupport = () => {
 
   let timeoutId;
   const handleOnInputChange = (value) => {
-    const filteredOptions = emailOpts.filter(option =>
-      option.label.toLowerCase().includes(value.toLowerCase())
-    );
+    const filteredOptions = emailOpts.filter((option) => option.label.toLowerCase().includes(value.toLowerCase()));
 
     setEmailOpts(filteredOptions);
     if (typeof value === "string" && value?.length > 0) {
@@ -72,24 +70,29 @@ const UserSupport = () => {
 
   const handleSubmit = () => {
     if (activeTab === "change_email") {
-      const emailPayload = {
-        cur_email: currentEmail,
-        pwd: currentPassword,
-        new_email: newEmail,
-      };
-        
-      console.log(emailPayload)
-      // dispatch(updateUserEmailThunk({ idToken, payload: emailPayload }));
+      const formData = new FormData();
+      formData.append("cur_email", currentEmail);
+      formData.append("pwd", currentPassword);
+      formData.append("new_email", newEmail);
+      // const emailPayload = {
+      //   cur_email: currentEmail,
+      //   pwd: currentPassword,
+      //   new_email: newEmail,
+      // };
+      // console.log(emailPayload)
+      dispatch(updateUserEmailThunk({ idToken, payload: formData }));
     } else if (activeTab === "request_payout") {
-      const payoutPayload = {
-        login_id: loginId,
-        amount: amount,
-        reason: reason,
-      };
-
-      console.log(payoutPayload)
-
-      // dispatch(requestPayoutThunk({ idToken, payload: payoutPayload }));
+      const formData = new FormData();
+      formData.append("login_id", loginId);
+      formData.append("amount", amount);
+      formData.append("reason", reason);
+      // const payoutPayload = {
+      //   login_id: loginId,
+      //   amount: amount,
+      //   reason: reason,
+      // };
+      // console.log(payoutPayload)
+      dispatch(requestPayoutThunk({ idToken, payload: formData }));
     }
   };
 
@@ -111,13 +114,7 @@ const UserSupport = () => {
           </Button>
         </div>
         <Button
-          onClick={() =>
-            navigate(
-              activeTab === "change_email"
-                ? "changeEmail-logs"
-                : "request-payout"
-            )
-          }
+          onClick={() => navigate(activeTab === "change_email" ? "changeEmail-logs" : "request-payout")}
           className="view_logs__btn standard_button"
         >
           View Logs
@@ -147,7 +144,10 @@ const UserSupport = () => {
           />
         )}
         <div className="footer_section">
-          <Button className="standard_button" onClick={handleSubmit}>
+          <Button
+            className="standard_button"
+            onClick={handleSubmit}
+          >
             Submit
           </Button>
         </div>
@@ -156,17 +156,7 @@ const UserSupport = () => {
   );
 };
 
-const ChangeEmail = ({
-  handleOnInputChange,
-  emailOpts,
-  isLoading,
-  currentEmail,
-  setCurrentEmail,
-  currentPassword,
-  setCurrentPassword,
-  newEmail,
-  setNewEmail
-}) => {
+const ChangeEmail = ({handleOnInputChange, emailOpts, isLoading, currentEmail, setCurrentEmail, currentPassword, setCurrentPassword, newEmail, setNewEmail}) => {
   const [selectEmail, setSelectEmail] = useState("");
 
   const handleEmailChange = (value) => {
@@ -182,7 +172,7 @@ const ChangeEmail = ({
           <Select
             showSearch
             placeholder="Search for a user"
-            style={{ width: "100%" }}
+            style={{width: "100%"}}
             defaultActiveFirstOption={false}
             showArrow={false}
             filterOption={false} // Let's use custom filtering logic
@@ -192,7 +182,10 @@ const ChangeEmail = ({
             value={selectEmail} // Ensure selected value is controlled
           >
             {emailOpts.map((option) => (
-              <Option key={option.value} value={option.label}>
+              <Option
+                key={option.value}
+                value={option.label}
+              >
                 {option.label}
               </Option>
             ))}
@@ -205,9 +198,7 @@ const ChangeEmail = ({
             placeholder="Enter Current Password"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
-            iconRender={(visible) =>
-              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-            }
+            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
           />
         </div>
         <div className="form_input_box">
@@ -224,7 +215,7 @@ const ChangeEmail = ({
   );
 };
 
-const ReqPayoutForm = ({ loginId, setLoginId, amount, setAmount, reason, setReason }) => {
+const ReqPayoutForm = ({loginId, setLoginId, amount, setAmount, reason, setReason}) => {
   return (
     <form className="userSupportForm_reqPayoutForm">
       <div className="req_form_inputFields">
@@ -258,7 +249,7 @@ const ReqPayoutForm = ({ loginId, setLoginId, amount, setAmount, reason, setReas
             style={{
               height: 93,
               resize: "none",
-              border: "none !important"
+              border: "none !important",
             }}
           />
         </div>
