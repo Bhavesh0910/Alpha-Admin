@@ -52,7 +52,7 @@ export const supportListReq = createAsyncThunk("support/fetchPhase1List", async 
     const response = await supportListApi(idToken, query, url);
     return response;
   } catch (error) {
-    dispatch(returnErrors("Error Fetching List...", 400));
+    dispatch(returnErrors(error?.response?.data?.detail || "Error Fetching Support List!", 400));
     return rejectWithValue(error.response.data);
   }
 });
@@ -62,7 +62,7 @@ export const nestedTableDataReq = createAsyncThunk("support/nestedDataFetch", as
     const response = await nestedTableApi(idToken, url, flag);
     return response;
   } catch (error) {
-    dispatch(returnErrors("Error Fetching List", 400));
+    dispatch(returnErrors(error?.response?.data?.detail || "Error Fetching User Details!", 400));
     return rejectWithValue(error.response.data);
   }
 });
@@ -117,3 +117,110 @@ const supportLists = createSlice({
 
 // Export the async thunk and any reducers if needed
 export default supportLists.reducer;
+
+
+export const statusUpdateReq = createAsyncThunk("support/updateStatus", async ({idToken, body, id, isPayoutUpdate, updatedStatus, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await statusUpdateApi(idToken, body, id, isPayoutUpdate, updatedStatus);
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error?.response?.data?.detail || "Error Updating the User status!", 400));
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const editCommentReq = createAsyncThunk("support/editComment", async ({idToken, body, id, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await editCommentApi(idToken, body, id);
+    return response;
+  } catch (error) {
+    dispatch(returnErrors("Error Fetching List...", 400));
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const updateContactReq = createAsyncThunk("support/updateContract", async ({idToken, body, id, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await updateContactApi(idToken, body, id);
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error?.response?.data?.detail || "Error Updating Contract!", 400));
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const createAccountReq = createAsyncThunk("support/createAccount", async ({idToken, body, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await createAccountApi(idToken, body);
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error?.response?.data?.detail || "Error Updating Contract!", 400));
+    return rejectWithValue(error.response.data);
+  }
+});
+
+async function statusUpdateApi(idToken, body, id, isPayoutUpdate, updatedStatus) {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    };
+    let response;
+
+    if (isPayoutUpdate) {
+      response = await axios.post(`${baseUrl}v2/update-payout-status/`, {id, status: updatedStatus}, config);
+    } else {
+      response = await axios.patch(`${baseUrl}v2/support/case/history/${id}/`, body, config);
+    }
+    return response;
+  } catch (error) {
+    console.log("error :", error);
+    throw error;
+  }
+}
+
+async function editCommentApi(idToken, body, id) {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    };
+    let response = await axios.patch(`${baseUrl}v2/get/funded/details/${id}/`, body, config);
+    return response;
+  } catch (error) {
+    console.log("error :", error);
+    throw error;
+  }
+}
+
+async function updateContactApi(idToken, body, id) {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    };
+    let response = await axios.patch(`${baseUrl}v2/support/case/history/${id}/`, body, config);
+    return response;
+  } catch (error) {
+    console.log("error :", error);
+    throw error;
+  }
+}
+
+async function createAccountApi(idToken, body) {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    };
+    let response = await axios.post(`${baseUrl}support/admin/create/account/`, body, config);
+    return response;
+  } catch (error) {
+    console.log("error :", error);
+    throw error;
+  }
+}

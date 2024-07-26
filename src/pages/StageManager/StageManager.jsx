@@ -12,7 +12,7 @@ import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 import {DownOutlined} from "@ant-design/icons";
 import "./StageManager.scss";
-import {supportListReq, nestedTableDataReq} from "../../store/NewReducers/Support";
+import {supportListReq, nestedTableDataReq, statusUpdateReq, editCommentReq, updateContactReq, createAccountReq} from "../../store/NewReducers/Support";
 import ReactCountryFlag from "react-country-flag";
 import dayjs from "dayjs";
 import {formatDate, formatDateTime, formatDateTimeNew, FormatUSD} from "../../utils/helpers/string";
@@ -25,14 +25,20 @@ const StageManager = () => {
 
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [editComment, setEditComment] = useState("");
-  const [editIndex, setEditIndex] = useState(null);
+
+  const [newComment, setNewComment] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalAction, setModalAction] = useState("");
+  const [userToUpdate, setuserToUpdate] = useState(null);
+
+  const [editCommentToUpdate, setEditCommentToUpdate] = useState(null);
+  const [updatedStatus, setUpdatedStatus] = useState(null);
+  const [updatedContract, setUpdatedContract] = useState(null);
+
   const [status, setStatus] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
   const [dates, setDates] = useState(null);
-  const [modalAction, setModalAction] = useState("");
   const {idToken} = useSelector((state) => state.auth);
   const {count, data, isLoading, stageStatusOptions} = useSelector((state) => state.support);
   const [fetchUpdate, setFetchUpdate] = useState(true);
@@ -56,8 +62,6 @@ const StageManager = () => {
     setFetchUpdate((prev) => !prev);
     // console.log(window.onload)
   }, [location.pathname]);
-
-  // console.log("Location : ",location.pathname);
 
   async function fetchStageList(idToken, pageNo, pageSize, searchText, status, dates) {
     // console.log("Fteching...");
@@ -89,17 +93,10 @@ const StageManager = () => {
     setPageNo(1);
     if (dates) {
       setDates(dates);
-      // setDates(dates?.map((item) => item.format("DD MMM YYYY")));
     } else {
       setDates(null);
     }
   }
-
-  const handleStatusChange = (index, status) => {
-    // const newData = [...data];
-    // newData[index].status = status;
-    // setData(newData);
-  };
 
   const handleSearch = (value) => {
     setPageNo(1);
@@ -111,41 +108,6 @@ const StageManager = () => {
     setPageNo(1);
     setStatus(key);
   };
-
-  const openEditModal = (comment, index) => {
-    setEditComment(comment);
-    setEditIndex(index);
-    setIsModalVisible(true);
-  };
-
-  const handleAction = () => {
-    // const newData = [...data];
-    // if (modalAction === "Accept") {
-    //   newData[editIndex].status = "Approved";
-    // } else if (modalAction === "Reject") {
-    //   newData[editIndex].status = "Rejected";
-    // }
-    // setData(newData);
-    setIsModalVisible(false);
-  };
-
-  const handleEditComment = () => {
-    // const newData = [...data];
-    // newData[editIndex].comment = editComment;
-    // setData(newData);
-    setIsModalVisible(false);
-  };
-
-  const statusMenu = (key) => (
-    <Menu onClick={(e) => handleStatusChange(key, e.key)}>
-      <Menu.Item key="New">New</Menu.Item>
-      <Menu.Item key="Approved">Approved</Menu.Item>
-      <Menu.Item key="In Progress">In Progress</Menu.Item>
-      <Menu.Item key="Rejected">Rejected</Menu.Item>
-    </Menu>
-  );
-
-  const navigate = useNavigate()
 
   const handleCopyToClipboard = (text) => {
     toast("Copied email", {
@@ -162,32 +124,95 @@ const StageManager = () => {
     });
   };
 
+  const openEditModal = (value, record) => {
+    setEditCommentToUpdate(value);
+    setuserToUpdate(record);
+    setIsModalVisible(true);
+    setModalAction("Edit");
+  };
+
+  const openStatusUpdateModal = (key, updatedValue, record) => {
+    setuserToUpdate(record);
+    setUpdatedStatus(updatedValue);
+    setIsModalVisible(true);
+    setModalAction("Update Status");
+  };
+
+  const openContractUpdateModal = (value,record) => {
+    setuserToUpdate(record);
+    setUpdatedStatus(value);
+    setIsModalVisible(true);
+    setModalAction("Contract");
+  };
+
+  const openCreateAccountModel = (updatedValue, record) => {
+    setuserToUpdate(record);
+    setUpdatedContract(updatedValue);
+    setIsModalVisible(true);
+    setModalAction("Create Account");
+  };
+
+  const statusMenu = (key, record) => (
+    <Menu onClick={(e) => openStatusUpdateModal(key, e.key, record)}>
+      <Menu.Item key="New">New</Menu.Item>
+      <Menu.Item key="Approved">Approved</Menu.Item>
+      <Menu.Item key="In Progress">In Progress</Menu.Item>
+      <Menu.Item key="Rejected">Rejected</Menu.Item>
+      <Menu.Item key="Flagged">Flagged</Menu.Item>
+      <Menu.Item key="Dissmissed">Dissmissed</Menu.Item>
+    </Menu>
+  );
+
+  const handleUpdateStatus = () => {
+    const formData = new FormData();
+    formData.append("status", updatedStatus);
+    let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
+    let isPayoutUpdate = location.pathname === "/support/payout";
+    dispatch(statusUpdateReq({idToken, body: formData, id: userId, isPayoutUpdate, updatedStatus, dispatch}));
+    setIsModalVisible(false);
+  };
+
+  const handleEditComment = () => {
+    const formData = new FormData();
+    formData.append("comment", editCommentToUpdate);
+    let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
+    dispatch(editCommentReq({idToken, body: formData, id: userId, dispatch}));
+    setIsModalVisible(false);
+  };
+
+  const handleContract = () => {
+    const formData = new FormData();
+    formData.append("issue_contract", updatedContract);
+    let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
+    dispatch(updateContactReq({idToken, body: formData, userId, dispatch}));
+    setIsModalVisible(false);
+  };
+
+  const handleCreateAccount = () => {
+    const body = {id: userToUpdate?.id};
+    dispatch(createAccountReq({idToken, body, dispatch}));
+    setIsModalVisible(false);
+  };
+
+  const navigate = useNavigate();
+
   const columns = useMemo(() => {
     switch (location.pathname) {
       case "/support/stage-1":
       case "/support/stage-2":
         return [
           {
-            title: "Flag",
-            dataIndex: "country",
-            key: "country",
-            render: (country) => {
-              const countryName = country;
-              const countryCode = lookup.byCountry(countryName);
-              if (countryCode) {
-                return (
-                  <div className="country_name_wrapper">
-                    <ReactCountryFlag
-                      countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
-                      svg={true}
-                      aria-label={countryName}
-                    />
-                  </div>
-                );
-              } else {
-                return <span>{countryName}</span>;
-              }
-            },
+            title: "Account",
+            dataIndex: "account_id",
+            key: "account_id",
+            render: (text, row) => (
+              <Link
+                to="/trader-overview"
+                // onClick={() => handleActiveAccount(row, "account")}
+              >
+                {text ? text : "-"}
+              </Link>
+            ),
           },
           // Table.EXPAND_COLUMN,
           {
@@ -241,17 +266,26 @@ const StageManager = () => {
             render: (text) => (text ? text : "-"),
           },
           {
-            title: "Account",
-            dataIndex: "account_id",
-            key: "account_id",
-            render: (text, row) => (
-              <Link
-                to="/trader-overview"
-                // onClick={() => handleActiveAccount(row, "account")}
-              >
-                {text ? text : "-"}
-              </Link>
-            ),
+            title: "Flag",
+            dataIndex: "country",
+            key: "country",
+            render: (country) => {
+              const countryName = country;
+              const countryCode = lookup.byCountry(countryName);
+              if (countryCode) {
+                return (
+                  <div className="country_name_wrapper">
+                    <ReactCountryFlag
+                      countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
+                      svg={true}
+                      aria-label={countryName}
+                    />
+                  </div>
+                );
+              } else {
+                return <span>{countryName}</span>;
+              }
+            },
           },
           {
             title: "Funded",
@@ -272,7 +306,7 @@ const StageManager = () => {
             key: "status",
             render: (text, record, index) => (
               <Dropdown
-                overlay={() => statusMenu(index)}
+                overlay={() => statusMenu(text, record)}
                 trigger={["click"]}
               >
                 <Button
@@ -379,11 +413,11 @@ const StageManager = () => {
                     src={comment}
                     alt="comment"
                     className="edit-icon"
-                    onClick={() => openEditModal(text, index)}
+                    onClick={() => openEditModal(text, record)}
                   />
                 </div>
               ) : (
-                "-"
+                <Button onClick={() => openEditModal(text, record)}>Add Comment</Button>
               ),
           },
           {
@@ -431,26 +465,35 @@ const StageManager = () => {
             title: "Details",
             dataIndex: "details",
             key: "details",
-            render: (text , record) => 
-            <Button 
-            onClick={() => navigate(`/account-analysis/${record.account_id}`)}
-            className="account_metrics_btn">Account Metrics</Button>,
+            render: (text, record) => (
+              <Button
+                onClick={() => navigate(`/account-analysis/${record.account_id}`)}
+                className="account_metrics_btn"
+              >
+                Account Metrics
+              </Button>
+            ),
           },
           {
             title: "Action",
             key: "action",
             render: (text, row) => (
-              <Dropdown
-                overlay={
-                  <Menu>
-                    {/* <Menu.Item onClick={() => handleGenerateContract(row)}>{row.contract_issued ? "Revoke" : "Generate"} Contract</Menu.Item> */}
-                    {/* <Menu.Item onClick={() => handleGenerateContract(row, "reject")}>Reject Contract</Menu.Item> */}
-                  </Menu>
-                }
-                trigger={["click"]}
+              // <Dropdown
+              //   overlay={
+              //     <Menu>
+              //       <Menu.Item onClick={() => handleGenerateContract(row)}>{row.contract_issued ? "Revoke" : "Generate"} Contract</Menu.Item>
+              //       <Menu.Item onClick={() => handleGenerateContract(row)}>Create Account</Menu.Item>
+              //     </Menu>
+              //   }
+              //   trigger={["click"]}
+              // >
+              <Button
+                className="action_btn standard_button"
+                onClick={() => openCreateAccountModel(row)}
               >
-                <Button className="action_btn standard_button">Actions</Button>
-              </Dropdown>
+                Create Account
+              </Button>
+              // </Dropdown>
             ),
           },
         ];
@@ -510,11 +553,11 @@ const StageManager = () => {
                     src={comment}
                     alt="comment"
                     className="edit-icon"
-                    onClick={() => openEditModal(text, index)}
+                    onClick={() => openEditModal(text, record)}
                   />
                 </div>
               ) : (
-                "-"
+                <Button onClick={() => openEditModal(text, record)}>Add Comment</Button>
               ),
           },
           {
@@ -523,7 +566,7 @@ const StageManager = () => {
             key: "progress",
             render: (text, record, index) => (
               <Dropdown
-                overlay={() => statusMenu(index)}
+                overlay={() => statusMenu(text, record)}
                 trigger={["click"]}
               >
                 <Button
@@ -629,12 +672,32 @@ const StageManager = () => {
             render: (text) => <span>${text}</span>,
           },
           {
+            title: "Comment",
+            dataIndex: "comment",
+            key: "comment",
+            render: (text, record, index) =>
+              text ? (
+                <div className="comment_box">
+                  <p>{text}</p>
+                  <img
+                    src={comment}
+                    alt="comment"
+                    className="edit-icon"
+                    onClick={() => openEditModal(text, record)}
+                  />
+                </div>
+              ) : (
+                <Button onClick={() => openEditModal(text, record)}>Add Comment</Button>
+              ),
+          },
+          ,
+          {
             title: "Status",
             dataIndex: "status",
             key: "status",
             render: (text, record, index) => (
               <Dropdown
-                overlay={() => statusMenu(index)}
+                overlay={() => statusMenu(text, record)}
                 trigger={["click"]}
               >
                 <Button
@@ -658,18 +721,18 @@ const StageManager = () => {
             title: "Action",
             dataIndex: "action",
             key: "action",
-            render: (actions, record, index) => (
+            render: (text, row, index) => (
               <>
                 <div className="action_button">
                   <Button
                     className="standard_button custom"
-                    // onClick={() => openActionModal("Accept", index)}
+                    onClick={() => openContractUpdateModal("Approved", row)}
                   >
                     {"Accept"}
                   </Button>
                   <Button
                     className="reject_button"
-                    // onClick={() => openActionModal("Reject", index)}
+                    onClick={() => openContractUpdateModal("Rejected", row)}
                   >
                     {"Reject"}
                   </Button>
@@ -687,14 +750,27 @@ const StageManager = () => {
     }
   }, [location.pathname]);
 
-  const handleCategoryChange = (value) => {
-    // setCategory(value);
-  };
+  if (location.pathname === "/support/stage-2") {
+    columns.push({
+      title: "Contract",
+      dataIndex: "issue_contract",
+      key: "issue_contract",
+      render: (text, row) => (
+        <Button
+          className="action_btn standard_button"
+          onClick={() => openContractUpdateModal(!text, row)}
+        >
+          {text ? "Revoke" : "Generate"}
+        </Button>
+      ),
+    });
+  }
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
     setPageSize(updatedPageSize);
   }
+
   return (
     <div className="stageManager_container">
       <div className="header_wrapper">
@@ -712,7 +788,7 @@ const StageManager = () => {
           <Select
             className="category_dropdown"
             defaultValue="all"
-            onChange={handleCategoryChange}
+            // onChange={handleCategoryChange}
           >
             <Option value="all">All Categories</Option>
             {/* <Option value="swift">Swift</Option>
@@ -782,19 +858,27 @@ const StageManager = () => {
       <Modal
         title={modalAction}
         open={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
-        onOk={modalAction === "Edit" ? handleEditComment : handleAction}
+        onCancel={() => {
+          setIsModalVisible(false);
+          setEditCommentToUpdate(null);
+          setuserToUpdate(null);
+          setUpdatedContract(null);
+        }}
+        onOk={modalAction === "Update Status" ? handleUpdateStatus : modalAction === "Edit" ? handleEditComment : modalAction === "Create Account" ? handleCreateAccount : handleContract}
       >
         {modalAction === "Edit" ? (
           <Form.Item label="Edit Comment">
             <Input.TextArea
-              value={editComment}
-              onChange={(e) => setEditComment(e.target.value)}
+              value={editCommentToUpdate}
+              onChange={(e) => setEditCommentToUpdate(e.target.value)}
+              placeholder="Write your comment here.."
             />
           </Form.Item>
         ) : (
-          <Form.Item label="Write your reason">
-            <Input.TextArea />
+          <Form.Item label="Comment">
+            value={editCommentToUpdate}
+            onChange={(e) => setEditCommentToUpdate(e.target.value)}
+            <Input.TextArea placeholder="Write your comment here.." />
           </Form.Item>
         )}
       </Modal>

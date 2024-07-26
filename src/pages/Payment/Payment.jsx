@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from "react";
 import "./Payment.scss";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
-import {DatePicker, Button, Select, Tooltip, notification, Card} from "antd";
+import {DatePicker, Button, Select, Tooltip, notification, Card, Dropdown, Menu, Modal, Form, Input} from "antd";
 import {Link, useNavigate} from "react-router-dom";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import editIcon from "../../assets/icons/edit_icon_gray.svg";
@@ -10,10 +10,11 @@ import verifiedIcon from "../../assets/icons/verified_green_circleIcon.svg";
 import notVerifiedIcon from "../../assets/icons/notverified_red_circleIcon.svg";
 import {ReactComponent as CopyButton} from "../../assets/icons/copyButtonGray.svg";
 import dayjs from "dayjs";
-import {paymentExportsReq, paymentListReq, selectedEmail} from "../../store/NewReducers/payment";
+import {paymentExportsReq, paymentListReq, selectedEmail, updatePaymentStatusReq} from "../../store/NewReducers/payment";
 import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
+import {DownOutlined} from "@ant-design/icons";
 const {Option} = Select;
 const {RangePicker} = DatePicker;
 
@@ -32,6 +33,13 @@ const Payment = () => {
   const [pageNo, setPageNo] = useState(1);
   const [dates, setDates] = useState();
   const defaultDates = [dayjs().subtract(7, "day"), dayjs()];
+
+  const [statusModelVisible, setStatusModelVisible] = useState(false);
+  const [modalAction, setModalAction] = useState("");
+  const [userToUpdate, setuserToUpdate] = useState(null);
+  const [updatedStatus, setUpdatedStatus] = useState(null);
+
+  const [editCommentToUpdate, setEditCommentToUpdate] = useState(null);
 
   const columns = useMemo(
     () => [
@@ -195,27 +203,61 @@ const Payment = () => {
         width: 150,
       },
       {
-        title: "Invoice",
-        dataIndex: "transactionId",
-        key: "transaction_Id",
-        width: 200,
-        render: (_, record) =>
-          record?.invoice ? (
-            <div className="btn-wrapper">
-              <a
-                href={record?.invoice}
-                target="_blank"
-              >
-                <Button className="btn-block">{"Invoice"}</Button>
-              </a>
-            </div>
-          ) : (
-            "-"
-          ),
+        title: "Status",
+        dataIndex: "payment_status",
+        key: "payment_status",
+        render: (text, record, index) => (
+          <Dropdown
+            overlay={() => statusMenu(text, record)}
+            trigger={["click"]}
+          >
+            <Button
+              icon={<DownOutlined />}
+              className="status_button"
+              style={{
+                width: "120px",
+                display: "flex",
+                flexDirection: "row-reverse",
+                justifyContent: "space-between",
+                padding: "6px 10px",
+              }}
+            >
+              <p className={text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "pending" : ""}>
+                {text}
+              </p>
+            </Button>
+          </Dropdown>
+        ),
       },
     ],
     [paymentData],
   );
+
+  const statusMenu = (key, record) => (
+    <Menu onClick={(e) => openStatusUpdateModal(e.key, record)}>
+      <Menu.Item key="New">New</Menu.Item>
+      <Menu.Item key="Approved">Approved</Menu.Item>
+      <Menu.Item key="In Progress">In Progress</Menu.Item>
+      <Menu.Item key="Rejected">Rejected</Menu.Item>
+      <Menu.Item key="Flagged">Flagged</Menu.Item>
+      <Menu.Item key="Dissmissed">Dissmissed</Menu.Item>
+    </Menu>
+  );
+
+  const handleUpdateStatus = () => {
+    let body = {payment_id: userToUpdate?.transaction_id};
+    console.log(idToken)
+    dispatch(updatePaymentStatusReq({idToken, body, dispatch}));
+    setStatusModelVisible(false);
+  };
+
+  const openStatusUpdateModal = (updatedValue, record) => {
+    console.log(updatedValue, record);
+    setuserToUpdate(record);
+    setUpdatedStatus(updatedValue);
+    setStatusModelVisible(true);
+    setModalAction("Update Status");
+  };
 
   useEffect(() => {
     fetchPayments(idToken, pageSize, pageNo, searchText, activeTab, dates);
@@ -393,6 +435,24 @@ const Payment = () => {
       ) : (
         ""
       )}
+      <Modal
+        title={modalAction}
+        open={statusModelVisible}
+        onCancel={() => {
+          setStatusModelVisible(false);
+          setEditCommentToUpdate(null);
+          setuserToUpdate(null);
+        }}
+        onOk={handleUpdateStatus}
+      >
+        <Form.Item
+          label="Comment"
+          value={editCommentToUpdate}
+          onChange={(e) => setEditCommentToUpdate(e.target.value)}
+        >
+          <Input.TextArea placeholder="Write your comment here.." />
+        </Form.Item>
+      </Modal>
     </div>
   );
 };
