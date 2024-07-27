@@ -7,6 +7,7 @@ export const changeAccountStatus = createAsyncThunk("accounts/changeAccountStatu
   try {
     const response = await changeAccountStatusApi(idToken, body);
     dispatch(returnMessages(response?.message || "Action Performed SuccessFully!", 200));
+    dispatch(traderListRefresh());
     return response;
   } catch (error) {
     dispatch(returnErrors(error.response.data.details || "Action Failed, Try again!", 400));
@@ -19,6 +20,7 @@ export const deleteAcount = createAsyncThunk("accounts/deleteAcount", async ({id
     const response = await deleteAcountApi(idToken, body, platform);
     console.log(response);
     dispatch(returnMessages(response?.message || "Action Performed SuccessFully!", 200));
+    dispatch(traderListRefresh());
     return response;
   } catch (error) {
     dispatch(returnErrors(error.response.data.details || "Action Failed, Try again!", 400));
@@ -46,6 +48,7 @@ const accountSlice = createSlice({
     data: [],
     login_id: null,
     totalItems: 1,
+    refresh:false
   },
   reducers: {
     resetAccountList: (state) => {
@@ -59,6 +62,9 @@ const accountSlice = createSlice({
     },
     setLoginList: (state, action) => {
       state.data = action.payload;
+    },
+    traderListRefresh: (state) => {
+      state.refresh = !state.refresh;
     },
   },
   extraReducers: (builder) => {
@@ -106,5 +112,5 @@ const accountSlice = createSlice({
 });
 
 // Export the async thunk and any reducers if needed
-export const {resetAccountList, setDefaultLoginId, setLoginList} = accountSlice.actions;
+export const {resetAccountList, setDefaultLoginId, setLoginList, traderListRefresh} = accountSlice.actions;
 export default accountSlice.reducer;

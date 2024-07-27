@@ -850,7 +850,7 @@ const StageManager = () => {
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}
         triggerChange={triggerChange}
-        isExpandable={location.pathname === "/support/payout" ? false : true}
+        isExpandable={location.pathname === "/support/payout" ? true : true}
         expandedRowRender={"hello"}
         ExpandedComp={ExpandedRowData}
         rowId={location.pathname === "/support/funded" ? "login_id" : "id"}

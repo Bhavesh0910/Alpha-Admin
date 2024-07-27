@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./RevenueManagement.scss";
 import Infobox from "../../components/RevenueManagement/Infobox/Infobox";
 import StatisticChart from "../../components/RevenueManagement/StatisticChart/StatisticChart";
@@ -6,9 +6,40 @@ import FundedAccGraph from "../../components/RevenueManagement/FundedAccGraph/Fu
 import PayoutPaymentTable from "../../components/RevenueManagement/PayoutPaymentTable/PayoutPaymentTable";
 import {Button, DatePicker} from "antd";
 import dayjs from "dayjs";
+import { payoutPaymentReq, payoutStatsReq, qualifiedAccountReq, statsReq } from "../../store/NewReducers/revenueMangement";
+import { useDispatch, useSelector } from "react-redux";
 const {RangePicker} = DatePicker;
 const RevenueManagement = () => {
+
   const [activeTab, setActiveTab] = useState("payments");
+  const [pageSize, setPageSize] = useState(10);
+  const [pageNo, setPageNo] = useState(1);
+  const [dates, setDates] = useState(null);
+  const { idToken } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    let query = "";
+    dispatch(payoutStatsReq({ idToken, dispatch, query }));
+    dispatch(qualifiedAccountReq({ idToken, dispatch, query }));
+  }, [idToken]);
+
+  useEffect(() => {
+    let query = null;
+    if (dates) {
+      query = `?start_date=${dates[0]}&end_date=${dates[1]}`;
+    }
+    dispatch(statsReq({ idToken, dispatch, query }));
+  }, [idToken, dates]);
+
+  // useEffect(() => {
+  //   let query = `?page=${pageNo}&page_size=${pageSize}`;
+  //   if (activeTab) {
+  //     query += `&type=${activeTab}`;
+  //   }
+  //   dispatch(payoutPaymentReq({ idToken, dispatch, query }));
+  // }, [idToken, activeTab, pageNo, pageSize]);
 
   const handleTabChange = (key) => {
     setActiveTab(key);

@@ -1,13 +1,13 @@
-import { useDispatch, useSelector } from "react-redux";
-import { CreateTradingAccountReq, UserSearchReq } from "../../../utils/api/apis";
+import {useDispatch, useSelector} from "react-redux";
+import {CreateTradingAccountReq, UserSearchReq} from "../../../utils/api/apis";
 import "./CreatePlan.scss";
-import { useEffect, useState } from "react";
-import { returnErrors } from "../../../store/reducers/error";
-import { returnMessages } from "../../../store/reducers/message";
-import { CircularProgress } from "@mui/material";
-import { Button, Input, Select, Spin } from "antd";
-import { fetchFundingDetails } from "../../../store/NewReducers/fundingSlice";
-const { Option } = Select;
+import {useEffect, useState} from "react";
+import {returnErrors} from "../../../store/reducers/error";
+import {returnMessages} from "../../../store/reducers/message";
+import {CircularProgress} from "@mui/material";
+import {Button, Input, Select, Spin} from "antd";
+import {fetchFundingDetails} from "../../../store/NewReducers/fundingSlice";
+const {Option} = Select;
 
 const CreateTradingAccount = () => {
   const [emailOpts, setEmailOpts] = useState([]);
@@ -15,7 +15,8 @@ const CreateTradingAccount = () => {
   const idToken = useSelector((state) => state.auth.idToken);
   const dispatch = useDispatch();
 
-  const { fundingData } = useSelector(state => state.funding);
+  const {fundingData} = useSelector((state) => state.funding);
+  const [index, setIndex] = useState(0);
 
   // User search by email
   const fetch = async (value) => {
@@ -30,7 +31,6 @@ const CreateTradingAccount = () => {
       }));
       // console.log("userArray", userArray)
       setEmailOpts(userArray);
-      console.log(userArray, "userarray")
     } else {
       const msg = response?.response?.data?.detail || "Something went wrong";
       dispatch(returnErrors(msg, 400));
@@ -44,76 +44,90 @@ const CreateTradingAccount = () => {
   const [phase, setPhase] = useState(null);
   const [isSpinner, setIsSpinner] = useState(false);
 
-  const stages = ['Evaluation', 'Verification', 'Funded'];
-  const platforms = ['MT5', 'C-Trader', 'Dx-Trader'];
+  const stages = ["Evaluation", "Verification", "Funded"];
+  const platforms = ["MT5", "C-Trader", "Dx-Trader"];
   const rawSpreadOptions = [
-    { label: 'Raw Spread', value: 'Raw Spread' },
-    { label: 'No Commission', value: 'No commission' }
+    {label: "Raw Spread", value: "Raw Spread"},
+    {label: "No Commission", value: "No commission"},
   ];
 
-
-  // const brokerOptions = [{ label: "Alphaticks", value: "alphaticks" }];
-  // const [broker, setBroker] = useState(brokerOptions[0]);
-
   const [data, setData] = useState({
-    user_data: null,
-    user: '',
-    name: '',
-    pwd: '',
-    pwdInvestor: '',
-    group: 'ACGd\\demo ACG',
-    leverage: '',
-    challenge: '',
-    status: 'Evaluation',
-    plan_type: '',
-    account_size: '',
-    platform: 'MT5',
-    raw_spread: 'Raw Spread',
+    challenge: null,
+    group: "ACGd\\demo ACG",
+    leverage: "",
+    name: "",
+    pwd: "",
+    pwdInvestor: "",
+    raw_spread: "Raw Spread",
+    status: "Evaluation",
+    user: "",
+    platform: "MT5",
+    email: "",
+    reason: "testing",
+    // plan_type: "",
+    // account_size: "",
   });
-
 
   const [fundingEvaluationOptions, setFundingEvaluationOptions] = useState([]);
   const [amounts, setAmounts] = useState([]);
 
-  useEffect(() => { fetch("") }, [])
+  useEffect(() => {
+    fetch("");
+  }, []);
 
-  // useEffect to populate plan options based on funding data
   useEffect(() => {
     if (fundingData) {
-      const fundingEvu = Object.keys(fundingData).map((item, index) => ({ label: `${item}`, value: `${item}` }));
+      const fundingEvu = Object.keys(fundingData).map((item, index) => ({label: `${item}`, value: `${item}`}));
       const Amounts = Object.values(fundingData).map((value, index) => value?.map((amount, index) => amount?.account_balance));
       setFundingEvaluationOptions(fundingEvu);
       setAmounts(Amounts);
     }
   }, [fundingData]);
 
-  // useEffect to populate competition options based on selected plan
-  useEffect(() => {
-    // if (fundingData && selectedOption) {
-    //   const competitionArray = fundingData
-    //     .filter((item) => item.id === selectedOption)
-    //     .flatMap((item) => item.challenges.map((challenge) => ({
-    //       value: challenge.id,
-    //       label: challenge.name
-    //     })));
-    //   setCompetitionOptions(competitionArray);
-    // }
-  }, [selectedOption, fundingData]);
-
-  const handleSelectChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
-    setSelectedCompetition(null);
-  };
-
-  const handleSelectCompetitionChange = (selectedOption) => {
-    setSelectedCompetition(selectedOption);
-  };
-
   const handleCreateTradingAccount = async () => {
     setIsSpinner(true);
-    console.log("Data : ", data)
-    // let response;
-    const response = await CreateTradingAccountReq(idToken, data);
+    console.log("Data : ", data);
+    const {challenge, group, leverage, name, pwd, pwdInvestor, raw_spread, status, user, email, reason} = data;
+
+    let traderData = {};
+    if (data?.platform === "MT5") {
+      traderData = {
+        challenge: challenge,
+        group: group,
+        leverage: leverage,
+        name: name,
+        pwd: pwd,
+        pwdInvestor: pwdInvestor,
+        raw_spread: raw_spread,
+        reason: reason,
+        status: status,
+        user: user,
+      };
+    }
+    if (data?.platform === "C-Trader") {
+      traderData = {
+        challenge: challenge,
+        raw_spread: raw_spread,
+        reason: reason,
+        status: status,
+        user: user,
+      };
+    }
+    if (data?.platform === "Dx-Trader") {
+      traderData = {
+        challenge: challenge,
+        email: email,
+        group: group,
+        leverage: leverage,
+        name: name,
+        pwd: pwd,
+        pwdInvestor: pwdInvestor,
+        reason: reason,
+        status: status,
+        user: user,
+      };
+    }
+    const response = await CreateTradingAccountReq(idToken, traderData, data?.platform);
     if (response?.status < 399) {
       dispatch(returnMessages("Created Account Successfully", 201));
     } else {
@@ -122,26 +136,6 @@ const CreateTradingAccount = () => {
     }
     setIsSpinner(false);
   };
-
-  // useEffect(() => {
-  //   console.log("data : ", data);
-  //   console.log("dataaa", {
-  //     user_data: null,
-  //     user: '',
-  //     name: '',
-  //     pwd: '',
-  //     pwdInvestor: '',
-  //     group: 'ACGd\\demo ACG',
-  //     leverage: '',
-  //     challenge: '',
-  //     status: 'Evaluation',
-  //     plan_type: '',
-  //     account_size: '',
-  //     platform: 'MT5',
-  //     raw_spread: 'Raw Spread',
-  //   })
-  //   console.log("Amount", amounts)
-  // }, [data])
 
   let timeoutId;
   const handleOnInputChange = (value) => {
@@ -161,35 +155,23 @@ const CreateTradingAccount = () => {
             <label htmlFor="Platform">Platform</label>
             <Select
               placeholder="Select a platform"
-              style={{ width: "100%" }}
-              options={platforms.map((platform) => ({ label: platform, value: platform }))}
-              onChange={(value) => setData((prev) => ({ ...prev, platform: value }))}
+              style={{width: "100%"}}
+              options={platforms.map((platform) => ({label: platform, value: platform}))}
+              onChange={(value) => setData((prev) => ({...prev, platform: value}))}
             />
           </div>
           <div className="form_input">
             <label htmlFor="AccountName">Account name</label>
-            {/* <Select
-              className="plan_selector"
-              options={brokerOptions}
-              value={broker}
-              onChange={(selectedOption) => {
-                setBroker(selectedOption);
-                setData((prev) => ({
-                  ...prev,
-                  broker: selectedOption,
-                }));
-              }}
-            /> */}
             <Input
               placeholder="Enter your Account Name"
-              onChange={(e) => setData((prev) => ({ ...prev, name: e.target.value }))}
+              onChange={(e) => setData((prev) => ({...prev, name: e.target.value}))}
             />
           </div>
           <div className="form_input">
             <label htmlFor="Password">Password</label>
             <Input
               placeholder="Enter your password"
-              onChange={(e) => setData((prev) => ({ ...prev, pwd: e.target.value, pwdInvestor: e.target.value }))}
+              onChange={(e) => setData((prev) => ({...prev, pwd: e.target.value, pwdInvestor: e.target.value}))}
             />
           </div>
         </div>
@@ -199,14 +181,18 @@ const CreateTradingAccount = () => {
             <Select
               showSearch
               placeholder="Search for a user"
-              style={{ width: "100%" }}
+              style={{width: "100%"}}
               defaultActiveFirstOption={false}
               showArrow={false}
               filterOption={false}
               onSearch={handleOnInputChange}
-              onChange={(value, x) => setData((prev) => ({
-                ...prev, user: value, user_data: x
-              }))}
+              onChange={(value, x) =>
+                setData((prev) => ({
+                  ...prev,
+                  user: value,
+                  email: x.label,
+                }))
+              }
               notFoundContent={isLoading ? <Spin size="small" /> : null}
               options={emailOpts}
             />
@@ -217,7 +203,7 @@ const CreateTradingAccount = () => {
               className="rawSpread_selector"
               placeholder="Select a Raw Spread"
               options={rawSpreadOptions}
-              onChange={(value) => setData((prev) => ({ ...prev, raw_spread: value }))}
+              onChange={(value) => setData((prev) => ({...prev, raw_spread: value === "Raw Spread" ? true : false}))}
             />
           </div>
           <div className="form_input">
@@ -226,10 +212,23 @@ const CreateTradingAccount = () => {
               className="funding_evaluation_selector"
               placeholder="Select a Funding Evaluation"
               options={fundingEvaluationOptions ? fundingEvaluationOptions : []}
-              onChange={(value) => setData((prev) => {
-                console.log(value);
-                return { ...prev, plan_type: value }
-              })}
+              onChange={(value) => {
+                let x = null;
+                for (let i = 0; i < fundingEvaluationOptions.length; i++) {
+                  if (value === fundingEvaluationOptions[i]?.value) {
+                    x = i;
+                    break;
+                  }
+                }
+                setIndex(x || 0);
+                const updates = {
+                  // plan_type: value,
+                  challenge: x + 1,
+                };
+                setData((prev) => {
+                  return {...prev, ...updates};
+                });
+              }}
             />
           </div>
         </div>
@@ -239,9 +238,15 @@ const CreateTradingAccount = () => {
             <Select
               className="funding_evaluation_selector"
               placeholder="Enter account balance"
-              options={data?.plan_type ? data?.plan_type === "alpha_pro" ? amounts[0].map((item) => ({ label: item, value: item })) : data?.plan_type === "free_trial" ? amounts[1].map((item) => ({ label: item, value: item })) : amounts[2].map((item) => ({ label: item, value: item })) : []}
-
-              onChange={(value) => setData((prev) => ({ ...prev, account_size: value }))}
+              options={index !== -1 ? amounts[index]?.map((item) => ({label: item, value: item})) : []}
+              onChange={(value) => {
+                const update = {
+                  // account_size: value,
+                  leverage:
+                    parseInt(fundingData[fundingEvaluationOptions[index]?.value].map((item) => (item?.account_balance === value ? item?.Leverage : -1)).filter((item) => item !== -1)[0]) || null,
+                };
+                setData((prev) => ({...prev, ...update}));
+              }}
             />
             {/* <Input
               placeholder="Enter account balance"
@@ -253,8 +258,8 @@ const CreateTradingAccount = () => {
             <Select
               className="stage_selector"
               placeholder="Select Stage"
-              options={stages.map((stage) => ({ label: stage, value: stage }))}
-              onChange={(value) => setData((prev) => ({ ...prev, status: value }))}
+              options={stages.map((stage) => ({label: stage, value: stage}))}
+              onChange={(value) => setData((prev) => ({...prev, status: value}))}
             />
           </div>
           <div className="form_input">
@@ -289,7 +294,6 @@ const CreateTradingAccount = () => {
 };
 
 export default CreateTradingAccount;
-
 
 // account_size: ""
 // challenge: ""

@@ -36,14 +36,14 @@ function TraderOverview() {
 
   const [phase, setPhase] = useState("");
   const {idToken, searchDates} = useSelector((state) => state.auth);
-  const {data, isLoading: accountsLoading, totalItems} = useSelector((state) => state.accountList);
+  const {data, isLoading: accountsLoading, totalItems, refresh} = useSelector((state) => state.accountList);
 
   const [dates, setDates] = useState(null);
   const defaultDates = [dayjs().subtract(7, "day"), dayjs()];
 
   useEffect(() => {
     fetchTradersData(dates, pageNo, pageSize, searchText, status, phase, platform);
-  }, [idToken, dates, pageNo, pageSize, searchText, status, phase, platform]);
+  }, [idToken, dates, pageNo, pageSize, searchText, status, phase, platform, refresh]);
 
   const fetchTradersData = async (dates, pageNo, pageSize, searchText, status, phase, platform) => {
     setIsLoading(true);
@@ -301,12 +301,12 @@ function TraderOverview() {
     console.log(action, record, "here");
   }
   const handleBlock = () => {
-    dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.id, note: reason}, dispatch}));
+    dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.user_id, note: reason}, dispatch}));
     setIsModalVisible(false);
   };
 
   const handleUnBlock = () => {
-    dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.id, note: reason}, dispatch}));
+    dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.user_id, note: reason}, dispatch}));
     setIsModalVisible(false);
   };
 

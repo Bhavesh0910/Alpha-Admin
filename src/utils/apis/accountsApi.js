@@ -54,7 +54,7 @@ const deleteAcountApi = async (idToken, body, platform) => {
       response = await axios.delete(`${baseUrl}v2/ctrader-accounts/delete/${body?.login_id}/`, config);
     }
     if (platform === "dxtraders") {
-      response = await axios.delete(`${baseUrl}vv2/dxtraders/list/delete/${body?.login_id}/`, config);
+      response = await axios.delete(`${baseUrl}vv2/dxtraders/list/delete/${body?.login_id}`, config);
     }
     return response.data;
   } catch (error) {
