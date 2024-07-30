@@ -1,28 +1,26 @@
-import { Breadcrumb, Card } from "antd";
 import React, { useEffect, useState } from "react";
-import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import { Link } from "react-router-dom";
+import { Breadcrumb, Card } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { logsListReq } from "../../../store/NewReducers/logsSlice";
-import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import { render } from "react-saga";
+import "../Funded/FundedLogs/FundedLogs.scss";
+import AntTable from "../../ReusableComponents/AntTable/AntTable";
+import { logsListReq } from "../../store/NewReducers/logsSlice";
+import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
-const CouponLogs = () => {
+
+const Stage1Logs = () => {
   const { idToken } = useSelector((state) => state.auth);
-  const { couponLogData, count, isLoading } = useSelector(
-    (state) => state.logs
-  );
+  const { fundedLogData, count, isLoading } = useSelector((state) => state.logs);
 
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const baseurl = "support/coupon-log/list/";
+    const baseurl = "v3/stage-log/list/?stage=stage1";
     const query = `?page=${pageNo}&page_size=${pageSize}`;
     const url = baseurl + query;
-    dispatch(logsListReq({ idToken, url, key: "couponLogData", dispatch }));
-  }, [pageNo, pageSize, idToken]);
+    dispatch(logsListReq({ idToken, url, key: "stage1LogsData", dispatch }));
+  }, [pageNo, pageSize, idToken, dispatch]);
 
   const columns = [
     {
@@ -34,56 +32,54 @@ const CouponLogs = () => {
     {
       title: "Date and Time",
       dataIndex: "date_time",
-      key: "dateTime",
+      key: "date_time",
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Coupon Code",
-      dataIndex: "coupon_code",
-      key: "couponCode",
+      title: "Account No.",
+      dataIndex: "account_no",
+      key: "account_no",
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Add User",
-      dataIndex: "add_user",
-      key: "addUser",
+      title: "Password",
+      dataIndex: "password",
+      key: "password",
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Coupon Amount",
-      dataIndex: "coupon_amount",
-      key: "couponAmount",
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Coupon Percentage",
-      dataIndex: "coupon_percentage",
-      key: "couponPercentage",
+      title: "Raw Spread",
+      dataIndex: "raw_spread",
+      key: "raw_spread",
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Challenge",
-      dataIndex: "challenge",
-      key: "challenge",
+      title: "Funding Evaluation",
+      dataIndex: "funding_evaluation",
+      key: "funding_evaluation",
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Coupon Expiry",
-      dataIndex: "coupon_expiry",
-      key: "couponExpiry",
+      title: "Account Balance",
+      dataIndex: "account_balance",
+      key: "account_balance",
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
-      render: (text) => (text ? text : "-"),
+      title: "Stage",
+      dataIndex: "stage",
+      key: "stage",
+      render: (text) => (
+        <div className="stage_status_wrapper">
+          <p className={text === "funded" ? "funded" : ""}>{text}</p>
+        </div>
+      ),
     },
   ];
 
@@ -99,10 +95,10 @@ const CouponLogs = () => {
           separator=">"
           items={[
             {
-              title: <Link to="/coupon">Coupon</Link>,
+              title: <a href="/funding-evaluation">Funding Evaluation</a>,
             },
             {
-              title: <Link to="">Log</Link>,
+              title: <a href="#">Log</a>,
             },
           ]}
         />
@@ -112,7 +108,7 @@ const CouponLogs = () => {
       ) : (
         <AntTable
           columns={columns}
-          data={couponLogData || []}
+          data={fundedLogData || []}
           totalPages={Math.ceil(count / pageSize)}
           totalItems={count}
           pageSize={pageSize}
@@ -125,4 +121,4 @@ const CouponLogs = () => {
   );
 };
 
-export default CouponLogs;
+export default Stage1Logs;

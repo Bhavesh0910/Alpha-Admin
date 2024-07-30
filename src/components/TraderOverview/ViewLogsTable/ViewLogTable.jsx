@@ -1,59 +1,83 @@
-import React, { useState } from "react";
-import { Radio, Breadcrumb, Card, Table } from "antd";
-import "./ViewLogTable.scss";
+import React, { useEffect, useState } from "react";
+import { Breadcrumb, Card } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
+import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
+import "./ViewLogTable.scss";
+import { logsListReq } from "../../../store/NewReducers/logsSlice";
+import { useLocation } from "react-router-dom";
+
 const ViewLogTable = () => {
-  const [size, setSize] = useState("small");
-  const onChange = (e) => {
-    setSize(e.target.value);
-  };
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { idToken } = useSelector((state) => state.auth);
+  const { logData, count, isLoading } = useSelector((state) => state.logs);
+
+  const [pageNo, setPageNo] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  const queryParams = new URLSearchParams(location.search);
+  const platform = queryParams.get('platform') || 'MT5'; 
+   console.log(platform)
+
+  let displayPlatform;
+  switch(platform) {
+    case 'trader-accounts':
+      displayPlatform = 'MT5';
+      break;
+    case 'ctrader-accounts':
+      displayPlatform = 'CTrader';
+      break;
+    case 'dxtraders':
+      displayPlatform = 'DxTrader';
+      break;
+    default:
+      displayPlatform = 'mt5';
+  }
+  useEffect(() => {
+    const baseurl = `v3/Trader-log/list/`;
+    const query = `?platform=${displayPlatform}&page=${pageNo}&page_size=${pageSize}`;
+    const url = baseurl + query;
+    dispatch(logsListReq({ idToken, url, key: "logData", dispatch }));
+  }, [pageNo, pageSize, idToken, platform, dispatch]);
 
   const columns = [
     {
       title: "Admin Email ID",
-      dataIndex: "adminEmail",
-      key: "adminEmail",
+      dataIndex: "admin_email",
+      key: "admin_email",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Date and Time",
-      dataIndex: "dateTime",
-      key: "dateTime",
+      dataIndex: "date_time",
+      key: "date_time",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "User ID",
-      dataIndex: "userID",
-      key: "userID",
+      dataIndex: "user_id",
+      key: "user_id",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Platform",
       dataIndex: "platform",
       key: "platform",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Description",
       dataIndex: "description",
       key: "description",
+      render: (text) => (text ? text : "-"),
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      adminEmail: "admin@example.com",
-      dateTime: "2024-06-30 14:30:00",
-      userID: "123456",
-      platform: "Web",
-      description: "User accessed dashboard",
-    },
-    {
-      key: "2",
-      adminEmail: "admin@example.com",
-      dateTime: "2024-06-30 15:00:00",
-      userID: "789012",
-      platform: "Mobile",
-      description: "User logged out",
-    },
-  ];
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
 
   return (
     <Card className="table-wrapper viewLogs_table">
@@ -65,16 +89,25 @@ const ViewLogTable = () => {
               title: <a href="/trader-overview">Trader Overview</a>,
             },
             {
-              title: <a href="">Log</a>,
+              title: <a href="#">Log</a>,
             },
           ]}
         />
-        <Radio.Group value={size} onChange={onChange}>
-          <Radio.Button value="evaluation">Evaluation</Radio.Button>
-          <Radio.Button value="free-trial">Free Trial</Radio.Button>
-        </Radio.Group>
       </div>
-      <AntTable columns={columns} data={data} />
+      {isLoading ? (
+        <LoaderOverlay />
+      ) : (
+        <AntTable
+          columns={columns}
+          data={logData || []}
+          totalPages={Math.ceil(count / pageSize)}
+          totalItems={count}
+          pageSize={pageSize}
+          CurrentPageNo={pageNo}
+          setPageSize={setPageSize}
+          triggerChange={triggerChange}
+        />
+      )}
     </Card>
   );
 };

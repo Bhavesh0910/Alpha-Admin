@@ -122,7 +122,7 @@ const Funded = () => {
       <div className="header_wrapper">
         <h3>Funded</h3>
         <Button
-          onClick={() => navigate("funded-view-logs")}
+          onClick={() => navigate("/funded/funded-view-logs")}
           className="view_logs__btn standard_button"
         >
           View Logs

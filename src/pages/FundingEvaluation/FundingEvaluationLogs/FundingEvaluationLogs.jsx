@@ -1,52 +1,73 @@
+import React, { useEffect, useState } from "react";
 import { Breadcrumb, Card } from "antd";
-import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
+import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import "./FundingEvaluationLogs.scss";
+
 const FundingEvaluationLogs = () => {
-  const [size, setSize] = useState("small");
-  const onChange = (e) => {
-    setSize(e.target.value);
-  };
+  const { idToken } = useSelector((state) => state.auth);
+  const { fundedLogData, count, isLoading } = useSelector((state) => state.logs);
+
+  const [pageNo, setPageNo] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   const baseurl = "v3/funded-log/list/";
+  //   const query = `?page=${pageNo}&page_size=${pageSize}`;
+  //   const url = baseurl + query;
+  //   dispatch(logsListReq({ idToken, url, key: "fundedLogData", dispatch }));
+  // }, [pageNo, pageSize, idToken, dispatch]);
+
   const columns = [
     {
       title: "Admin Email ID",
-      dataIndex: "adminEmailId",
-      key: "adminEmailId",
+      dataIndex: "admin_email",
+      key: "admin_email",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Date and Time",
-      dataIndex: "dateTime",
-      key: "dateTime",
+      dataIndex: "date_time",
+      key: "date_time",
+      render: (text) => (text ? text : "-"),
     },
     {
-      title: "Account no.",
-      dataIndex: "accountNo",
-      key: "accountNo",
+      title: "Account No.",
+      dataIndex: "account_no",
+      key: "account_no",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Password",
       dataIndex: "password",
       key: "password",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Raw Spread",
-      dataIndex: "rawSpread",
-      key: "rawSpread",
+      dataIndex: "raw_spread",
+      key: "raw_spread",
+      render: (text) => (text ? text : "-"),
     },
     {
-      title: "Funding evaluation",
-      dataIndex: "fundingEvaluation",
-      key: "fundingEvaluation",
+      title: "Funding Evaluation",
+      dataIndex: "funding_evaluation",
+      key: "funding_evaluation",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Account Balance",
-      dataIndex: "accountBalance",
-      key: "accountBalance",
+      dataIndex: "account_balance",
+      key: "account_balance",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Stage",
@@ -60,20 +81,10 @@ const FundingEvaluationLogs = () => {
     },
   ];
 
-  const dummyData = [
-    {
-      key: "1",
-      adminEmailId: "example@example.com",
-      dateTime: "02/07/2024 04:07:43",
-      accountNo: "1360",
-      password: "Password123",
-      email: "exm@example.com",
-      rawSpread: "No Commission",
-      fundingEvaluation: "Evaluation",
-      accountBalance: "$105.55",
-      stage: "funded",
-    },
-  ];
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
 
   return (
     <Card className="table-wrapper viewLogs_table">
@@ -82,15 +93,28 @@ const FundingEvaluationLogs = () => {
           separator=">"
           items={[
             {
-              title: <a href="/funding-evaluation/*">Funding Evaluation</a>,
+              title: <a href="/funding-evaluation">Funding Evaluation</a>,
             },
             {
-              title: <a href="">Log</a>,
+              title: <a href="#">Log</a>,
             },
           ]}
         />
       </div>
-      <AntTable columns={columns} data={dummyData} />
+      {isLoading ? (
+        <LoaderOverlay />
+      ) : (
+        <AntTable
+          columns={columns}
+          data={fundedLogData || []}
+          totalPages={Math.ceil(count / pageSize)}
+          totalItems={count}
+          pageSize={pageSize}
+          CurrentPageNo={pageNo}
+          setPageSize={setPageSize}
+          triggerChange={triggerChange}
+        />
+      )}
     </Card>
   );
 };

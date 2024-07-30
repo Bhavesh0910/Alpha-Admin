@@ -336,13 +336,13 @@ function TraderOverview() {
             <Radio.Button value="active">Active</Radio.Button>
             <Radio.Button value="inactive">Inactive</Radio.Button>
           </Radio.Group>
+          <Button
+  onClick={() => navigate(`/trader-overview/view-logs?platform=${platform}`)}
+  className="view_logs__btn standard_button"
+>
+  View Logs
+</Button>
 
-          {/* <Button
-            // onClick={() => navigate("view-logs")}
-            className="view_logs__btn standard_button"
-          >
-            View Logs
-          </Button> */}
         </div>
         <div className="trader-overview-header-left">
           <Title

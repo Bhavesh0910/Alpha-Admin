@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
 import RiskManagement from "../pages/RiskManagement";
 
@@ -43,6 +43,8 @@ import CreateCoupon from "../pages/Coupon/CreateCoupon/CreateCoupon";
 import FundingEvaluationLogs from "../pages/FundingEvaluation/FundingEvaluationLogs/FundingEvaluationLogs";
 import CreateCompetition from "../pages/Competition/CreateCompetition/CreateCompetition";
 import StageManager2 from "../pages/StageManager2/StageManager2";
+import Stage1Logs from "../pages/StageManager/Stage1Logs";
+import Stage2Logs from "../pages/StageManager2/Stage2Logs";
 
 function Router() {
   return (
@@ -89,7 +91,7 @@ function Router() {
           />
           <Route
             exact={true}
-            path="/trader-overview/view-logs"
+            path="/trader-overview/view-logs/:platform"
             element={
               <PageLayout headerName="Trader Overview">
                 <ViewLogTable />
@@ -165,10 +167,19 @@ function Router() {
           />
           <Route
             exact={true}
-            path="/support/stage-2"
+            path="/support/stage-1/logs"
             element={
               <PageLayout headerName="Support">
-                <StageManager />
+                <Stage1Logs />
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/support/stage-2/logs"
+            element={
+              <PageLayout headerName="Support">
+                <Stage2Logs />
               </PageLayout>
             }
           />
@@ -207,7 +218,7 @@ function Router() {
             exact={true}
             path="/funded/funded-view-logs"
             element={
-              <PageLayout headerName="Payout">
+              <PageLayout headerName="Funded">
                 <FundedLogs />
               </PageLayout>
             }

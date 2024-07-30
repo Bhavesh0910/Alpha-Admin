@@ -1,105 +1,129 @@
 import { Breadcrumb, Card } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
+import { useDispatch, useSelector } from "react-redux";
+import { logsListReq } from "../../../store/NewReducers/logsSlice";
+import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 
 const CompetitionListLogs = () => {
-  const [size, setSize] = useState("small");
-  const onChange = (e) => {
-    setSize(e.target.value);
-  };
+  const { idToken } = useSelector((state) => state.auth);
+  const { competitionLogData, count, isLoading } = useSelector((state) => state.logs);
+
+  const [pageNo, setPageNo] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const baseurl = "competition-logs/list/"; 
+    const query = `?page=${pageNo}&page_size=${pageSize}`;
+    const url = baseurl + query;
+    dispatch(logsListReq({ idToken, url, key: "competitionLogData", dispatch }));
+  }, [pageNo, pageSize, idToken, dispatch]);
+
   const columns = [
     {
       title: "Admin Email ID",
-      dataIndex: "adminEmailId",
-      key: "adminEmailId",
+      dataIndex: "admin_email",
+      key: "admin_email",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Date and Time",
-      dataIndex: "dateTime",
-      key: "dateTime",
+      dataIndex: "date_time",
+      key: "date_time",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Competitions Name",
-      dataIndex: "competitionsName",
-      key: "competitionsName",
+      dataIndex: "competitions_name",
+      key: "competitions_name",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Challenge",
       dataIndex: "challenge",
       key: "challenge",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Schedule Competitions",
-      dataIndex: "scheduleCompetitions",
-      key: "scheduleCompetitions",
+      dataIndex: "schedule_competitions",
+      key: "schedule_competitions",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Start Date",
-      dataIndex: "startDate",
-      key: "startDate",
+      dataIndex: "start_date",
+      key: "start_date",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "End Date",
-      dataIndex: "endDate",
-      key: "endDate",
+      dataIndex: "end_date",
+      key: "end_date",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "1st Prize",
-      dataIndex: "firstPrize",
-      key: "firstPrize",
+      dataIndex: "first_prize",
+      key: "first_prize",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "2nd Prize",
-      dataIndex: "secondPrize",
-      key: "secondPrize",
+      dataIndex: "second_prize",
+      key: "second_prize",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "3rd Prize",
-      dataIndex: "thirdPrize",
-      key: "thirdPrize",
+      dataIndex: "third_prize",
+      key: "third_prize",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Competition Rule",
-      dataIndex: "competitionRule",
-      key: "competitionRule",
+      dataIndex: "competition_rule",
+      key: "competition_rule",
+      render: (text) => (text ? text : "-"),
     },
   ];
 
-  const dummyData = [
-    {
-      key: "1",
-      adminEmailId: "example@example.com",
-      dateTime: "02/07/2024 04:07:43",
-      competitionsName: "$45.04",
-      challenge: "$45.04",
-      scheduleCompetitions: "02/07/2024 04:07:43",
-      startDate: "02/07/2024 04:07:43",
-      endDate: "02/07/2024 04:07:43",
-      firstPrize: "$100K Evaluation",
-      secondPrize: "$50K Evaluation",
-      thirdPrize: "$25K Evaluation",
-      competitionRule:
-        "1. Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do\n2. Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do\n3. Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do",
-    },
-  ];
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
 
   return (
-    <div className="table-wrapper viewLogs_table">
+    <Card className="table-wrapper viewLogs_table">
       <div className="header_wrapper">
         <Breadcrumb
           separator=">"
           items={[
             {
-              title: <a href="">Competition List</a>,
+              title: <a href="#">Competition List</a>,
             },
             {
-              title: <a href="">Log</a>,
+              title: <a href="#">Log</a>,
             },
           ]}
         />
       </div>
-      <AntTable columns={columns} data={dummyData} />
-    </div>
+      {isLoading ? (
+        <LoaderOverlay />
+      ) : (
+        <AntTable
+          columns={columns}
+          data={competitionLogData || []}
+          totalPages={Math.ceil(count / pageSize)}
+          totalItems={count}
+          pageSize={pageSize}
+          CurrentPageNo={pageNo}
+          setPageSize={setPageSize}
+          triggerChange={triggerChange}
+        />
+      )}
+    </Card>
   );
 };
 

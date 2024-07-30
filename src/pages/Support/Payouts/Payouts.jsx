@@ -570,12 +570,12 @@ const Payouts = () => {
         </div>
         <div className="header_wrapper">
           <h3>Payouts Table</h3>
-          {/* <Button
-            // onClick={() => navigate("payout-view-logs")}
+          <Button
+            onClick={() => navigate("/support/payout/payout-view-logs")}
             className="view_logs__btn standard_button"
           >
             View Logs
-          </Button> */}
+          </Button>
         </div>
         <div className="table_header_filter">
           <div className="search_box_wrapper search_box_wrapper">

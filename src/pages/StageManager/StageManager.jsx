@@ -776,7 +776,7 @@ const StageManager = () => {
       <div className="header_wrapper">
         <h2>{location.pathname.split("/")[2].charAt(0).toUpperCase() + location.pathname.split("/")[2].slice(1)}</h2>
         <Button
-          // onClick={() => navigate("payments-view-logs")}
+          onClick={() => navigate("/support/stage-1/logs")}
           className="view_logs__btn standard_button"
         >
           View Logs
