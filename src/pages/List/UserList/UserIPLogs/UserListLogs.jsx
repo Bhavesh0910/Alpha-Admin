@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Breadcrumb, Card } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import AntTable from "../../../../ReusableComponents/AntTable/AntTable";
-import { logsListReq } from "../../../../store/slices/logSlice";
 import LoaderOverlay from "../../../../ReusableComponents/LoaderOverlay";
 import "./UserListLogs.scss"; 
+import { logsListReq } from "../../../../store/NewReducers/logsSlice";
 
 const UserListLogs = () => {
   const { idToken } = useSelector((state) => state.auth);
