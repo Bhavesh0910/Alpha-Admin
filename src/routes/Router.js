@@ -186,6 +186,15 @@ function Router() {
           />
           <Route
             exact={true}
+            path="/support/stage-2"
+            element={
+              <PageLayout headerName="Support">
+                <StageManager />
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
             path="/support/stage-2/logs"
             element={
               <PageLayout headerName="Support">

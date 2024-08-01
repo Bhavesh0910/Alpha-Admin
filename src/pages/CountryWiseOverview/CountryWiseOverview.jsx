@@ -22,6 +22,9 @@ const CountryWiseOverview = () => {
       const top10Payments = getTop10ByField(listData, "payment_total_amount");
       const top10Payouts = getTop10ByField(listData, "payout_total_amount");
 
+      console.log("Top 10 Payments: ", top10Payments);
+      console.log("Top 10 Payouts: ", top10Payouts);
+
       const total = listData.reduce(
         (acc, item) => {
           acc.totalPayment += item.payment_total_amount || 0;
@@ -34,6 +37,9 @@ const CountryWiseOverview = () => {
         },
       );
 
+      console.log("Total Payments: ", total.totalPayment);
+      console.log("Total Payouts: ", total.totalPayout);
+
       const paymentPercentages = top10Payments.map((item) => ({
         country: item.country,
         percentage: ((item.payment_total_amount / total.totalPayment) * 100).toFixed(2),
@@ -44,21 +50,25 @@ const CountryWiseOverview = () => {
         percentage: ((item.payout_total_amount / total.totalPayout) * 100).toFixed(2),
       }));
 
+      console.log("Payment Percentages: ", paymentPercentages);
+      console.log("Payout Percentages: ", payoutPercentages);
+
       const topPaymentPercentageSum = paymentPercentages.reduce((sum, item) => sum + parseFloat(item.percentage), 0);
       const topPayoutPercentageSum = payoutPercentages.reduce((sum, item) => sum + parseFloat(item.percentage), 0);
 
+      console.log("Top Payment Percentage Sum: ", topPaymentPercentageSum);
+      console.log("Top Payout Percentage Sum: ", topPayoutPercentageSum);
+
       const paymentLabels = [...paymentPercentages.map((item) => item.country), "Other"];
-      const paymentSeries = [...paymentPercentages.map((item) => parseFloat(item.percentage)), parseInt((100 - topPaymentPercentageSum).toFixed(2))];
+      const paymentSeries = [...paymentPercentages.map((item) => parseFloat(item.percentage)), parseFloat((100 - topPaymentPercentageSum).toFixed(2))];
 
       const payoutLabels = [...payoutPercentages.map((item) => item.country), "Other"];
-      const payoutSeries = [...payoutPercentages.map((item) => parseFloat(item.percentage)), parseInt((100 - topPayoutPercentageSum).toFixed(2))];
+      const payoutSeries = [...payoutPercentages.map((item) => parseFloat(item.percentage)), parseFloat((100 - topPayoutPercentageSum).toFixed(2))];
 
-      console.log(topPaymentPercentageSum)
-      console.log(topPayoutPercentageSum)
-      console.log(payoutSeries)
-      console.log(payoutLabels)
-      console.log(paymentSeries)
-      console.log(paymentLabels)
+      console.log("Payment Series: ", paymentSeries);
+      console.log("Payment Labels: ", paymentLabels);
+      console.log("Payout Series: ", payoutSeries);
+      console.log("Payout Labels: ", payoutLabels);
 
       setChartData({ series: [paymentSeries, payoutSeries], labels: [paymentLabels, payoutLabels] });
       setTotalData(total);

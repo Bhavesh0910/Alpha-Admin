@@ -22,11 +22,11 @@ function RiskManagement() {
 
   
 
-  console.log(stage1ChartData, stage2ChartData , fundingChartData)
+  // console.log(stage1ChartData, stage2ChartData , fundingChartData)
   const onRangeChange = (dates) => {
     if (dates && idToken) {
-      const startDate = dates[0].format("DD MMM YYYY");
-      const endDate = dates[1].format("DD MMM YYYY");
+      const startDate = dates[0].format("DD/MMM/YYYY");
+      const endDate = dates[1].format("DD/MMM/YYYY");
       dispatch(fetchAccountOverviewStats({ idToken, startDate, endDate }));
       dispatch(fetchFundingChart({ idToken, startDate, endDate }));
       dispatch(fetchStageChart({ idToken, stage: 1, startDate, endDate }));

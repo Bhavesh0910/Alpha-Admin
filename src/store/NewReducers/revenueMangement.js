@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { returnErrors } from "../reducers/error";
-import { baseUrl } from "../../utils/api/apis";
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import {returnErrors} from "../reducers/error";
+import {baseUrl} from "../../utils/api/apis";
 import axios from "axios";
 
 const payoutPaymentApi = async (idToken, query) => {
@@ -10,10 +10,7 @@ const payoutPaymentApi = async (idToken, query) => {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get(
-      `${baseUrl}user/payout-payment/${query}`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}user/payout-payment/${query}`, config);
     return response.data;
   } catch (error) {
     console.error("Error during billingdata request", error);
@@ -32,9 +29,9 @@ const revenueStatsApi = async (idToken, query) => {
     let response;
 
     if (query) {
-      response = await axios.get(`${baseUrl}revenue-management/${query}`, config);
+      response = await axios.get(`${baseUrl}v3/revenue-management/${query}`, config);
     } else {
-      response = await axios.get(`${baseUrl}revenue-management/`, config);
+      response = await axios.get(`${baseUrl}v3/revenue-management/`, config);
     }
     return response.data;
   } catch (error) {
@@ -50,10 +47,7 @@ const payoutStatsApi = async (idToken, query) => {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get(
-      `${baseUrl}statistics/`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}v3/statistics/`, config);
     return response.data;
   } catch (error) {
     console.error("Error during billingdata request", error);
@@ -68,10 +62,7 @@ const qualifiedAccountApi = async (idToken, query) => {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get(
-      `${baseUrl}funded_accounts/`,
-      config
-    );
+    const response = await axios.get(`${baseUrl}v3/funded_accounts/`, config);
     return response.data;
   } catch (error) {
     console.error("Error during kyclistdata request:", error);
@@ -79,77 +70,45 @@ const qualifiedAccountApi = async (idToken, query) => {
   }
 };
 
-export const payoutPaymentReq = createAsyncThunk(
-  "revenue/payoutPaymentApi",
-  async ({ idToken, query, dispatch }, { rejectWithValue }) => {
-    try {
-      const response = await payoutPaymentApi(idToken, query);
-      return response;
-    } catch (error) {
-      dispatch(
-        returnErrors(
-          error.response.data.detail || "Error Fetching List...",
-          400
-        )
-      );
-      return rejectWithValue(error.response.data);
-    }
+export const payoutPaymentReq = createAsyncThunk("revenue/payoutPaymentApi", async ({idToken, query, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await payoutPaymentApi(idToken, query);
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error.response.data.detail || "Error Fetching List...", 400));
+    return rejectWithValue(error.response.data);
   }
-);
+});
 
-export const statsReq = createAsyncThunk(
-  "revenue/statsApi",
-  async ({ idToken, query, dispatch }, { rejectWithValue }) => {
-    try {
-      const response = await revenueStatsApi(idToken, query);
-      return response;
-    } catch (error) {
-      dispatch(
-        returnErrors(
-          error.response.data.detail || "Error Fetching List...",
-          400
-        )
-      );
-      return rejectWithValue(error.response.data);
-    }
+export const statsReq = createAsyncThunk("revenue/statsApi", async ({idToken, query, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await revenueStatsApi(idToken, query);
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error.response.data.detail || "Error Fetching List...", 400));
+    return rejectWithValue(error.response.data);
   }
-);
+});
 
-export const payoutStatsReq = createAsyncThunk(
-  "revenue/payoutStats",
-  async ({ idToken, query, dispatch }, { rejectWithValue }) => {
-    try {
-      const response = await payoutStatsApi(idToken, query);
-      return response;
-    } catch (error) {
-      dispatch(
-        returnErrors(
-          error.response.data.detail || "Error Fetching List...",
-          400
-        )
-      );
-      return rejectWithValue(error.response.data);
-    }
+export const payoutStatsReq = createAsyncThunk("revenue/payoutStats", async ({idToken, query, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await payoutStatsApi(idToken, query);
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error.response.data.detail || "Error Fetching List...", 400));
+    return rejectWithValue(error.response.data);
   }
-);
+});
 
-export const qualifiedAccountReq = createAsyncThunk(
-  "revenue/qualifiedAccounts",
-  async ({ idToken, query, dispatch }, { rejectWithValue }) => {
-    try {
-      const response = await qualifiedAccountApi(idToken, query);
-      return response;
-    } catch (error) {
-      dispatch(
-        returnErrors(
-          error.response.data.detail || "Error Fetching List...",
-          400
-        )
-      );
-      return rejectWithValue(error.response.data);
-    }
+export const qualifiedAccountReq = createAsyncThunk("revenue/qualifiedAccounts", async ({idToken, query, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await qualifiedAccountApi(idToken, query);
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error.response.data.detail || "Error Fetching List...", 400));
+    return rejectWithValue(error.response.data);
   }
-);
+});
 
 const revenueManagementSlice = createSlice({
   name: "revenueManagement",
@@ -171,12 +130,9 @@ const revenueManagementSlice = createSlice({
         state.isError = false;
       })
       .addCase(statsReq.fulfilled, (state, action) => {
-        // console.log(
-        //   "Action payload oof statsReq : ",
-        //   action.payload?.revenue_stats
-        // );
+        console.log("Action payload oof statsReq : ", action.payload);
         state.isLoading = false;
-        state.statsData = action.payload?.revenue_stats; // Update state with fetched data
+        state.statsData = action.payload; // Update state with fetched data
       })
       .addCase(statsReq.rejected, (state) => {
         state.isLoading = false;
@@ -187,8 +143,8 @@ const revenueManagementSlice = createSlice({
         state.isError = false;
       })
       .addCase(payoutStatsReq.fulfilled, (state, action) => {
-        // console.log("Action payload oof payoutStatsReq : ", action.payload);
-        state.chartData = action.payload?.payout_req_approved_stats; // Update state with fetched data
+        console.log("Action payload oof payoutStatsReq : ", action.payload);
+        state.chartData = action.payload; // Update state with fetched data
         state.isLoading = false;
       })
       .addCase(payoutStatsReq.rejected, (state) => {
@@ -200,12 +156,9 @@ const revenueManagementSlice = createSlice({
         state.isError = false;
       })
       .addCase(qualifiedAccountReq.fulfilled, (state, action) => {
-        console.log(
-          "Action payload oof qualifiedAccountReq : ",
-          action.payload?.qualified_monthly_data
-        );
+        console.log("Action payload oof qualifiedAccountReq : ", action.payload);
         state.isLoading = false;
-        state.barData = action.payload?.qualified_monthly_data; // Update state with fetched data
+        state.barData = action.payload; // Update state with fetched data
       })
       .addCase(qualifiedAccountReq.rejected, (state) => {
         state.isLoading = false;
@@ -216,10 +169,7 @@ const revenueManagementSlice = createSlice({
         state.isError = false;
       })
       .addCase(payoutPaymentReq.fulfilled, (state, action) => {
-        console.log(
-          "Action payload oof qualifiedAccountReq : ",
-          action.payload
-        );
+        console.log("Action payload oof qualifiedAccountReq : ", action.payload);
         state.isLoading = false;
         state.tableData = action.payload?.results; // Update state with fetched data
         state.tableDataCount = action.payload?.count; // Update state with fetched data
