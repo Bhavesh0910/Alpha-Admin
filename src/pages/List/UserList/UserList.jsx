@@ -12,6 +12,7 @@ import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import {returnMessages} from "../../../store/reducers/message";
 import {returnErrors} from "../../../store/reducers/error";
 import ReactCountryFlag from "react-country-flag";
+import { useNavigate } from "react-router-dom";
 
 const {confirm} = Modal;
 const {Search} = Input;
@@ -188,12 +189,16 @@ const UserListTable = () => {
     },
   ];
 
+  const navigate = useNavigate()
+  
   return (
     <div className="user_list_container">
       <div>
         <div className="header_wrapper">
           <h3 className="page_header">User List</h3>
-          <Button className="view_logs__btn standard_button">View Logs</Button>
+          <Button
+          onClick={() => navigate('/list/user-list/user-logs')}
+          className="view_logs__btn standard_button">View Logs</Button>
         </div>
         <div className="table_header_filter">
           <div className="search_box_wrapper">

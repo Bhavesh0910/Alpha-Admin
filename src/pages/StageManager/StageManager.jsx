@@ -771,12 +771,23 @@ const StageManager = () => {
     setPageSize(updatedPageSize);
   }
 
+  let viewLogsLink;
+
+  if (location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2") {
+    viewLogsLink = location.pathname === "/support/stage-1" ? "/support/stage-1/logs" : "/support/stage-2/logs";
+  } else if (location.pathname === "/support/funded") {
+    viewLogsLink = "/funded/funded-view-logs";
+  } else if (location.pathname === "/support/payout") {
+    viewLogsLink = "/support/payout/payout-view-logs";
+  }
+  
+  
   return (
     <div className="stageManager_container">
       <div className="header_wrapper">
         <h2>{location.pathname.split("/")[2].charAt(0).toUpperCase() + location.pathname.split("/")[2].slice(1)}</h2>
         <Button
-          onClick={() => navigate("/support/stage-1/logs")}
+          onClick={() => navigate(viewLogsLink)}
           className="view_logs__btn standard_button"
         >
           View Logs

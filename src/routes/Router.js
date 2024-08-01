@@ -21,7 +21,7 @@ import Payment from "../pages/Payment/Payment";
 import PaymentLogs from "../pages/Payment/PaymentLogs/PaymentLogs";
 import PaymentExportHistory from "../pages/Payment/PaymentExportHistory/PaymentExportHistory";
 import AffiliateMarketing from "../pages/AffiliateMarketing/AffiliateMarketing";
-import AffiliateMarketingLogs from "../pages/AffiliateMarketing/AffiliateMarketingLogs/AffiliateMarketingLogs";
+import AffiliateMarketingCode from "../pages/AffiliateMarketing/AffiliateMarketingCode/AffiliateMarketingCode";
 import AffiliateMarketingExportHistory from "../pages/AffiliateMarketing/AffiliateMarketingExportHistory/AffiliateMarketingExportHistory";
 import UserSupport from "../pages/UserSupport/UserSupport";
 import ChangeEmailLogs from "../pages/UserSupport/ChangeEmailLogs/ChangeEmailLogs";
@@ -45,6 +45,7 @@ import CreateCompetition from "../pages/Competition/CreateCompetition/CreateComp
 import StageManager2 from "../pages/StageManager2/StageManager2";
 import Stage1Logs from "../pages/StageManager/Stage1Logs";
 import Stage2Logs from "../pages/StageManager2/Stage2Logs";
+import AffiliateLogs from "../pages/AffiliateMarketing/Logs/AffiliateLogs";
 
 function Router() {
   return (
@@ -91,7 +92,7 @@ function Router() {
           />
           <Route
             exact={true}
-            path="/trader-overview/view-logs/:platform"
+            path="/trader-overview/view-logs/*"
             element={
               <PageLayout headerName="Trader Overview">
                 <ViewLogTable />
@@ -159,6 +160,15 @@ function Router() {
           <Route
             exact={true}
             path="/support/stage-1"
+            element={
+              <PageLayout headerName="Support">
+                <StageManager />
+              </PageLayout>
+            }
+          />
+              <Route
+            exact={true}
+            path="/support/stage-2"
             element={
               <PageLayout headerName="Support">
                 <StageManager />
@@ -283,13 +293,24 @@ function Router() {
               </PageLayout>
             }
           />
+          
+          <Route
+            exact={true}
+            path="/affiliate-marketing/logs"
+            element={
+              <PageLayout headerName="Affiliate Marketing">
+                <AffiliateLogs />
+              </PageLayout>
+            }
+          />
+
 
           <Route
             exact={true}
-            path="/affiliate-marketing/affiliateMarketing-logs"
+            path="/affiliate-marketing/code"
             element={
               <PageLayout headerName="Affiliate Marketing">
-                <AffiliateMarketingLogs />
+                <AffiliateMarketingCode />
               </PageLayout>
             }
           />

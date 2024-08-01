@@ -51,7 +51,7 @@ const AffiliateMarketing = ({userData}) => {
   }, [newCodeData]);
 
   const handleRowClick = (affiliateId, email) => {
-    const url = `/affiliate-marketing/affiliateMarketing-logs?email=${email}`;
+    const url = `/affiliate-marketing/code?email=${email}`;
     navigate(url);
   };
 
@@ -259,7 +259,7 @@ const AffiliateMarketing = ({userData}) => {
       <div className="header_wrapper">
         <h3 className="page_header">Affiliate List</h3>
         <Button
-          // onClick={() => navigate('affiliateMarketing-logs')}
+          onClick={() => navigate('/affiliate-marketing/logs')}
           className="view_logs__btn standard_button"
         >
           View Logs

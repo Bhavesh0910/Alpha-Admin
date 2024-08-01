@@ -1037,6 +1037,23 @@ export const getAccountDetails = async (login_id, platform, idToken) => {
   }
 };
 
+export const getAccountAnalysis = async (platform, login_id, idToken) => {
+  try {
+    const url = `${baseUrl}v2/account-analysis/?platform=${platform}&login_id=${login_id}`;
+    
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching account analysis:', error);
+    throw error;
+  }
+};
+
 export const getAccountInsights = async (login_id, platform, idToken) => {
   let platformName = platform === 'trader-accounts' ? 'mt5' : platform === 'ctrader-accounts' ? 'ctrader' : 'dxtrade'
   try {

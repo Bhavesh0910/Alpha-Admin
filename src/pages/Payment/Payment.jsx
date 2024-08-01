@@ -323,7 +323,7 @@ const Payment = () => {
     <div className="payment_container">
       <div className="header_wrapper">
         <Button
-          // onClick={() => navigate("payments-view-logs")}
+          onClick={() => navigate("/payments/payments-view-logs")}
           className="view_logs__btn standard_button"
         >
           View Logs

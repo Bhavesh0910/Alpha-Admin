@@ -1,39 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { Breadcrumb, Card } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import "./PaymentLogs.scss";
 import moment from "moment";
+import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
+import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import { logsListReq } from "../../../store/NewReducers/logsSlice";
+// import "./AffiliateLogs.scss";
 
-const PaymentLogs = () => {
+const AffiliateLogs = () => {
   const { idToken } = useSelector((state) => state.auth); 
-  const { paymentLogData, count, isLoading, isError } = useSelector((state) => state.logs);
+  const { affiliateLogData, count, isLoading, isError } = useSelector((state) => state.logs);
 
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const baseUrl = "v3/payment-log/list/";
+    const baseUrl = "v3/affiliate-log/list/";
     const query = `?page=${pageNo}&page_size=${pageSize}`;
     const url = baseUrl + query;
     if (idToken) {
-      dispatch(logsListReq({ idToken, url, key: "paymentLogData", dispatch }));
+      dispatch(logsListReq({ idToken, url, key: "affiliateLogData", dispatch }));
     }
   }, [pageNo, pageSize, idToken, dispatch]);
 
   const columns = [
     {
       title: "Admin Email ID",
-      dataIndex: "adminEmail",
-      key: "adminEmail",
+      dataIndex: "admin_email",
+      key: "admin_email",
     },
     {
       title: "Date and Time",
-      dataIndex: "dateTime",
-      key: "dateTime",
+      dataIndex: "date_time",
+      key: "date_time",
       render: (text) => (
         <div className="date_format">
           <div>{moment(text).format("DD/MM/YYYY")}</div>
@@ -42,43 +42,28 @@ const PaymentLogs = () => {
       ),
     },
     {
-      title: "User ID",
-      dataIndex: "userID",
-      key: "userID",
+        title: "User Email",
+        dataIndex: "user_email",
+        key: "user_email",
+      },
+    {
+      title: "Affiliate Code",
+      dataIndex: "affiliate_code",
+      key: "affiliate_code",
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (text) => (
-        <div className="status_btn_wrapper">
-          <div
-            className={
-              text === "in-progress"
-                ? "in_progress"
-                : text === "approved"
-                ? "approved"
-                : text === "flagged"
-                ? "flagged"
-                : text === "dismissed"
-                ? "dismissed"
-                : ""
-            }
-          >
-            {text === "in-progress"
-              ? "In Progress"
-              : text === "approved"
-              ? "Approved"
-              : text === "flagged"
-              ? "Flagged"
-              : text === "dismissed"
-              ? "Dismissed"
-              : ""}
-          </div>
-        </div>
-      ),
+      title: "Commission",
+      dataIndex: "commission",
+      key: "commission",
     },
+    {
+      title: "Repeat Commission",
+      dataIndex: "repeat_commission",
+      key: "repeat_commission",
+    },
+
   ];
+
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
@@ -92,7 +77,7 @@ const PaymentLogs = () => {
           separator=">"
           items={[
             {
-              title: <a href="/payments/">Payments</a>,
+              title: <a href="/affiliate/">Affiliate</a>,
             },
             {
               title: <a href="#">Log</a>,
@@ -102,11 +87,10 @@ const PaymentLogs = () => {
       </div>
       {isLoading ? (
         <LoaderOverlay />
-      ) 
-         : (
+      )  : (
         <AntTable
           columns={columns}
-          data={paymentLogData || []}
+          data={affiliateLogData || []}
           totalPages={Math.ceil(count / pageSize)}
           totalItems={count}
           pageSize={pageSize}
@@ -119,4 +103,4 @@ const PaymentLogs = () => {
   );
 };
 
-export default PaymentLogs;
+export default AffiliateLogs;

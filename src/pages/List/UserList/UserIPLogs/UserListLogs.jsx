@@ -5,6 +5,12 @@ import AntTable from "../../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../../ReusableComponents/LoaderOverlay";
 import "./UserListLogs.scss"; 
 import { logsListReq } from "../../../../store/NewReducers/logsSlice";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const UserListLogs = () => {
   const { idToken } = useSelector((state) => state.auth);
@@ -23,47 +29,30 @@ const UserListLogs = () => {
     }
   }, [pageNo, pageSize, idToken, dispatch]);
 
+  const transformedData = (userLogData || []).map((log) => ({
+    ...log,
+    status: log.action === 'unblock_user' ? 'blocked' : 
+            log.action === 'block_user' ? 'allowed' : '-',
+    date_time: log.date_time ? dayjs(log.date_time).format('YYYY-MM-DD HH:mm:ss') : '-',
+  }));
+
   const columns = [
     {
       title: "Admin Email ID",
-      dataIndex: "adminEmailId",
-      key: "adminEmailId",
+      dataIndex: "admin_email",
+      key: "admin_email",
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Date and Time",
-      dataIndex: "dateTime",
-      key: "dateTime",
+      dataIndex: "date_time",
+      key: "date_time",
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Enter Email",
-      dataIndex: "enterEmail",
-      key: "enterEmail",
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Affiliate Code",
-      dataIndex: "affiliateCode",
-      key: "affiliateCode",
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Commission",
-      dataIndex: "commission",
-      key: "commission",
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Repeat Commission",
-      dataIndex: "repeatCommission",
-      key: "repeatCommission",
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Discount",
-      dataIndex: "discount",
-      key: "discount",
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
       render: (text) => (text ? text : "-"),
     },
   ];
@@ -97,7 +86,7 @@ const UserListLogs = () => {
       ) : (
         <AntTable
           columns={columns}
-          data={userLogData || []}
+          data={transformedData}
           totalPages={Math.ceil(count / pageSize)}
           totalItems={count}
           pageSize={pageSize}

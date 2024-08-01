@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { returnErrors } from '../reducers/error';
-import { getAccountDetails, getAccountInsights, getTradeJournal, getTradingAccountOverview, getObjectives, getPerformanceChart } from '../../utils/api/apis';
+import { getAccountDetails, getAccountInsights, getTradeJournal, getTradingAccountOverview, getObjectives, getPerformanceChart, getAccountAnalysis } from '../../utils/api/apis';
 
 // Thunk for fetching trading account overview
 export const fetchTradingAccountOverview = createAsyncThunk(
@@ -11,6 +11,20 @@ export const fetchTradingAccountOverview = createAsyncThunk(
       return response;
     } catch (error) {
       const msg = error.response?.data?.detail || 'Error fetching trading account overview';
+      dispatch(returnErrors(msg, 400));
+      return rejectWithValue(msg);
+    }
+  }
+);
+
+export const fetchAccountAnalysis = createAsyncThunk(
+  'amSlice/fetchAccountAnalysis',
+  async ({ platform, login_id, idToken }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await getAccountAnalysis(platform, login_id, idToken);
+      return response;
+    } catch (error) {
+      const msg = error.response?.data?.detail || 'Error fetching account analysis';
       dispatch(returnErrors(msg, 400));
       return rejectWithValue(msg);
     }
@@ -102,6 +116,7 @@ const amSlice = createSlice({
     accountInsights: null,
     tradeJournal: null,
     objectives: null,
+    accountAnalysis: null, 
     performanceChart: null,
     isLoading: false,
     error: null,
@@ -167,6 +182,18 @@ const amSlice = createSlice({
         state.objectives = action.payload;
       })
       .addCase(fetchObjectives.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchAccountAnalysis.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchAccountAnalysis.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.accountAnalysis = action.payload;
+      })
+      .addCase(fetchAccountAnalysis.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })

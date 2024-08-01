@@ -46,6 +46,7 @@ const logSlice = createSlice({
     changeEmailLogData: [],
     userSupportLogData: [],
     userIpLogData: [],
+    changeEmailLogData: [],
     userLogData: [],
     couponLogData: [],
     payoutLogData: [],

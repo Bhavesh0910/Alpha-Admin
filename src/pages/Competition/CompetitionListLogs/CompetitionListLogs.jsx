@@ -1,9 +1,10 @@
-import { Breadcrumb, Card } from "antd";
 import React, { useEffect, useState } from "react";
-import AntTable from "../../../ReusableComponents/AntTable/AntTable";
+import { Breadcrumb, Card } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import { logsListReq } from "../../../store/NewReducers/logsSlice";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
+import moment from "moment"; 
 
 const CompetitionListLogs = () => {
   const { idToken } = useSelector((state) => state.auth);
@@ -14,7 +15,7 @@ const CompetitionListLogs = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const baseurl = "competition-logs/list/"; 
+    const baseurl = "v3/competition-log/list/"; 
     const query = `?page=${pageNo}&page_size=${pageSize}`;
     const url = baseurl + query;
     dispatch(logsListReq({ idToken, url, key: "competitionLogData", dispatch }));
@@ -31,12 +32,17 @@ const CompetitionListLogs = () => {
       title: "Date and Time",
       dataIndex: "date_time",
       key: "date_time",
-      render: (text) => (text ? text : "-"),
+      render: (text) => (
+        <div className="date_format">
+          <div>{text ? moment(text).format("DD/MM/YYYY") : "-"}</div>
+          <div>{text ? moment(text).format("hh:mm:ss") : "-"}</div>
+        </div>
+      ),
     },
     {
-      title: "Competitions Name",
-      dataIndex: "competitions_name",
-      key: "competitions_name",
+      title: "Competition Name",
+      dataIndex: "competition_name",
+      key: "competition_name",
       render: (text) => (text ? text : "-"),
     },
     {
@@ -46,22 +52,22 @@ const CompetitionListLogs = () => {
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Schedule Competitions",
-      dataIndex: "schedule_competitions",
-      key: "schedule_competitions",
-      render: (text) => (text ? text : "-"),
+      title: "Schedule Competition",
+      dataIndex: "schedule_competition",
+      key: "schedule_competition",
+      render: (text) => (text ? moment(text).format("DD/MM/YYYY HH:mm:ss") : "-"),
     },
     {
       title: "Start Date",
       dataIndex: "start_date",
       key: "start_date",
-      render: (text) => (text ? text : "-"),
+      render: (text) => (text ? moment(text).format("DD/MM/YYYY") : "-"),
     },
     {
       title: "End Date",
       dataIndex: "end_date",
       key: "end_date",
-      render: (text) => (text ? text : "-"),
+      render: (text) => (text ? moment(text).format("DD/MM/YYYY") : "-"),
     },
     {
       title: "1st Prize",

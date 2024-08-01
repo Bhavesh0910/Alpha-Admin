@@ -18,7 +18,7 @@ const CouponLogs = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const baseurl = "support/coupon-log/list/";
+    const baseurl = "v3/coupon-log/list/";
     const query = `?page=${pageNo}&page_size=${pageSize}`;
     const url = baseurl + query;
     dispatch(logsListReq({ idToken, url, key: "couponLogData", dispatch }));
