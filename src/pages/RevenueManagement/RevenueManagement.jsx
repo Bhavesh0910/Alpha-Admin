@@ -96,7 +96,7 @@ const RevenueManagement = () => {
             </div>
           </div>
         </div>
-        <PayoutPaymentTable />
+        <PayoutPaymentTable activeTab={activeTab} />
       </div>
     </div>
   );

@@ -29,6 +29,7 @@ import complianceList from "../NewReducers/complianceList";
 import countryWiseSlice from "../NewReducers/countryWise";
 import getUserProfileData from "../NewReducers/userProfileSlice";
 import logsReducer from "../NewReducers/logsSlice";
+import revenueMangement from "../NewReducers/revenueMangement";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -59,6 +60,7 @@ const rootReducer = combineReducers({
   countryWise: countryWiseSlice,
   userProfile: getUserProfileData,
   logs: logsReducer,
+  revenue: revenueMangement,
 });
 
 export default rootReducer;

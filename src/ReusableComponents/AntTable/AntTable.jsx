@@ -1,26 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Table } from "antd";
+import React, {useState, useEffect} from "react";
+import {Table} from "antd";
 import "./AntTable.scss";
-import { useLocation } from "react-router-dom";
+import {useLocation} from "react-router-dom";
 
-const AntTable = ({
-  serverSide = true,
-  triggerChange,
-  data,
-  columns,
-  totalItems,
-  pageSize,
-  setPageSize,
-  CurrentPageNo,
-  isExpandable,
-  expandedRowRender,
-  rowId
-}) => {
+const AntTable = ({serverSide = true, triggerChange, data, columns, totalItems, pageSize, setPageSize, CurrentPageNo, isExpandable, ExpandedComp, rowId}) => {
   const [pagination, setPagination] = useState(() => {
     if (serverSide) {
-      return { current: CurrentPageNo, pageSize, total: totalItems };
+      return {current: CurrentPageNo, pageSize, total: totalItems};
     } else {
-      return { current: 1, pageSize: 10, total: data.length };
+      return {current: 1, pageSize: 10, total: data.length};
     }
   });
 
@@ -68,6 +56,10 @@ const AntTable = ({
     }
   };
 
+  useEffect(()=>{
+    console.log(expandedRowKeys, " expandedrowkey")
+  },[expandedRowKeys])
+
   return (
     <div className="ant_table_container">
       <Table
@@ -92,7 +84,8 @@ const AntTable = ({
         expandable={
           isExpandable
             ? {
-                expandedRowRender: expandedRowRender,
+                // expandedRowRender: expandedRowRender,
+                expandedRowRender: (record) => <ExpandedComp record={record} />,
                 expandedRowKeys: expandedRowKeys,
                 onExpand: handleExpand,
               }

@@ -11,7 +11,7 @@ async function updatePaymentStatusApi(idToken, body) {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const res = axios.post(`${baseUrl}payments/cronjob/status/`, body,config);
+    const res = axios.post(`${baseUrl}payments/cronjob/status/`, body, config);
     return res;
   } catch (error) {
     throw error;
@@ -64,7 +64,7 @@ async function paymentExportsApi(idToken, query) {
 
 export const updatePaymentStatusReq = createAsyncThunk("payment/updateStatus", async ({idToken, body, dispatch}, {rejectWithValue}) => {
   try {
-    console.log(idToken)
+    console.log(idToken);
 
     const response = await updatePaymentStatusApi(idToken, body);
     return response;
@@ -117,6 +117,7 @@ const paymentSlice = createSlice({
     paymentHistoryDataCount: 1,
     paymentEmail: "",
     exportLink: "",
+    payoutData: [],
   },
   reducers: {
     resetPayout: (state) => {
@@ -173,15 +174,47 @@ const paymentSlice = createSlice({
       .addCase(paymentExportsReq.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
+      })
+      .addCase(payoutListReq.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(payoutListReq.fulfilled, (state, action) => {
+        state.isLoading = false;
+        console.log(action.payload?.data);
+        state.exportLink = action.payload?.payoutData; // Update state with fetched data
+      })
+      .addCase(payoutListReq.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
       });
-    // .addCase(PURGE, (state) => {
-    //     state.isLoading= false;
-    //     state.isError= false;
-    //     state.payoutData= [];
-    // });
   },
 });
 
 // Export the async thunk and any reducers if needed
 export const {resetPayout, selectedEmail} = paymentSlice.actions;
 export default paymentSlice.reducer;
+
+async function payoutListApi(idToken, query) {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    };
+    const res = axios.get(`${baseUrl}v2/get-payout/${query}`, config);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const payoutListReq = createAsyncThunk("payment/payoutList", async ({idToken, query, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await payoutListApi(idToken, query);
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error?.response?.data?.detail || "Error while fetching Payment List!", 400));
+    return rejectWithValue(error.response.data);
+  }
+});

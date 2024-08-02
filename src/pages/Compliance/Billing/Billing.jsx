@@ -1,30 +1,30 @@
-import { Button, DatePicker, Select } from "antd";
-import React, { useEffect, useState } from "react";
+import {Button, DatePicker, Select} from "antd";
+import React, {useEffect, useState} from "react";
 import "./Billing.scss";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import notVerifiedIcon from "../../../assets/icons/notverified_red_circleIcon.svg";
 import verifiedIcon from "../../../assets/icons/verified_green_circleIcon.svg";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import { useDispatch, useSelector } from "react-redux";
-import { getBillingList } from "../../../store/NewReducers/complianceList";
+import {useDispatch, useSelector} from "react-redux";
+import {getBillingDetailsReq, getBillingList} from "../../../store/NewReducers/complianceList";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-const { Option } = Select;
-const { RangePicker } = DatePicker;
+const {Option} = Select;
+const {RangePicker} = DatePicker;
 const Billing = () => {
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [category, setCategory] = useState("all");
-  const [isExpandable, setIsExpandable] = useState(true);
-  const { idToken, searchDates } = useSelector((state) => state.auth);
+  const [dataa, setDataa] = useState([]);
+  const {idToken, searchDates} = useSelector((state) => state.auth);
   const [dates, setDates] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [status, setStatus] = useState("all");
-  const { data, isLoading: accountsLoading, count } = useSelector((state) => state.compliance);
+  const {data, isLoading: accountsLoading, count} = useSelector((state) => state.compliance);
 
   useEffect(() => {
     let query = `?page=${pageNo}&page_size=${pageSize}`;
@@ -37,10 +37,8 @@ const Billing = () => {
       query += `&search=${searchText}`;
     }
 
-    dispatch(getBillingList({ idToken, query, dispatch }));
+    dispatch(getBillingList({idToken, query, dispatch}));
   }, [idToken, pageNo, pageSize, dates, searchText]);
-
-  console.log(data, "data");
 
   const handleSearch = (value) => {
     setPageNo(1);
@@ -88,7 +86,7 @@ const Billing = () => {
           <img
             src={text === false ? notVerifiedIcon : verifiedIcon}
             alt="verified"
-            style={{ width: 20, height: 20, marginLeft: "13px" }}
+            style={{width: 20, height: 20, marginLeft: "13px"}}
           />
         </span>
       ),
@@ -106,29 +104,6 @@ const Billing = () => {
     },
   ];
 
-  const dummyData = [
-    {
-      key: "1",
-      emailId: "tanya.hill@example.com",
-      accountNumber: "2798",
-      date: "4/4/18",
-      verified: "not_verified",
-      billingMethod: "ACH",
-      billingType: "Profit Share",
-
-      description: {
-        sr_No: 1,
-        Date: "4/4/18",
-        account_number: 2798,
-        Amount: "$3250",
-        account_Type: "",
-        billing_Method: "RISE",
-        billing_Type: "Profit Share",
-        Status: "approved",
-      },
-    },
-  ];
-
   function updateDateRange(dates) {
     if (dates) {
       setDates(dates.map((date) => date.format("DD MMM YYYY")));
@@ -136,6 +111,15 @@ const Billing = () => {
       setDates([null, null]);
     }
   }
+
+  useEffect(() => {
+    const dataaa = data?.map((item, ind) => {
+      return {uniqueKey: ind, ...item};
+    });
+
+    console.log("dataaa ", dataaa);
+    setDataa(dataaa);
+  }, [data]);
 
   return (
     <div className="billing_container">
@@ -178,101 +162,87 @@ const Billing = () => {
               />
             </div>
           </div>
-          {/* <div className="filter_buttons">
-            <Button
-              className={activeTab === "all" ? "active" : ""}
-              onClick={() => handleTabChange("all")}
-            >
-              All
-            </Button>
-            <Button
-              className={activeTab === "new" ? "active" : ""}
-              onClick={() => handleTabChange("new")}
-            >
-              New
-            </Button>
-            <Button
-              className={activeTab === "approved" ? "active" : ""}
-              onClick={() => handleTabChange("approved")}
-            >
-              Approved
-            </Button>
-            <Button
-              className={activeTab === "rejected" ? "active" : ""}
-              onClick={() => handleTabChange("rejected")}
-            >
-              Rejected
-            </Button>
-            <Button
-              className={activeTab === "in progress" ? "active" : ""}
-              onClick={() => handleTabChange("in_progress")}
-            >
-              In Progress
-            </Button>
-          </div> */}
         </div>
       </div>
-      {accountsLoading ? (
-        <LoaderOverlay />
-      ) : (
-        <AntTable
-          isExpandable={isExpandable}
-          data={data || []}
-          columns={columns}
-          totalPages={Math.ceil(count / pageSize)}
-          totalItems={count}
-          pageSize={pageSize}
-          CurrentPageNo={pageNo}
-          setPageSize={setPageSize}
-          triggerChange={triggerChange}
-          expandedRowRender={expandedRowRender}
-        />
-      )}
+      {accountsLoading && <LoaderOverlay />}
+      <AntTable
+        columns={columns}
+        data={dataa || []}
+        totalPages={Math.ceil(count / pageSize)}
+        totalItems={count}
+        pageSize={pageSize}
+        CurrentPageNo={pageNo}
+        setPageSize={setPageSize}
+        triggerChange={triggerChange}
+        isExpandable={true}
+        // expandedRowRender={expandedRowRender}
+        ExpandedComp={ExpandedRowRender}
+        rowId="uniqueKey"
+      />
     </div>
   );
 };
 
 export default Billing;
 
-const expandedRowRender = (record) => (
-  <div className="expandable_description">
-    <div className="description_box">
-      <label className="label">Sr No: </label>
-      {/* <p className="value">{record.description.sr_No}</p> */}
-    </div>
-    <div className="description_box">
-      <label className="label">Date: </label>
-      <p className="value">{record?.Date}</p>
-    </div>
-    <div className="description_box">
-      <label className="label">Account Number: </label>
-      <p className="value">{record?.account_number}</p>
-    </div>
-    <div className="description_box">
-      <label className="label">Amount: </label>
-      {/* <p className="value">{record.description.Amount}</p> */}
-    </div>
-    <div className="description_box">
-      <label className="label">Account Type: </label>
-      {/* <p className="value">{record.description.account_Type}</p> */}
-    </div>
-    <div className="description_box">
-      <label className="label">Billing Method: </label>
-      {/* <p className="value">{record.description.billing_Method}</p> */}
-    </div>
-    <div className="description_box">
-      <label className="label">Billing Type: </label>
-      <p className="value profit_share_btn standard_button">{record?.billing_type}</p>
-    </div>
-    <div className="description_box">
-      <label className="label">Status: </label>
-      {/* <p style={{cursor:'pointer'}}
-        className={`status_indicator ${record?.verified === true ? "approved" : "in_review"
-          }`}
-      >
-        {record?.verified === true ? "Approved" : "In Progress"
-        }
-      </p> */}
-    </div>
-  </div>
-);
+function ExpandedRowRender({record}) {
+  const {idToken} = useSelector((state) => state.auth);
+  const {bilingDetailsData, isLoading} = useSelector((state) => state.compliance);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getBillingDetailsReq({idToken, email: record?.email}));
+    console.log("here..........");
+  }, [record]);
+
+  useEffect(() => {
+    console.log(bilingDetailsData, " : billingDetails");
+  }, [bilingDetailsData]);
+
+  return (
+    <>
+      {isLoading ? (
+        <LoaderOverlay />
+      ) : (
+        <div className="expandable_description">
+          <div className="description_box">
+            <label className="label">Sr No: </label>
+            <p className="value">{record.uniqueKey + 1}</p>
+          </div>
+          <div className="description_box">
+            <label className="label">Date: </label>
+            <p className="value">{bilingDetailsData[0]?.createdAt}</p>
+          </div>
+          <div className="description_box">
+            <label className="label">Account Number: </label>
+            <p className="value">{bilingDetailsData[0]?.amount}</p>
+          </div>
+          <div className="description_box">
+            <label className="label">Amount: </label>
+            <p className="value">{bilingDetailsData[0]?.amount}</p>
+          </div>
+          <div className="description_box">
+            <label className="label">Account Type: </label>
+            {/* <p className="value">{record.description.account_Type}</p> */}
+          </div>
+          <div className="description_box">
+            <label className="label">Billing Method: </label>
+            <p className="value">{bilingDetailsData[0]?.method}</p>
+          </div>
+          <div className="description_box">
+            <label className="label">Billing Type: </label>
+            <p className="value profit_share_btn standard_button">{bilingDetailsData[0]?.type}</p>
+          </div>
+          <div className="description_box">
+            <label className="label">Status: </label>
+            <p
+              style={{cursor: "pointer"}}
+              className={`status_indicator ${bilingDetailsData[0]?.status === "Approved" ? "approved" : "in_review"}`}
+            >
+              {bilingDetailsData[0]?.status}
+            </p>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

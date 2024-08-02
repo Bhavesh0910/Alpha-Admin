@@ -138,7 +138,7 @@ const StageManager = () => {
     setModalAction("Update Status");
   };
 
-  const openContractUpdateModal = (value,record) => {
+  const openContractUpdateModal = (value, record) => {
     setuserToUpdate(record);
     setUpdatedStatus(value);
     setIsModalVisible(true);
@@ -861,8 +861,8 @@ const StageManager = () => {
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}
         triggerChange={triggerChange}
-        isExpandable={location.pathname === "/support/payout" ? true : true}
-        expandedRowRender={"hello"}
+        isExpandable={true}
+        // expandedRowRender={ExpandedRowData}
         ExpandedComp={ExpandedRowData}
         rowId={location.pathname === "/support/funded" ? "login_id" : "id"}
       />
@@ -928,7 +928,6 @@ function ExpandedRowData({record}) {
     console.log(flag);
     dispatch(nestedTableDataReq({idToken, url, flag, dispatch}));
   }, [url]);
-  console.log(nestedTableData, "nested");
 
   const martingleStatus = nestedTableData?.martingale?.status || nestedTableData?.martingale_status;
 

@@ -6,8 +6,11 @@ import payoutReqIcon from "../../../assets/icons/payoutReqIcon.svg";
 import alphaProfitIcon from "../../../assets/icons/alphaProfitIcon.svg";
 import netProfitIcon from "../../../assets/icons/netProfitIcon.svg";
 import netRevenueIcon from "../../../assets/icons/netRevenueIcon.svg";
+import {useSelector} from "react-redux";
 
 const Infobox = () => {
+  const {statsData, isLoading} = useSelector((state) => state.revenue);
+
   const dummyData = [
     {
       totalAccounts: "25,656",
@@ -19,19 +22,24 @@ const Infobox = () => {
     },
   ];
 
+  console.log(statsData, " statsdata");
+
   return (
-    <div className="infobox_container">
-      <div className="infobox_wrapper">
-        <div className="infobox_data">
-          {dummyData.map((item, index) => (
-            <InfoBox
-              key={index}
-              item={item}
-            />
-          ))}
+    <>
+      <div className="infobox_container">
+        <div className="infobox_wrapper">
+          <div className="infobox_data">
+            {statsData &&
+              [statsData]?.map((item, index) => (
+                <InfoBox
+                  key={index}
+                  item={item}
+                />
+              ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -45,7 +53,7 @@ const InfoBox = ({item}) => {
           alt="totalAccIcon"
         />
         <p className="infobox_label">Total Accounts</p>
-        <p className="infobox_value">{item.totalAccounts}</p>
+        <p className="infobox_value">{item.total_accounts}</p>
       </div>
       <div className="infobox_content">
         <img
@@ -54,7 +62,7 @@ const InfoBox = ({item}) => {
           alt="revenueAccIcon"
         />
         <p className="infobox_label">Revenue from Account Payments</p>
-        <p className="infobox_value">{item.revenueFromAccountPayments}</p>
+        <p className="infobox_value">{item.revenue_from_payments}</p>
       </div>
       <div className="infobox_content">
         <img
@@ -63,7 +71,7 @@ const InfoBox = ({item}) => {
           alt="payoutReqIcon"
         />
         <p className="infobox_label">Payouts Requested</p>
-        <p className="infobox_value">{item.payoutsRequested}</p>
+        <p className="infobox_value">{item.payouts_requested}</p>
       </div>
       <div className="infobox_content">
         <img
@@ -72,7 +80,7 @@ const InfoBox = ({item}) => {
           alt="alphaProfitIcon"
         />
         <p className="infobox_label">Alpha Profit Share</p>
-        <p className="infobox_value">{item.alphaProfitShare}</p>
+        <p className="infobox_value">{item.alpha_profit_share}</p>
       </div>
       <div className="infobox_content">
         <img
@@ -81,7 +89,7 @@ const InfoBox = ({item}) => {
           alt="netRevenueIcon"
         />
         <p className="infobox_label">Net Revenue</p>
-        <p className="infobox_value">{item.netRevenue}</p>
+        <p className="infobox_value">{item.net_revenue}</p>
       </div>
       <div className="infobox_content">
         <img
@@ -90,7 +98,7 @@ const InfoBox = ({item}) => {
           alt="alphaProfitIcon"
         />
         <p className="infobox_label">Net Profit</p>
-        <p className="infobox_value">{item.netProfit}</p>
+        <p className="infobox_value">{item.net_profit}</p>
       </div>
     </div>
   );
