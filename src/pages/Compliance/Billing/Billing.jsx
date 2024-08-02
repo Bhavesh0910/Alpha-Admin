@@ -66,16 +66,19 @@ const Billing = () => {
       title: "Email ID",
       dataIndex: "email",
       key: "email",
+      render: (text) => text || '-',
     },
     {
       title: "Account Number",
       dataIndex: "account_number",
       key: "account_number",
+      render: (text) => text || '-',
     },
     {
       title: "Date",
       dataIndex: "date",
       key: "date",
+      render: (text) => text || '-',
     },
     {
       title: "Verified",
@@ -86,7 +89,7 @@ const Billing = () => {
           <img
             src={text === false ? notVerifiedIcon : verifiedIcon}
             alt="verified"
-            style={{width: 20, height: 20, marginLeft: "13px"}}
+            style={{ width: 20, height: 20, marginLeft: "13px" }}
           />
         </span>
       ),
@@ -95,14 +98,16 @@ const Billing = () => {
       title: "Billing Method",
       dataIndex: "verification_type",
       key: "verification_type",
+      render: (text) => text || '-',
     },
     {
       title: "Billing Type",
       dataIndex: "billing_type",
       key: "billing_type",
-      render: (text) => <Button className="standard_button profit_share_btn">{text}</Button>,
+      render: (text) => <Button className="standard_button profit_share_btn">{text || '-'}</Button>,
     },
   ];
+  
 
   function updateDateRange(dates) {
     if (dates) {
@@ -202,7 +207,7 @@ function ExpandedRowRender({record}) {
     <>
       {isLoading ? (
         <LoaderOverlay />
-      ) : (
+      ) :  bilingDetailsData[0] ?  (
         <div className="expandable_description">
           <div className="description_box">
             <label className="label">Sr No: </label>
@@ -210,15 +215,15 @@ function ExpandedRowRender({record}) {
           </div>
           <div className="description_box">
             <label className="label">Date: </label>
-            <p className="value">{bilingDetailsData[0]?.createdAt}</p>
+            <p className="value">{bilingDetailsData[0]?.createdAt || '-'}</p>
           </div>
           <div className="description_box">
             <label className="label">Account Number: </label>
-            <p className="value">{bilingDetailsData[0]?.amount}</p>
+            <p className="value">{bilingDetailsData[0]?.amount || - '-'}</p>
           </div>
           <div className="description_box">
             <label className="label">Amount: </label>
-            <p className="value">{bilingDetailsData[0]?.amount}</p>
+            <p className="value">{bilingDetailsData[0]?.amount || '-'}</p>
           </div>
           <div className="description_box">
             <label className="label">Account Type: </label>
@@ -226,11 +231,11 @@ function ExpandedRowRender({record}) {
           </div>
           <div className="description_box">
             <label className="label">Billing Method: </label>
-            <p className="value">{bilingDetailsData[0]?.method}</p>
+            <p className="value">{bilingDetailsData[0]?.method || '-'}</p>
           </div>
           <div className="description_box">
             <label className="label">Billing Type: </label>
-            <p className="value profit_share_btn standard_button">{bilingDetailsData[0]?.type}</p>
+            <p className="value profit_share_btn standard_button">{bilingDetailsData[0]?.type || '-'}</p>
           </div>
           <div className="description_box">
             <label className="label">Status: </label>
@@ -238,11 +243,12 @@ function ExpandedRowRender({record}) {
               style={{cursor: "pointer"}}
               className={`status_indicator ${bilingDetailsData[0]?.status === "Approved" ? "approved" : "in_review"}`}
             >
-              {bilingDetailsData[0]?.status}
+              {bilingDetailsData[0]?.status || '-'}
             </p>
           </div>
         </div>
-      )}
+      ) : 'no data'}
+      
     </>
   );
 }

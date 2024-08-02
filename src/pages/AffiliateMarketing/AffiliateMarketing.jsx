@@ -91,22 +91,6 @@ const AffiliateMarketing = ({userData}) => {
   };
 
   const columns = [
-    // {
-    //   title: "ID",
-    //   dataIndex: "id",
-    //   render: (text, record) => (
-    //     <div
-    //       onClick={() => handleRowClick(record.id, record.email)}
-    //       className="country_flag_div"
-    //     >
-    //       <img
-    //         src={text.flag}
-    //         alt="flag"
-    //       />
-    //       {text}
-    //     </div>
-    //   ),
-    // },
     {
       title: "Name",
       dataIndex: "name",
@@ -117,13 +101,10 @@ const AffiliateMarketing = ({userData}) => {
                 text
                   ?.split(" ")
                   .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" "),
-                searchText,
+                  .join(" ") || "-",
+                searchText
               )
-            : text
-                ?.split(" ")
-                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(" ")}
+            : text?.split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ") || "-"}
         </div>
       ),
     },
@@ -140,66 +121,25 @@ const AffiliateMarketing = ({userData}) => {
                 text
                   ?.split(" ")
                   .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" "),
-                searchText,
+                  .join(" ") || "-",
+                searchText
               )
-            : text
-                ?.split(" ")
-                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(" ")}
+            : text?.split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ") || "-"}
         </div>
       ),
     },
-    // {
-    //   title: "Country",
-    //   dataIndex: "country",
-    //   key: "country",
-    //   render: (country) => {
-    //     console.log(country, "country");
-    //     const countryName = country;
-    //     const countryCode = lookup.byCountry(countryName);
-    //     if (countryCode) {
-    //       return (
-    //         <div className="country_name_wrapper">
-    //           <ReactCountryFlag
-    //             countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
-    //             svg={true}
-    //             aria-label={countryName}
-    //           />
-    //           <span>{countryName}</span>
-    //         </div>
-    //       );
-    //     } else {
-    //       return <span>{countryName}</span>;
-    //     }
-    //   },
-    // },
     {
       title: "Referred Count",
       dataIndex: "referred_count",
       key: "referred_count",
+      render: (text) => text || "-",
     },
     {
       title: "Coupon Discount",
       dataIndex: "coupon_discount",
       key: "coupon_discount",
+      render: (text) => text || "-",
     },
-    // {
-    //   title: "Created",
-    //   dataIndex: "created",
-    //   key: "created",
-    //   render: (text, record) => <p>{record.created}</p>,
-    // },
-    // {
-    //   title: "200K Challenge",
-    //   dataIndex: "200k_challenge",
-    //   key: "200k_challenge",
-    // },
-    // {
-    //   title: "300K Challenge",
-    //   dataIndex: "300k_challenge",
-    //   key: "300k_challenge",
-    // },
     {
       title: "Referred List",
       dataIndex: "referredList",
@@ -214,6 +154,7 @@ const AffiliateMarketing = ({userData}) => {
       ),
     },
   ];
+  
 
   const dummyData = [
     {

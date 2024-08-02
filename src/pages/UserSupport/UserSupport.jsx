@@ -245,6 +245,7 @@ const ReqPayoutForm = ({loginId, setLoginId, amount, setAmount, reason, setReaso
             maxLength={100}
             placeholder="Enter Reason"
             value={reason}
+            className="textarea"
             onChange={(e) => setReason(e.target.value)}
             style={{
               height: 93,

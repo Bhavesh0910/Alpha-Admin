@@ -10,38 +10,48 @@ export const createCoupon = createAsyncThunk(
     async ({ idToken, couponData , dispatch }, { rejectWithValue }) => {
         try {
             const response = await createCouponReq(idToken , couponData);
-            return response; // Assuming accountListReq returns an object with data property
+            return response; 
         } catch (error) {
             console.log("Error : ", error);
-            dispatch(returnErrors(error?.response?.data?.detail || "Error while fetching Payment List!", 400))
-            return rejectWithValue(error.response.data); // Return specific error data from API
+            const msg = error.response?.status === 500 ? "internal server error" :  error.response.status != 500 ? error.response?.data?.detail  : "Failed to create coupon"
+            const statusCode = error.response?.status || 400;
+            dispatch(returnErrors(msg, statusCode))
+            return rejectWithValue(msg); 
         }
     }
 );
 export const editCoupon = createAsyncThunk(
     "couponsList/edit",
-    async ({ idToken, id, body }, { rejectWithValue }) => {
+    async ({ idToken, id, body , dispatch }, { rejectWithValue }) => {
         console.log("ljnjlljklkj ", idToken, id, body)
         try {
+            
             const response = await patchCouponReq(idToken, id, body);
+            
+            console.log(response)
             return response?.data;
+      
         } catch (error) {
-            throw error;
+            const errorMessage = error.response?.data?.detail || "An error occurred";
+            const statusCode = error.response?.status || 400;
+            console.error("API Error:", errorMessage);
+            
+            dispatch(returnErrors(errorMessage, statusCode));
+            
+            return rejectWithValue(errorMessage);
         }
     }
 );
 export const getCoupons = createAsyncThunk(
     "couponsList/fetch",
     async ({ idToken, activeTab, searchText, pageSize, pageNo, dates, dispatch }, { rejectWithValue }) => {
-        // async (idToken, { rejectWithValue }) => {
         try {
-            // const response = await getCouponsReq(idToken);
             const response = await getCouponsReq(idToken, activeTab, searchText, pageSize, pageNo, dates,);
             return response?.data;
         } catch (error) {
             console.log("Error : ", error);
-            dispatch(returnErrors(error?.response?.data?.detail || "Error while fetching Payment List!", 400))
-            return rejectWithValue(error.response.data); // Return specific error data from API
+            dispatch(returnErrors(error?.response?.data?.detail || "Error while fetching coupon List!", 400))
+            return rejectWithValue(error.response.data); 
         }
     }
 );
@@ -163,9 +173,11 @@ export async function patchCouponReq(idToken, id, body) {
         };
 
         const res = axios.put(`${baseUrl}v2/create/coupon/`, body, config);
+        console.log(res)
         return res;
 
     } catch (error) {
+        console.log(error)
         throw error;
     }
 }

@@ -11,14 +11,11 @@ export const fetchUserList = createAsyncThunk(
       const response = await getUserList(idToken, searchText, pageNo, pageSize, authType, active);
       if (response?.status < 399) {
         return response?.data;
-      } else {
-        const msg = 'Error getting User list';
-        dispatch(returnErrors(msg, 400));
-        return rejectWithValue(msg);
-      }
+      } 
     } catch (error) {
-      return rejectWithValue(error.message);
-    }
+      const msg = 'Error fetching User list';
+      dispatch(returnErrors(error?.response?.data?.detail || msg, 400));
+      return rejectWithValue(msg);    }
   }
 );
 
@@ -29,14 +26,11 @@ export const fetchIpLogs = createAsyncThunk(
       const response = await ipLogsReq(idToken, search, currentPage);
       if (response?.status < 399) {
         return response?.data;
-      } else {
-        const msg = 'Error getting IP logs';
-        dispatch(returnErrors(msg, 400));
-        return rejectWithValue(msg);
-      }
+      } 
     } catch (error) {
-      return rejectWithValue(error.message);
-    }
+      const msg = 'Error fetching IP logs';
+      dispatch(returnErrors(error?.response?.data?.detail || msg, 400));
+      return rejectWithValue(error?.response?.data?.detail || msg);    }
   }
 );
 
@@ -49,13 +43,13 @@ export const toggleActiveUser = createAsyncThunk(
 
 
       const response = await changeUserStatus(idToken, note , id);
-      dispatch(returnMessages('Status Changes Successfully'));
+      dispatch(returnMessages('Status Changed Successfully'));
       console.log(response)
         return response;
 
 
     } catch (error) {
-      dispatch(returnErrors("Error", 400)); 
+      dispatch(returnErrors(error?.response?.data?.detail || "error", 400)); 
       return rejectWithValue(error.response.data);
     }
   }

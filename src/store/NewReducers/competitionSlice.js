@@ -37,13 +37,12 @@ export const fetchCompetitionDetail = createAsyncThunk("comp/fetchCompetitionDet
     const response = await getOneCompDetails(idToken, id);
     if (response?.status < 399) {
       return response?.data;
-    } else {
-      const msg = "Failed to fetch competition details";
-      dispatch(returnErrors(msg, 400));
-      return rejectWithValue(msg);
     }
   } catch (error) {
-    return rejectWithValue(error.message);
+    const msg = error.response?.data?.detail || "Failed to fetch competition details";
+    const status = error.response?.status || 500;
+    dispatch(returnErrors(msg, status));
+    return rejectWithValue(msg);
   }
 });
 
@@ -53,10 +52,11 @@ export const createCompetition = createAsyncThunk("comp/createCompetition", asyn
     console.log(response);
     dispatch(returnMessages("Successfully created competition", 200));
     return response?.data;
-  } catch (error) {
-    const msg = "Failed to create competition";
-    dispatch(returnErrors(msg, 400));
-    return rejectWithValue(error.message);
+  }catch (error) {
+    const msg = error.response?.data?.detail || "Error creating competition";
+    const status = error.response?.status || 500;
+    dispatch(returnErrors(msg, status));
+    return rejectWithValue(msg);
   }
 });
 
@@ -67,13 +67,17 @@ export const updateCompetition = createAsyncThunk("comp/updateCompetition", asyn
     if (response?.status < 399) {
       dispatch(returnMessages("Successfully updated competition", 200));
       return response?.data;
-      // } else {
-      //   const msg = 'Failed to update competition';
-      //   dispatch(returnErrors(msg, 400));
-      //   return rejectWithValue(msg);
+      } else {
+        const msg = 'Failed to update competition';
+        dispatch(returnErrors(msg, 400));
+        return rejectWithValue(msg);
     }
-  } catch (error) {
-    return rejectWithValue(error.message);
+  }   
+   catch (error) {
+    const msg = error.response?.data?.detail || "Error updating competition";
+    const status = error.response?.status || 500;
+    dispatch(returnErrors(msg, status));
+    return rejectWithValue(msg);
   }
 });
 

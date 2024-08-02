@@ -123,13 +123,14 @@ const UserListTable = () => {
       dataIndex: "email",
       render: (text) => (
         <>
-          {text}
-          <CopyToClipboard text={text}>
+          {text || "-"}
+          <CopyToClipboard text={text || "-"}>
             <Tooltip title="Copy email">
               <Button
                 type="link"
-                icon={<CopyOutlined style={{color: "#04D9FF"}} />}
+                icon={<CopyOutlined style={{ color: "#04D9FF" }} />}
                 onClick={() => message.success("Copied email")}
+                disabled={!text}
               />
             </Tooltip>
           </CopyToClipboard>
@@ -139,23 +140,18 @@ const UserListTable = () => {
     {
       title: "Name",
       dataIndex: "full_name",
-      render: (text, record) => <span>{text}</span>,
+      render: (text) => <span>{text || "-"}</span>,
     },
     {
       title: "Date joined",
       dataIndex: "date_joined",
-      render: (text) => <span>{moment(text).format("ll")}</span>,
+      render: (text) => <span>{text ? moment(text).format("ll") : "-"}</span>,
     },
-    // {
-    //   title: "Auth type",
-    //   dataIndex: "auth_type",
-    //   render: (text, record) => <span style={{textTransform: "capitalize"}}>{text}</span>,
-    // },
     {
       title: "Country",
       dataIndex: "country",
       render: (country) => {
-        const countryName = country;
+        const countryName = country || "-";
         const countryCode = lookup.byCountry(countryName);
         if (countryCode) {
           return (
@@ -169,28 +165,38 @@ const UserListTable = () => {
             </div>
           );
         } else {
-          return <span>{countryName || "N/A"}</span>;
+          return <span>{countryName}</span>;
         }
       },
     },
     {
       title: "Active",
       dataIndex: "is_active",
-      render: (text, record) => <span className={`status_wrapper ${record.is_active ? "active" : "blocked"}`}>{record.is_active ? "Active" : "Blocked"}</span>,
+      render: (text, record) => (
+        <span className={`status_wrapper ${record.is_active ? "active" : "blocked"}`}>
+          {record.is_active !== undefined ? (record.is_active ? "Active" : "Blocked") : "-"}
+        </span>
+      ),
     },
     {
       title: "Action",
       dataIndex: "actions",
       render: (_, record) => (
         <div className="action_wrapper">
-          <Button onClick={() => handleStatusChange(record)}>{record.is_active ? "Block" : "Activate"}</Button>
+          <Button 
+            onClick={() => handleStatusChange(record)} 
+            disabled={record.is_active === undefined}
+          >
+            {record.is_active !== undefined ? (record.is_active ? "Block" : "Activate") : "-"}
+          </Button>
         </div>
       ),
     },
   ];
+  
 
   const navigate = useNavigate()
-  
+
   return (
     <div className="user_list_container">
       <div>

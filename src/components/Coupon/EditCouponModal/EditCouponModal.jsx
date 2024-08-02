@@ -46,10 +46,7 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
           value: item?.id,
         }));
         setEmailOpts(userArray);
-      } else {
-        const msg = response?.response?.data?.detail || "Something went wrong";
-        dispatch(returnErrors(msg, 400));
-      }
+      } 
     } catch (error) {
       setIsLoading(false);
       dispatch(returnErrors("Failed to fetch users. Please try again.", 400));
@@ -92,9 +89,10 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
     
 
     try {
-      dispatch(editCoupon({ idToken, id, body: updatedFields }));
+      dispatch(editCoupon({ idToken, id, body: updatedFields , dispatch}));
       handleCloseButton();
     } catch (error) {
+      console.log(error)
       dispatch(returnErrors(error?.response?.data?.detail || "Action Failed! Try Again.", error?.response?.status || 400));
     }
   };

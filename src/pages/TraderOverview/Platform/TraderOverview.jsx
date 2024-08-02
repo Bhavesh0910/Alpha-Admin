@@ -1,23 +1,23 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./TraderOverview.scss";
-import {Table, DatePicker, Button, Card, Radio, Select, Typography, Modal} from "antd";
+import { Table, DatePicker, Button, Card, Radio, Select, Typography, Modal } from "antd";
 
-import {Link, useNavigate} from "react-router-dom";
-import {useSelector, useDispatch} from "react-redux";
-import {getAllTradersRequest} from "../../../utils/api/apis";
-import {getAccountList, getAccountListSuccess} from "../../../store/reducers/accountSlice";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getAllTradersRequest } from "../../../utils/api/apis";
+import { getAccountList, getAccountListSuccess } from "../../../store/reducers/accountSlice";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import {setDefaultLoginId, accountList, changeAccountStatus, deleteAcount} from "../../../store/NewReducers/accountList";
-import {clearPersistedData} from "../../../store/configureStore";
+import { setDefaultLoginId, accountList, changeAccountStatus, deleteAcount } from "../../../store/NewReducers/accountList";
+import { clearPersistedData } from "../../../store/configureStore";
 import dayjs from "dayjs";
-import {formatDate} from "fullcalendar/index.js";
+import { formatDate } from "fullcalendar/index.js";
 import ReactCountryFlag from "react-country-flag";
-import {changeAccountStatusApi} from "../../../utils/apis/accountsApi";
-const {Title} = Typography;
-const {Option} = Select;
-const {RangePicker} = DatePicker;
+import { changeAccountStatusApi } from "../../../utils/apis/accountsApi";
+const { Title } = Typography;
+const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 function TraderOverview() {
   const lookup = require("country-code-lookup");
@@ -35,8 +35,8 @@ function TraderOverview() {
   const [reason, setReason] = useState("");
 
   const [phase, setPhase] = useState("");
-  const {idToken, searchDates} = useSelector((state) => state.auth);
-  const {data, isLoading: accountsLoading, totalItems, refresh} = useSelector((state) => state.accountList);
+  const { idToken, searchDates } = useSelector((state) => state.auth);
+  const { data, isLoading: accountsLoading, totalItems, refresh } = useSelector((state) => state.accountList);
 
   const [dates, setDates] = useState(null);
   const defaultDates = [dayjs().subtract(7, "day"), dayjs()];
@@ -168,10 +168,10 @@ function TraderOverview() {
         render: (value, record) => {
           return (
             <p
-              style={{cursor: "pointer"}}
+              style={{ cursor: "pointer" }}
               onClick={() => navigate(`/account-analysis/${record.login_id}/${platform}`)}
             >
-              {value}
+              {value || '-'}
             </p>
           );
         },
@@ -181,22 +181,20 @@ function TraderOverview() {
         dataIndex: "country",
         key: "country",
         render: (country) => {
-          const countryName = country;
+          const countryName = country || '-';
           const countryCode = lookup.byCountry(countryName);
-          if (countryCode) {
-            return (
-              <div className="country_name_wrapper">
-                <ReactCountryFlag
-                  countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
-                  svg={true}
-                  aria-label={countryName}
-                />
-                <span>{countryName}</span>
-              </div>
-            );
-          } else {
-            return <span>{countryName}</span>;
-          }
+          return countryCode ? (
+            <div className="country_name_wrapper">
+              <ReactCountryFlag
+                countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
+                svg={true}
+                aria-label={countryName}
+              />
+              <span>{countryName}</span>
+            </div>
+          ) : (
+            <span>{countryName}</span>
+          );
         },
       },
       {
@@ -204,59 +202,56 @@ function TraderOverview() {
         dataIndex: "login_id",
         key: "login_id",
         width: 100,
-        render: (text) => {
-          highlightText(text, searchText);
-        },
+        render: (text) => highlightText(text || '-', searchText),
       },
       {
         title: "Balance",
         dataIndex: "balance",
         key: "balance",
         width: 150,
-        render: (startingBalance) => <span>${parseFloat(startingBalance).toLocaleString()}</span>,
+        render: (startingBalance) => <span>${parseFloat(startingBalance || '0').toLocaleString()}</span>,
       },
       {
         title: "Equity",
         dataIndex: "equity",
         key: "equity",
         width: 150,
-        render: (equity) => <span>{equity}</span>,
+        render: (equity) => <span>{equity || '-'}</span>,
       },
       {
         title: "Leverage",
         dataIndex: "leverage",
         key: "leverage",
         width: 150,
-        render: (leverage) => <span>1:{leverage}</span>,
+        render: (leverage) => <span>1:{leverage || '-'}</span>,
       },
       {
         title: "Start Date",
         dataIndex: "start_date",
         key: "start_date",
         width: 150,
-        render: (startDate) => <span>{formatDate(startDate)}</span>,
+        render: (startDate) => <span>{startDate ? formatDate(startDate) : '-'}</span>,
       },
       {
         title: "End Date",
         dataIndex: "expiry_date",
         key: "expiry_date",
         width: 150,
-        render: (expiryDate) => <span>{expiryDate ? formatDate(expiryDate) : "-"}</span>,
+        render: (expiryDate) => <span>{expiryDate ? formatDate(expiryDate) : '-'}</span>,
       },
       {
         title: "Trader Type",
         dataIndex: "status",
         key: "status",
         width: 150,
-        // render: (text) => highlightText(text, searchText),
-        render: (text) => <p className={`status_text ${text === "Evaluation" ? "evaluation" : "free_trial"}`}>{highlightText(text, searchText)}</p>,
+        render: (text) => <p className={`status_text ${text === "Evaluation" ? "evaluation" : "free_trial"}`}>{highlightText(text || '-', searchText)}</p>,
       },
       {
         title: "Status",
         dataIndex: "user_is_active",
         key: "user_is_active",
         width: 150,
-        render: (text) => (text ? "UnBlocked" : "Blocked"),
+        render: (text) => (text ? "UnBlocked" : "Blocked") || '-',
       },
       {
         title: "Action",
@@ -291,8 +286,9 @@ function TraderOverview() {
         ),
       },
     ],
-    [navigate, platform],
+    [navigate, platform, searchText],
   );
+  
 
   function handleAction(action, record) {
     setAction(action);
@@ -301,19 +297,19 @@ function TraderOverview() {
     console.log(action, record, "here");
   }
   const handleBlock = () => {
-    dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.user_id, note: reason}, dispatch}));
+    dispatch(changeAccountStatus({ idToken, body: { id: selectedTrader?.user_id, note: reason }, dispatch }));
     setIsModalVisible(false);
   };
 
   const handleUnBlock = () => {
-    dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.user_id, note: reason}, dispatch}));
+    dispatch(changeAccountStatus({ idToken, body: { id: selectedTrader?.user_id, note: reason }, dispatch }));
     setIsModalVisible(false);
   };
 
   const handleDelete = () => {
     console.log("handleDelete");
     console.log(platform, "plaform");
-    dispatch(deleteAcount({idToken, body: {login_id: selectedTrader?.login_id}, platform, dispatch}));
+    dispatch(deleteAcount({ idToken, body: { login_id: selectedTrader?.login_id }, platform, dispatch }));
     setIsModalVisible(false);
   };
 
@@ -337,17 +333,17 @@ function TraderOverview() {
             <Radio.Button value="inactive">Inactive</Radio.Button>
           </Radio.Group>
           <Button
-  onClick={() => navigate(`/trader-overview/view-logs?platform=${platform}`)}
-  className="view_logs__btn standard_button"
->
-  View Logs
-</Button>
+            onClick={() => navigate(`/trader-overview/view-logs?platform=${platform}`)}
+            className="view_logs__btn standard_button"
+          >
+            View Logs
+          </Button>
 
         </div>
         <div className="trader-overview-header-left">
           <Title
             className="title"
-            style={{fontstatus: "14px"}}
+            style={{ fontstatus: "14px" }}
             level={5}
           >
             Platform

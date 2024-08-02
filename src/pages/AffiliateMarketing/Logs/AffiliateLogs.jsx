@@ -29,41 +29,46 @@ const AffiliateLogs = () => {
       title: "Admin Email ID",
       dataIndex: "admin_email",
       key: "admin_email",
+      render: (text) => text || "-", 
     },
     {
       title: "Date and Time",
       dataIndex: "date_time",
       key: "date_time",
       render: (text) => (
-        <div className="date_format">
-          <div>{moment(text).format("DD/MM/YYYY")}</div>
-          <div>{moment(text).format("hh:mm:ss")}</div>
-        </div>
+        text ? (
+          <div className="date_format">
+            <div>{moment(text).format("DD/MM/YYYY")}</div>
+            <div>{moment(text).format("hh:mm:ss")}</div>
+          </div>
+        ) : "-"
       ),
     },
     {
-        title: "User Email",
-        dataIndex: "user_email",
-        key: "user_email",
-      },
+      title: "User Email",
+      dataIndex: "user_email",
+      key: "user_email",
+      render: (text) => text || "-", 
+    },
     {
       title: "Affiliate Code",
       dataIndex: "affiliate_code",
       key: "affiliate_code",
+      render: (text) => text || "-", 
     },
     {
       title: "Commission",
       dataIndex: "commission",
       key: "commission",
+      render: (text) => text || "-", 
     },
     {
       title: "Repeat Commission",
       dataIndex: "repeat_commission",
       key: "repeat_commission",
+      render: (text) => text || "-", 
     },
-
   ];
-
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
@@ -87,7 +92,7 @@ const AffiliateLogs = () => {
       </div>
       {isLoading ? (
         <LoaderOverlay />
-      )  : (
+      ) : (
         <AntTable
           columns={columns}
           data={affiliateLogData || []}

@@ -88,6 +88,10 @@
           grid-template-columns: 100%;
         }
 
+        .textarea{
+          border: none !important;
+        }
+
         .form_input_box {
           &:last-child {
             grid-column: span 2;
