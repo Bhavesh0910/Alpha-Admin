@@ -514,7 +514,7 @@ const postAffiliateDetails = async (idToken, data) => {
       },
     };
 
-    const response = await axios.post(`${baseUrl}create/affiliate-code/`, data, config);
+    const response = await axios.post(`${baseUrl}v3/create/affiliate-code/`, data, config);
     if (response.status === 201 || response.status === 200) {
       return response.data;
     } else {
@@ -1038,8 +1038,9 @@ export const getAccountDetails = async (login_id, platform, idToken) => {
 };
 
 export const getAccountAnalysis = async (platform, login_id, idToken) => {
+  let platformName = platform === 'trader-accounts' ? 'mt5' : platform === 'ctrader-accounts' ? 'ctrader' : 'dxtrade'
   try {
-    const url = `${baseUrl}v2/account-analysis/?platform=${platform}&login_id=${login_id}`;
+    const url = `${baseUrl}v2/account-analysis/?platform=${platformName}&login_id=${login_id}`;
     
     const response = await axios.get(url, {
       headers: {
@@ -1313,7 +1314,7 @@ const getCompDetails = async (idToken) => {
   };
   let output;
   await axios
-    .get(`${baseUrl}v2/get/competition/`, config)
+    .get(`${baseUrl}v3/adm/competition/list/`, config)
     .then((res) => {
       output = res;
 
@@ -1386,7 +1387,7 @@ const postCompDetails = async (idToken, formData) => {
 };
 
 const deleteCompDetails = async (idToken, id) => {
-  const apiUrl = `${baseUrl}adm/competition/${id}`;
+  const apiUrl = `${baseUrl}v3/adm/competition/${id}`;
 
   const config = {
     headers: {
@@ -1408,7 +1409,7 @@ const deleteCompDetails = async (idToken, id) => {
 
 const updateCompDetails = async (idToken, id, data) => {
   console.log(data, id);
-  const apiUrl = `${baseUrl}adm/competition/${id}`;
+  const apiUrl = `${baseUrl}v3/adm/competition/${id}`;
 
   const config = {
     headers: {

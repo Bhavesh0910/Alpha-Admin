@@ -91,7 +91,7 @@ const AccountMetrics = () => {
         {status === "" && <AccountOverview overview={tradingAccountOverview} accountDetails={accountDetails} objectives={objectives} performanceChart={performanceChart} />}
         {status === "Insights" && <Insights login_id={login_id} platform={platform} />}
         {status === "Trader_Journal" && <TraderJournal login_id={login_id} platform={platform} />}
-        {status === "Analysis" && <Analysis />}
+        {status === "Analysis" && <Analysis login_id={login_id} platform={platform} />}
       </div>
     </>
   );

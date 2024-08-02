@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Analysis.scss'
 import { Radio } from 'antd';
 import LongShortBalance from '../../../../components/AccountMetrics/Analysis/LongShortBalance';
@@ -8,13 +8,24 @@ import ResultByPositionSize from '../../../../components/AccountMetrics/Analysis
 import TradeDayAnalysis from '../../../../components/AccountMetrics/Analysis/TradeDayAnalysis';
 import ResultByTradeDuration from '../../../../components/AccountMetrics/Analysis/ResultByTradeDuration';
 import ResultByOpenHour from '../../../../components/AccountMetrics/Analysis/ResultByOpenHour';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAccountAnalysis, fetchAccountInsights } from '../../../../store/NewReducers/amSlice';
 
-const Analysis = () => {
+const Analysis = ({login_id , platform}) => {
   const [selectedView, setSelectedView] = useState('longShortBalance');
 
   const handleRadioChange = (e) => {
     setSelectedView(e.target.value);
   };
+
+  const idToken = useSelector((state) => state.auth.idToken);
+  const dispatch = useDispatch();
+  const { accountInsights, isLoading, error } = useSelector((state) => state.accountMetrics);
+
+  useEffect(() => {
+    dispatch(fetchAccountAnalysis({ login_id, platform, idToken }));
+  }, [dispatch, login_id, platform, idToken]);
+
 
   return (
     <div className='account_metrics_analysis'>

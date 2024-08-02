@@ -144,7 +144,7 @@ export async function getCouponsReq(idToken, activeTab, searchText, pageSize = 2
             },
         };
         // const res = axios.get(`${baseUrl}payment/admin/coupon/?start_date=${dates[0]}&end_date=${dates[1]}&search=${searchText}&status=${activeTab === "all" ? "" : activeTab}&page_size=${pageSize}&page_no=${pageNo}`, config);
-        const res = axios.get(`${baseUrl}v2/list/coupon/?${query}`, config);
+        const res = axios.get(`${baseUrl}v3/coupon-list/?${query}`, config);
 
         return res;
 

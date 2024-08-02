@@ -1,38 +1,46 @@
-import React, {useEffect, useState} from "react";
-import crossIcon from "../../../assets/icons/cross_icon_white.svg";
+import React, { useEffect, useState } from "react";
+import { Button, Radio } from "antd";
+import { CloseOutlined } from '@ant-design/icons';
 import "./UserDetails.scss";
 import exportBtnIcon from "../../../assets/icons/export_btn_icon.svg";
-import {Button, Radio} from "antd";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import {traderAffiliateRefList} from "../../../utils/api/apis";
-import {useSelector} from "react-redux";
+import { traderAffiliateRefList } from "../../../utils/api/apis";
+import { useSelector } from "react-redux";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-const UserDetails = ({isUserDetailOpened, setIsUserDetailOpened, id}) => {
+
+const UserDetails = ({ isUserDetailOpened, setIsUserDetailOpened, id }) => {
   const [status, setStatus] = useState("success");
+  const [referredList, setReferredList] = useState([]);
+  const idToken = useSelector((state) => state.auth.idToken);
+  const [isLoading, setisLoading] = useState(true);
 
   const onChange = (e) => {
     setStatus(e.target.value);
   };
 
-  const [referredList, setReferredList] = useState([]);
-  const idToken = useSelector((state) => state.auth.idToken);
-  const [isLoading, setisLoading] = useState(true);
-
-  const data = async () => {
-    if (isUserDetailOpened === true) {
-      const data = await traderAffiliateRefList(idToken, id);
-      setReferredList(data);
-      setisLoading(false);
+  const fetchData = async () => {
+    if (isUserDetailOpened) {
+      setisLoading(true);
+      try {
+        const data = await traderAffiliateRefList(idToken, id);
+        setReferredList(data);
+      } catch (error) {
+        console.error("Error fetching referred list:", error);
+      } finally {
+        setisLoading(false);
+      }
     }
   };
+
   useEffect(() => {
-    data();
+    fetchData();
   }, [isUserDetailOpened]);
+
   const columns = [
     {
-      title: "Refered Trader",
-      dataIndex: "referedTrader",
-      key: "referedTrader",
+      title: "Referred Trader",
+      dataIndex: "referredTrader",
+      key: "referredTrader",
     },
     {
       title: "Paid Amount",
@@ -70,30 +78,16 @@ const UserDetails = ({isUserDetailOpened, setIsUserDetailOpened, id}) => {
     },
   ];
 
-  const dummyData = [
-    {
-      key: "1",
-      name: "Jacob Jones",
-      email: "debra.holt@example.com",
-      country: "Georgia",
-      date: "12/4/17",
-      flag: "https://flagcdn.com/w320/de.png", // Example flag URL
-      account_purchase: "200K",
-      isPurchaseVerified: true,
-    },
-  ];
-
   const handleCloseBtn = () => {
-    setIsUserDetailOpened(!isUserDetailOpened);
+    setIsUserDetailOpened(false);
   };
 
   return (
-    <div className="userDetails_wrapper">
-      <div className="header_wapper">
+    <div className={`userDetails_wrapper ${isUserDetailOpened ? 'open' : 'closed'}`}>
+      <div className="header_wrapper">
         <h2 className="page_header">Accounts Range</h2>
-        <img
-          src={crossIcon}
-          alt="cross_icon"
+        <CloseOutlined
+          className="close_icon"
           onClick={handleCloseBtn}
         />
       </div>
@@ -101,10 +95,7 @@ const UserDetails = ({isUserDetailOpened, setIsUserDetailOpened, id}) => {
         <div className="list_header">Referred List</div>
         <div className="rightSection">
           <div className="groupA tabs_wrapper">
-            <Radio.Group
-              value={status}
-              onChange={onChange}
-            >
+            <Radio.Group value={status} onChange={onChange}>
               <Radio.Button value="success">Success</Radio.Button>
               <Radio.Button value="failed">Failed</Radio.Button>
             </Radio.Group>
@@ -112,10 +103,7 @@ const UserDetails = ({isUserDetailOpened, setIsUserDetailOpened, id}) => {
           <div className="groupB">
             <div className="export_btn">
               <Button>
-                <img
-                  src={exportBtnIcon}
-                  alt="export_btn_icon"
-                />
+                <img src={exportBtnIcon} alt="Export" />
                 Export
               </Button>
             </div>

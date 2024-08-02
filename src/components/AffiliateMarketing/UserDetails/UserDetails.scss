@@ -17,6 +17,12 @@
       cursor: pointer;
     }
   }
+  .close_icon {
+   
+    cursor: pointer;
+    color: #fff;
+    transition: color 0.3s ease; 
+  }
   .topSection_wrapper {
     display: flex;
     flex-direction: row;

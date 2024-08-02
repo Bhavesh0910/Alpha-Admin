@@ -1,18 +1,17 @@
-import {Button, Pagination, Modal, Input, DatePicker, message, Dropdown, Menu} from "antd";
-import React, {useEffect, useState} from "react";
+import { Button, Pagination, Modal, Input, DatePicker, message, Dropdown, Menu } from "antd";
+import React, { useEffect, useState } from "react";
 import threeDotsIcon from "../../assets/icons/menu_3dots_icon.svg";
 import "./Competition.scss";
-import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
-import {fetchCompDetails, fetchCompetitionDetail, fetchLeaderboard, updateCompetition} from "../../store/NewReducers/competitionSlice";
+import { fetchCompDetails, updateCompetition } from "../../store/NewReducers/competitionSlice";
 import TextArea from "antd/es/input/TextArea";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import {baseUrl, deleteCompDetails, getLeaderboardDetails} from "../../utils/api/apis";
-import {returnMessages} from "../../store/reducers/message";
-import {returnErrors} from "../../store/reducers/error";
+import { deleteCompDetails } from "../../utils/api/apis";
+import { returnMessages } from "../../store/reducers/message";
+import { returnErrors } from "../../store/reducers/error";
 import dayjs from "dayjs";
-import axios from "axios";
 
 const Competition = () => {
   const [activeTab, setActiveTab] = useState("upcoming");
@@ -21,31 +20,39 @@ const Competition = () => {
   const navigate = useNavigate();
   const idToken = useSelector((state) => state.auth.idToken);
   const dispatch = useDispatch();
-  const {compData, isLoading, error} = useSelector((state) => state.comp);
-  const fundingData = useSelector((state) => state.funding.fundingData);
+  const { compData, isLoading, error } = useSelector((state) => state.comp);
 
   useEffect(() => {
     dispatch(fetchCompDetails(idToken));
-    console.log(compData);
   }, [dispatch, idToken]);
 
   const today = moment();
 
-  const ongoingComps = compData?.Ongoing
-
-  const upcomingComps = compData?.Upcoming
-  const endedComps = compData?.End
-  const handleTabChange = (key) => {
-    setPageNo(1);
-    setActiveTab(key);
+  // Filter competitions based on status
+  const filterCompetitions = (competitions) => {
+    return competitions.map((item) => {
+      const status = moment(item.End_Date) < today
+        ? "ended"
+        : moment(item.Start_date) > today
+        ? "upcoming"
+        : "ongoing";
+      return { ...item, status };
+    });
   };
 
-  const filteredData = activeTab === "upcoming" ? upcomingComps : activeTab === "ongoing" ? ongoingComps : endedComps;
+  const filteredData = filterCompetitions(compData || []);
 
-  const paginatedData = filteredData?.slice(
+  const ongoingComps = filteredData.filter(comp => comp.status === "ongoing");
+  const upcomingComps = filteredData.filter(comp => comp.status === "upcoming");
+  const endedComps = filteredData.filter(comp => comp.status === "ended");
+
+  const currentData = activeTab === "upcoming" ? upcomingComps : activeTab === "ongoing" ? ongoingComps : endedComps;
+
+  const paginatedData = currentData.slice(
     (pageNo - 1) * pageSize,
     pageNo * pageSize
   );
+
   return (
     <div className="competition_container">
       {isLoading && <LoaderOverlay />}
@@ -65,19 +72,19 @@ const Competition = () => {
         <div className="filter_buttons">
           <Button
             className={activeTab === "upcoming" ? "active" : ""}
-            onClick={() => handleTabChange("upcoming")}
+            onClick={() => setActiveTab("upcoming")}
           >
             Upcoming
           </Button>
           <Button
             className={activeTab === "ongoing" ? "active" : ""}
-            onClick={() => handleTabChange("ongoing")}
+            onClick={() => setActiveTab("ongoing")}
           >
             Ongoing
           </Button>
           <Button
             className={activeTab === "ended" ? "active" : ""}
-            onClick={() => handleTabChange("ended")}
+            onClick={() => setActiveTab("ended")}
           >
             Ended
           </Button>
@@ -90,12 +97,12 @@ const Competition = () => {
         </Button>
       </div>
       <div className="competition_data">
-        {paginatedData?.map((item, index) => (
+        {paginatedData.map((item, index) => (
           <CompetitionCard key={index} item={item} />
         ))}
       </div>
       <Pagination
-        total={filteredData?.length}
+        total={currentData.length}
         pageSize={pageSize}
         current={pageNo}
         onChange={(page) => setPageNo(page)}
@@ -108,10 +115,7 @@ const Competition = () => {
         showTotal={(total) => `Total ${total} items`}
       />
       {error && (
-        <p
-          className="error"
-          style={{color: "#fff"}}
-        >
+        <p className="error" style={{ color: "#fff" }}>
           {error}
         </p>
       )}
@@ -121,22 +125,14 @@ const Competition = () => {
 
 export default Competition;
 
-const CompetitionCard = ({item}) => {
+
+
+const CompetitionCard = ({ item }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [formValues, setFormValues] = useState({});
   const dispatch = useDispatch();
   const idToken = useSelector((state) => state.auth.idToken);
 
-  const today = moment();
-
-  let status;
-  if (moment(item.End_Date) < today) {
-    status = "ended";
-  } else if (moment(item.Start_date) > today) {
-    status = "upcoming";
-  } else {
-    status = "ongoing";
-  }
   const handleEdit = () => {
     setFormValues(item);
     setIsModalVisible(true);
@@ -147,10 +143,9 @@ const CompetitionCard = ({item}) => {
     dispatch(fetchCompDetails(idToken));
   };
 
-  const handleLeaderboard = async (id) => {
-    console.log(id)
-    dispatch(fetchLeaderboard({idToken, competitionId: id}));
-  };
+  // const handleLeaderboard = async (id) => {
+  //   dispatch(fetchLeaderboard({ idToken, competitionId: id }));
+  // };
 
   const handleDelete = async (id) => {
     const confirmDelete = Modal.confirm({
@@ -179,7 +174,7 @@ const CompetitionCard = ({item}) => {
     });
   };
 
-  const handleMenuClick = ({key}) => {
+  const handleMenuClick = ({ key }) => {
     if (key === "edit") {
       handleEdit();
     } else if (key === "delete") {
@@ -188,10 +183,7 @@ const CompetitionCard = ({item}) => {
   };
 
   const menu = (
-    <Menu
-      className="competition_card_dropdown"
-      onClick={handleMenuClick}
-    >
+    <Menu className="competition_card_dropdown" onClick={handleMenuClick}>
       <Menu.Item key="edit">Edit</Menu.Item>
       <Menu.Item key="delete">Delete</Menu.Item>
     </Menu>
@@ -201,29 +193,28 @@ const CompetitionCard = ({item}) => {
     <div className="competition_card_container">
       <div className="header_section">
         <h4>{item.competition_name}</h4>
-        <Dropdown
-          overlay={menu}
-          trigger={["click"]}
-        >
+        <Dropdown overlay={menu} trigger={["click"]}>
           <img
-            style={{cursor: "pointer"}}
+            style={{ cursor: "pointer" }}
             className="threeDotMenu"
             src={threeDotsIcon}
-            alt="threeDotMenu"
+            alt="menu"
           />
-        </Dropdown>{" "}
+        </Dropdown>
       </div>
       <div className="competition_info">
         <div className="topSection">
           <p className="label">Validity</p>
-          <p className="value">{item.Start_date}</p>
+          <p className="value">{moment(item.Start_date).format("YYYY-MM-DD")}</p>
           <p className="label">to</p>
-          <p className="value">{item.End_Date}</p>
+          <p className="value">{moment(item.End_Date).format("YYYY-MM-DD")}</p>
         </div>
         <div className="bottomSection">
           <div className="status_box">
             <p className="label">Status</p>
-            <p className={`status_value ${status === "ongoing" ? "ongoing" : status === "upcoming" ? "upcoming" : "ended"}`}>{status}</p>
+            <p className={`status_value ${item.status}`}>
+              {item.status}
+            </p>
           </div>
           <div className="participants_info">
             <p className="label">Accounts allowed to participate</p>
@@ -250,7 +241,7 @@ const CompetitionCard = ({item}) => {
           </div>
         </div>
       </div>
-      <Button onClick={() => handleLeaderboard(item.id)} className="view_board">View Leaderboard</Button>
+      <Button className="view_board">View Leaderboard</Button>
       <Modal
         className="edit_modal"
         title="Edit Competition"
@@ -291,8 +282,11 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
   const handleDateChange = (date, dateString, field) => {
     setFormValues({ ...formValues, [field]: dateString });
   };
+  console.log(formValues)
+
 
   const handleSubmit = (e) => {
+    console.log(formValues)
     e.preventDefault();
     const updatedData = {
       competition_name: formValues.competition_name,
@@ -327,7 +321,7 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
         />
       </div>
       <div className="form_group">
-        <label htmlFor="challenge_name">Challenge Name</label>
+        <label htmlFor="challenge">Challenge Name</label>
         <Input
           id="challenge"
           value={formValues.challenge}
@@ -339,13 +333,9 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
         <label htmlFor="schedule_competition">Schedule Competition</label>
         <DatePicker
           id="schedule_competition"
-          value={
-            formValues.Schedule_competition
-              ? dayjs(formValues.Schedule_competition)
-              : null
-          }
+          value={formValues.Schedule_competition ? dayjs(formValues.Schedule_competition) : null}
           onChange={(date, dateString) =>
-            handleDateChange(date, dateString, "schedule_competition")
+            handleDateChange(date, dateString, "Schedule_competition")
           }
           required
         />
@@ -357,7 +347,7 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
             id="start_date"
             value={formValues.Start_date ? dayjs(formValues.Start_date) : null}
             onChange={(date, dateString) =>
-              handleDateChange(date, dateString, "start_date")
+              handleDateChange(date, dateString, "Start_date")
             }
             required
           />
@@ -368,7 +358,7 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
             id="end_date"
             value={formValues.End_Date ? dayjs(formValues.End_Date) : null}
             onChange={(date, dateString) =>
-              handleDateChange(date, dateString, "end_date")
+              handleDateChange(date, dateString, "End_Date")
             }
             required
           />
@@ -395,7 +385,7 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
       <div className="form_group">
         <label htmlFor="Third_prize">Third Prize</label>
         <Input
-          id="third_prize"
+          id="Third_prize"
           value={formValues.Third_prize}
           onChange={handleInputChange}
           required
