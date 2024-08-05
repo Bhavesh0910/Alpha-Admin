@@ -1,26 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./CountryWiseOverview.scss";
 import CountryWiseOverviewTable from "../../components/CountryWiseOverview/CountryWiseOverviewTable/CountryWiseOverviewTable";
 import PaymentChart from "../../components/CountryWiseOverview/PaymentChart/PaymentChart";
 import PayoutChart from "../../components/CountryWiseOverview/PayoutChart/PayoutChart";
-import { useSelector } from "react-redux";
+import {useSelector} from "react-redux";
+import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
 const CountryWiseOverview = () => {
-  const { listData } = useSelector((state) => state.countryWise);
-  const [chartData, setChartData] = useState({ series: [[], []], labels: [[], []] });
-  const [totalData, setTotalData] = useState({ totalPayment: 0, totalPayout: 0 });
+  const {listData, isLoading} = useSelector((state) => state.countryWise);
+  const [chartData, setChartData] = useState({series: [[], []], labels: [[], []]});
+  const [totalData, setTotalData] = useState({totalPayment: 0, totalPayout: 0});
 
   useEffect(() => {
     if (listData && Array.isArray(listData) && listData.length > 0) {
-      const getTop10ByField = (data, field) => {
-        return [...data]
-          .filter((item) => item && item[field] !== undefined && item[field] !== null) // Filter out null/undefined values
-          .sort((a, b) => b[field] - a[field])
-          .slice(0, 8); // Top 8 items
+      const getTop10ByField = (data, field, slice = true) => {
+        if (slice) {
+          return [...data]
+            .filter((item) => item && item[field] !== undefined && item[field] !== null)
+            .sort((a, b) => b[field] - a[field])
+            .slice(0, 8); // Top 8 items
+        } else {
+          return [...data].map((item) => (item ? item : "-")).sort((a, b) => b[field] - a[field]);
+        }
       };
-
-      const top10Payments = getTop10ByField(listData, "payment_total_amount");
-      const top10Payouts = getTop10ByField(listData, "payout_total_amount");
+      //filter((item) => item && item[field] !== undefined && item[field] !== null)
+      let top10Payments;
+      let top10Payouts;
+      if (listData.length > 8) {
+        top10Payments = getTop10ByField(listData, "payment_total_amount");
+        top10Payouts = getTop10ByField(listData, "payout_total_amount");
+      } else {
+        top10Payments = getTop10ByField(listData, "payment_total_amount", false);
+        top10Payouts = getTop10ByField(listData, "payout_total_amount", false);
+      }
 
       console.log("Top 10 Payments: ", top10Payments);
       console.log("Top 10 Payouts: ", top10Payouts);
@@ -59,10 +71,10 @@ const CountryWiseOverview = () => {
       console.log("Top Payment Percentage Sum: ", topPaymentPercentageSum);
       console.log("Top Payout Percentage Sum: ", topPayoutPercentageSum);
 
-      const paymentLabels = [...paymentPercentages.map((item) => item.country), "Other"];
+      const paymentLabels = [...paymentPercentages.map((item) => item.country), "Other"].map((item) => (item ? item : "-"));
       const paymentSeries = [...paymentPercentages.map((item) => parseFloat(item.percentage)), parseFloat((100 - topPaymentPercentageSum).toFixed(2))];
 
-      const payoutLabels = [...payoutPercentages.map((item) => item.country), "Other"];
+      const payoutLabels = [...payoutPercentages.map((item) => item.country), "Other"].map((item) => (item ? item : "-"));
       const payoutSeries = [...payoutPercentages.map((item) => parseFloat(item.percentage)), parseFloat((100 - topPayoutPercentageSum).toFixed(2))];
 
       console.log("Payment Series: ", paymentSeries);
@@ -70,19 +82,20 @@ const CountryWiseOverview = () => {
       console.log("Payout Series: ", payoutSeries);
       console.log("Payout Labels: ", payoutLabels);
 
-      setChartData({ series: [paymentSeries, payoutSeries], labels: [paymentLabels, payoutLabels] });
+      setChartData({series: [paymentSeries, payoutSeries], labels: [paymentLabels, payoutLabels]});
       setTotalData(total);
     }
   }, [listData]);
 
   return (
     <div className="countryWiseOverview_container">
+      {isLoading && <LoaderOverlay />}
       <div className="row1_table_box">
         <CountryWiseOverviewTable />
       </div>
       <div className="row2_chart_box">
-        <PaymentChart chartData={{ series: chartData.series[0], labels: chartData.labels[0] }} />
-        <PayoutChart chartData={{ series: chartData.series[1], labels: chartData.labels[1] }} />
+        <PaymentChart chartData={{series: chartData.series[0], labels: chartData.labels[0]}} />
+        <PayoutChart chartData={{series: chartData.series[1], labels: chartData.labels[1]}} />
       </div>
     </div>
   );

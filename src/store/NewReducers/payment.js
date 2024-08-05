@@ -112,7 +112,7 @@ const paymentSlice = createSlice({
     isLoading: false,
     isError: false,
     paymentData: [],
-    count: 1,
+    count: 0,
     paymentHistoryData: [],
     paymentHistoryDataCount: 1,
     paymentEmail: "",
@@ -124,6 +124,7 @@ const paymentSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
       state.paymentData = [];
+      state.payoutData = [];
       state.paymentHistoryData = [];
       state.count = 1;
     },
@@ -134,6 +135,7 @@ const paymentSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(paymentListReq.pending, (state) => {
+        state.count = 0;
         state.isLoading = true;
         state.isError = false;
       })
@@ -149,6 +151,7 @@ const paymentSlice = createSlice({
         state.isError = true;
       })
       .addCase(paymentHistoryReq.pending, (state) => {
+        state.count = 0;
         state.isLoading = true;
         state.isError = false;
       })
@@ -176,6 +179,7 @@ const paymentSlice = createSlice({
         state.isError = true;
       })
       .addCase(payoutListReq.pending, (state) => {
+        state.count = 0;
         state.isLoading = true;
         state.isError = false;
       })
@@ -202,7 +206,7 @@ async function payoutListApi(idToken, query) {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const res = axios.get(`${baseUrl}v2/get-payout/${query}`, config);
+    const res = axios.get(`${baseUrl}v2/get-payout/`, config);
     return res;
   } catch (error) {
     throw error;

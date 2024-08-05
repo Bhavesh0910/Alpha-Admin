@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import "./FundingTotalProgress.scss";
-const FundingTotalProgress = () => {
+const FundingTotalProgress = ({data}) => {
   return (
     <div className="fundingTotalProgress_wrapper">
       <h2>Funding total</h2>
       <div className="total_value">
-        <p>$765,311,500</p>
+        <p>${data?.funding_total}</p>
       </div>
       <div className="progress-bar-container">
         <div className="progress-bar">
@@ -14,7 +14,7 @@ const FundingTotalProgress = () => {
         </div>{" "}
         <div className="progress-labels">
           <div className="profit_value">
-            <p className="value">$42,084.56</p>
+            <p className="value">${data?.total_profit}</p>
             <p
               className="label"
               style={{color: "#5F9D51"}}
@@ -23,7 +23,7 @@ const FundingTotalProgress = () => {
             </p>
           </div>
           <div className="loss_value">
-            <p className="value">-$260,224.73</p>
+            <p className="value">-${data?.total_loss}</p>
             <p
               className="label"
               style={{color: "#E92B37"}}

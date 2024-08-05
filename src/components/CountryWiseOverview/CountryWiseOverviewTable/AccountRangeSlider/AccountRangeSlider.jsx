@@ -1,8 +1,8 @@
-import { Button, Slider } from "antd";
-import { useState } from "react";
+import {Button, Slider} from "antd";
+import {useState} from "react";
 import "./AccountRangeSlider.scss";
 import crossIcon from "../../../../assets/icons/cross_icon_white.svg";
-const AccountRangeSlider = ({ setIsRangeOpen, isRangeOpen }) => {
+const AccountRangeSlider = ({setIsRangeOpen, isRangeOpen, setAccRange}) => {
   const [value, setValue] = useState(30); // Default value is 30
 
   const handleChange = (newValue) => {
@@ -13,6 +13,10 @@ const AccountRangeSlider = ({ setIsRangeOpen, isRangeOpen }) => {
     setIsRangeOpen(!isRangeOpen);
   };
 
+  function handleApply(x) {
+    setAccRange(x === "null" ? null : value);
+    handleCloseBtn();
+  }
   return (
     <div
       className="accountRange_Wrapper"
@@ -22,7 +26,11 @@ const AccountRangeSlider = ({ setIsRangeOpen, isRangeOpen }) => {
     >
       <div className="header_wapper">
         <h2>Accounts Range</h2>
-        <img src={crossIcon} alt="cross_icon" onClick={handleCloseBtn} />
+        <img
+          src={crossIcon}
+          alt="cross_icon"
+          onClick={handleCloseBtn}
+        />
       </div>
       <div className="country_info">
         <p>
@@ -40,10 +48,17 @@ const AccountRangeSlider = ({ setIsRangeOpen, isRangeOpen }) => {
         }}
       />
       <div className="action_btn_wrapper">
-        <Button className="clr_btn" onClick={() => setValue(0)}>
+        <Button
+          className="clr_btn"
+          onClick={() => setValue(0)}
+        >
           Clear
         </Button>
-        <Button className="apply_btn standard_button" type="primary">
+        <Button
+          className="apply_btn standard_button"
+          type="primary"
+          onClick={handleApply}
+        >
           Apply
         </Button>
       </div>
