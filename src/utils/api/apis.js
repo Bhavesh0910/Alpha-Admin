@@ -894,11 +894,17 @@ const deleteUser = async (idToken, email) => {
 
 export const getAccountOverviewStats = async (idToken, startDate, endDate) => {
   try {
-    const response = await axios.get(`${baseUrl}v2/account-overview/stats/?start_date=${startDate}&end_date=${endDate}`, {
+    const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
-    });
+    };
+    let response;
+    if (startDate && endDate) {
+      response = await axios.get(`${baseUrl}v2/account-overview/stats/?start_date=${startDate}&end_date=${endDate}`, config);
+    } else {
+      response = await axios.get(`${baseUrl}v2/account-overview/stats/`, config);
+    }
     return response;
   } catch (error) {
     return error;
@@ -907,7 +913,8 @@ export const getAccountOverviewStats = async (idToken, startDate, endDate) => {
 
 export const getStageChart = async (idToken, stage, startDate, endDate) => {
   try {
-    const response = await axios.get(`${baseUrl}v2/account-overview/stage-${stage}-chart/?start_date=${startDate}&end_date=${endDate}`, {
+    // const response = await axios.get(`${baseUrl}v2/account-overview/stage-${stage}-chart/?start_date=${startDate}&end_date=${endDate}`, {
+    const response = await axios.get(`${baseUrl}v2/account-overview/stage-${stage}-chart/`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
@@ -920,7 +927,7 @@ export const getStageChart = async (idToken, stage, startDate, endDate) => {
 
 export const getFundingChart = async (idToken, startDate, endDate) => {
   try {
-    const response = await axios.get(`${baseUrl}v3/account-overview/funding-chart/`, {
+    const response = await axios.get(`${baseUrl}v2/account-overview/funding-chart/`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },

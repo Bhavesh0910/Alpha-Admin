@@ -4,9 +4,8 @@ import "./PieChart.scss";
 const PieChart = ({data}) => {
   const chartRef = useRef(null);
 
-  console.log(data)
   const options = {
-    series: [data?.pass_count, data?.fail_count],
+    series: [data?.pass_count || [], data?.fail_count || []],
     labels: ["Total Pass", "Total Fail"],
     colors: ["#A3EA93", "#F97F7F"],
     chart: {

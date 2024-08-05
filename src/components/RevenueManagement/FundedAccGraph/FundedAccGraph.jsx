@@ -1,7 +1,30 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import "./FundedAccGraph.scss";
 import ReactApexChart from "react-apexcharts";
+import {useSelector} from "react-redux";
+import {color} from "echarts";
 const FundedAccGraph = () => {
+  const {barData} = useSelector((state) => state.revenue);
+  const [data, setData] = useState(new Array(12).fill(0));
+
+  useEffect(() => {
+    if (barData && barData.length > 0) {
+      const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+      const newData = new Array(12).fill(0);
+
+      barData.forEach((item) => {
+        const [monthName, year] = item.month_year.split(" ");
+        const monthIndex = month.indexOf(monthName);
+        if (monthIndex !== -1) {
+          newData[monthIndex] = item.count;
+        }
+      });
+
+      setData(newData || []);
+    }
+  }, [barData]);
+
   const options = {
     chart: {
       type: "bar",
@@ -25,10 +48,24 @@ const FundedAccGraph = () => {
     },
     xaxis: {
       categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      labels: {
+        style: {
+          colors: "#1E1E1E",
+        },
+      },
     },
     yaxis: {
       title: {
         text: "No. of Funded Accounts",
+        style: {
+          colors: "#1E1E1E",
+        },
+      },
+      labels: {
+        style: {
+          colors: "#1E1E1E",
+        },
+        formatter: (val) => `$${val}`,
       },
     },
     fill: {
@@ -56,7 +93,7 @@ const FundedAccGraph = () => {
   const series = [
     {
       name: "No. of Funded Accounts",
-      data: [50, 100, 75, 50, 100, 150, 200, 50, 75, 100, 100, 25],
+      data: data || [],
     },
   ];
   return (

@@ -119,6 +119,10 @@ const revenueManagementSlice = createSlice({
     chartData: [],
     statsData: [],
     tableData: [],
+    barDataLoader: false,
+    chartDataLoader: false,
+    statsDataLoader: false,
+    tableDataLoader: false,
     count: 1,
     tableDataCount: 1,
   },
@@ -126,56 +130,56 @@ const revenueManagementSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(statsReq.pending, (state) => {
-        state.isLoading = true;
+        state.statsDataLoader = true;
         state.isError = false;
       })
       .addCase(statsReq.fulfilled, (state, action) => {
         console.log("Action payload oof statsReq : ", action.payload);
-        state.isLoading = false;
+        state.statsDataLoader = false;
         state.statsData = action.payload; // Update state with fetched data
       })
       .addCase(statsReq.rejected, (state) => {
-        state.isLoading = false;
+        state.statsDataLoader = false;
         state.isError = true;
       })
       .addCase(payoutStatsReq.pending, (state) => {
-        state.isLoading = true;
+        state.chartDataLoader = true;
         state.isError = false;
       })
       .addCase(payoutStatsReq.fulfilled, (state, action) => {
         console.log("Action payload oof payoutStatsReq : ", action.payload);
         state.chartData = action.payload; // Update state with fetched data
-        state.isLoading = false;
+        state.chartDataLoader = false;
       })
       .addCase(payoutStatsReq.rejected, (state) => {
-        state.isLoading = false;
+        state.chartDataLoader = false;
         state.isError = true;
       })
       .addCase(qualifiedAccountReq.pending, (state) => {
-        state.isLoading = true;
+        state.barDataLoader = true;
         state.isError = false;
       })
       .addCase(qualifiedAccountReq.fulfilled, (state, action) => {
         console.log("Action payload oof qualifiedAccountReq : ", action.payload);
-        state.isLoading = false;
+        state.barDataLoader = false;
         state.barData = action.payload; // Update state with fetched data
       })
       .addCase(qualifiedAccountReq.rejected, (state) => {
-        state.isLoading = false;
+        state.barDataLoader = false;
         state.isError = true;
       })
       .addCase(payoutPaymentReq.pending, (state) => {
-        state.isLoading = true;
+        state.tableDataLoader = true;
         state.isError = false;
       })
       .addCase(payoutPaymentReq.fulfilled, (state, action) => {
-        console.log("Action payload oof qualifiedAccountReq : ", action.payload);
-        state.isLoading = false;
+        state.tableDataLoader = false;
+        console.log(action.payload, " nsbcjsabdcjhsbd ")
         state.tableData = action.payload?.results; // Update state with fetched data
         state.tableDataCount = action.payload?.count; // Update state with fetched data
       })
       .addCase(payoutPaymentReq.rejected, (state) => {
-        state.isLoading = false;
+        state.tableDataLoader = false;
         state.isError = true;
       });
   },

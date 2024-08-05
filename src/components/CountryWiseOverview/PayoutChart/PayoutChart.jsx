@@ -2,23 +2,13 @@ import React from "react";
 import "./PayoutChart.scss";
 import Chart from "react-apexcharts";
 const PayoutChart = ({chartData}) => {
+  console.log("cahrtdata : ", chartData);
   const options = {
     chart: {
       type: "pie",
     },
     labels: chartData?.labels || [],
-    colors: [
-      "#9A60B4",
-      "#315CDE",
-      "#FAC858",
-      "#B2DC9F",
-      "#6B54C6",
-      "#EE6666",
-      "#73C0DE",
-      "#3BA272",
-      "#FC8452",
-      "#FC8452",
-    ],
+    colors: ["#9A60B4", "#315CDE", "#FAC858", "#B2DC9F", "#6B54C6", "#EE6666", "#73C0DE", "#3BA272", "#FC8452", "#FC8452"],
 
     plotOptions: {
       pie: {

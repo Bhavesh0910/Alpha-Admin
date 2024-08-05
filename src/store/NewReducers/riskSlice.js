@@ -31,7 +31,7 @@ export const fetchFundingChart = createAsyncThunk("risk/fetchFundingChart", asyn
     return response.data;
   } catch (error) {
     const msg = error.response?.data?.detail || "Error fetching funding chart data";
-    dispatch(returnErrors(msg, 400));
+    dispatch(returnErrors(msg, 401));
     return rejectWithValue(msg);
   }
 });

@@ -205,9 +205,11 @@ const PayoutPaymentTable = ({activeTab}) => {
     setPageSize(updatedPageSize);
   }
 
+  console.log("payment data : ", paymentData);
+
   return (
     <AntTable
-      data={activeTab==="payments" ? paymentData?.results || paymentData || [] : payoutData || []}
+      data={activeTab === "payments" ? paymentData?.results || [] : payoutData || []}
       columns={columns}
       totalPages={Math.ceil(paymentData?.count / pageSize)}
       totalItems={paymentData?.count}

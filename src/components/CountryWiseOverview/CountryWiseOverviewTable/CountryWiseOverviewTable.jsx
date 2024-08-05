@@ -15,6 +15,7 @@ const CountryWiseOverviewTable = () => {
   const [dates, setDates] = useState(null);
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
+  const [accRange, setAccRange] = useState(null);
 
   useEffect(() => {
     // let query = `?page=${pageNo}&page_size=${pageSize}`;
@@ -22,14 +23,18 @@ const CountryWiseOverviewTable = () => {
     if (dates) {
       query += `?start_date=${dates[0]}&end_date=${dates[1]}`;
     }
+    if (accRange) {
+      query = dates ? query + `&min_account_count=${accRange}` : `?min_account_count=${accRange}`;
+    }
     dispatch(countryWiseListReq({idToken, query, dispatch}));
-  }, [dates, idToken]);
+  }, [dates, idToken, accRange]);
 
   const columns = [
     {
       title: "Country",
       dataIndex: "country",
       key: "country",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Total Payments($)",
@@ -101,6 +106,7 @@ const CountryWiseOverviewTable = () => {
             <AccountRangeSlider
               isRangeOpen={isRangeOpen}
               setIsRangeOpen={setIsRangeOpen}
+              setAccRange={setAccRange}
             />
           ) : (
             ""

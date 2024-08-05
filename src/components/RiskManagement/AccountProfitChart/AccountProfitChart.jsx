@@ -1,13 +1,28 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import ReactECharts from "echarts-for-react";
 import "./AccountProfitChart.scss";
-const AccountProfitChart = () => {
+import {useSelector} from "react-redux";
 
+const AccountProfitChart = () => {
+  const {fundingChartData} = useSelector((state) => state.risk);
+  const [data, setData] = useState({passed: [], failed: [], dates: []});
+
+  useEffect(() => {
+    if (fundingChartData) {
+      let dates = [];
+      let passed = [];
+      let failed = [];
+      dates = Object.keys(fundingChartData?.result);
+      passed = dates?.map((date) => fundingChartData?.result[date].passed);
+      failed = dates?.map((date) => fundingChartData?.result[date].failed);
+      setData((prev) => ({passed: passed, failed: failed, dates: dates}));
+    }
+  }, [fundingChartData]);
 
   const seriesData1 = {
     name: "Data 1",
     type: "line",
-    data: [],
+    data: data?.passed,
     lineStyle: {
       color: "#54e346",
     },
@@ -17,7 +32,7 @@ const AccountProfitChart = () => {
   const seriesData2 = {
     name: "Data 2",
     type: "line",
-    data: [],
+    data: data?.failed,
     lineStyle: {
       color: "#e35446",
     },
@@ -37,7 +52,7 @@ const AccountProfitChart = () => {
     xAxis: {
       type: "category",
       boundaryGap: false,
-      data: [],
+      data: data?.dates,
       axisLabel: {
         color: "#1E1E1E",
       },

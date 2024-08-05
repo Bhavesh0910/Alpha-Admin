@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import "./style.scss";
 import {DatePicker, Typography} from "antd";
 import {useDispatch, useSelector} from "react-redux";
@@ -17,7 +17,7 @@ const {RangePicker} = DatePicker;
 
 function RiskManagement() {
   const dispatch = useDispatch();
-  const {accountOverviewData, stage1ChartData, stage2ChartData, fundingChartData, isLoadingFundingdata, isLoadingStage1, isLoadingStats, error} = useSelector((state) => state.risk);
+  const {accountOverviewData, isLoadingFundingdata, isLoadingStage1, isLoadingStats, error} = useSelector((state) => state.risk);
   const idToken = useSelector((state) => state.auth.idToken);
 
   // console.log(stage1ChartData, stage2ChartData , fundingChartData)
@@ -26,9 +26,8 @@ function RiskManagement() {
       const startDate = dates[0].format("DD/MMM/YYYY");
       const endDate = dates[1].format("DD/MMM/YYYY");
       dispatch(fetchAccountOverviewStats({idToken, startDate, endDate}));
-      dispatch(fetchFundingChart({idToken, startDate, endDate}));
-      dispatch(fetchStageChart({idToken, stage: 1, startDate, endDate}));
-      dispatch(fetchStageChart({idToken, stage: 2, startDate, endDate}));
+    } else {
+      dispatch(fetchAccountOverviewStats({idToken, startDate: null}));
     }
   };
 
@@ -45,6 +44,9 @@ function RiskManagement() {
       const defaultDates = [dayjs().subtract(1, "month"), dayjs()];
       onRangeChange(defaultDates);
     }
+    dispatch(fetchFundingChart({idToken}));
+    dispatch(fetchStageChart({idToken, stage: 1}));
+    dispatch(fetchStageChart({idToken, stage: 2}));
   }, [dispatch, idToken]);
 
   return (
@@ -61,36 +63,33 @@ function RiskManagement() {
           onChange={onRangeChange}
         />
       </div>
-      {isLoadingFundingdata || isLoadingStage1 || isLoadingStats ? (
-        <LoaderOverlay />
-      ) : (
-        <>
-          <div className="row1_box">
-            <div className="pieChart_container">
-              <PieChart data={accountOverviewData?.stage1} />
-            </div>
-            <div className="pieChart_container">
-              <Stage2Chart data={accountOverviewData?.stage2} />
-            </div>
-
-            <div className="fundingTotalProgress_container">
-              <FundingTotalProgress data={accountOverviewData?.funding_status} />
-            </div>
+      {(isLoadingFundingdata || isLoadingStage1 || isLoadingStats) && <LoaderOverlay />}
+      <>
+        <div className="row1_box">
+          <div className="pieChart_container">
+            <PieChart data={accountOverviewData?.stage1} />
+          </div>
+          <div className="pieChart_container">
+            <Stage2Chart data={accountOverviewData?.stage2} />
           </div>
 
-          <div className="row2_box">
-            <AccountProfitChart data={fundingChartData} />
+          <div className="fundingTotalProgress_container">
+            <FundingTotalProgress data={accountOverviewData?.funding_status} />
           </div>
+        </div>
 
-          <div className="row3_box">
-            <StageStatisticsChart data={stage1ChartData} />
-          </div>
+        <div className="row2_box">
+          <AccountProfitChart />
+        </div>
 
-          <div className="row4_box">
-            <Stage2Statistics data={stage2ChartData} />
-          </div>
-        </>
-      )}
+        <div className="row3_box">
+          <StageStatisticsChart />
+        </div>
+
+        <div className="row4_box">
+          <Stage2Statistics />
+        </div>
+      </>
     </div>
   );
 }

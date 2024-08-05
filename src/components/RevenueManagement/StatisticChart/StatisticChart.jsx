@@ -1,17 +1,39 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import "./StatisticChart.scss";
 import ReactApexChart from "react-apexcharts";
 import {Select} from "antd";
+import {useSelector} from "react-redux";
 
 const StatisticChart = () => {
+  const {chartData} = useSelector((state) => state.revenue);
+  const [data, setData] = useState({payoutRequested: [], payoutApproved: [], dates: []});
+
+  useEffect(() => {
+    if (chartData?.payouts) {
+      let payoutReq = [];
+      let payoutApp = [];
+      let dates = [];
+      payoutReq = chartData?.payouts?.map((item) => {
+        return item?.requested_totalPayout;
+      });
+      payoutApp = chartData?.payouts?.map((item) => {
+        return item?.approved_totalPayout;
+      });
+      dates = chartData?.payouts?.map((item) => {
+        return item?.dates;
+      });
+
+      setData({payoutRequested: payoutReq || [], payoutApproved: payoutApp || [], dates: dates || []});
+    }
+  }, [chartData]);
   const series = [
     {
       name: "Payout Requested",
-      data: [100, 200, 150, 300, 200, 400, 500],
+      data: data?.payoutRequested,
     },
     {
       name: "Total amount paid in profit share",
-      data: [50, 250, 100, 200, 300, 350, 600],
+      data: data?.payoutApproved,
     },
   ];
 
@@ -33,15 +55,7 @@ const StatisticChart = () => {
     },
     xaxis: {
       type: "datetime",
-      categories: [
-        "2023-01-01T00:00:00.000Z",
-        "2023-02-01T00:00:00.000Z",
-        "2023-03-01T00:00:00.000Z",
-        "2023-04-01T00:00:00.000Z",
-        "2023-05-01T00:00:00.000Z",
-        "2023-06-01T00:00:00.000Z",
-        "2023-07-01T00:00:00.000Z",
-      ],
+      categories: data?.dates,
       labels: {
         style: {
           colors: "#1E1E1E",

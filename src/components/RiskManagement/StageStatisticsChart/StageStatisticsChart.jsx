@@ -1,28 +1,29 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import ReactECharts from "echarts-for-react";
 import "./StageStatisticsChart.scss";
+import {useSelector} from "react-redux";
 
-const StageStatisticsChart = ({data}) => {
-  // const dates = Object.keys(data?.result);
-  // const passed = dates?.map(date => data?.result[date].passed);
-  // const failed = dates?.map(date => data?.result[date].failed);
-
-  let passed = [];
-  let failed = [];
-  let dates = [];
+const StageStatisticsChart = () => {
+  const {stage1ChartData} = useSelector((state) => state.risk);
+  const [data, setData] = useState({passed: [], failed: [], dates: []});
 
   useEffect(() => {
-    if (data) {
-      dates = Object.keys(data?.result);
-      passed = dates?.map((date) => data?.result[date].passed);
-      failed = dates?.map((date) => data?.result[date].failed);
+    let passed = [];
+    let failed = [];
+    let dates = [];
+    if (stage1ChartData) {
+      dates = Object.keys(stage1ChartData?.result);
+      passed = dates?.map((date) => stage1ChartData?.result[date].passed);
+      failed = dates?.map((date) => stage1ChartData?.result[date].failed);
+
+      setData((prev) => ({passed: passed, failed: failed, dates: dates}));
     }
-  }, [data]);
+  }, [stage1ChartData]);
 
   const seriesDataPassed = {
     name: "Passed",
     type: "line",
-    data: passed,
+    data: data.passed,
     lineStyle: {
       color: "#54e346",
     },
@@ -32,7 +33,7 @@ const StageStatisticsChart = ({data}) => {
   const seriesDataFailed = {
     name: "Failed",
     type: "line",
-    data: failed,
+    data: data.failed,
     lineStyle: {
       color: "#e35446",
     },
@@ -46,7 +47,7 @@ const StageStatisticsChart = ({data}) => {
     xAxis: {
       type: "category",
       boundaryGap: false,
-      data: dates,
+      data: data?.dates,
       axisLabel: {
         color: "#1E1E1E",
       },
