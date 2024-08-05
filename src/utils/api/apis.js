@@ -1038,13 +1038,14 @@ export const getAccountDetails = async (login_id, platform, idToken) => {
 export const getAccountAnalysis = async (platform, login_id, idToken) => {
   let platformName = platform === 'trader-accounts' ? 'mt5' : platform === 'ctrader-accounts' ? 'ctrader' : 'dxtrade'
   try {
-    const url = `${baseUrl}v2/account-analysis/?platform=${platformName}&login_id=${login_id}`;
+    const url = `${baseUrl}v2/account-analysis/?login_id=1656331`;
     
     const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
     });
+    console.log(response.data)
 
     return response.data;
   } catch (error) {

@@ -1,65 +1,67 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 
-const BarChart = ({ title, seriesData, categories }) => {
+const BarChart = ({ seriesData, categories, title }) => {
   const options = {
     chart: {
       type: 'bar',
       height: 350,
-      toolbar:{
-        show: false
-      }
+      toolbar: {
+        show: false,
+      },
+    },
+    title: {
+      text: title,
+      align: 'left',
+      style: {
+        fontSize: '16px',
+        fontWeight: 'bold',
+      },
+    },
+    xaxis: {
+      categories: categories,
+      labels: {
+        style: {
+          colors: '#000',
+        },
+        rotate: -45,
+      },
+    },
+    yaxis: {
+      labels: {
+        style: {
+          colors: '#000',
+        },
+        formatter: (value) => value.toFixed(2), // Format to 2 decimal places
+      },
     },
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: '55%',
-        endingShape: 'flat',
+        endingShape: 'rounded',
       },
     },
     dataLabels: {
       enabled: false,
     },
-    stroke: {
-      show: true,
-      width: 2,
-      colors: ['#04D9FF'],
-    },
     fill: {
-      type: 'gradient',
-      gradient: {
-        type: 'vertical',
-        shadeIntensity: 1,
-        gradientToColors: ['#ffffff'],
-        inverseColors: false,
-        opacityFrom: 0.34,
-        opacityTo: 0,
-        stops: [0, 100],
-      },
+      opacity: 1,
     },
-    yaxis: {
-      min: -800,
-      max: 1200,
-    //   title: {
-    //     text: 'Values',
-    //   },
-    },
-    xaxis: {
-      categories,
-    },
-    tooltip: {
-      y: {
-        formatter: function (val) {
-          return val;
-        },
-      },
+    colors: ['#00BFFF', '#FF6347'],
+    legend: {
+      position: 'top',
+      horizontalAlign: 'left',
     },
   };
 
   return (
     <div className="bar_chart">
-      <h3 className="bar_chart_title">{title}</h3>
-      <Chart options={options} series={seriesData} type="bar" height={350} />
+      <Chart
+        options={options}
+        series={seriesData}
+        type="bar"
+        height={350}
+      />
     </div>
   );
 };

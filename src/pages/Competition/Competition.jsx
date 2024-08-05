@@ -5,7 +5,7 @@ import "./Competition.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
-import { fetchCompDetails, updateCompetition } from "../../store/NewReducers/competitionSlice";
+import { deleteCompetition, fetchCompDetails, updateCompetition } from "../../store/NewReducers/competitionSlice";
 import TextArea from "antd/es/input/TextArea";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 import { deleteCompDetails } from "../../utils/api/apis";
@@ -157,13 +157,10 @@ const CompetitionCard = ({ item }) => {
       className: "delete_modal",
       onOk: async () => {
         try {
-          const response = await deleteCompDetails(idToken, id);
-          if (response) {
-            dispatch(returnMessages("Competition deleted successfully"));
+          dispatch(deleteCompetition({ idToken, id }))
+          dispatch(returnMessages("Competition deleted successfully"));
             dispatch(fetchCompDetails(idToken));
-          } else {
-            dispatch(returnErrors("Failed to delete competition"));
-          }
+     
         } catch (error) {
           dispatch(returnErrors("Failed to delete competition"));
         }

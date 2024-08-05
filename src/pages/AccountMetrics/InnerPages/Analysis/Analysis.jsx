@@ -20,13 +20,14 @@ const Analysis = ({login_id , platform}) => {
 
   const idToken = useSelector((state) => state.auth.idToken);
   const dispatch = useDispatch();
-  const { accountInsights, isLoading, error } = useSelector((state) => state.accountMetrics);
+  const { accountInsights, accountAnalysis , isLoading, error } = useSelector((state) => state.accountMetrics);
 
   useEffect(() => {
     dispatch(fetchAccountAnalysis({ login_id, platform, idToken }));
   }, [dispatch, login_id, platform, idToken]);
 
 
+  console.log(accountAnalysis)
   return (
     <div className='account_metrics_analysis'>
       <Radio.Group onChange={handleRadioChange} value={selectedView}>
@@ -39,13 +40,13 @@ const Analysis = ({login_id , platform}) => {
         <Radio.Button value="resultByOpenHour">Result by Open Hour</Radio.Button>
       </Radio.Group>
 
-       {selectedView === "longShortBalance" && <LongShortBalance />}
-      {selectedView === "resultByDays" && <ResultByDays />}
-       {selectedView === "longShortComparison" && <LongShortComparision />}
+       {selectedView === "longShortBalance" && <LongShortBalance data={accountAnalysis?.long_short_comp} />}
+      {selectedView === "resultByDays" && <ResultByDays data={accountAnalysis?.day_wise_data} />}
+       {selectedView === "longShortComparison" && <LongShortComparision data={accountAnalysis?.result_by_instruments} />}
        {selectedView === "resultByPositionSize" && <ResultByPositionSize />}
-      {selectedView === "tradingDaysAnalysis" && <TradeDayAnalysis />}
-      {selectedView === "resultByTradeDuration" && <ResultByTradeDuration />}
-      {selectedView === "resultByOpenHour" && <ResultByOpenHour />}  
+      {selectedView === "tradingDaysAnalysis" && <TradeDayAnalysis data={accountAnalysis?.trading_days_analysis}/>}
+      {selectedView === "resultByTradeDuration" && <ResultByTradeDuration data={accountAnalysis?.result_by_trade_duration} />}
+      {selectedView === "resultByOpenHour" && <ResultByOpenHour data={accountAnalysis?.result_by_open_hour} />}  
     </div>
   );
 };

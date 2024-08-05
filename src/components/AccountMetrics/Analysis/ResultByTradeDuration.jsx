@@ -3,14 +3,23 @@ import './ResultByTradeDuration.scss';
 import BarChart from './Charts/BarChart';
 import AntTable from '../../../ReusableComponents/AntTable/AntTable';
 
-function ResultByTradeDuration() {
-  const categories = ['Mon', 'Tue', 'Wed', 'Thu'];
-  const seriesData1 = [
-    {
-      name: 'Result',
-      data: [400, 800, -400, 1200],
-    },
-  ];
+function ResultByTradeDuration({ data }) {
+  const chartData = {
+    series: [
+      {
+        name: 'Average Profit/Loss',
+        data: data?.chart?.average_profit_loss, 
+      },
+    ],
+    categories: data?.chart?.duration, 
+  };
+
+  const tableData = data?.data?.map((item, index) => ({
+    key: index + 1,
+    duration: item.Duration,
+    numberOfTrades: item.no_of_trade,
+    results: item.results,
+  }));
 
   const columns = [
     {
@@ -28,35 +37,8 @@ function ResultByTradeDuration() {
       dataIndex: 'results',
       key: 'results',
       render: (value) => (
-        <span style={{ color: value >= 0 ? 'green' : 'red' }}>{value}</span>
+        <span style={{ color: value >= 0 ? 'green' : 'red' }}>{value.toFixed(2)}</span>
       ),
-    },
-  ];
-
-  const data = [
-    {
-      key: '1',
-      duration: '0-30 mins',
-      numberOfTrades: 10,
-      results: 300,
-    },
-    {
-      key: '2',
-      duration: '30-60 mins',
-      numberOfTrades: 15,
-      results: -200,
-    },
-    {
-      key: '3',
-      duration: '1-2 hours',
-      numberOfTrades: 8,
-      results: 500,
-    },
-    {
-      key: '4',
-      duration: '2-4 hours',
-      numberOfTrades: 5,
-      results: -100,
     },
   ];
 
@@ -67,7 +49,7 @@ function ResultByTradeDuration() {
           Profits in Duration
         </h2>
         <div className='chart_wrapper'>
-          <BarChart seriesData={seriesData1} categories={categories} />
+          <BarChart seriesData={chartData?.series} categories={chartData?.categories} />
         </div>
       </div>
       <div className='analysis_box'>
@@ -75,7 +57,7 @@ function ResultByTradeDuration() {
           Results by Trade Duration
         </h2>
         <div className='table_wrapper'>
-        <AntTable columns={columns} data={data} />
+          <AntTable columns={columns} data={tableData} />
         </div>
       </div>
     </div>

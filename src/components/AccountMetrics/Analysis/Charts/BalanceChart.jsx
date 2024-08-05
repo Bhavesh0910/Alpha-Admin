@@ -1,23 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import Chart from "react-apexcharts";
 
-const BalanceChart = () => {
-  const [series, setSeries] = useState([
-    {
-      name: "Balance",
-      data: [0, -400, 200, 300, 700, 400, 900, 1200], // Sample data
-    },
-    {
-      name: "No. of Trades",
-      data: [0, 20, 15, 30, 40, 20, 50, 70], // Sample data
-    },
-  ]);
-
-  const [activeSeries, setActiveSeries] = useState("Balance");
-
-  const toggleSeries = (seriesName) => {
-    setActiveSeries(seriesName);
-  };
+const BalanceChart = ({ data }) => {
+  // Ensure data is an array
+  const chartData = Array.isArray(data) ? data : [];
 
   const options = {
     chart: {
@@ -46,16 +32,20 @@ const BalanceChart = () => {
       },
     },
     xaxis: {
-      categories: [0, 6, 12, 18, 24, 30], // X-axis categories
+      categories: chartData.map((_, index) => index + 1),
       labels: {
         style: {
           colors: "#000",
         },
+        rotate: -45,
+        trim: true,
       },
+      tickAmount: 10, // Show a maximum of 10 ticks
     },
+    
     yaxis: {
-      min: -800,
-      max: 1400,
+      min: Math.min(...chartData, 0) - 50, // Set min to the lowest value minus some buffer
+      max: Math.max(...chartData, 0) + 50, // Set max to the highest value plus some buffer
       labels: {
         style: {
           colors: "#000",
@@ -68,16 +58,22 @@ const BalanceChart = () => {
     legend: {
       show: false,
     },
+    
   };
 
-  const filteredSeries = series.filter((serie) => serie.name === activeSeries);
+  const series = [
+    {
+      name: "Balance",
+      data: chartData,
+    },
+  ];
 
   return (
     <div className="chart">
       <Chart
         options={options}
-        series={filteredSeries}
-        type="area"
+        series={series}
+        type="line"
         height={"100%"}
       />
     </div>

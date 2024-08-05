@@ -1,19 +1,19 @@
 import React from 'react';
-import './ResultByDays.scss'
+import './ResultByDays.scss';
 import BarChart from './Charts/BarChart';
 
-const ResultByDays = () => {
-  const categories = ['Mon', 'Tue', 'Wed', 'Thu'];
-  const seriesData1 = [
+const ResultByDays = ({ data }) => {
+  // Extracting categories and series data from the provided data
+  const categories = Object.keys(data); // ['Friday', 'Monday', 'Sunday', 'Tuesday']
+  
+  const seriesData = [
     {
-      name: 'Result',
-      data: [400, 800, -400, 1200], 
+      name: 'Open',
+      data: categories.map(day => data[day].open), // [ -2074.12, 49, 328.45, 494.83 ]
     },
-  ];
-  const seriesData2 = [
     {
-      name: 'Result',
-      data: [300, 700, -300, 1000], 
+      name: 'Close',
+      data: categories.map(day => data[day].close), // [ 371.93, 1683.34, 17.4, 3005.19 ]
     },
   ];
 
@@ -22,10 +22,10 @@ const ResultByDays = () => {
       <h2 className="standard_heading">Result By Days</h2>
       <div className="charts_container">
         <div className='chart_wrapper'>
-        <BarChart  seriesData={seriesData1} categories={categories} />
+          <BarChart seriesData={[seriesData[0]]} categories={categories}/>
         </div>
         <div className='chart_wrapper'>
-        <BarChart  seriesData={seriesData2} categories={categories} />
+          <BarChart seriesData={[seriesData[1]]} categories={categories} />
         </div>
       </div>
     </div>

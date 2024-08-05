@@ -161,10 +161,10 @@ const AccountOverview = ({overview, accountDetails, objectives , performanceChar
                   <p>Average RRR</p>
                   <h3>0.00</h3>
                 </div>
-                <div>
+                {/* <div>
                   <p>Martingale Status</p>
                   <button>{accountDetails?.martingale}</button>
-                </div>
+                </div> */}
                 <div>
                   <p>Martingale Count</p>
                   <h3>{accountDetails?.martingale_count}</h3>

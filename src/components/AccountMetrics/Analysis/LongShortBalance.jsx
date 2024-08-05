@@ -1,53 +1,74 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./LongShortBalance.scss";
 import TradesIcon from "../../../assets/icons/numoftrades.svg";
-import {Radio} from "antd";
-import LongBalanceChart from "./Charts/BalanceChart";
-import NoOfTrades from "./Charts/NoOfTrades";
+import { Radio } from "antd";
 import BalanceChart from "./Charts/BalanceChart";
+import NoOfTrades from "./Charts/NoOfTrades";
 import resultIcon from "../../../assets/icons/resultIcon.svg";
 import Winrate from "../../../assets/icons/Winrate.svg";
 import averageProfit from "../../../assets/icons/averageProfit.svg";
 import RRR from "../../../assets/icons/RRR.svg";
 
-const dataBoxes = [
-  {
-    header: "No of Trades",
-    icon: TradesIcon,
-    data: {long: "$278368", short: "$278368"},
-  },
-  {
-    header: "Results",
-    icon: resultIcon,
-    data: {long: "$500000", short: "$300000"},
-  },
-  {
-    header: "Win Rate",
-    icon: Winrate,
-    data: {long: "$1000", short: "$800"},
-  },
-  {
-    header: "Average Profit",
-    icon: averageProfit,
-    data: {long: "75%", short: "65%"},
-  },
-  {
-    header: "RRR",
-    icon: RRR,
-    data: {long: "25%", short: "35%"},
-  },
-];
+const formatPercentage = (value) => `${(value * 100).toFixed(2)}%`;
 
-const LongShortBalance = () => {
-  const [longChart, setlongChart] = useState("Balance");
-  const [shortChart, shortshortChart] = useState("Balance");
+const formatCurrency = (value) => `$${value?.toFixed(2)}`;
+
+const LongShortBalance = ({ data }) => {
+  const [longChart, setLongChart] = useState("Balance");
+  const [shortChart, setShortChart] = useState("Balance");
 
   const LongTabChange = (e) => {
-    setlongChart(e.target.value);
+    setLongChart(e.target.value);
   };
+
   const ShortTabChange = (e) => {
-    shortshortChart(e.target.value);
+    setShortChart(e.target.value);
   };
+
+
+
+  const dataBoxes = [
+    {
+      header: "No of Trades",
+      icon: TradesIcon,
+      data: {
+        long: data?.number_of_long_trade || '-',
+        short: data?.number_of_Short_trade || '-'
+      }
+    },
+    {
+      header: "Results",
+      icon: resultIcon,
+      data: {
+        long: formatCurrency(data?.long_profit) || '-',
+        short: formatCurrency(data?.short_profit) || '-'
+      }
+    },
+    {
+      header: "Win Rate",
+      icon: Winrate,
+      data: {
+        long: formatPercentage(data?.long_win_rate) || '-',
+        short: formatPercentage(data?.short_win_rate) || '-'
+      }
+    },
+    {
+      header: "Average Profit",
+      icon: averageProfit,
+      data: {
+        long: formatCurrency(data?.long_avg_profit) || '-',
+        short: formatCurrency(data?.short_avg_profit) || '-'
+      }
+    },
+    {
+      header: "RRR",
+      icon: RRR,
+      data: {
+        long: formatPercentage(data?.long_rrr) || '-',
+        short: formatPercentage(data?.short_rrr) || '-'
+      }
+    }
+  ];
 
   return (
     <div className="long_short_balance">
@@ -80,8 +101,8 @@ const LongShortBalance = () => {
               </Radio.Group>
             </div>
           </div>
-          {longChart === "Balance" && <BalanceChart />}
-          {longChart === "No Of Trades" && <NoOfTrades />}
+          {longChart === "Balance" && <BalanceChart data={data?.Long_chart?.balance} />}
+          {longChart === "No Of Trades" && <NoOfTrades data={data?.Long_chart?.number_of_trades} />}
         </div>
 
         <div className="short_balance_chart">
@@ -99,8 +120,8 @@ const LongShortBalance = () => {
               </Radio.Group>
             </div>
           </div>
-          {shortChart === "Balance" && <BalanceChart />}
-          {shortChart === "No Of Trades" && <NoOfTrades />}
+          {shortChart === "Balance" && <BalanceChart data={data?.short_chart?.balance} />}
+          {shortChart === "No Of Trades" && <NoOfTrades data={data?.short_chart?.number_of_trades} />}
         </div>
       </div>
     </div>
@@ -109,15 +130,12 @@ const LongShortBalance = () => {
 
 export default LongShortBalance;
 
-const DataBox = ({header, icon, data}) => {
+const DataBox = ({ header, icon, data }) => {
   return (
     <div className="databox">
       <div className="db_header">
         <h3>{header}</h3>
-        <img
-          src={icon}
-          alt=""
-        />
+        <img src={icon} alt="" />
       </div>
       <div className="data_wrapper">
         <h2 className="title long">Long</h2>

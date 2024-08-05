@@ -2,63 +2,46 @@ import React from "react";
 import "./LongShortComparision.scss";
 import BarChart from "./Charts/BarChart";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import ReactCountryFlag from "react-country-flag";
 
-function LongShortComparision() {
-  const categories = ["EURJPY.Imax", "EURJPY.Imax", "EURJPY.Imax", "EURJPY.Imax", "EURJPY.Imax", "EURJPY.Imax", "EURJPY.Imax"];
+function LongShortComparision({ data }) {
+  const categories = data.map((item) => item[0]); 
   const seriesData1 = [
     {
       name: "Result",
-      data: [400, 800, -400, 1200, 400, 800, -400],
+      data: data.map((item) => item[1].results), 
     },
   ];
 
-  // Table data
   const columns = [
     {
-      title: "Instruments",
+      title: "Instrument",
       dataIndex: "instrument",
       key: "instrument",
-      render: (text, record) => (
-        <span>
-          <ReactCountryFlag
-            countryCode={record.country1}
-            svg
-            style={{marginRight: 8}}
-          />
-          {text}
-          <ReactCountryFlag
-            countryCode={record.country2}
-            svg
-            style={{marginLeft: 8}}
-          />
-        </span>
-      ),
     },
     {
       title: "No. of Trades",
-      dataIndex: "noOfTrades",
-      key: "noOfTrades",
+      dataIndex: "number_of_trade",
+      key: "number_of_trade",
     },
     {
       title: "Result",
-      dataIndex: "result",
-      key: "result",
-      render: (text) => <span style={{color: text.startsWith("-") ? "red" : "green"}}>{text}</span>,
+      dataIndex: "results",
+      key: "results",
+      render: (text) => <span style={{color: text < 0 ? "red" : "green"}}>${text.toFixed(2)}</span>,
     },
     {
       title: "Long Trades",
       children: [
         {
           title: "No. of Trades",
-          dataIndex: "longNoOfTrades",
-          key: "longNoOfTrades",
+          dataIndex: "long_trade",
+          key: "long_trade",
         },
         {
           title: "Result",
-          dataIndex: "longResult",
-          key: "longResult",
-          render: (text) => <span style={{color: text.startsWith("-") ? "red" : "green"}}>{text}</span>,
+          dataIndex: "long_result",
+          key: "long_result",
+          render: (text) => <span style={{color: text < 0 ? "red" : "green"}}>${text.toFixed(2)}</span>,
         },
       ],
     },
@@ -67,126 +50,34 @@ function LongShortComparision() {
       children: [
         {
           title: "No. of Trades",
-          dataIndex: "shortNoOfTrades",
-          key: "shortNoOfTrades",
+          dataIndex: "short_trade",
+          key: "short_trade",
         },
         {
           title: "Result",
-          dataIndex: "shortResult",
-          key: "shortResult",
-          render: (text) => <span style={{color: text.startsWith("-") ? "red" : "green"}}>{text}</span>,
+          dataIndex: "short_result",
+          key: "short_result",
+          render: (text) => <span style={{color: text < 0 ? "red" : "green"}}>${text.toFixed(2)}</span>,
         },
       ],
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      instrument: "EUR / JPY",
-      noOfTrades: "00",
-      result: "-$0.16",
-      longNoOfTrades: "00",
-      longResult: "-$0.16",
-      shortNoOfTrades: "00",
-      shortResult: "-$135.31",
-    },
-    {
-      key: "2",
-      instrument: "EUR / USD",
-      noOfTrades: "01",
-      result: "-$201.23",
-      longNoOfTrades: "01",
-      longResult: "-$65.92",
-      shortNoOfTrades: "01",
-      shortResult: "$0.00",
-    },
-    {
-      key: "3",
-      instrument: "GBP / AUD",
-      noOfTrades: "02",
-      result: "-$75.66",
-      longNoOfTrades: "02",
-      longResult: "-$75.66",
-      shortNoOfTrades: "02",
-      shortResult: "$0.00",
-    },
-    {
-      key: "4",
-      instrument: "GBP / CAD",
-      noOfTrades: "02",
-      result: "$171.41",
-      longNoOfTrades: "02",
-      longResult: "-$0.24",
-      shortNoOfTrades: "02",
-      shortResult: "$0.00",
-    },
-    {
-      key: "5",
-      instrument: "GBP / JPY",
-      noOfTrades: "01",
-      result: "$140.52",
-      longNoOfTrades: "01",
-      longResult: "-$210.52",
-      shortNoOfTrades: "01",
-      shortResult: "$55.15",
-    },
-    {
-      key: "6",
-      instrument: "GBP / USD",
-      noOfTrades: "00",
-      result: "$946.08",
-      longNoOfTrades: "00",
-      longResult: "$171.41",
-      shortNoOfTrades: "00",
-      shortResult: "$65.06",
-    },
-    {
-      key: "7",
-      instrument: "NZD / USD",
-      noOfTrades: "00",
-      result: "-$0.24",
-      longNoOfTrades: "00",
-      longResult: "$85.37",
-      shortNoOfTrades: "00",
-      shortResult: "$0.00",
-    },
-    {
-      key: "8",
-      instrument: "USD / CAD",
-      noOfTrades: "01",
-      result: "$91.59",
-      longNoOfTrades: "01",
-      longResult: "$881.02",
-      shortNoOfTrades: "01",
-      shortResult: "$91.59",
-    },
-    {
-      key: "9",
-      instrument: "USD / CHF",
-      noOfTrades: "00",
-      result: "$122.96",
-      longNoOfTrades: "00",
-      longResult: "$0.00",
-      shortNoOfTrades: "00",
-      shortResult: "$122.96",
-    },
-    {
-      key: "10",
-      instrument: "XAU / USD",
-      noOfTrades: "02",
-      result: "-$186.25",
-      longNoOfTrades: "02",
-      longResult: "$0.00",
-      shortNoOfTrades: "02",
-      shortResult: "$24.27",
-    },
-  ];
+  const tableData = data.map((item, index) => ({
+    key: index.toString(),
+    instrument: item[0],
+    number_of_trade: item[1].number_of_trade,
+    results: item[1].results,
+    long_trade: item[1].long_trade,
+    long_result: item[1].long_result,
+    short_trade: item[1].short_trade,
+    short_result: item[1].short_result,
+  }));
 
   return (
     <div className="long_short_comparision">
       <div className="analysis_box">
-        <h2 className="standard_heading">Long short Comparision</h2>
+        <h2 className="standard_heading">Result by Instruments</h2>
 
         <div className="chart_wrapper">
           <BarChart
@@ -203,10 +94,10 @@ function LongShortComparision() {
         <div className="resultsBy_investment">
           <AntTable
             columns={columns}
-            data={data}
+            data={tableData}
             pagination={{
               defaultPageSize: 10,
-              total: 85,
+              total: tableData.length,
               showSizeChanger: true,
               pageSizeOptions: ["10", "20", "30", "40"],
             }}

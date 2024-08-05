@@ -1,11 +1,11 @@
-import { Button, message, Select, Tooltip } from "antd";
+import { Button, message, Modal, Select, Tooltip } from "antd";
 import './UserIPList.scss';
 import React, { useEffect, useState } from "react";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import { useNavigate } from "react-router-dom";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchIpLogs } from "../../../store/NewReducers/listSlice";
+import { blockOrUnblockIp, fetchIpLogs } from "../../../store/NewReducers/listSlice";
 import { CopyOutlined } from "@ant-design/icons";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 
@@ -19,6 +19,10 @@ const UserIPList = () => {
   const navigate = useNavigate();
   const { idToken } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [action, setAction] = useState(null);
+  const [reason, setReason] = useState("");
+  const [selectedRecord, setSelectedRecord] = useState(null);
 
   const { ipLogsData, isLoading, error } = useSelector((state) => state.list);
 
@@ -44,6 +48,37 @@ const UserIPList = () => {
 
   const handleCategoryChange = (value) => {
     setCategory(value);
+  };
+
+  const handleAction = (action, record) => {
+    setAction(action);
+    setSelectedRecord(record);
+    setIsModalVisible(true);
+  };
+
+  const handleBlock = async () => {
+    if (selectedRecord && reason) {
+      try {
+        await dispatch(blockOrUnblockIp({
+          user_email: selectedRecord.user,
+          reason,
+          idToken,
+          block: action === "Block"
+        })).unwrap();
+        message.success(`${action} successful`);
+        setIsModalVisible(false);
+        fetch();
+      } catch (error) {
+        message.error("Error updating status");
+      }
+    } else {
+      message.error("Please provide a reason");
+    }
+    setIsModalVisible(false)
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
   const columns = [
@@ -87,6 +122,29 @@ const UserIPList = () => {
       key: "status",
       render: (text) => (text ? "Blocked" : 'Allowed') || '-',
     },
+    {
+      title: "Action",
+      dataIndex: "actions",
+      render: (_, record) => (
+        <div className="action_wrapper">
+          {record.blocked ? (
+            <Button
+              className="btn-unblock"
+              onClick={() => handleAction("Unblock", record)}
+            >
+              Unblock
+            </Button>
+          ) : (
+            <Button
+              className="btn-block"
+              onClick={() => handleAction("Block", record)}
+            >
+              Block
+            </Button>
+          )}
+        </div>
+      ),
+    },
   ];
 
   return (
@@ -127,6 +185,44 @@ const UserIPList = () => {
         columns={columns}
         pagination={{ pageSize: 10 }}
       />
+
+      <Modal
+        title={`${action} Account`}
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        centered
+        className="table-modal"
+        footer={[
+          <div className="modal-btns-wrapper" key="footer">
+            <Button
+              className="cancel-btn"
+              key="cancel"
+              onClick={handleCancel}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="standard_button block_btn"
+              key="block"
+              type="primary"
+              danger
+              onClick={handleBlock}
+            >
+              {action}
+            </Button>
+          </div>,
+        ]}
+      >
+        <div className="modal-content">
+          <p className="modal-title">Write Your Reason</p>
+          <textarea
+            onChange={(e) => {
+              setReason(e.target.value);
+            }}
+            placeholder="Write your reason here.."
+          ></textarea>
+        </div>
+      </Modal>
     </div>
   );
 };
