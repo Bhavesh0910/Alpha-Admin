@@ -17,7 +17,7 @@ const Stage1Logs = () => {
 
   useEffect(() => {
     const baseurl = "v3/stage-log/list/?stage=stage1";
-    const query = `?page=${pageNo}&page_size=${pageSize}`;
+    const query = `&page=${pageNo}&page_size=${pageSize}`;
     const url = baseurl + query;
     dispatch(logsListReq({ idToken, url, key: "stage1LogsData", dispatch }));
   }, [pageNo, pageSize, idToken, dispatch]);

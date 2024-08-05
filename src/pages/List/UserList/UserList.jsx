@@ -1,22 +1,21 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./UserList.scss";
-import {Table, Input, Select, Button, Modal, Tooltip, message, Radio} from "antd";
+import { Table, Input, Select, Button, Modal, Tooltip, message, Radio } from "antd";
 import moment from "moment";
-import {CopyOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
-import {useDispatch, useSelector} from "react-redux";
+import { CopyOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
 import CopyToClipboard from "react-copy-to-clipboard";
-import {fetchUserList, toggleActiveUser} from "../../../store/NewReducers/listSlice";
+import { fetchUserList, toggleActiveUser } from "../../../store/NewReducers/listSlice";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import {returnMessages} from "../../../store/reducers/message";
-import {returnErrors} from "../../../store/reducers/error";
+import { returnMessages } from "../../../store/reducers/message";
+import { clearMessages } from "../../../store/reducers/message"; // Add this if needed
 import ReactCountryFlag from "react-country-flag";
 import { useNavigate } from "react-router-dom";
 
-const {confirm} = Modal;
-const {Search} = Input;
-const {Option} = Select;
+const { confirm } = Modal;
+const { Option } = Select;
 
 const UserListTable = () => {
   const lookup = require("country-code-lookup");
@@ -30,7 +29,8 @@ const UserListTable = () => {
   const [pageNo, setPageNo] = useState(1);
   const [category, setCategory] = useState("all");
 
-  const {tableData, currentPage, totalPages, totalItems, isLoading} = useSelector((state) => state.list);
+  const { tableData, currentPage, totalPages, totalItems, isLoading } = useSelector((state) => state.list);
+  const { msg, title, status } = useSelector((state) => state.message);
 
   useEffect(() => {
     if (idToken) {
@@ -42,10 +42,11 @@ const UserListTable = () => {
           pageSize,
           authType,
           active: active ? 1 : 0,
-        }),
+        })
       );
     }
   }, [dispatch, idToken, searchText, pageNo, pageSize, authType, active]);
+
 
   const handleSearch = (e) => {
     if (e.key === "Enter") {
@@ -72,14 +73,13 @@ const UserListTable = () => {
         const id = user.id;
         const note = user.is_active ? "Deactivating user" : "Activating user";
         try {
-          dispatch(toggleActiveUser({id, note, idToken}));
-          dispatch(returnMessages(`User ${user.is_active ? "blocked" : "activated"} successfully.`));
-          dispatch(fetchUserList({idToken, searchText, pageNo, pageSize, authType, active}));
+          await dispatch(toggleActiveUser({ id, note, idToken })).unwrap();
+          dispatch(returnMessages(`User ${user.is_active ? "blocked" : "activated"} successfully.`, 'success'));
+          dispatch(fetchUserList({ idToken, searchText, pageNo, pageSize, authType, active }));
         } catch (error) {
-          dispatch(returnErrors("Error changing user status."));
+          dispatch(returnMessages("Error changing user status.", 'error'));
         }
       },
-      onCancel() {},
     });
   };
 
@@ -98,7 +98,6 @@ const UserListTable = () => {
       async onOk() {
         // Your delete user logic here
       },
-      onCancel() {},
     });
   };
 
@@ -193,9 +192,8 @@ const UserListTable = () => {
       ),
     },
   ];
-  
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <div className="user_list_container">
@@ -203,8 +201,11 @@ const UserListTable = () => {
         <div className="header_wrapper">
           <h3 className="page_header">User List</h3>
           <Button
-          onClick={() => navigate('/list/user-list/user-logs')}
-          className="view_logs__btn standard_button">View Logs</Button>
+            onClick={() => navigate('/list/user-list/user-logs')}
+            className="view_logs__btn standard_button"
+          >
+            View Logs
+          </Button>
         </div>
         <div className="table_header_filter">
           <div className="search_box_wrapper">
@@ -230,12 +231,6 @@ const UserListTable = () => {
             </div>
           </div>
           <div className="table_header_filter_radio">
-            {/* <Radio.Group value={authType} onChange={onChangeAuthType}>
-              <Radio.Button value={null}>All</Radio.Button>
-              <Radio.Button value="email">Email</Radio.Button>
-              <Radio.Button value="google">Google</Radio.Button>
-            </Radio.Group> */}
-
             <Radio.Group
               value={active}
               onChange={onChangeActive}

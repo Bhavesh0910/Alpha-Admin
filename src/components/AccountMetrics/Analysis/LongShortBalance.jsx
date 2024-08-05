@@ -11,7 +11,11 @@ import RRR from "../../../assets/icons/RRR.svg";
 
 const formatPercentage = (value) => `${(value * 100).toFixed(2)}%`;
 
-const formatCurrency = (value) => `$${value?.toFixed(2)}`;
+const formatCurrency = (value) => {
+  if (value === undefined || value === null) return '-';
+  const formattedValue = value.toFixed(2);
+  return formattedValue.startsWith('-') ? `-$${formattedValue.slice(1)}` : `$${formattedValue}`;
+};
 
 const LongShortBalance = ({ data }) => {
   const [longChart, setLongChart] = useState("Balance");

@@ -1,14 +1,14 @@
 import axios from "axios";
-import {retry} from "redux-saga/effects";
-import {returnErrors} from "../../store/reducers/error";
-import {setIsLoading} from "../../store/reducers/authSlice";
+import { retry } from "redux-saga/effects";
+import { returnErrors } from "../../store/reducers/error";
+import { setIsLoading } from "../../store/reducers/authSlice";
 
 //  Acg Futures Admin
-// export const baseUrl = "http://13.42.34.37/";
-export const baseUrl = "https://backend.alphacapitalgroup.uk/";
+export const baseUrl = "http://13.42.34.37/";
+// export const baseUrl = "https://backend.alphacapitalgroup.uk/";
 
 export const alphaNewLogin = async (payload, dispatch) => {
-  const {email, password} = payload;
+  const { email, password } = payload;
 
   try {
     const response = await axios.post(`${baseUrl}adm/email/signin/`, {
@@ -99,7 +99,7 @@ const updateUserAddress = async (idToken, data) => {
   return output;
 };
 
-const updateUserDetailsRequest = async ({formData, idToken}) => {
+const updateUserDetailsRequest = async ({ formData, idToken }) => {
   let config = {
     headers: {
       Authorization: `Bearer ${idToken}`,
@@ -1038,14 +1038,13 @@ export const getAccountDetails = async (login_id, platform, idToken) => {
 export const getAccountAnalysis = async (platform, login_id, idToken) => {
   let platformName = platform === 'trader-accounts' ? 'mt5' : platform === 'ctrader-accounts' ? 'ctrader' : 'dxtrade'
   try {
-    const url = `${baseUrl}v2/account-analysis/?login_id=1656331`;
-    
+    const url = `${baseUrl}v2/account-analysis/?platform=dxtrade&login_id=3107202415`;
+
     const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
     });
-    console.log(response.data)
 
     return response.data;
   } catch (error) {
@@ -1115,7 +1114,7 @@ export const getPerformanceChart = async (login_id, idToken) => {
 
 //coupon
 
-const getCouponDetails = async ({idToken, inputText}) => {
+const getCouponDetails = async ({ idToken, inputText }) => {
   const params = {};
   if (inputText) {
     params.coupon = inputText;
@@ -1402,7 +1401,6 @@ const deleteCompDetails = async (idToken, id) => {
     }
   } catch (error) {
     return error;
-    // throw error;
   }
 };
 
@@ -1512,7 +1510,7 @@ const getChallengesDetails = async (idToken) => {
   return output;
 };
 
-const postPlansDetails = async ({idToken, data}) => {
+const postPlansDetails = async ({ idToken, data }) => {
   try {
     let config = {
       headers: {
@@ -1531,7 +1529,7 @@ const postPlansDetails = async ({idToken, data}) => {
   }
 };
 
-const updatePlansDetails = async ({idToken, data, id}) => {
+const updatePlansDetails = async ({ idToken, data, id }) => {
   const apiUrl = `${baseUrl}account/admin/challenges/${id}`;
 
   const config = {
@@ -1556,7 +1554,7 @@ const updatePlansDetails = async ({idToken, data, id}) => {
   return output;
 };
 
-const deletePlansDetails = async ({idToken, id}) => {
+const deletePlansDetails = async ({ idToken, id }) => {
   const apiUrl = `${baseUrl}account/admin/challenges/${id}`;
 
   const config = {
@@ -1747,7 +1745,7 @@ const getUserAccountListRequest = async (idToken, searchValue, pageNumber, phase
   }
 };
 
-const getAccountMetricsRequest = async ({idToken, loginId, dispatch}) => {
+const getAccountMetricsRequest = async ({ idToken, loginId, dispatch }) => {
   try {
     let config = {
       headers: {
@@ -1765,7 +1763,7 @@ const getAccountMetricsRequest = async ({idToken, loginId, dispatch}) => {
     throw error;
   }
 };
-const getBalanceChartRequest = async ({idToken, loginId}) => {
+const getBalanceChartRequest = async ({ idToken, loginId }) => {
   try {
     let config = {
       headers: {

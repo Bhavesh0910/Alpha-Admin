@@ -44,8 +44,22 @@ const BarChart = ({ seriesData, categories, title }) => {
     dataLabels: {
       enabled: false,
     },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ['#04D9FF'],
+    },
     fill: {
-      opacity: 1,
+      type: 'gradient',
+      gradient: {
+        type: 'vertical',
+        shadeIntensity: 1,
+        gradientToColors: ['#ffffff'],
+        inverseColors: false,
+        opacityFrom: 0.8,
+        opacityTo: 0.5,
+        stops: [0, 100],
+      },
     },
     colors: ['#00BFFF', '#FF6347'],
     legend: {

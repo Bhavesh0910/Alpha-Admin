@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {getCompDetails, postCompDetails, getOneCompDetails, updateCompDetails, getLeaderboardDetails} from "../../utils/api/apis";
+import {getCompDetails, postCompDetails, getOneCompDetails, updateCompDetails, getLeaderboardDetails, deleteCompDetails} from "../../utils/api/apis";
 import {returnErrors} from "../reducers/error";
 import {returnMessages} from "../reducers/message";
 
@@ -64,17 +64,26 @@ export const updateCompetition = createAsyncThunk("comp/updateCompetition", asyn
   console.log(id, updatedData);
   try {
     const response = await updateCompDetails(idToken, id, updatedData);
-    if (response?.status < 399) {
       dispatch(returnMessages("Successfully updated competition", 200));
       return response?.data;
-      } else {
-        const msg = 'Failed to update competition';
-        dispatch(returnErrors(msg, 400));
-        return rejectWithValue(msg);
-    }
+      
   }   
    catch (error) {
     const msg = error.response?.data?.detail || "Error updating competition";
+    const status = error.response?.status || 500;
+    dispatch(returnErrors(msg, status));
+    return rejectWithValue(msg);
+  }
+});
+
+export const deleteCompetition = createAsyncThunk("comp/deleteCompetition", async ({ idToken, id }, { dispatch, rejectWithValue }) => {
+  try {
+    const response = await deleteCompDetails(idToken, id);
+      dispatch(returnMessages("Competition deleted successfully", 200));
+      return id; 
+  
+  } catch (error) {
+    const msg = error.response?.data?.detail || "Error deleting competition";
     const status = error.response?.status || 500;
     dispatch(returnErrors(msg, status));
     return rejectWithValue(msg);
@@ -162,6 +171,18 @@ const compSlice = createSlice({
         state.leaderboardData = action.payload;
       })
       .addCase(fetchLeaderboard.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || action.error.message;
+      })
+      .addCase(deleteCompetition.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteCompetition.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.compData = state.compData.filter((comp) => comp.id !== action.payload);
+      })
+      .addCase(deleteCompetition.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
       });
