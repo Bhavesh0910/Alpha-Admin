@@ -202,7 +202,7 @@ function TraderOverview() {
         dataIndex: "login_id",
         key: "login_id",
         width: 100,
-        render: (text) => highlightText(text || '-', searchText),
+        render: (text) => text || "-",
       },
       {
         title: "Balance",
@@ -216,7 +216,7 @@ function TraderOverview() {
         dataIndex: "equity",
         key: "equity",
         width: 150,
-        render: (equity) => <span>{equity || '-'}</span>,
+        render: (equity) => <span>{equity}</span>,
       },
       {
         title: "Leverage",
@@ -338,7 +338,6 @@ function TraderOverview() {
           >
             View Logs
           </Button>
-
         </div>
         <div className="trader-overview-header-left">
           <Title

@@ -1,11 +1,22 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ReactECharts from "echarts-for-react";
 import "./Stage2Statistics.scss";
 
-const StageStatisticsChart = ({ data }) => {
-  const dates = Object.keys(data?.result);
-  const passed = dates.map(date => data?.result[date].passed);
-  const failed = dates.map(date => data?.result[date].failed);
+const StageStatisticsChart = ({data}) => {
+  // const dates = Object.keys(data?.result);
+  // const passed = dates?.map((date) => data?.result[date].passed);
+  // const failed = dates?.map((date) => data?.result[date].failed);
+  let dates = [];
+  let passed = [];
+  let failed = [];
+
+  useEffect(() => {
+    if (data) {
+      dates = Object.keys(data?.result);
+      passed = dates?.map((date) => data?.result[date].passed);
+      failed = dates?.map((date) => data?.result[date].failed);
+    }
+  }, [data]);
 
   const seriesDataPassed = {
     name: "Passed",
@@ -20,7 +31,7 @@ const StageStatisticsChart = ({ data }) => {
   const seriesDataFailed = {
     name: "Failed",
     type: "line",
-    data: failed,
+    data: failed || [],
     lineStyle: {
       color: "#e35446",
     },
@@ -28,14 +39,13 @@ const StageStatisticsChart = ({ data }) => {
   };
 
   const option = {
-
     tooltip: {
       trigger: "axis",
     },
     xAxis: {
       type: "category",
       boundaryGap: false,
-      data: dates,
+      data: dates || [],
       axisLabel: {
         color: "#1E1E1E",
       },
@@ -56,7 +66,7 @@ const StageStatisticsChart = ({ data }) => {
         },
       },
     },
-    series: [seriesDataPassed, seriesDataFailed],
+    series: [seriesDataPassed || [], seriesDataFailed || []],
     grid: {
       left: "3%",
       right: "4%",
@@ -69,7 +79,10 @@ const StageStatisticsChart = ({ data }) => {
   return (
     <div className="stageStatisticsChart_contianer">
       <h2>Stage 2 Statistics</h2>
-      <ReactECharts option={option} style={{ height: "400px", width: "100%" }} />
+      <ReactECharts
+        option={option}
+        style={{height: "400px", width: "100%"}}
+      />
     </div>
   );
 };

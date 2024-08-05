@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactECharts from "echarts-for-react";
 import "./StageStatisticsChart.scss";
 
-const StageStatisticsChart = ({ data }) => {
-  const dates = Object.keys(data?.result);
-  const passed = dates.map(date => data?.result[date].passed);
-  const failed = dates.map(date => data?.result[date].failed);
+const StageStatisticsChart = ({data}) => {
+  // const dates = Object.keys(data?.result);
+  // const passed = dates?.map(date => data?.result[date].passed);
+  // const failed = dates?.map(date => data?.result[date].failed);
+
+  let passed = [];
+  let failed = [];
+  let dates = [];
+
+  useEffect(() => {
+    if (data) {
+      dates = Object.keys(data?.result);
+      passed = dates?.map((date) => data?.result[date].passed);
+      failed = dates?.map((date) => data?.result[date].failed);
+    }
+  }, [data]);
 
   const seriesDataPassed = {
     name: "Passed",
@@ -28,7 +40,6 @@ const StageStatisticsChart = ({ data }) => {
   };
 
   const option = {
-
     tooltip: {
       trigger: "axis",
     },
@@ -68,8 +79,11 @@ const StageStatisticsChart = ({ data }) => {
 
   return (
     <div className="stageStatisticsChart_contianer">
-      <h2>Stage Statistics</h2>
-      <ReactECharts option={option} style={{ height: "400px", width: "100%" }} />
+      <h2>Stage 1 Statistics</h2>
+      <ReactECharts
+        option={option}
+        style={{height: "400px", width: "100%"}}
+      />
     </div>
   );
 };

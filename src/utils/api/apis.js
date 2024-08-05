@@ -920,7 +920,7 @@ export const getStageChart = async (idToken, stage, startDate, endDate) => {
 
 export const getFundingChart = async (idToken, startDate, endDate) => {
   try {
-    const response = await axios.get(`${baseUrl}v3/account-overview/funding-chart/?start_date=${startDate}&end_date=${endDate}`, {
+    const response = await axios.get(`${baseUrl}v3/account-overview/funding-chart/`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
@@ -1036,10 +1036,10 @@ export const getAccountDetails = async (login_id, platform, idToken) => {
 };
 
 export const getAccountAnalysis = async (platform, login_id, idToken) => {
-  let platformName = platform === 'trader-accounts' ? 'mt5' : platform === 'ctrader-accounts' ? 'ctrader' : 'dxtrade'
+  let platformName = platform === "trader-accounts" ? "mt5" : platform === "ctrader-accounts" ? "ctrader" : "dxtrade";
   try {
     const url = `${baseUrl}v2/account-analysis/?platform=${platformName}&login_id=${login_id}`;
-    
+
     const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${idToken}`,
