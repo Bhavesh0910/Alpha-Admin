@@ -505,6 +505,21 @@ const getAffiliateListV2 = async (idToken, pageNo, pageSize, search) => {
   }
 };
 
+export async function getExportHistory(idToken, pageNo = 1, pageSize = 20) {
+  const url = `${baseUrl}v3/admin/export-history/?page=${pageNo}&page_size=${pageSize}`;
+  
+  try {
+      const response = await axios.get(url, {
+          headers: {
+              Authorization: `Bearer ${idToken}`,
+          },
+      });
+      return response;
+  } catch (error) {
+      console.error('Error fetching export history:', error);
+      throw error;
+  }
+}
 const postAffiliateDetails = async (idToken, data) => {
   try {
     const config = {

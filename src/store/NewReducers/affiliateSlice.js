@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
-import {getAffiliateCodelist, getAffiliateListV2, getCodelistV2, postAffiliateDetails} from "../../utils/api/apis";
+import {getAffiliateCodelist, getAffiliateListV2, getCodelistV2, getExportHistory, postAffiliateDetails} from "../../utils/api/apis";
 import {returnErrors} from "../reducers/error";
 import {returnMessages} from "../reducers/message";
 
@@ -74,17 +74,35 @@ export const fetchNewAffiliateCodeList = createAsyncThunk("v2/list/affiliate-cod
   }
 });
 
+export const fetchExportHistory = createAsyncThunk('affiliate/fetchExportHistory', async ({ idToken, pageNo, pageSize }, { dispatch, rejectWithValue }) => {
+  try {
+      const response = await getExportHistory(idToken, pageNo, pageSize);
+      if (response.status < 399) {
+          return response.data;
+      } else {
+          const msg = response.response?.data?.detail || 'Error fetching export history';
+          dispatch(returnErrors(msg, 400));
+          return rejectWithValue(msg);
+      }
+  } catch (error) {
+      const msg = error.response?.data?.detail || 'Error fetching export history';
+      dispatch(returnErrors(msg, 400));
+      return rejectWithValue(msg);
+  }
+});
+
 const affiliateSlice = createSlice({
-  name: "affiliate",
+  name: 'affiliate',
   initialState: {
     affiliateData: [],
     codeData: [],
     newCodeListData: [],
+    exportHistoryData: [], 
     currentPage: 1,
     totalPages: 1,
     isLoading: false,
     error: null,
-    createdLink: "",
+    createdLink: '',
     totalItems: 1,
   },
   reducers: {
@@ -146,10 +164,24 @@ const affiliateSlice = createSlice({
       .addCase(fetchNewAffiliateCodeList.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchExportHistory.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchExportHistory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.exportHistoryData = action.payload;
+        state.totalPages = Math.ceil(action.payload.count / 20);
+        state.totalItems = action.payload?.count;
+      })
+      .addCase(fetchExportHistory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const {setCurrentPage} = affiliateSlice.actions;
+export const { setCurrentPage } = affiliateSlice.actions;
 
 export default affiliateSlice.reducer;
