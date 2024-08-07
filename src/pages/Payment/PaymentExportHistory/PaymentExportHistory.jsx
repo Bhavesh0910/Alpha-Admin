@@ -1,68 +1,81 @@
-import { Breadcrumb, Button, Card } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Breadcrumb, Button, Card, DatePicker } from "antd";
+import dayjs from "dayjs";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import moment from "moment";
-import exportIcon from "../../../assets/icons/export_now_icon_white.svg";
 import { Link } from "react-router-dom";
+import exportIcon from "../../../assets/icons/export_now_icon_white.svg";
+import { paymentExportsReq } from "../../../store/NewReducers/payment"; // Adjust import path as necessary
+import { useDispatch, useSelector } from "react-redux";
+import "./PaymentExportHistory.scss";
+
+const { RangePicker } = DatePicker;
+
 const PaymentExportHistory = () => {
-  const [size, setSize] = useState("small");
-  const onChange = (e) => {
-    setSize(e.target.value);
+  const dispatch = useDispatch();
+  const { exportLink , exportHistoryData} = useSelector((state) => state.payment);
+  const [dates, setDates] = useState([dayjs().subtract(1, "month"), dayjs()]);
+  const { idToken } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    const startDate = dates[0]?.format("DD/MMM/YYYY").toLowerCase(); // Adjusted format to abbreviated month in lowercase
+    const endDate = dates[1]?.format("DD/MMM/YYYY").toLowerCase(); // Adjusted format to abbreviated month in lowercase
+
+    if (startDate && endDate) {
+      const query = `start_date=${startDate}&end_date=${endDate}`;
+      dispatch(paymentExportsReq({ idToken, query }));
+    }
+  }, [dates, dispatch, idToken]);
+
+  const handleDateChange = (values) => {
+    setDates(values);
   };
 
-  const columns = [
-    {
-      title: "Admin Email ID",
-      dataIndex: "adminEmail",
-      key: "adminEmail",
-    },
-    {
-      title: "Date and Time",
-      dataIndex: "dateTime",
-      key: "dateTime",
-      render: (text) => (
-        <>
-          <div className="date_format">
-            <div>{moment(text).format("DD/MM/YYYY")} </div>
-            <div>{moment(text).format("hh:mm:ss")} </div>
-          </div>
-        </>
-      ),
-    },
-    {
-      title: "Export History",
-      dataIndex: "exportHistory",
-      key: "exportHistory",
-      render: () => (
-        <>
-          <div className="export_history_btn">
-            <Button>
-              Example.xlsx
-              <img src={exportIcon} alt="export_icon" />
-            </Button>
-          </div>
-        </>
-      ),
-    },
-  ];
+  useEffect(() => {
+    // if (exportLink) {
+    //   window.open(exportLink, "_blank");
+    // }
+  }, [exportLink]);
 
-  const data = [
+const columns = [
+  {
+    title: "Filename",
+    dataIndex: "filename",
+    key: "filename",
+  },
+  {
+    title: "Download",
+    key: "download",
+    render: (_, record) => (
+      <Button
+      className="download_btn"
+        type="link"
+        href={record.s3_file_url} 
+        target="_blank"
+      >
+        Download
+      </Button>
+    ),
+  },
+];
+
+
+  // Example data
+  const exampleData = [
     {
       key: "1",
       adminEmail: "admin@example.com",
       dateTime: "2024-06-30 14:30:00",
-      userID: "123456",
     },
     {
       key: "2",
       adminEmail: "admin@example.com",
       dateTime: "2024-06-30 15:00:00",
-      userID: "789012",
     },
   ];
 
+
   return (
-    <Card className="table-wrapper viewLogs_table">
+    <Card className="table-wrapper viewLogs_table payment_export">
       <div className="header_wrapper">
         <Breadcrumb
           separator=">"
@@ -76,7 +89,15 @@ const PaymentExportHistory = () => {
           ]}
         />
       </div>
-      <AntTable columns={columns} data={data} />
+      <div style={{marginBottom:'20px'}} className="filter_date_wrapper">
+        <RangePicker
+          value={dates}
+          onChange={handleDateChange}
+          format="DD/MM/YYYY"
+          className="date-picker"
+        />
+      </div>
+      <AntTable columns={columns} data={[exportHistoryData]} />
     </Card>
   );
 };

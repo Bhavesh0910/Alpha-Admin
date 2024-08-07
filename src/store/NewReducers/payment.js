@@ -54,8 +54,8 @@ async function paymentExportsApi(idToken, query) {
       },
     };
 
-    //https://backend.alphacapitalgroup.uk/export/payments/?start_date=01/Jul/2024&end_date=02/Jul/2024&status=
-    const res = axios.get(`${baseUrl}export/payments/${query}`, config);
+   
+    const res = axios.get(`${baseUrl}export/payments/?${query}`, config);
     return res;
   } catch (error) {
     throw error;
@@ -96,9 +96,10 @@ export const paymentHistoryReq = createAsyncThunk("payoutList/history", async ({
 
 export const paymentExportsReq = createAsyncThunk("payoutList/exports", async ({idToken, query, dispatch}, {rejectWithValue}) => {
   try {
-    const response = await paymentExportsApi(idToken, query).then((response) => {
-      window.open(response?.data?.s3_file_url, "_blank");
-    });
+    const response = await paymentExportsApi(idToken , query)
+    // .then((response) => {
+      // window.open(response?.data?.s3_file_url, "_blank");
+    // });
     return response;
   } catch (error) {
     dispatch(returnErrors(error?.response?.data?.detail || "Error while exporting file!", 400));
@@ -116,6 +117,7 @@ const paymentSlice = createSlice({
     paymentHistoryData: [],
     paymentHistoryDataCount: 1,
     paymentEmail: "",
+    exportHistoryData: [],
     exportLink: "",
     payoutData: [],
   },
@@ -171,6 +173,7 @@ const paymentSlice = createSlice({
       })
       .addCase(paymentExportsReq.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.exportHistoryData = action.payload.data
         console.log(action.payload?.data);
         state.exportLink = action.payload?.data; // Update state with fetched data
       })

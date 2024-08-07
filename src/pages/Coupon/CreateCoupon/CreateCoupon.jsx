@@ -65,7 +65,7 @@ const CreateCoupon = () => {
         }));
         setOptions(userArray);
       } else {
-        const msg = response.response.data.message || "Something went wrong";
+        const msg = response.response.data.message || "Failed to fetch users";
         dispatch(returnErrors(msg, 400));
       }
     } catch (error) {

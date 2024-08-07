@@ -15,7 +15,6 @@ const ErrorModal = () => {
   };
 
   const {title, msg, status} = useSelector((state) => state.error);
-
   React.useEffect(() => {
     setOpen(true);
     setMessage(msg);

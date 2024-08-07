@@ -251,7 +251,7 @@ function TraderOverview() {
         dataIndex: "user_is_active",
         key: "user_is_active",
         width: 150,
-        render: (text) => (text ? "UnBlocked" : "Blocked") || '-',
+        render: (text) => (text ? "Unblocked" : "Blocked") || '-',
       },
       {
         title: "Action",

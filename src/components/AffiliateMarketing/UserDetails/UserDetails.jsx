@@ -5,8 +5,9 @@ import "./UserDetails.scss";
 import exportBtnIcon from "../../../assets/icons/export_btn_icon.svg";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import { traderAffiliateRefList } from "../../../utils/api/apis";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
+import { returnErrors } from "../../../store/reducers/error";
 
 const UserDetails = ({ isUserDetailOpened, setIsUserDetailOpened, id }) => {
   const [status, setStatus] = useState("success");
@@ -18,6 +19,8 @@ const UserDetails = ({ isUserDetailOpened, setIsUserDetailOpened, id }) => {
     setStatus(e.target.value);
   };
 
+  const dispatch = useDispatch()
+
   const fetchData = async () => {
     if (isUserDetailOpened) {
       setisLoading(true);
@@ -25,6 +28,7 @@ const UserDetails = ({ isUserDetailOpened, setIsUserDetailOpened, id }) => {
         const data = await traderAffiliateRefList(idToken, id);
         setReferredList(data);
       } catch (error) {
+        dispatch(returnErrors("Error fetching referred list" , 400))
         console.error("Error fetching referred list:", error);
       } finally {
         setisLoading(false);

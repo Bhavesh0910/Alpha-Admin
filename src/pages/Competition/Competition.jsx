@@ -114,11 +114,7 @@ const Competition = () => {
         showQuickJumper
         showTotal={(total) => `Total ${total} items`}
       />
-      {error && (
-        <p className="error" style={{ color: "#fff" }}>
-          {error}
-        </p>
-      )}
+  
     </div>
   );
 };
