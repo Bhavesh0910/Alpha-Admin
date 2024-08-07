@@ -8,30 +8,27 @@ import { traderAffiliateRefList } from "../../../utils/api/apis";
 import { useDispatch, useSelector } from "react-redux";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import { returnErrors } from "../../../store/reducers/error";
+import { fetchAffExportData } from "../../../store/NewReducers/affiliateSlice";
 
 const UserDetails = ({ isUserDetailOpened, setIsUserDetailOpened, id }) => {
   const [status, setStatus] = useState("success");
   const [referredList, setReferredList] = useState([]);
   const idToken = useSelector((state) => state.auth.idToken);
-  const [isLoading, setisLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const onChange = (e) => {
-    setStatus(e.target.value);
-  };
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const fetchData = async () => {
     if (isUserDetailOpened) {
-      setisLoading(true);
+      setIsLoading(true);
       try {
         const data = await traderAffiliateRefList(idToken, id);
         setReferredList(data);
       } catch (error) {
-        dispatch(returnErrors("Error fetching referred list" , 400))
+        dispatch(returnErrors("Error fetching referred list", 400));
         console.error("Error fetching referred list:", error);
       } finally {
-        setisLoading(false);
+        setIsLoading(false);
       }
     }
   };
@@ -39,6 +36,21 @@ const UserDetails = ({ isUserDetailOpened, setIsUserDetailOpened, id }) => {
   useEffect(() => {
     fetchData();
   }, [isUserDetailOpened]);
+
+  const handleExport = async () => {
+    try {
+      const response = await dispatch(fetchAffExportData({ idToken, affiliateId: id }));
+      if (fetchAffExportData.fulfilled.match(response)) {
+        const { s3_file_url } = response.payload;
+        window.open(s3_file_url, "_blank");
+      } else {
+        console.error("Failed to fetch export data:", response.error.message);
+      }
+    } catch (error) {
+      console.error("Error opening export data:", error);
+      dispatch(returnErrors("Error opening export data", 400));
+    }
+  };
 
   const columns = [
     {
@@ -99,14 +111,14 @@ const UserDetails = ({ isUserDetailOpened, setIsUserDetailOpened, id }) => {
         <div className="list_header">Referred List</div>
         <div className="rightSection">
           <div className="groupA tabs_wrapper">
-            <Radio.Group value={status} onChange={onChange}>
+            <Radio.Group value={status} onChange={(e) => setStatus(e.target.value)}>
               <Radio.Button value="success">Success</Radio.Button>
               <Radio.Button value="failed">Failed</Radio.Button>
             </Radio.Group>
           </div>
           <div className="groupB">
             <div className="export_btn">
-              <Button>
+              <Button onClick={handleExport}>
                 <img src={exportBtnIcon} alt="Export" />
                 Export
               </Button>

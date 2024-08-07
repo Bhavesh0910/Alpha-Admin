@@ -409,13 +409,29 @@ const traderAffiliateRefList = async (idToken, id) => {
       //   affiliate_code_id: id,
       // },
     };
-    const response = await axios.get(`${baseUrl}v3/export/affiliate-reffered/?affiliate_id=337867`, config);
+    const response = await axios.get(`${baseUrl}v2/get/referred-users/list/?affiliate_id=${id}`, config);
     return response.data;
   } catch (error) {
     console.error("Error in getting trader ref list", error);
     throw error;
   }
 };
+
+
+export async function fetchAffiliateExport(idToken, affiliateId) {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    };
+    const response = await axios.get(`${baseUrl}v3/export/affiliate-referred/?affiliate_id=${affiliateId}`, config);
+    return response;
+  } catch (error) {
+    throw error; // Handle the error as needed
+  }
+}
+
 const getAffiliateDetails = async (idToken) => {
   let config = {
     headers: {
