@@ -39,9 +39,24 @@ jobs:
           source: "build/"
           target: "/home/deploy/user"
 
-      - name: Send Discord notification
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DEV_DISCORD_WEBHOOK_URL}}
+      - name: Checking Server Status
+        run: |
+          # echo "SERVER_PORT=3000" >> $GITHUB_ENV
+          echo "SERVER_NAME=Alpha-admin-2024-frontend-dev" >> $GITHUB_ENV
+          STATUS_CODE=$(curl -o /dev/null -s -w "%{http_code}\n" http://${{ secrets.DEV_SERVER_IP }})
+          echo "STATUS_CODE=$STATUS_CODE" >> $GITHUB_ENV
+
+      - name: Evaluating Server Status
+        run: |
+          if [ "${{ env.STATUS_CODE }}" -eq 200 ]; then
+            echo "DISCORD_MESSAGE=New build is live on Dev server ${{ env.SERVER_NAME }}: ${{ secrets.DEV_SERVER_IP }}" >> $GITHUB_ENV
+          else
+            echo "DISCORD_MESSAGE=Deployment to Dev server failed ${{ env.SERVER_NAME }}: ${{ secrets.DEV_SERVER_IP }}" >> $GITHUB_ENV
+          fi
+
+      - name: Sending Discord Notification
         uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DEV_DISCORD_WEBHOOK_URL }}
         with:
-          args: "New build is live on Dev server(Alpha-admin-2024-frontend-dev):- 18.170.28.15"
+          args: ${{ env.DISCORD_MESSAGE }}
