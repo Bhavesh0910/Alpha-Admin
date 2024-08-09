@@ -86,7 +86,6 @@ const CreateTradingAccount = () => {
 
   const handleCreateTradingAccount = async () => {
     setIsSpinner(true);
-    console.log("Data : ", data);
     const {challenge, group, leverage, name, pwd, pwdInvestor, raw_spread, status, user, email, reason} = data;
 
     let traderData = {};
@@ -106,27 +105,33 @@ const CreateTradingAccount = () => {
     }
     if (data?.platform === "C-Trader") {
       traderData = {
-        challenge: challenge,
-        raw_spread: raw_spread,
-        reason: reason,
-        status: status,
         user: user,
+        name: name,
+        pwd: pwd,
+        pwdInvestor: pwdInvestor,
+        group: group,
+        leverage: leverage,
+        challenge: challenge,
+        status: status,
+        email: email,
+        reason: reason,
       };
     }
     if (data?.platform === "Dx-Trader") {
       traderData = {
-        challenge: challenge,
-        email: email,
-        group: group,
-        leverage: leverage,
+        user: user,
         name: name,
         pwd: pwd,
         pwdInvestor: pwdInvestor,
-        reason: reason,
+        group: group,
+        leverage: leverage,
+        challenge: challenge,
         status: status,
-        user: user,
+        email: email,
+        // reason: reason,
       };
     }
+    console.log(traderData, "kjbjdchbbhjdc");
     const response = await CreateTradingAccountReq(idToken, traderData, data?.platform);
     if (response?.status < 399) {
       dispatch(returnMessages("Created Account Successfully", 201));

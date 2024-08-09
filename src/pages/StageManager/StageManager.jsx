@@ -72,7 +72,7 @@ const StageManager = () => {
 
     if (location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2") {
       location.pathname === "/support/stage-1" ? (type = "Stage 1 Pass") : (type = "Stage 2 Pass");
-      query += `&type=${type}`;
+      query = query + `&type=${type}`;
     } else {
       location.pathname === "/support/funded" ? (url = "v2/get/funded/list/") : (url = "v2/get-payout/");
     }
@@ -780,8 +780,7 @@ const StageManager = () => {
   } else if (location.pathname === "/support/payout") {
     viewLogsLink = "/support/payout/payout-view-logs";
   }
-  
-  
+
   return (
     <div className="stageManager_container">
       <div className="header_wrapper">
@@ -925,7 +924,6 @@ function ExpandedRowData({record}) {
 
   useEffect(() => {
     let flag = location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2" ? true : false;
-    console.log(flag);
     dispatch(nestedTableDataReq({idToken, url, flag, dispatch}));
   }, [url]);
 

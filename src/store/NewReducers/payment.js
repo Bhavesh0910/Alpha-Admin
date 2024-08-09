@@ -55,7 +55,7 @@ async function paymentExportsApi(idToken, query) {
     };
 
    
-    const res = axios.get(`${baseUrl}export/payments/?${query}`, config);
+    const res = axios.get(`${baseUrl}export/payments/${query}`, config);
     return res;
   } catch (error) {
     throw error;
@@ -188,8 +188,9 @@ const paymentSlice = createSlice({
       })
       .addCase(payoutListReq.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log(action.payload?.data);
-        state.exportLink = action.payload?.payoutData; // Update state with fetched data
+        console.log("Paypout paylaod .. ",action.payload);
+        state.payoutData = action.payload?.data?.data?.results; // Update state with fetched data
+        state.count = action.payload?.data?.data?.count; // Update state with fetched data
       })
       .addCase(payoutListReq.rejected, (state) => {
         state.isLoading = false;
