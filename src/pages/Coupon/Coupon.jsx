@@ -23,13 +23,15 @@ const Coupon = () => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
   const { idToken } = useSelector(state => state.auth);
-  const { couponData, isLoading, refresh } = useSelector(state => state.coupon);
+  const { couponData = [], isLoading, refresh } = useSelector(state => state.coupon);
   const count = couponData[0]?.count || 0;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchCoupons(idToken, pageNo, pageSize, searchText);
+    if (idToken) {
+      fetchCoupons(idToken, pageNo, pageSize, searchText);
+    }
   }, [idToken, pageNo, pageSize, searchText, refresh]);
 
   function fetchCoupons(idToken, pageNo, pageSize, searchText) {
@@ -48,12 +50,13 @@ const Coupon = () => {
   }
 
   useEffect(() => {
+    const results = couponData[0]?.results || [];
     if (activeTab === "active") {
-      setFilterData(couponData[0]?.results.filter(item => item.is_active === true) || []);
+      setFilterData(results.filter(item => item.is_active === true));
     } else if (activeTab === "inactive") {
-      setFilterData(couponData[0]?.results.filter(item => item.is_active === false) || []);
+      setFilterData(results.filter(item => item.is_active === false));
     } else {
-      setFilterData(couponData[0]?.results || []);
+      setFilterData(results);
     }
   }, [activeTab, couponData]);
 

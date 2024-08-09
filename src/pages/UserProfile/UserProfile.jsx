@@ -7,7 +7,7 @@ import {setUser} from "../../store/reducers/userSlice";
 import profileImg from "../../assets/images/user.png";
 import editBtn from "../../assets/icons/editBtnIcon.svg";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import {getUserProfileData} from "../../store/NewReducers/userProfileSlice";
+import {getUserProfileData, requestPasswordReset} from "../../store/NewReducers/userProfileSlice";
 
 const {Title} = Typography;
 const {Option} = Select;
@@ -81,6 +81,16 @@ const UserProfile = () => {
       });
   };
 
+  const handlePasswordReset = () => {
+    console.log(data.data.email)
+    if (data?.data?.email) {
+      dispatch(requestPasswordReset({ idToken, email: data.data.email }));
+    } else {
+      console.error("Email is not available for password reset.");
+    }
+
+
+  };
   return (
     <div className="userProfile_container">
       <div className="header_wrapper">
@@ -202,6 +212,7 @@ const UserProfile = () => {
               Reset Password
             </Title>
             <Button
+            onClick={handlePasswordReset}
               style={{maxWidth: "234px"}}
               className="standard_button"
             >
