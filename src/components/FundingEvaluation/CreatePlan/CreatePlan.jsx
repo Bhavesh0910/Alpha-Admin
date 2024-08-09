@@ -128,7 +128,7 @@ const CreateTradingAccount = () => {
         challenge: challenge,
         status: status,
         email: email,
-        // reason: reason,
+        reason: reason,
       };
     }
     console.log(traderData, "kjbjdchbbhjdc");
