@@ -119,6 +119,9 @@
       .ant-select-arrow {
         color: #a6a6a6;
       }
+      // .ant-select-selection-item-content,.ant-select-selection-item{
+      //   display: none !important;
+      // }
     }
   }
   .trader_overview_header_row2 {
@@ -378,3 +381,17 @@
     color: #f26419;
   }
 }
+
+// .widthFitContent {
+//   display: none;
+//   max-width: 200px !important;
+//   // overflow: scroll;
+// }
+
+.ant-select-selector {
+  min-width: 200px !important;
+}
+
+// .ant-select-selection-item {
+//   display: none !important; 
+// }

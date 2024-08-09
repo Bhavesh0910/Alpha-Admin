@@ -417,7 +417,6 @@ const traderAffiliateRefList = async (idToken, id) => {
   }
 };
 
-
 export async function fetchAffiliateExport(idToken, affiliateId) {
   try {
     const config = {
@@ -523,19 +522,20 @@ const getAffiliateListV2 = async (idToken, pageNo, pageSize, search) => {
 
 export async function getExportHistory(idToken, pageNo = 1, pageSize = 20) {
   const url = `${baseUrl}v3/admin/export-history/?page=${pageNo}&page_size=${pageSize}`;
-  
+
   try {
-      const response = await axios.get(url, {
-          headers: {
-              Authorization: `Bearer ${idToken}`,
-          },
-      });
-      return response;
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response;
   } catch (error) {
-      console.error('Error fetching export history:', error);
-      throw error;
+    console.error("Error fetching export history:", error);
+    throw error;
   }
 }
+
 const postAffiliateDetails = async (idToken, data) => {
   try {
     const config = {
@@ -2002,18 +2002,19 @@ const EligibleCertificateAccount = async (idToken, email) => {
   }
 };
 
-const CreateTradingAccountReq = async (idToken, data) => {
+const CreateTradingAccountReq = async (idToken, data, platform) => {
   let config = {
     headers: {
       Authorization: `Bearer ${idToken}`,
     },
   };
   let endpoint;
-  if (data?.platform === "MT5") {
+  console.log(platform);
+  if (platform === "MT5") {
     endpoint = "v2/account-create/admin/";
-  } else if (data?.platform === "C-Trader") {
+  } else if (platform === "C-Trader") {
     endpoint = "v2/ctrader-account-create/admin/";
-  } else if (data?.platform === "Dx-Trader") {
+  } else if (platform === "Dx-Trader") {
     endpoint = "v2/dxtrade-account-create/admin/";
   } else {
     throw new Error("Unsupported user type");

@@ -1,5 +1,5 @@
 import {EyeInvisibleOutlined, EyeTwoTone} from "@ant-design/icons";
-import {Button, Input, Select, Spin} from "antd";
+import {Button, Input, Modal, Select, Spin} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import "./UserSupport.scss";
 import React, {useEffect, useState} from "react";
@@ -20,6 +20,8 @@ const UserSupport = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const {fundingData} = useSelector((state) => state.funding);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   // Form state variables
   const [currentEmail, setCurrentEmail] = useState("");
@@ -80,7 +82,7 @@ const UserSupport = () => {
       //   new_email: newEmail,
       // };
       // console.log(emailPayload)
-      dispatch(updateUserEmailThunk({ idToken, payload: formData }));
+      dispatch(updateUserEmailThunk({idToken, payload: formData}));
     } else if (activeTab === "request_payout") {
       const formData = new FormData();
       formData.append("login_id", loginId);
@@ -92,8 +94,9 @@ const UserSupport = () => {
       //   reason: reason,
       // };
       // console.log(payoutPayload)
-      dispatch(requestPayoutThunk({ idToken, payload: formData }));
+      dispatch(requestPayoutThunk({idToken, payload: formData}));
     }
+    setIsModalVisible(false);
   };
 
   return (
@@ -146,11 +149,39 @@ const UserSupport = () => {
         <div className="footer_section">
           <Button
             className="standard_button"
-            onClick={handleSubmit}
+            onClick={() => setIsModalVisible(true)}
           >
             Submit
           </Button>
         </div>
+        <Modal
+          title={`Are you sure that you want too perform this action`}
+          open={isModalVisible}
+          style={{color: "white"}}
+          onCancel={() => setIsModalVisible(false)}
+          centered
+          className="table-modal"
+          footer={[
+            <div className="modal-btns-wrapper">
+              <Button
+                className="cancel-btn"
+                key="cancel"
+                onClick={() => setIsModalVisible(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                className="standard_button block_btn"
+                key="block"
+                type="primary"
+                danger
+                onClick={() => handleSubmit()}
+              >
+                Yes
+              </Button>
+            </div>,
+          ]}
+        ></Modal>
       </div>
     </div>
   );
@@ -180,6 +211,7 @@ const ChangeEmail = ({handleOnInputChange, emailOpts, isLoading, currentEmail, s
             onChange={handleEmailChange} // Handle email selection change
             notFoundContent={isLoading ? <Spin size="small" /> : null}
             value={selectEmail} // Ensure selected value is controlled
+            aria-required
           >
             {emailOpts.map((option) => (
               <Option
@@ -194,6 +226,7 @@ const ChangeEmail = ({handleOnInputChange, emailOpts, isLoading, currentEmail, s
         <div className="form_input_box">
           <label htmlFor="current_password">Current Password</label>
           <Input.Password
+            required
             id="current_password"
             placeholder="Enter Current Password"
             value={currentPassword}
