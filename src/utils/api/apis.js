@@ -45,6 +45,22 @@ const getUserDetailsReq = async (idToken) => {
   return output;
 };
 
+
+export const requestPasswordResetApi = async (idToken , email) => {
+  let config = {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  };
+
+  const output = await axios
+    .post(`${baseUrl}password/reset-request/`, { email }, config)
+    .then((res) => res.data)
+    .catch((error) => error.response.data);
+
+  return output;
+};
+
 // UserAddress
 const getUserAddress = async (idToken) => {
   let config = {

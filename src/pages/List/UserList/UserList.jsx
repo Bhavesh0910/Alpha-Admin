@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./UserList.scss";
-import { Table, Input, Select, Button, Modal, Tooltip, message, Radio } from "antd";
+import { Table, Input, Select, Button, Modal, Tooltip, message, Radio, Form, Input as AntInput } from "antd";
 import moment from "moment";
 import { CopyOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,6 @@ import searchIcon from "../../../assets/icons/searchIcon.svg";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import { returnMessages } from "../../../store/reducers/message";
-import { clearMessages } from "../../../store/reducers/message"; // Add this if needed
 import ReactCountryFlag from "react-country-flag";
 import { useNavigate } from "react-router-dom";
 
@@ -28,6 +27,8 @@ const UserListTable = () => {
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
   const [category, setCategory] = useState("all");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const { tableData, currentPage, totalPages, totalItems, isLoading } = useSelector((state) => state.list);
   const { msg, title, status } = useSelector((state) => state.message);
@@ -46,7 +47,6 @@ const UserListTable = () => {
       );
     }
   }, [dispatch, idToken, searchText, pageNo, pageSize, authType, active]);
-
 
   const handleSearch = (e) => {
     if (e.key === "Enter") {
@@ -116,7 +116,26 @@ const UserListTable = () => {
     setPageSize(updatedPageSize);
   };
 
+  const handleEditClick = (user) => {
+    setSelectedUser(user);
+    setIsModalVisible(true);
+  };
+
+  const handleModalOk = () => {
+    // Implement save logic here
+    setIsModalVisible(false);
+  };
+
+  const handleModalCancel = () => {
+    setIsModalVisible(false);
+  };
+
   const columns = [
+    {
+      title: "Name",
+      dataIndex: "full_name",
+      render: (text) => <span>{text || "-"}</span>,
+    },
     {
       title: "Email",
       dataIndex: "email",
@@ -135,16 +154,6 @@ const UserListTable = () => {
           </CopyToClipboard>
         </>
       ),
-    },
-    {
-      title: "Name",
-      dataIndex: "full_name",
-      render: (text) => <span>{text || "-"}</span>,
-    },
-    {
-      title: "Date joined",
-      dataIndex: "date_joined",
-      render: (text) => <span>{text ? moment(text).format("ll") : "-"}</span>,
     },
     {
       title: "Country",
@@ -169,6 +178,21 @@ const UserListTable = () => {
       },
     },
     {
+      title: "City",
+      dataIndex: "city",
+      render: (text) => <span>{text || "-"}</span>,
+    },
+    {
+      title: "Contact",
+      dataIndex: "contact",
+      render: (text) => <span>{text || "-"}</span>,
+    },
+    {
+      title: "Date joined",
+      dataIndex: "date_joined",
+      render: (text) => <span>{text ? moment(text).format("ll") : "-"}</span>,
+    },
+    {
       title: "Active",
       dataIndex: "is_active",
       render: (text, record) => (
@@ -182,6 +206,7 @@ const UserListTable = () => {
       dataIndex: "actions",
       render: (_, record) => (
         <div className="action_wrapper">
+          <Button onClick={() => handleEditClick(record)}>Edit</Button>
           <Button 
             onClick={() => handleStatusChange(record)} 
             disabled={record.is_active === undefined}
@@ -252,6 +277,41 @@ const UserListTable = () => {
         setPageSize={setPageSize}
         triggerChange={triggerChange}
       />
+      <Modal
+        title="Edit User"
+        visible={isModalVisible}
+        onOk={handleModalOk}
+        onCancel={handleModalCancel}
+      >
+        {selectedUser && (
+          <Form
+            layout="vertical"
+            initialValues={{
+              email: selectedUser.email,
+              country: selectedUser.country,
+              full_name: selectedUser.full_name,
+              city: selectedUser.city,
+              contact: selectedUser.contact,
+            }}
+          >
+            <Form.Item label="Email" name="email">
+              <AntInput readOnly />
+            </Form.Item>
+            <Form.Item label="Name" name="full_name" >
+              <AntInput />
+            </Form.Item>
+            <Form.Item label="Country" name="country" >
+              <AntInput />
+            </Form.Item>
+            <Form.Item label="City" name="city">
+              <AntInput />
+            </Form.Item>
+            <Form.Item label="Contact" name="contact">
+              <AntInput />
+            </Form.Item>
+          </Form>
+        )}
+      </Modal>
     </div>
   );
 };
