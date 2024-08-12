@@ -21,7 +21,7 @@ const PaymentExportHistory = () => {
     const endDate = dates[1]?.format("DD/MMM/YYYY").toLowerCase(); // Adjusted format to abbreviated month in lowercase
 
     if (startDate && endDate) {
-      const query = `start_date=${startDate}&end_date=${endDate}`;
+      const query = `?start_date=${startDate}&end_date=${endDate}`;
       dispatch(paymentExportsReq({idToken, query}));
     }
   }, [dates, dispatch, idToken]);

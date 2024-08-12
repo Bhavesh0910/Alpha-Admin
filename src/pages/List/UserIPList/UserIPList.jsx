@@ -65,11 +65,9 @@ const UserIPList = () => {
           idToken,
           block: action === "Block"
         })).unwrap();
-        message.success(`${action} successful`);
         setIsModalVisible(false);
         fetch();
       } catch (error) {
-        message.error("Error updating status");
       }
     } else {
       message.error("Please provide a reason");
