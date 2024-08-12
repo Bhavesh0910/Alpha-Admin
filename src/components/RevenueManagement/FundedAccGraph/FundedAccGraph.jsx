@@ -9,21 +9,34 @@ const FundedAccGraph = () => {
 
   useEffect(() => {
     if (barData && barData.length > 0) {
-      const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
+      const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+  
       const newData = new Array(12).fill(0);
-
+  
       barData.forEach((item) => {
-        const [monthName, year] = item.month_year.split(" ");
-        const monthIndex = month.indexOf(monthName);
-        if (monthIndex !== -1) {
-          newData[monthIndex] = item.count;
+        if (item && item.month) {
+          console.log(item.month, "Processing month");
+          
+          const [monthName, year] = item.month.split(" ");
+          const monthIndex = monthNames.indexOf(monthName);
+  
+          if (monthIndex !== -1 && typeof item.count === 'number') {
+            newData[monthIndex] = item.count;
+          } else {
+            console.warn(`Invalid month or count: ${monthName}, ${item.count}`);
+          }
+        } else {
+          console.warn("Invalid item or month:", item);
         }
       });
-
-      setData(newData || []);
+  
+      setData(newData);
     }
   }, [barData]);
+  
 
   const options = {
     chart: {
@@ -65,7 +78,7 @@ const FundedAccGraph = () => {
         style: {
           colors: "#1E1E1E",
         },
-        formatter: (val) => `$${val}`,
+        formatter: (val) => `${val}`,
       },
     },
     fill: {

@@ -11,19 +11,6 @@ import {useSelector} from "react-redux";
 const Infobox = () => {
   const {statsData, isLoading} = useSelector((state) => state.revenue);
 
-  const dummyData = [
-    {
-      totalAccounts: "25,656",
-      revenueFromAccountPayments: "$256,560",
-      payoutsRequested: "$65,56",
-      alphaProfitShare: "$65,56",
-      netRevenue: "$565,56",
-      netProfit: "$126,56",
-    },
-  ];
-
-  console.log(statsData, " statsdata");
-
   return (
     <>
       <div className="infobox_container">
@@ -62,7 +49,7 @@ const InfoBox = ({item}) => {
           alt="revenueAccIcon"
         />
         <p className="infobox_label">Revenue from Account Payments</p>
-        <p className="infobox_value">{item.revenue_from_payments}</p>
+        <p className="infobox_value">${item.revenue_from_payments?.toFixed(2)}</p>
       </div>
       <div className="infobox_content">
         <img
@@ -71,7 +58,7 @@ const InfoBox = ({item}) => {
           alt="payoutReqIcon"
         />
         <p className="infobox_label">Payouts Requested</p>
-        <p className="infobox_value">{item.payouts_requested}</p>
+        <p className="infobox_value">${item.payouts_requested?.toFixed(2)}</p>
       </div>
       <div className="infobox_content">
         <img
@@ -80,7 +67,7 @@ const InfoBox = ({item}) => {
           alt="alphaProfitIcon"
         />
         <p className="infobox_label">Alpha Profit Share</p>
-        <p className="infobox_value">{item.alpha_profit_share}</p>
+        <p className="infobox_value">${item.alpha_profit_share?.toFixed(2)}</p>
       </div>
       <div className="infobox_content">
         <img
@@ -89,7 +76,7 @@ const InfoBox = ({item}) => {
           alt="netRevenueIcon"
         />
         <p className="infobox_label">Net Revenue</p>
-        <p className="infobox_value">{item.net_revenue}</p>
+        <p className="infobox_value">${item.net_revenue?.toFixed(2)}</p>
       </div>
       <div className="infobox_content">
         <img
@@ -98,7 +85,7 @@ const InfoBox = ({item}) => {
           alt="alphaProfitIcon"
         />
         <p className="infobox_label">Net Profit</p>
-        <p className="infobox_value">{item.net_profit}</p>
+        <p className="infobox_value">${item.net_profit?.toFixed(2)}</p>
       </div>
     </div>
   );

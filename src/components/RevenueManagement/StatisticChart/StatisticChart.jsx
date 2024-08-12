@@ -14,27 +14,28 @@ const StatisticChart = () => {
       let payoutApp = [];
       let dates = [];
       payoutReq = chartData?.payouts?.map((item) => {
-        return item?.requested_totalPayout;
+        return item?.total_payout;
       });
-      payoutApp = chartData?.payouts?.map((item) => {
-        return item?.approved_totalPayout;
-      });
+      // payoutApp = chartData?.payouts?.map((item) => {
+      //   return item?.approved_totalPayout;
+      // });
       dates = chartData?.payouts?.map((item) => {
-        return item?.dates;
+        return item?.created_at__date;
       });
 
-      setData({payoutRequested: payoutReq || [], payoutApproved: payoutApp || [], dates: dates || []});
+      // setData({payoutRequested: payoutReq || [], payoutApproved: payoutApp || [], dates: dates || []});
+      setData({payoutRequested: payoutReq || [], dates: dates || []});
     }
   }, [chartData]);
   const series = [
     {
       name: "Payout Requested",
-      data: data?.payoutRequested,
+      data: data?.payoutRequested || [],
     },
-    {
-      name: "Total amount paid in profit share",
-      data: data?.payoutApproved,
-    },
+    // {
+    //   name: "Total amount paid in profit share",
+    //   data: data?.payoutApproved || [],
+    // },
   ];
 
   const options = {
@@ -90,12 +91,12 @@ const StatisticChart = () => {
     <div className="statisticChart_wrapper">
       <div className="header_wrapper">
         <h3>Statistics</h3>
-        <Select
+        {/* <Select
           defaultValue={""}
           className="chart_filter"
           onChange={""}
           options={options}
-        />
+        /> */}
       </div>
       <ReactApexChart
         options={options}
