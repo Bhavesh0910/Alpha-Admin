@@ -17,7 +17,7 @@ const PayoutPaymentTable = ({activeTab}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const columns = useMemo(
+  const paymentColumns = useMemo(
     () => [
       {
         title: "Name",
@@ -156,7 +156,7 @@ const PayoutPaymentTable = ({activeTab}) => {
         dataIndex: "amount",
         key: "amount",
         width: 150,
-        render: (amount) => <span>{amount}</span>,
+        render: (amount) => <span>${amount}</span>,
       },
       {
         title: "Date",
@@ -181,6 +181,109 @@ const PayoutPaymentTable = ({activeTab}) => {
     [paymentData],
   );
 
+  const payoutColumns = useMemo(
+    () => [
+      {
+        title: "ID",
+        dataIndex: "id",
+        key: "id",
+        render: (text) => text || "-",
+      },
+      {
+        title: "Amount",
+        dataIndex: "amount",
+        key: "amount",
+        render: (text) => (text !== null && text !== undefined ? text : "-"),
+      },
+      {
+        title: "Country",
+        dataIndex: "country",
+        key: "country",
+        render: (text) => text || "-",
+      },
+      {
+        title: "Created At",
+        dataIndex: "created_at",
+        key: "created_at",
+        render: (text) => text || "-",
+      },
+      {
+        title: "Invoice",
+        dataIndex: "invoice",
+        key: "invoice",
+        render: (text) => (
+          <>
+            {text ? (
+              <a
+                href={text}
+                target="_blank"
+              >
+                <Button>Invoice</Button>
+              </a>
+            ) : (
+              <Button>-</Button>
+            )}
+          </>
+        ),
+      },
+      {
+        title: "KYC",
+        dataIndex: "kyc",
+        key: "kyc",
+        render: (text) => (text !== null && text !== undefined ? (text ? "Yes" : "No") : "-"),
+      },
+      {
+        title: "Login ID",
+        dataIndex: "login_id",
+        key: "login_id",
+        render: (text) => text || "-",
+      },
+      {
+        title: "Method",
+        dataIndex: "method",
+        key: "method",
+        render: (text) => text || "-",
+      },
+      {
+        title: "Performance Bonus",
+        dataIndex: "performance_bonus",
+        key: "performance_bonus",
+        render: (text) => (text !== null && text !== undefined ? text : "-"),
+      },
+      {
+        title: "Profit Split",
+        dataIndex: "profit_split",
+        key: "profit_split",
+        render: (text) => (text !== null && text !== undefined ? text : "-"),
+      },
+      {
+        title: "Reason",
+        dataIndex: "reason",
+        key: "reason",
+        render: (text) => text || "-",
+      },
+      {
+        title: "Status",
+        dataIndex: "status",
+        key: "status",
+        render: (text) => text || "-",
+      },
+      {
+        title: "User Email",
+        dataIndex: "user_email",
+        key: "user_email",
+        render: (text) => text || "-",
+      },
+      {
+        title: "User Name",
+        dataIndex: "user_name",
+        key: "user_name",
+        render: (text) => text || "-",
+      },
+    ],
+    [paymentData],
+  );
+
   useEffect(() => {
     if (activeTab === "payments") {
       fetchPayments(idToken, pageSize, pageNo);
@@ -194,6 +297,7 @@ const PayoutPaymentTable = ({activeTab}) => {
 
     dispatch(paymentListReq({idToken, query, dispatch}));
   }
+
   function fetchPayouts(idToken, pageSize, pageNo) {
     let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
 
@@ -210,7 +314,7 @@ const PayoutPaymentTable = ({activeTab}) => {
   return (
     <AntTable
       data={activeTab === "payments" ? paymentData?.results || [] : payoutData || []}
-      columns={columns}
+      columns={activeTab === "payments" ? paymentColumns : payoutColumns}
       totalPages={Math.ceil(paymentData?.count / pageSize)}
       totalItems={paymentData?.count}
       pageSize={pageSize}
