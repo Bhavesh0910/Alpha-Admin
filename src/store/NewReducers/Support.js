@@ -118,7 +118,6 @@ const supportLists = createSlice({
 // Export the async thunk and any reducers if needed
 export default supportLists.reducer;
 
-
 export const statusUpdateReq = createAsyncThunk("support/updateStatus", async ({idToken, body, id, isPayoutUpdate, updatedStatus, dispatch}, {rejectWithValue}) => {
   try {
     const response = await statusUpdateApi(idToken, body, id, isPayoutUpdate, updatedStatus);
@@ -168,6 +167,7 @@ async function statusUpdateApi(idToken, body, id, isPayoutUpdate, updatedStatus)
     };
     let response;
 
+    console.log(" id : ", id);
     if (isPayoutUpdate) {
       response = await axios.post(`${baseUrl}v2/update-payout-status/`, {id, status: updatedStatus}, config);
     } else {

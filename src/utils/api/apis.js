@@ -45,8 +45,7 @@ const getUserDetailsReq = async (idToken) => {
   return output;
 };
 
-
-export const requestPasswordResetApi = async (idToken , email) => {
+export const requestPasswordResetApi = async (idToken, email) => {
   let config = {
     headers: {
       Authorization: `Bearer ${idToken}`,
@@ -54,7 +53,7 @@ export const requestPasswordResetApi = async (idToken , email) => {
   };
 
   const output = await axios
-    .post(`${baseUrl}password/reset-request/`, { email }, config)
+    .post(`${baseUrl}password/reset-request/`, {email}, config)
     .then((res) => res.data)
     .catch((error) => error.response.data);
 
@@ -1166,11 +1165,10 @@ export const getPerformanceChart = async (login_id, idToken) => {
   }
 };
 
-
 //advance
 
-export const getWithdrawalsStatus = async ( idToken ,  query) => {
-  console.log(query)
+export const getWithdrawalsStatus = async (idToken, query) => {
+  console.log(query);
   try {
     const response = await axios.get(`${baseUrl}payout/Withdrawals-Status/${query}`, {
       headers: {
@@ -2011,7 +2009,7 @@ const UserSearchReq = async (idToken, search) => {
         "Content-Type": "application/json",
       },
     };
-    const response = await axios.get(`${baseUrl}v2/users/list/?${search}`, config);
+    const response = await axios.get(`${baseUrl}v2/users/list/?search=${search}`, config);
     if (response.status === 201 || response.status === 200) {
       return response;
     } else {
@@ -2081,9 +2079,13 @@ const EligibleCertificateAccount = async (idToken, email) => {
 const CreateTradingAccountReq = async (idToken, data, platform) => {
   let config = {
     headers: {
-      Authorization: `Bearer ${idToken}`,
+      AUTHORIZATION: `${idToken}`,
     },
   };
+
+  config.headers[`x-api-key`] =
+    `ONRzS8gkWBRkr76XYyI6z1e6p6NX72x83KABC4dpx90sSxgzF9n3QqlQoBHGvGZKgu3a2hVPVtMeUYxlyILZMK5cZo2VspEKWORYvdN4fk1WVmtALKKlfwAFFXRpBFyIGQOcNHRtn0dsr6YJhhdNXrDh4Fk5dlt4Cns2CPl5e7QgByxNaSpfJE6vewJVsgmp6KMMWnnOqyMmBWw33NQyTbdP0gCwaLHPlspCEWJDokCUFSVf0IwG8hWJkulr5Al`;
+
   let endpoint;
   console.log(platform);
   if (platform === "MT5") {

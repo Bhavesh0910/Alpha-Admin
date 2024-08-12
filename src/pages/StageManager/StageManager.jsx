@@ -64,7 +64,6 @@ const StageManager = () => {
   }, [location.pathname]);
 
   async function fetchStageList(idToken, pageNo, pageSize, searchText, status, dates) {
-    // console.log("Fteching...");
     let query = "";
     let type;
     let url;
@@ -132,6 +131,7 @@ const StageManager = () => {
   };
 
   const openStatusUpdateModal = (key, updatedValue, record) => {
+    console.log(" Status : ",key, updatedValue, record);
     setuserToUpdate(record);
     setUpdatedStatus(updatedValue);
     setIsModalVisible(true);
@@ -168,6 +168,10 @@ const StageManager = () => {
     formData.append("status", updatedStatus);
     let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
     let isPayoutUpdate = location.pathname === "/support/payout";
+    console.log("id : ", userId);
+    console.log("updatedStatus : ", updatedStatus);
+    console.log("formData : ", formData);
+    console.log("isPayoutUpdate : ", isPayoutUpdate);
     dispatch(statusUpdateReq({idToken, body: formData, id: userId, isPayoutUpdate, updatedStatus, dispatch}));
     setIsModalVisible(false);
   };
@@ -419,37 +423,6 @@ const StageManager = () => {
               ) : (
                 <Button onClick={() => openEditModal(text, record)}>Add Comment</Button>
               ),
-          },
-          {
-            title: "Status",
-            dataIndex: "status",
-            key: "status",
-            render: (text, record, index) => (
-              <Dropdown
-                overlay={() => statusMenu(index)}
-                trigger={["click"]}
-              >
-                <Button
-                  icon={<DownOutlined />}
-                  className="status_button"
-                  style={{
-                    width: "120px",
-                    display: "flex",
-                    flexDirection: "row-reverse",
-                    justifyContent: "space-between",
-                    padding: "6px 10px",
-                  }}
-                >
-                  <p
-                    className={
-                      text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Flagged" ? "flagged" : text === "Rejected" ? "rejected" : text === "New" ? "new" : ""
-                    }
-                  >
-                    {text === "in_progress" ? "In Progress" : text === "Approved" ? "Approved" : text === "Flagged" ? "Flagged" : text === "Rejected" ? "Rejected" : text === "New" ? "New" : ""}
-                  </p>
-                </Button>
-              </Dropdown>
-            ),
           },
           {
             title: "Phase 1 ID",
@@ -885,9 +858,11 @@ const StageManager = () => {
             />
           </Form.Item>
         ) : (
-          <Form.Item label="Comment">
+          <Form.Item
+            label="Comment"
             value={editCommentToUpdate}
             onChange={(e) => setEditCommentToUpdate(e.target.value)}
+          >
             <Input.TextArea placeholder="Write your comment here.." />
           </Form.Item>
         )}

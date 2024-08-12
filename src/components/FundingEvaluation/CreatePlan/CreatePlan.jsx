@@ -7,6 +7,7 @@ import {returnMessages} from "../../../store/reducers/message";
 import {CircularProgress} from "@mui/material";
 import {Button, Input, Select, Spin} from "antd";
 import {fetchFundingDetails} from "../../../store/NewReducers/fundingSlice";
+import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 const {Option} = Select;
 
 const CreateTradingAccount = () => {
@@ -17,6 +18,10 @@ const CreateTradingAccount = () => {
 
   const {fundingData} = useSelector((state) => state.funding);
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    console.log("emailOpts : ", emailOpts);
+  }, [emailOpts]);
 
   // User search by email
   const fetch = async (value) => {
@@ -97,10 +102,10 @@ const CreateTradingAccount = () => {
         name: name,
         pwd: pwd,
         pwdInvestor: pwdInvestor,
-        raw_spread: raw_spread,
         reason: reason,
         status: status,
         user: user,
+        email: email,
       };
     }
     if (data?.platform === "C-Trader") {
@@ -131,7 +136,6 @@ const CreateTradingAccount = () => {
         reason: reason,
       };
     }
-    console.log(traderData, "kjbjdchbbhjdc");
     const response = await CreateTradingAccountReq(idToken, traderData, data?.platform);
     if (response?.status < 399) {
       dispatch(returnMessages("Created Account Successfully", 201));
@@ -154,6 +158,7 @@ const CreateTradingAccount = () => {
 
   return (
     <div className="create_plan_container">
+      {isSpinner && <LoaderOverlay />}
       <div className="create_plan_form">
         <div className="row1">
           <div className="form_input">
