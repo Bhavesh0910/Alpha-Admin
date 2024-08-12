@@ -78,6 +78,7 @@ const PaymentExportHistory = () => {
     <Card className="table-wrapper viewLogs_table payment_export">
       <div className="header_wrapper">
         <Breadcrumb
+          className="breadcrumbs"
           separator=">"
           items={[
             {

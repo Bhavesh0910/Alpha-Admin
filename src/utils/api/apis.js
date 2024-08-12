@@ -1062,7 +1062,7 @@ export const getTradingAccountOverview = async (login_id, platform, idToken) => 
   let platformName = platform === "trader-accounts" ? "mt5" : platform === "ctrader-accounts" ? "ctrader" : "dxtrade";
   console.log(platformName);
   try {
-    const response = await axios.get(`${baseUrl}trading-account/overview/${login_id}`, {
+    const response = await axios.get(`${baseUrl}v2/account-metrics/${login_id}/?platform=${platformName}`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
@@ -1162,6 +1162,66 @@ export const getPerformanceChart = async (login_id, idToken) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching performance chart:", error);
+    throw error;
+  }
+};
+
+
+//advance
+
+export const getWithdrawalsStatus = async ( idToken ,  query) => {
+  console.log(query)
+  try {
+    const response = await axios.get(`${baseUrl}payout/Withdrawals-Status/${query}`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching withdrawals status:", error);
+    throw error;
+  }
+};
+
+export const getWithdrawalsDetails = async (login_id, idToken) => {
+  try {
+    const response = await axios.get(`${baseUrl}payout/Withdrawals-Details/`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching withdrawals details:", error);
+    throw error;
+  }
+};
+
+export const getPassRate = async (login_id, idToken) => {
+  try {
+    const response = await axios.get(`${baseUrl}advance-stats/PassRate/`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching pass rate:", error);
+    throw error;
+  }
+};
+
+export const getDailyStats = async (login_id, idToken) => {
+  try {
+    const response = await axios.get(`${baseUrl}advance-stats/DailyStats/`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching daily stats:", error);
     throw error;
   }
 };

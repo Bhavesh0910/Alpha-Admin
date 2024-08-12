@@ -23,11 +23,11 @@ function TradeDayAnalysis({ data }) {
     console.log(data)
 
     const dataBoxes = [
-        { title: 'Number of Trades', value: data?.number_of_trade || 'N/A' },
-        { title: 'Positive Days', value: data?.positive_days ? data.positive_days.toFixed(2) : 'N/A' },
-        { title: 'Average Positive Day', value: data?.avg_positive_days ? data.avg_positive_days.toFixed(2) : 'N/A' },
-        { title: 'Negative Days', value: data?.negative_days ? data.negative_days.toFixed(2) : 'N/A' },
-        { title: 'Average Negative Days', value: data?.avg_negative_days ? data.avg_negative_days.toFixed(2) : 'N/A' },
+        { title: 'Number of Trades', value: data?.number_of_trade || '-' },
+        { title: 'Positive Days', value: data?.positive_days ? data.positive_days.toFixed(2) : '-' },
+        { title: 'Average Positive Day', value: data?.avg_positive_days ? data.avg_positive_days.toFixed(2) : '-' },
+        { title: 'Negative Days', value: data?.negative_days ? data.negative_days.toFixed(2) : '-' },
+        { title: 'Average Negative Days', value: data?.avg_negative_days ? data.avg_negative_days.toFixed(2) : '-' },
     ];
 
     return (

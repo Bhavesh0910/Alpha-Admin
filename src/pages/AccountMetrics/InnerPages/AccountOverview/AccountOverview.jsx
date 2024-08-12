@@ -8,6 +8,8 @@ import ProfitChart from "../../Charts/ProfitChart";
 import {dollarUS, formatDate, FormatUSD} from "../../../../utils/helpers/string";
 
 const AccountOverview = ({overview, accountDetails, objectives , performanceChart}) => {
+
+  console.log(overview)
   const [charts, setCharts] = useState("BalanceChart");
   const [pageNos, setPageNos] = useState(1);
   const onChangeActive = (e) => {
@@ -75,7 +77,7 @@ const AccountOverview = ({overview, accountDetails, objectives , performanceChar
             </div>
             <div>
               <p>Daily</p>
-              <h3>$00</h3>
+              <h3>${overview?.calculated_data?.daily_gain}</h3>
             </div>
             <div>
               <p>Leverage</p>
@@ -87,11 +89,11 @@ const AccountOverview = ({overview, accountDetails, objectives , performanceChar
             </div>
             <div>
               <p>Monthly</p>
-              <h3>$00</h3>
+              <h3>${overview?.calculated_data?.monthly_gain}</h3>
             </div>
             <div>
               <p>Drawdown</p>
-              <h3>$00</h3>
+              <h3>{overview?.calculated_data}</h3>
             </div>
           </div>
         </div>
