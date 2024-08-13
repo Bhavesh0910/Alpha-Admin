@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Button } from "antd";
 import "./TraderJournal.scss";
 import AntTable from "../../../../ReusableComponents/AntTable/AntTable";
@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTradeJournal } from "../../../../store/NewReducers/amSlice";
 
 const TraderJournal = ({ login_id, platform }) => {
+  const [pageSize, setPageSize] = useState(20);
+  const [pageNo, setPageNo] = useState(1);
   const idToken = useSelector((state) => state.auth.idToken);
   const dispatch = useDispatch();
   const { tradeJournal, isLoading, error } = useSelector(
@@ -129,9 +131,21 @@ const TraderJournal = ({ login_id, platform }) => {
     );
   }
 
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
+
   return (
     <div className="trader_journal_main">
-      <AntTable columns={columns} data={data} pagination={{ pageSize: 10 }} />
+      <AntTable columns={columns} data={data}
+         totalPages={Math.ceil(data?.no_of_trades / pageSize)}
+         totalItems={data?.no_of_trades}
+         pageSize={pageSize}
+         CurrentPageNo={pageNo}
+         setPageSize={setPageSize}
+         triggerChange={triggerChange}
+      />
     </div>
   );
 };

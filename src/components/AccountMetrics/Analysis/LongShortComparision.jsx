@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import "./LongShortComparision.scss";
 import BarChart from "./Charts/BarChart";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 
 function LongShortComparision({ data }) {
+  const [pageSize, setPageSize] = useState(20);
+  const [pageNo, setPageNo] = useState(1);
+
   const categories = data.map((item) => item[0]); 
   const seriesData1 = [
     {
@@ -74,6 +77,13 @@ function LongShortComparision({ data }) {
     short_result: item[1].short_result,
   }));
 
+
+  
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
+
   return (
     <div className="long_short_comparision">
       <div className="analysis_box">
@@ -95,12 +105,12 @@ function LongShortComparision({ data }) {
           <AntTable
             columns={columns}
             data={tableData}
-            pagination={{
-              defaultPageSize: 10,
-              total: tableData.length,
-              showSizeChanger: true,
-              pageSizeOptions: ["10", "20", "30", "40"],
-            }}
+            totalPages={Math.ceil(data?.length / pageSize)}
+            totalItems={data?.length}
+            pageSize={pageSize}
+            CurrentPageNo={pageNo}
+            setPageSize={setPageSize}
+            triggerChange={triggerChange}
           />
         </div>
       </div>

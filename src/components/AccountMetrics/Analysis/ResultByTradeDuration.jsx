@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './ResultByTradeDuration.scss';
 import BarChart from './Charts/BarChart';
 import AntTable from '../../../ReusableComponents/AntTable/AntTable';
 
 function ResultByTradeDuration({ data }) {
+
+  const [pageSize, setPageSize] = useState(20);
+  const [pageNo, setPageNo] = useState(1);
+
   const chartData = {
     series: [
       {
@@ -42,6 +46,14 @@ function ResultByTradeDuration({ data }) {
     },
   ];
 
+
+    
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
+
+
   return (
     <div className='result_by_trade_duration'>
       <div className='analysis_box'>
@@ -57,7 +69,14 @@ function ResultByTradeDuration({ data }) {
           Results by Trade Duration
         </h2>
         <div className='table_wrapper'>
-          <AntTable columns={columns} data={tableData} />
+          <AntTable columns={columns} data={tableData} 
+            totalPages={Math.ceil(tableData?.length / pageSize)}
+            totalItems={tableData?.length}
+            pageSize={pageSize}
+            CurrentPageNo={pageNo}
+            setPageSize={setPageSize}
+            triggerChange={triggerChange}
+          />
         </div>
       </div>
     </div>
