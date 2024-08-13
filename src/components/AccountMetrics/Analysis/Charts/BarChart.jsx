@@ -61,7 +61,7 @@ const BarChart = ({ seriesData, categories, title }) => {
         stops: [0, 100],
       },
     },
-    colors: ['#00BFFF', '#FF6347'],
+    colors: ['#00BFFF'],
     legend: {
       position: 'top',
       horizontalAlign: 'left',

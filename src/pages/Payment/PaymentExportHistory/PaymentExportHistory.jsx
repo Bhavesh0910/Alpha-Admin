@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import {Link} from "react-router-dom";
 import exportIcon from "../../../assets/icons/export_now_icon_white.svg";
-import {paymentExportsReq} from "../../../store/NewReducers/payment"; // Adjust import path as necessary
+import {paymentExportsReq, paymentHistoryReq} from "../../../store/NewReducers/payment"; // Adjust import path as necessary
 import {useDispatch, useSelector} from "react-redux";
 import "./PaymentExportHistory.scss";
 
@@ -22,7 +22,7 @@ const PaymentExportHistory = () => {
 
     if (startDate && endDate) {
       const query = `?start_date=${startDate}&end_date=${endDate}`;
-      dispatch(paymentExportsReq({idToken, query}));
+      dispatch(paymentHistoryReq({idToken, query}));
     }
   }, [dates, dispatch, idToken]);
 

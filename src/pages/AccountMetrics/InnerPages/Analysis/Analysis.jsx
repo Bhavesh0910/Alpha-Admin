@@ -22,10 +22,6 @@ const Analysis = ({login_id , platform}) => {
   const dispatch = useDispatch();
   const { accountInsights, accountAnalysis , isLoading, error } = useSelector((state) => state.accountMetrics);
 
-  useEffect(() => {
-    dispatch(fetchAccountAnalysis({ login_id, platform, idToken }));
-  }, [dispatch, login_id, platform, idToken]);
-
 
   console.log(accountAnalysis)
   return (
@@ -43,7 +39,7 @@ const Analysis = ({login_id , platform}) => {
        {selectedView === "longShortBalance" && <LongShortBalance data={accountAnalysis?.long_short_comp} />}
       {selectedView === "resultByDays" && <ResultByDays data={accountAnalysis?.day_wise_data} />}
        {selectedView === "longShortComparison" && <LongShortComparision data={accountAnalysis?.result_by_instruments} />}
-       {selectedView === "resultByPositionSize" && <ResultByPositionSize />}
+       {selectedView === "resultByPositionSize" && <ResultByPositionSize data={accountAnalysis.results_by_lots} />}
       {selectedView === "tradingDaysAnalysis" && <TradeDayAnalysis data={accountAnalysis?.trading_days_analysis}/>}
       {selectedView === "resultByTradeDuration" && <ResultByTradeDuration data={accountAnalysis?.result_by_trade_duration} />}
       {selectedView === "resultByOpenHour" && <ResultByOpenHour data={accountAnalysis?.result_by_open_hour} />}  

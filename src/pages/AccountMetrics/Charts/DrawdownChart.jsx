@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import { dollarUS } from "../../../utils/helpers/string";
 
-const ProfitChart = ({ ProfitData }) => {
+const DrawdownChart = ({ drawdownData }) => {
   const [series, setSeries] = useState([]);
   const [options, setOptions] = useState({
     plotOptions: {
@@ -22,18 +22,7 @@ const ProfitChart = ({ ProfitData }) => {
         stops: [0, 90, 100],
       },
     },
-    legend: {
-      fontSize: "14px",
-      fontWeight: 700,
-      labels: {
-        colors: "white",
-      },
-      markers: {
-        width: 15,
-        height: 15,
-      },
-    },
-    colors: ["#FD504F"],
+    colors: ["#FF5733"], // Set color for the drawdown chart
     chart: {
       fontFamily: "Outfit, sans-serif",
       toolbar: {
@@ -56,13 +45,8 @@ const ProfitChart = ({ ProfitData }) => {
       borderColor: "#415672",
       strokeDashArray: 8,
     },
-    labels: (ProfitData &&
-      ProfitData.date &&
-      ProfitData.date.map(date_str => date_str.split('T')[0])) || [], // Format dates as YYYY-MM-DD
     xaxis: {
-      categories: (ProfitData &&
-        ProfitData.date &&
-        ProfitData.date.map(date_str => date_str.split('T')[0])) || [], // Format dates as YYYY-MM-DD
+      categories: (drawdownData && drawdownData.date && drawdownData.date.map(date_str => date_str.split('T')[0])) || [], // Format dates as YYYY-MM-DD
       tickAmount: 15, // Limit number of ticks to 15
       tooltip: {
         enabled: false,
@@ -101,26 +85,25 @@ const ProfitChart = ({ ProfitData }) => {
         fontSize: "14px",
         fontWeight: "700",
       },
-
+ 
     },
   });
 
   useEffect(() => {
-    if (ProfitData) {
-      const profit = ProfitData.profit || [];
-      const dates = (ProfitData.date || []).map(date_str => date_str.split('T')[0]); // Extract YYYY-MM-DD
+    if (drawdownData) {
+      const drawdowns = drawdownData.draw_down || [];
+      const dates = (drawdownData.date || []).map(date_str => date_str.split('T')[0]); // Extract YYYY-MM-DD
 
       setSeries([
         {
-          name: "Profit",
+          name: "Drawdown",
           type: "line",
-          data: profit,
+          data: drawdowns,
         },
       ]);
 
       setOptions(prevOptions => ({
         ...prevOptions,
-        labels: dates,
         xaxis: {
           ...prevOptions.xaxis,
           categories: dates,
@@ -128,7 +111,7 @@ const ProfitChart = ({ ProfitData }) => {
         }
       }));
     }
-  }, [ProfitData]);
+  }, [drawdownData]);
 
   return (
     <div id="chart">
@@ -141,4 +124,4 @@ const ProfitChart = ({ ProfitData }) => {
   );
 };
 
-export default ProfitChart;
+export default DrawdownChart;

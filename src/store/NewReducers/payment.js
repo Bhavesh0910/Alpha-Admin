@@ -39,7 +39,7 @@ async function paymentHistoryApi(idToken, pageSize, pageNo, paymentEmail) {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const res = axios.get(`${baseUrl}payment/admin/payment-history/?email=${paymentEmail}&page_size=${pageSize}&page_no=${pageNo}`, config);
+    const res = axios.get(`${baseUrl}v3/admin/export-history`, config);
     return res;
   } catch (error) {
     throw error;
