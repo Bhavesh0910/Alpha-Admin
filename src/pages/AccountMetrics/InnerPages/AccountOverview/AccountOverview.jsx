@@ -93,7 +93,7 @@ const AccountOverview = ({overview, accountDetails, objectives , performanceChar
             </div>
             <div>
               <p>Drawdown</p>
-              <h3>{overview?.calculated_data}</h3>
+              <h3>{overview?.calculated_data.drawdown}</h3>
             </div>
           </div>
         </div>
