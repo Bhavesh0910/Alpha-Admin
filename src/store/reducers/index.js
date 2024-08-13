@@ -18,6 +18,7 @@ import listReducer from "../NewReducers/listSlice";
 import riskReducer from "../NewReducers/riskSlice";
 import generalReducer from "../NewReducers/generalSlice";
 import usReducer from "../NewReducers/usSlice";
+import advanceStatisticsReducer from "../NewReducers/advanceStatistics";
 import amReducer from "../NewReducers/amSlice";
 import accountList from "../NewReducers/accountList";
 import payoutSlice from "../NewReducers/payout";
@@ -30,6 +31,7 @@ import countryWiseSlice from "../NewReducers/countryWise";
 import getUserProfileData from "../NewReducers/userProfileSlice";
 import logsReducer from "../NewReducers/logsSlice";
 import revenueMangement from "../NewReducers/revenueMangement";
+import advanceStatistics from "../NewReducers/advanceStatistics";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -51,6 +53,7 @@ const rootReducer = combineReducers({
   general: generalReducer,
   usSlice: usReducer,
   accountList: accountList,
+  advanceStatistics: advanceStatisticsReducer,
   accountMetrics: amReducer,
   payoutList: payoutSlice,
   payment: paymentSlice,

@@ -172,6 +172,24 @@ const items = [
     link: "/competitions/",
   },
   {
+    key: "18",
+    icon: <ComplianceIcon />,
+    label: "Advance Statistics",
+    link: "/advance-statistics/withdrawal-status",
+    children: [
+      {
+        key: "18-1",
+        label: "Withdrawal Status",
+        link: "/advance-statistics/withdrawal-status",
+      },
+      {
+        key: "18-2",
+        label: "Approved Withdrawal Details",
+        link: "/advance-statistics/withdrawal-details",
+      },
+    ],
+  },
+  {
     key: "12",
     icon: <Logout />,
     label: "Logout",

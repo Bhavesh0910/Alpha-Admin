@@ -46,6 +46,8 @@ import StageManager2 from "../pages/StageManager2/StageManager2";
 import Stage1Logs from "../pages/StageManager/Stage1Logs";
 import Stage2Logs from "../pages/StageManager2/Stage2Logs";
 import AffiliateLogs from "../pages/AffiliateMarketing/Logs/AffiliateLogs";
+import WithdrawalStatus from "../pages/AdvanceStatistics/WithdrawalStatus/WithdrawalStatus";
+import WithdrawalStatusExportHistory from "../pages/AdvanceStatistics/WithdrawalStatus/WithdrawalStatusExport";
 
 function Router() {
   return (
@@ -166,7 +168,7 @@ function Router() {
               </PageLayout>
             }
           />
-              <Route
+          <Route
             exact={true}
             path="/support/stage-2"
             element={
@@ -213,6 +215,24 @@ function Router() {
             }
           />
 
+          <Route
+            exact={true}
+            path="/advance-statistics/withdrawal-status"
+            element={
+              <PageLayout headerName="Withdrawal Status">
+                <WithdrawalStatus />
+              </PageLayout>
+            }
+          />
+                 <Route
+            exact={true}
+            path="/advance-statistics/withdrawal-status/export-history"
+            element={
+              <PageLayout headerName="Withdrawal Status">
+                <WithdrawalStatusExportHistory />
+              </PageLayout>
+            }
+          />
           <Route
             exact={true}
             path="/revenue-management"
@@ -302,7 +322,7 @@ function Router() {
               </PageLayout>
             }
           />
-          
+
           <Route
             exact={true}
             path="/affiliate-marketing/logs"
