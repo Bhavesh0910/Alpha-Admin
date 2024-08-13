@@ -76,6 +76,7 @@ const supportLists = createSlice({
     count: 1,
     stageStatusOptions: [],
     nestedTableData: null,
+    refetch: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -106,12 +107,55 @@ const supportLists = createSlice({
       .addCase(nestedTableDataReq.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
+      })
+      .addCase(statusUpdateReq.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(statusUpdateReq.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.refetch = !state.refetch;
+      })
+      .addCase(statusUpdateReq.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(editCommentReq.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(editCommentReq.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.refetch = !state.refetch;
+      })
+      .addCase(editCommentReq.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(updateContactReq.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(updateContactReq.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.refetch = !state.refetch;
+      })
+      .addCase(updateContactReq.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(createAccountReq.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(createAccountReq.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.refetch = !state.refetch;
+      })
+      .addCase(createAccountReq.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
       });
-    //   .addCase(PURGE, (state) => {
-    //     state.isLoading= false;
-    //     state.isError= false;
-    //     state.payoutData= [];
-    // });
   },
 });
 
