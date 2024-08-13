@@ -19,6 +19,7 @@ function RiskManagement() {
   const dispatch = useDispatch();
   const {accountOverviewData, isLoadingFundingdata, isLoadingStage1, isLoadingStats, error} = useSelector((state) => state.risk);
   const idToken = useSelector((state) => state.auth.idToken);
+  const [defaultDates, setDefaultDates] = useState([dayjs(), dayjs().subtract(1, "month")]);
 
   // console.log(stage1ChartData, stage2ChartData , fundingChartData)
   const onRangeChange = (dates) => {
@@ -59,6 +60,7 @@ function RiskManagement() {
           Admin Overview
         </Title>
         <RangePicker
+          defaultValue={defaultDates}
           presets={rangePresets}
           onChange={onRangeChange}
         />

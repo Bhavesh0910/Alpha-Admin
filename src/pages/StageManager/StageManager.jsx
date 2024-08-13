@@ -168,10 +168,10 @@ const StageManager = () => {
     formData.append("status", updatedStatus);
     let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
     let isPayoutUpdate = location.pathname === "/support/payout";
-    console.log("id : ", userId);
-    console.log("updatedStatus : ", updatedStatus);
-    console.log("formData : ", formData);
-    console.log("isPayoutUpdate : ", isPayoutUpdate);
+    // console.log("id : ", userId);
+    // console.log("updatedStatus : ", updatedStatus);
+    // console.log("formData : ", formData);
+    // console.log("isPayoutUpdate : ", isPayoutUpdate);
     dispatch(statusUpdateReq({idToken, body: formData, id: userId, isPayoutUpdate, updatedStatus, dispatch}));
     setIsModalVisible(false);
   };
@@ -850,7 +850,10 @@ const StageManager = () => {
         onOk={modalAction === "Update Status" ? handleUpdateStatus : modalAction === "Edit" ? handleEditComment : modalAction === "Create Account" ? handleCreateAccount : handleContract}
       >
         {modalAction === "Edit" ? (
-          <Form.Item label="Edit Comment">
+          <Form.Item
+            className="lableWhite"
+            label="Edit Comment"
+          >
             <Input.TextArea
               value={editCommentToUpdate}
               onChange={(e) => setEditCommentToUpdate(e.target.value)}
@@ -859,6 +862,7 @@ const StageManager = () => {
           </Form.Item>
         ) : (
           <Form.Item
+            className="lableWhite"
             label="Comment"
             value={editCommentToUpdate}
             onChange={(e) => setEditCommentToUpdate(e.target.value)}

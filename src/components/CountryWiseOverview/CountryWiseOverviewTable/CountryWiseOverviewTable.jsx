@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import "./CountryWiseOverviewTable.scss";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import dayjs from "dayjs";
-import {Button, DatePicker} from "antd";
+import {Button, DatePicker, Select} from "antd";
 import AccountRangeSlider from "./AccountRangeSlider/AccountRangeSlider";
 import rangeIcon from "../../../assets/icons/range_icon_gray.svg";
 import {useDispatch, useSelector} from "react-redux";
@@ -16,7 +16,7 @@ const CountryWiseOverviewTable = () => {
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [accRange, setAccRange] = useState(null);
-
+  const [countries, setCountries] = useState(listData);
   useEffect(() => {
     // let query = `?page=${pageNo}&page_size=${pageSize}`;
     let query = "";
@@ -70,6 +70,11 @@ const CountryWiseOverviewTable = () => {
     }
   };
 
+  useEffect(() => {
+    const data = listData.map((item) => item.country);
+    setCountries(data);
+  }, [listData]);
+
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
     setPageSize(updatedPageSize);
@@ -87,10 +92,35 @@ const CountryWiseOverviewTable = () => {
   const handleRangeBtn = (e) => {
     setIsRangeOpen(!isRangeOpen);
   };
+  const [filteredCountries, setFilteredCountries] = useState([]);
+
+  useEffect(() => {
+    const data = listData.map((item) => ({
+      label: item.country ? item.country : "Unknown Country",
+      value: item.country ? item.country : "unknown",
+    }));
+    setCountries(data);
+    setFilteredCountries(data);
+  }, [listData]);
+
+  const handleSearchInput = (value) => {
+    const filteredData = countries.filter((item) =>
+      item.label.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredCountries(filteredData);
+  };
+
+
 
   return (
     <div className="countryWiseOverviewTable_wrapper">
       <div className="header_wrapper">
+      {/* <Select
+      mode="multiple"
+      placeholder="Please select countries"
+      onSearch={handleSearchInput}
+      options={filteredCountries}
+    /> */}
         <div className="rangeBtn_wrapper">
           <Button
             className="accnt_range_btn"
