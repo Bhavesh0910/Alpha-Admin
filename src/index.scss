@@ -337,7 +337,7 @@ input:-webkit-autofill:active {
     width: 100%;
   }
   .ant-select {
-    max-width: 170px;
+    max-width: fit-content;
     .ant-select-selector {
       color: var(--Paragraph-text-colour, #a6a6a6) !important;
       font-family: var(--primary-font-family) !important;

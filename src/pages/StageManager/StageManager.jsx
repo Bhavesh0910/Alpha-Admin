@@ -131,7 +131,7 @@ const StageManager = () => {
   };
 
   const openStatusUpdateModal = (key, updatedValue, record) => {
-    console.log(" Status : ",key, updatedValue, record);
+    console.log(" Status : ", key, updatedValue, record);
     setuserToUpdate(record);
     setUpdatedStatus(updatedValue);
     setIsModalVisible(true);
