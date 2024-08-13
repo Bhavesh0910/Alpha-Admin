@@ -20,8 +20,7 @@ const AccountMetrics = () => {
     setPageNo(1);
     setStatus(e.target.value);
   };
-  const {  platform } = useParams();
-  const login_id = 1684608
+  const { login_id ,  platform } = useParams();
 
   console.log(login_id , platform) 
   const idToken = useSelector((state) => state.auth.idToken);
