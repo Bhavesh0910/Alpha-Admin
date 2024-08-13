@@ -14,7 +14,7 @@ const PayoutViewLogTable = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const baseurl = "v3/payout-log/list/";
+    const baseurl = "v3/payout-request-log/list/";
     const query = `?page=${pageNo}&page_size=${pageSize}`;
     const url = baseurl + query;
     dispatch(logsListReq({ idToken, url, key: "payoutLogData", dispatch }));
