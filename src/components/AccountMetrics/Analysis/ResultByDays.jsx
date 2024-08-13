@@ -9,11 +9,11 @@ const ResultByDays = ({ data }) => {
   const seriesData = [
     {
       name: 'Open',
-      data: categories.map(day => data[day].open), // [ -2074.12, 49, 328.45, 494.83 ]
+      data: categories?.map(day => data[day]?.open), // [ -2074.12, 49, 328.45, 494.83 ]
     },
     {
       name: 'Close',
-      data: categories.map(day => data[day].close), // [ 371.93, 1683.34, 17.4, 3005.19 ]
+      data: categories?.map(day => data[day]?.close), // [ 371.93, 1683.34, 17.4, 3005.19 ]
     },
   ];
 

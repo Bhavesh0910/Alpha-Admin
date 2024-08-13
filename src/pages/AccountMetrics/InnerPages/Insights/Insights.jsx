@@ -88,11 +88,11 @@ const Insights = ({ login_id, platform }) => {
             </div>
             <div>
               <p>Best Trade Pip</p>
-              <p>{Number(accountInsights?.best_trade_pip).toFixed(2)}</p>
+              <p>{Number(accountInsights?.best_trade_pip)?.toFixed(2)}</p>
             </div>
             <div>
               <p>Worst Trade Pip</p>
-              <p>{accountInsights?.worst_trade_pip.toFixed(2)}</p>
+              <p>{accountInsights?.worst_trade_pip?.toFixed(2)}</p>
             </div>
             <div>
               <p>Average Win</p>
@@ -104,7 +104,7 @@ const Insights = ({ login_id, platform }) => {
             </div>
             <div>
               <p>Loss Ratio</p>
-              <p>{Number(accountInsights?.loss_ratio).toFixed(2)}</p>
+              <p>{Number(accountInsights?.loss_ratio)?.toFixed(2)}</p>
             </div>
             <div>
               <p>Profit</p>

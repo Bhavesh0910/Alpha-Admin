@@ -287,9 +287,9 @@ const PageLayout = ({ headerName, children }) => {
         return "4";
       case "/stage-manager":
         return "5";
-      case "/stage-manager/stage-1":
+      case "/support/stage-1":
         return "6-1";
-      case "/stage-manager/stage-2":
+      case "/support/stage-2":
         return "6-2";
       case "/support/funded":
         return "6-3";

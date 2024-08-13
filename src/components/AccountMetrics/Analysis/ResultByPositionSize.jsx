@@ -4,22 +4,22 @@ import BarChart from './Charts/BarChart';
 function ResultByPositionSize({ data }) {
 
   console.log(data)
-  if (!data || Object.keys(data).length === 0) {
+  if (!data || Object.keys(data)?.length === 0) {
     return 
   }
 
   const categories = Object.keys(data);
-  const numberOfTrades = Object.values(data).map(item => item.number_of_trade);
-  const results = Object.values(data).map(item => item.results);
+  const numberOfTrades = Object.values(data).map(item => item?.number_of_trade);
+  const results = Object.values(data).map(item => item?.results);
 
   const seriesData = [
     {
       name: 'Number of Trades',
-      data: numberOfTrades,
+      data: numberOfTrades || [],
     },
     {
       name: 'Results',
-      data: results,
+      data: results || [],
     },
   ];
 
