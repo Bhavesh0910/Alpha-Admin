@@ -7,7 +7,7 @@ function LongShortComparision({data}) {
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
 
-  const categories = data.map((item) => item[0]);
+  const categories = data?.map((item) => item[0]);
   const seriesData1 = [
     {
       name: "Result",
