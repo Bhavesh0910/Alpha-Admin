@@ -78,7 +78,7 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
             </div>
             <div>
               <p>Daily</p>
-              <h3>${overview?.calculated_data?.daily_gain.toFixed(2)}</h3>
+              <h3>${overview?.calculated_data?.daily_gain?.toFixed(2)}</h3>
             </div>
             <div>
               <p>Leverage</p>
@@ -90,11 +90,11 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
             </div>
             <div>
               <p>Monthly</p>
-              <h3>${overview?.calculated_data?.monthly_gain.toFixed(2)}</h3>
+              <h3>${overview?.calculated_data?.monthly_gain?.toFixed(2)}</h3>
             </div>
             <div>
               <p>Drawdown</p>
-              <h3>{overview?.calculated_data.draw_down}</h3>
+              <h3>{overview?.calculated_data?.draw_down}</h3>
             </div>
           </div>
         </div>
@@ -147,7 +147,7 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
                 </div>
                 <div>
                   <p>Win rate</p>
-                  <h3>{statistics?.win_rate.toFixed(2)}</h3>
+                  <h3>{statistics?.win_rate?.toFixed(2)}</h3>
                 </div>
                 <div>
                   <p>Highest</p>
@@ -157,15 +157,15 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
               <div className="bottom_main_left_satistic_inner_two">
                 <div>
                   <p>Average profit</p>
-                  <h3>${statistics?.Average_profit.toFixed(2)}</h3>
+                  <h3>${statistics?.Average_profit?.toFixed(2)}</h3>
                 </div>
                 <div>
                   <p>Average loss</p>
-                  <h3>${statistics?.Average_loss.toFixed(2)}</h3>
+                  <h3>${statistics?.Average_loss?.toFixed(2)}</h3>
                 </div>
                 <div>
                   <p>Average RRR</p>
-                  <h3>{statistics?.RRR.toFixed(2)}</h3>
+                  <h3>{statistics?.RRR?.toFixed(2)}</h3>
                 </div>
                 {/* <div>
                   <p>Martingale Status</p>

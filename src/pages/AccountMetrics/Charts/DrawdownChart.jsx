@@ -46,7 +46,7 @@ const DrawdownChart = ({ drawdownData }) => {
       strokeDashArray: 8,
     },
     xaxis: {
-      categories: (drawdownData && drawdownData?.date && drawdownData?.date.map(date_str => date_str.split('T')[0])) || [], // Format dates as YYYY-MM-DD
+      categories: (drawdownData && drawdownData?.date && drawdownData?.date?.map(date_str => date_str.split('T')[0])) || [], // Format dates as YYYY-MM-DD
       tickAmount: 15, // Limit number of ticks to 15
       tooltip: {
         enabled: false,
@@ -92,7 +92,7 @@ const DrawdownChart = ({ drawdownData }) => {
   useEffect(() => {
     if (drawdownData) {
       const drawdowns = drawdownData?.draw_down || [];
-      const dates = (drawdownData?.date || []).map(date_str => date_str.split('T')[0]); // Extract YYYY-MM-DD
+      const dates = (drawdownData?.date || []).map(date_str => date_str?.split('T')[0]); // Extract YYYY-MM-DD
 
       setSeries([
         {
