@@ -44,12 +44,24 @@ export const getOrdinalSuffix = (rank) => {
 
 // USD Formatter
 
-export function formatCurrency(amount) {
-  return amount?.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
+
+export const formatCurrency = (value) => {
+  if (value === undefined || value === null) {
+      return "$0.00";
+  }
+  
+  const numberValue = parseFloat(value);
+  
+  const formatted = numberValue.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
   });
-}
+  
+  return formatted.replace('$-', '-$');
+};
+
 
 export const FormatUSD = (data) => {
   return Number(data)?.toLocaleString("en-US", {

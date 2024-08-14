@@ -1182,9 +1182,9 @@ export const getWithdrawalsStatus = async (idToken, query) => {
   }
 };
 
-export const getWithdrawalsDetails = async (login_id, idToken) => {
+export const getWithdrawalsDetails = async ( idToken , query) => {
   try {
-    const response = await axios.get(`${baseUrl}payout/Withdrawals-Details/`, {
+    const response = await axios.get(`${baseUrl}payout/Withdrawals-Details/${query}`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },

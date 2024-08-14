@@ -21,9 +21,9 @@ export const fetchWithdrawalsStatus = createAsyncThunk(
 // Thunk for fetching withdrawals details with pagination
 export const fetchWithdrawalsDetails = createAsyncThunk(
   'advanceStats/fetchWithdrawalsDetails',
-  async ({ login_id, idToken, pageNo, pageSize }, { dispatch, rejectWithValue }) => {
+  async ({ idToken , query }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await getWithdrawalsDetails(login_id, idToken, pageNo, pageSize);
+      const response = await getWithdrawalsDetails(idToken , query);
       return response;
     } catch (error) {
       const msg = error.response?.data?.detail || 'Error fetching withdrawals details';
@@ -94,7 +94,7 @@ const advanceStatisticsSlice = createSlice({
       })
       .addCase(fetchWithdrawalsDetails.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.withdrawalsDetails = action.payload;
+        state.withdrawalsDetails = action.payload.data;
       })
       .addCase(fetchWithdrawalsDetails.rejected, (state, action) => {
         state.isLoading = false;

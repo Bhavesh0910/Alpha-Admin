@@ -6,17 +6,16 @@ import exportBtnIcon from "../../../assets/icons/export_btn_icon.svg";
 import { ReactComponent as CopyButton } from "../../../assets/icons/copyButtonGray.svg";
 import dayjs from "dayjs";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import { CloseOutlined, DownOutlined } from "@ant-design/icons";
+import { DownOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
-import "./WithdrawalStatus.scss";
-import { fetchWithdrawalsStatus } from "../../../store/NewReducers/advanceStatistics";
+import "./WithdrawalDetails.scss";
+import { fetchWithdrawalsDetails, fetchWithdrawalsStatus } from "../../../store/NewReducers/advanceStatistics";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import { exportDataReq } from "../../../store/NewReducers/exportSlice";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-const WithdrawalStatus = () => {
+const WithdrawalDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
@@ -37,7 +36,7 @@ const WithdrawalStatus = () => {
 
 
 
-  const { withdrawalsStatus, isLoading } = useSelector((state) => state.advanceStatistics);
+  const { withdrawalsDetails, isLoading } = useSelector((state) => state.advanceStatistics);
   const {idToken} = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -47,9 +46,10 @@ const WithdrawalStatus = () => {
       query = query + `&search=${searchText}`;
     }
  
-    dispatch(fetchWithdrawalsStatus({idToken, query}));
+    dispatch(fetchWithdrawalsDetails({idToken, query}));
     console.log(query)
   }, [dispatch, idToken, pageNo, pageSize , searchText]);
+
 
 
   const columns = [
@@ -57,103 +57,99 @@ const WithdrawalStatus = () => {
       title: 'Login ID',
       dataIndex: 'login_id',
       key: 'login_id',
+      width: 120,
     },
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: text => text || '-'
+      width: 150,
+      render: (text) => text || '-', // Handle null or undefined values
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+      width: 200,
     },
     {
       title: 'Plan',
       dataIndex: 'plan',
       key: 'plan',
-      render: text => text !== null && text !== undefined ? `$${text.toFixed(2)}` : '-'
+      width: 150,
+      render: (text) => `$${text.toFixed(2)}`, // Format as currency
     },
     {
-      title: 'MT4 Amount',
-      dataIndex: 'mt4_amount',
-      key: 'mt4_amount',
-      render: text => text !== null && text !== undefined ? `$${text.toFixed(2)}` : '-'
+      title: 'Starting Balance',
+      dataIndex: 'starting_balance',
+      key: 'starting_balance',
+      width: 150,
+      render: (text) => `$${text.toFixed(2)}`, // Format as currency
     },
     {
-      title: 'Client Amount',
-      dataIndex: 'client_amount',
-      key: 'client_amount',
-      render: text => text !== null && text !== undefined ? `$${text.toFixed(2)}` : '-'
+      title: 'Current Balance',
+      dataIndex: 'current_balance',
+      key: 'current_balance',
+      width: 150,
+      render: (text) => `$${text.toFixed(2)}`, // Format as currency
+    },
+    {
+      title: 'Current Equity',
+      dataIndex: 'current_equity',
+      key: 'current_equity',
+      width: 150,
+      render: (text) => `$${text.toFixed(2)}`, // Format as currency
     },
     {
       title: 'Profit Share',
       dataIndex: 'profit_share',
       key: 'profit_share',
-      render: text => text !== null && text !== undefined ? `${text}%` : '-'
+      width: 120,
+      render: (text) => `${text}%`, // Format as percentage
     },
     {
-      title: 'Payable Amount',
-      dataIndex: 'payable_amount',
-      key: 'payable_amount',
-      render: text => text !== null && text !== undefined ? `$${text.toFixed(2)}` : '-'
+      title: 'Profit',
+      dataIndex: 'profit',
+      key: 'profit',
+      width: 150,
+      render: (text) => `$${text.toFixed(2)}`, // Format as currency
     },
     {
       title: 'Bonus',
       dataIndex: 'bonus',
       key: 'bonus',
-      render: text => text !== null && text !== undefined ? `$${text.toFixed(2)}` : '-', 
+      width: 120,
+      render: (text) => `$${text.toFixed(2)}`, // Format as currency
     },
     {
-      title: 'Total Payable',
-      dataIndex: 'total_payable',
-      key: 'total_payable',
-      render: text => text !== null && text !== undefined ? `$${text.toFixed(2)}` : '-',
+      title: 'Withdraw Profit',
+      dataIndex: 'withdraw_profit',
+      key: 'withdraw_profit',
+      width: 150,
+      render: (text) => `$${text.toFixed(2)}`, // Format as currency
     },
     {
-      title: 'Method',
-      dataIndex: 'method',
-      key: 'method',
-      render: text => text || '-', 
+      title: 'Verification Type',
+      dataIndex: 'verification_type',
+      key: 'verification_type',
+      width: 150,
     },
     {
-      title: 'Started On',
-      dataIndex: 'started_on',
-      key: 'started_on',
-      render: text => text ? new Date(text).toLocaleDateString() : '-', 
-    },
-    {
-      title: 'Created On',
-      dataIndex: 'created_on',
-      key: 'created_on',
-      render: text => text ? new Date(text).toLocaleDateString() : '-',
+      title: 'Start Date',
+      dataIndex: 'start_date',
+      key: 'start_date',
+      width: 200,
+      render: (text) => new Date(text).toLocaleDateString(), // Format date
     },
     {
       title: 'Next Payout Date',
       dataIndex: 'next_payout_date',
       key: 'next_payout_date',
-      render: text => text ? new Date(text).toLocaleDateString() : '-',
-    },
-    {
-      title: 'Trade From',
-      dataIndex: 'trade_from',
-      key: 'trade_from',
-      render: text => text || '-', 
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      render: text => text || '-', 
-    },
-    {
-      title: 'Is Expected',
-      dataIndex: 'is_expected',
-      key: 'is_expected',
-      render: text => (text ? 'Yes' : 'No'),
+      width: 200,
+      render: (text) => new Date(text).toLocaleDateString(), // Format date
     },
   ];
+  
   
 
   const statusMenu = (key, record) => (
@@ -225,55 +221,14 @@ const WithdrawalStatus = () => {
     setModalVisible(false);
   };
 
-
+  const handleExport = () => {
+    console.log("Exporting data from", dates);
+    handleCloseModal();
+  };
 
   const handleDateChange = (values) => {
     if (values) {
       setDates(values);
-    }
-  };
-
-  
-  function triggerChange(page, updatedPageSize) {
-    setPageNo(page);
-    setPageSize(updatedPageSize);
-  }
-  const handleExport = () => {
-    if (dates.length === 2) {
-      const [startDate, endDate] = dates;
-      const url = `withdrawals/status/export/?start_date=${startDate}&end_date=${endDate}`;
-      
-      dispatch(exportDataReq({ idToken, url }))
-        .unwrap()
-        .then((response) => {
-          const { s3_file_url, filename } = response;
-  
-          // Create a link element and set the href to the s3_file_url
-          const link = document.createElement('a');
-          link.href = s3_file_url;
-          link.download = filename; // Set the filename for the downloaded file
-          document.body.appendChild(link);
-          link.click(); // Trigger the download
-          document.body.removeChild(link);
-  
-          notification.success({
-            message: "Export Successful",
-            description: "Your data export request has been processed.",
-          });
-  
-          handleCloseModal();
-        })
-        .catch((error) => {
-          notification.error({
-            message: "Export Failed",
-            description: error?.message || "An error occurred during export.",
-          });
-        });
-    } else {
-      notification.warning({
-        message: "Invalid Dates",
-        description: "Please select a valid date range.",
-      });
     }
   };
 
@@ -312,28 +267,7 @@ const WithdrawalStatus = () => {
               />
             </div>
           </div>
-          <div className="header_middle">
-            <div className="filter_buttons">
-              <Button
-                className={activeTab === "all" ? "active" : ""}
-                onClick={() => handleTabChange("all")}
-              >
-                All
-              </Button>
-              <Button
-                className={activeTab === "paid" ? "active" : ""}
-                onClick={() => handleTabChange("paid")}
-              >
-                Paid
-              </Button>
-              <Button
-                className={activeTab === "unpaid" ? "active" : ""}
-                onClick={() => handleTabChange("unpaid")}
-              >
-                Unpaid
-              </Button>
-            </div>
-          </div>
+       
         </div>
         <div className="export_btn">
           <Button onClick={handleOpenModal}>
@@ -344,7 +278,7 @@ const WithdrawalStatus = () => {
             Export
           </Button>
           <Link className="link"
-            to={"/advance-statistics/withdrawal-status/export-history"}
+            to={"/advance-statistics/withdrawal-details/export-history"}
           >
             View Export History
           </Link>
@@ -354,50 +288,30 @@ const WithdrawalStatus = () => {
         <LoaderOverlay />
       ) : (
         <AntTable
-          data={withdrawalsStatus?.results}
+          data={withdrawalsDetails?.results}
           columns={columns}
-          totalPages={Math.ceil(withdrawalsStatus?.count / pageSize)}
-          totalItems={withdrawalsStatus?.count}
-          pageSize={pageSize}
-          CurrentPageNo={pageNo}
-          setPageSize={setPageSize}
-          triggerChange={triggerChange}
    
         />
       )}
       <Modal
-      title="Export"
-      visible={isModalVisible}
-      onCancel={handleCloseModal} 
-      footer={null} 
-      className="export_modal" 
-      closeIcon={<CloseOutlined style={{ color: '#fff' }} />} 
-    >
-      <div className="export_modal_wrapper">
-        <RangePicker
-          onChange={updateDateRange}
-          autoFocus
-          presets={rangePresets}
-          style={{ width: '100%' }} 
-        />
-      </div>
-      <p style={{ color: '#fff' }}>File will contain information of the date you’ve selected.</p>
-      <div className="btn_wrapper">
-        <Button
-          type="primary"
-          onClick={handleExport}
-          style={{
-            backgroundColor: '#1890ff', 
-            borderColor: '#1890ff',
-            color: '#fff',
-          }}
-        >
-          Export
-        </Button>
-      </div>
-    </Modal>
+        title="Export"
+        visible={isModalVisible}
+        onOk={handleExport}
+        onCancel={handleCloseModal}
+        okText="Export"
+        className="export_modal"
+      >
+        <div className="export_modal_wrapper">
+          <RangePicker
+            onChange={updateDateRange}
+            autoFocus
+            presets={rangePresets}
+          />
+        </div>
+        File will contain information of the date you’ve selected.
+      </Modal>
     </div>
   );
 };
 
-export default WithdrawalStatus;
+export default WithdrawalDetails;

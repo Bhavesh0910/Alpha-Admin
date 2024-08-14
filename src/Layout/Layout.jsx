@@ -187,6 +187,11 @@ const items = [
         label: "Approved Withdrawal Details",
         link: "/advance-statistics/withdrawal-details",
       },
+      {
+        key: "18-4",
+        label: "Daily Stats",
+        link: "/advance-statistics/daily-stats",
+      },
     ],
   },
   {

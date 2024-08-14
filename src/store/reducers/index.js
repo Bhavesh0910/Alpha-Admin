@@ -32,6 +32,7 @@ import getUserProfileData from "../NewReducers/userProfileSlice";
 import logsReducer from "../NewReducers/logsSlice";
 import revenueMangement from "../NewReducers/revenueMangement";
 import advanceStatistics from "../NewReducers/advanceStatistics";
+import exportReducer from "../NewReducers/exportSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -55,6 +56,7 @@ const rootReducer = combineReducers({
   accountList: accountList,
   advanceStatistics: advanceStatisticsReducer,
   accountMetrics: amReducer,
+  export: exportReducer,
   payoutList: payoutSlice,
   payment: paymentSlice,
   coupon: couponSlice,
