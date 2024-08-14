@@ -39,9 +39,20 @@ const countryWiseSlice = createSlice({
     isLoading: false,
     isError: false,
     listData: [],
+    filterListData: [],
+    flag: false,
     count: 1,
   },
-  reducers: {},
+  reducers: {
+    setCountryWiseData: (state, action) => {
+      state.listData = action.payload;
+      state.count = action.payload.length;
+    },
+    resetCountryWiseData: (state) => {
+      state.listData = state.filterListData;
+      state.count = state.filterListData.length;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(countryWiseListReq.pending, (state) => {
@@ -52,19 +63,16 @@ const countryWiseSlice = createSlice({
         console.log("Action payload oof acc slice : ", action.payload);
         state.isLoading = false;
         state.listData = action.payload?.data; // Update state with fetched data
+        state.filterListData = action.payload?.data; // Update state with fetched data
         state.totalItems = action.payload?.data?.length; // Update state with fetched data
       })
       .addCase(countryWiseListReq.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });
-    //   .addCase(PURGE, (state) => {
-    //     state.isLoading= false;
-    //     state.isError= false;
-    //     state.payoutData= [];
-    // });
   },
 });
 
 // Export the async thunk and any reducers if needed
+export const {resetCountryWiseData, setCountryWiseData} = countryWiseSlice.actions;
 export default countryWiseSlice.reducer;
