@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./UserList.scss";
-import { Table, Input, Select, Button, Modal, Tooltip, message, Radio, Form, Input as AntInput } from "antd";
+import {Table, Input, Select, Button, Modal, Tooltip, message, Radio, Form, Input as AntInput} from "antd";
 import moment from "moment";
-import { CopyOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import {CopyOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
+import {useDispatch, useSelector} from "react-redux";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { fetchUserList, toggleActiveUser } from "../../../store/NewReducers/listSlice";
+import {fetchUserList, toggleActiveUser, updateUser} from "../../../store/NewReducers/listSlice";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import { returnMessages } from "../../../store/reducers/message";
+import {returnMessages} from "../../../store/reducers/message";
 import ReactCountryFlag from "react-country-flag";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {baseUrl} from "../../../utils/api/apis";
+import axios from "axios";
 
-const { confirm } = Modal;
-const { Option } = Select;
+const {confirm} = Modal;
+const {Option} = Select;
 
 const UserListTable = () => {
   const lookup = require("country-code-lookup");
+
+  const [form] = Form.useForm();
 
   const dispatch = useDispatch();
   const idToken = useSelector((state) => state.auth.idToken);
@@ -30,8 +34,8 @@ const UserListTable = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  const { tableData, currentPage, totalPages, totalItems, isLoading } = useSelector((state) => state.list);
-  const { msg, title, status } = useSelector((state) => state.message);
+  const {tableData, currentPage, totalPages, totalItems, isLoading} = useSelector((state) => state.list);
+  const {msg, title, status} = useSelector((state) => state.message);
 
   useEffect(() => {
     if (idToken) {
@@ -43,7 +47,7 @@ const UserListTable = () => {
           pageSize,
           authType,
           active: active ? 1 : 0,
-        })
+        }),
       );
     }
   }, [dispatch, idToken, searchText, pageNo, pageSize, authType, active]);
@@ -73,11 +77,11 @@ const UserListTable = () => {
         const id = user.id;
         const note = user.is_active ? "Deactivating user" : "Activating user";
         try {
-          await dispatch(toggleActiveUser({ id, note, idToken })).unwrap();
-          dispatch(returnMessages(`User ${user.is_active ? "blocked" : "activated"} successfully.`, 'success'));
-          dispatch(fetchUserList({ idToken, searchText, pageNo, pageSize, authType, active }));
+          await dispatch(toggleActiveUser({id, note, idToken})).unwrap();
+          dispatch(returnMessages(`User ${user.is_active ? "blocked" : "activated"} successfully.`, "success"));
+          dispatch(fetchUserList({idToken, searchText, pageNo, pageSize, authType, active}));
         } catch (error) {
-          dispatch(returnMessages("Error changing user status.", 'error'));
+          dispatch(returnMessages("Error changing user status.", "error"));
         }
       },
     });
@@ -119,13 +123,49 @@ const UserListTable = () => {
   const handleEditClick = (user) => {
     setSelectedUser(user);
     setIsModalVisible(true);
+    form.setFieldsValue({
+      full_name: user.full_name,
+      Email: user.email,
+      Country: user.country,
+      City: user.city,
+      Contact: user.contact,
+      date_joined: moment(user.date_joined).format("YYYY-MM-DD"),
+    });
   };
 
-  const handleModalOk = () => {
-    // Implement save logic here
-    setIsModalVisible(false);
-  };
+  // const handleModalOk = () => {
+  //   // Implement save logic here
+  //   setIsModalVisible(false);
+  // };
 
+  const handleModalOk = async () => {
+    try {
+      const values = await form.validateFields();
+      const payload = {
+        // ...selectedUser,
+        ...values,
+      };
+
+      dispatch(updateUser({payload, idToken, dispatch}));
+
+      // const response = await axios.patch(`${baseUrl}profile/update/`, payload, {
+      //   headers: {
+      //     Authorization: `Bearer ${idToken}`,
+      //     "Content-Type": "application/json",
+      //   },
+      // });
+
+      // if (response.status !== 200) {
+      //   throw new Error("Failed to update user");
+      // }
+
+      // message.success("User updated successfully");
+      setIsModalVisible(false);
+      dispatch(fetchUserList({idToken, searchText, pageNo, pageSize, authType, active}));
+    } catch (error) {
+      message.error(error.message || "Error updating user");
+    }
+  };
   const handleModalCancel = () => {
     setIsModalVisible(false);
   };
@@ -146,7 +186,7 @@ const UserListTable = () => {
             <Tooltip title="Copy email">
               <Button
                 type="link"
-                icon={<CopyOutlined style={{ color: "#04D9FF" }} />}
+                icon={<CopyOutlined style={{color: "#04D9FF"}} />}
                 onClick={() => message.success("Copied email")}
                 disabled={!text}
               />
@@ -195,11 +235,7 @@ const UserListTable = () => {
     {
       title: "Active",
       dataIndex: "is_active",
-      render: (text, record) => (
-        <span className={`status_wrapper ${record.is_active ? "active" : "blocked"}`}>
-          {record.is_active !== undefined ? (record.is_active ? "Active" : "Blocked") : "-"}
-        </span>
-      ),
+      render: (text, record) => <span className={`status_wrapper ${record.is_active ? "active" : "blocked"}`}>{record.is_active !== undefined ? (record.is_active ? "Active" : "Blocked") : "-"}</span>,
     },
     {
       title: "Action",
@@ -207,8 +243,8 @@ const UserListTable = () => {
       render: (_, record) => (
         <div className="action_wrapper">
           <Button onClick={() => handleEditClick(record)}>Edit</Button>
-          <Button 
-            onClick={() => handleStatusChange(record)} 
+          <Button
+            onClick={() => handleStatusChange(record)}
             disabled={record.is_active === undefined}
           >
             {record.is_active !== undefined ? (record.is_active ? "Block" : "Activate") : "-"}
@@ -226,7 +262,7 @@ const UserListTable = () => {
         <div className="header_wrapper">
           <h3 className="page_header">User List</h3>
           <Button
-            onClick={() => navigate('/list/user-list/user-logs')}
+            onClick={() => navigate("/list/user-list/user-logs")}
             className="view_logs__btn standard_button"
           >
             View Logs
@@ -282,32 +318,48 @@ const UserListTable = () => {
         visible={isModalVisible}
         onOk={handleModalOk}
         onCancel={handleModalCancel}
+        okText="Save"
+        cancelText="Cancel"
       >
         {selectedUser && (
           <Form
+            form={form}
             layout="vertical"
-            initialValues={{
-              email: selectedUser.email,
-              country: selectedUser.country,
-              full_name: selectedUser.full_name,
-              city: selectedUser.city,
-              contact: selectedUser.contact,
-            }}
           >
-            <Form.Item label="Email" name="email">
-              <AntInput readOnly />
+            <Form.Item
+              name="full_name"
+              label="Full Name"
+              rules={[{required: true, message: "Please input the full name"}]}
+            >
+              <AntInput placeholder="Enter full name" />
             </Form.Item>
-            <Form.Item label="Name" name="full_name" >
-              <AntInput />
+            <Form.Item
+              name="Email"
+              label="Email"
+              rules={[
+                {required: true, message: "Please input the email"},
+                {type: "email", message: "Please enter a valid email"},
+              ]}
+            >
+              <AntInput placeholder="Enter email" />
             </Form.Item>
-            <Form.Item label="Country" name="country" >
-              <AntInput />
+            <Form.Item
+              name="City"
+              label="City"
+            >
+              <AntInput placeholder="Enter city" />
             </Form.Item>
-            <Form.Item label="City" name="city">
-              <AntInput />
+            <Form.Item
+              name="Contact"
+              label="Contact"
+            >
+              <AntInput placeholder="Enter contact" />
             </Form.Item>
-            <Form.Item label="Contact" name="contact">
-              <AntInput />
+            <Form.Item
+              name="Country"
+              label="Country"
+            >
+              <AntInput placeholder="Enter country" />
             </Form.Item>
           </Form>
         )}

@@ -1,0 +1,188 @@
+.passRates_main {
+  .passRates_header {
+    display: flex !important;
+    justify-content: space-between;
+    width: 100%;
+    .heading {
+      h2 {
+        color: #fff;
+        font-family: "Nunito Sans";
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 900;
+        line-height: normal;
+      }
+    }
+
+    .passRates_export_btn_wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      .passRates_export_btn {
+        display: flex;
+        height: 46px;
+        padding: 0px 15px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        align-self: flex-end;
+        width: fit-content;
+
+        border-radius: 10px;
+        background: #f6fefe;
+
+        button {
+          border: none;
+        }
+      }
+      p {
+        color: var(--Brand-1, #04d9ff);
+        font-family: "Nunito Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        text-decoration-line: underline;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .passRates_section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .show_hide_btn_wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .show_hide_btn {
+        display: flex;
+        height: 46px;
+        padding: 0px 15px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        border-radius: 10px;
+        border: 1px solid #f6fefe;
+        background: var(--Canvas-BG, #161d26);
+
+        p {
+          color: var(--white, #fff);
+          font-family: "Nunito Sans";
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+        }
+      }
+    }
+
+    .chart_container {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      align-self: stretch;
+      flex-wrap: wrap;
+
+      .chart_div {
+        display: flex;
+        padding: 20px;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+        gap: 20px;
+        flex: 1;
+
+        border-radius: var(--table-box, 20px);
+        background: #fff;
+      }
+      .chart_div {
+        display: flex;
+        padding: 20px;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+        gap: 20px;
+        flex: 1;
+
+        border-radius: var(--table-box, 20px);
+        background: #fff;
+
+        .chart {
+          width: 100%;
+        }
+
+        .chart_header {
+          display: flex;
+          justify-content: space-between;
+          gap: 20px;
+          align-items: flex-start;
+        }
+      }
+    }
+  }
+
+  .tabs_wrappers {
+    display: flex;
+    justify-content: space-between;
+    .tabs_inner {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+
+      .tabs {
+        display: flex;
+        height: 46px;
+        padding: 0px 15px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        border-radius: 10px;
+        background: #f6fefe;
+
+        p {
+          color: #1e1e1e;
+          font-family: "Nunito Sans";
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+        }
+      }
+    }
+  }
+}
+
+// exportHistoryTable
+
+.exportHistoryTable_main {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+
+  .exportHistory_download_btn {
+    border-radius: var(--Corner-Radius, 10px);
+    border: 1px solid var(--sucess, #009017);
+    background: var(--Success-Body, #cdffdd);
+
+    display: flex;
+    height: 32px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    p {
+      color: var(--Text, #1e1e1e);
+      font-family: "Nunito Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+}

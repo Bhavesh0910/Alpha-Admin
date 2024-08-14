@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
 import RiskManagement from "../pages/RiskManagement";
 
@@ -48,6 +48,8 @@ import Stage2Logs from "../pages/StageManager2/Stage2Logs";
 import AffiliateLogs from "../pages/AffiliateMarketing/Logs/AffiliateLogs";
 import WithdrawalStatus from "../pages/AdvanceStatistics/WithdrawalStatus/WithdrawalStatus";
 import WithdrawalStatusExportHistory from "../pages/AdvanceStatistics/WithdrawalStatus/WithdrawalStatusExport";
+import PassRates from "../pages/AdvanceStatistics/PassRates/PassRates";
+import ExportHistoryTable from "../pages/AdvanceStatistics/PassRates/ExportHistoryTable";
 
 function Router() {
   return (
@@ -224,12 +226,30 @@ function Router() {
               </PageLayout>
             }
           />
-                 <Route
+          <Route
             exact={true}
             path="/advance-statistics/withdrawal-status/export-history"
             element={
               <PageLayout headerName="Withdrawal Status">
                 <WithdrawalStatusExportHistory />
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/advance-statistics/pass-rates"
+            element={
+              <PageLayout headerName="Pass Rates">
+                <PassRates />
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/advance-statistics/export-history"
+            element={
+              <PageLayout headerName="Export history">
+                <ExportHistoryTable />
               </PageLayout>
             }
           />
@@ -332,7 +352,6 @@ function Router() {
               </PageLayout>
             }
           />
-
 
           <Route
             exact={true}
