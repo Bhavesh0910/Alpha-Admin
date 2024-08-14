@@ -11,10 +11,10 @@ function ResultByOpenHour({ data }) {
     series: [
       {
         name: 'Average Profit/Loss',
-        data: data?.chart_data?.average_profit_loss || [], // Use empty array if data is undefined
+        data: data?.chart_data?.average_profit_loss || [],
       },
     ],
-    categories: data?.chart_data?.duration || [], // Use empty array if data is undefined
+    categories: data?.chart_data?.duration || [], 
   };
 
   const tableData = data?.data?.map((item, index) => ({
@@ -22,8 +22,7 @@ function ResultByOpenHour({ data }) {
     duration: item.Duration,
     numberOfTrades: item.no_of_trade,
     results: item.results,
-  })) || []; // Default to empty array if data is undefined
-
+  })) || []; 
   const columns = [
     {
       title: 'Duration',
@@ -45,12 +44,10 @@ function ResultByOpenHour({ data }) {
     },
   ];
 
-      
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
     setPageSize(updatedPageSize);
   }
-
 
   return (
     <div className='result_by_open_hour'>
@@ -68,8 +65,8 @@ function ResultByOpenHour({ data }) {
         </h2>
         <div className='table_wrapper'>
           <AntTable columns={columns} data={tableData}
-           totalPages={Math.ceil(tableData?.length / pageSize)}
-           totalItems={tableData?.length}
+           totalPages={Math.ceil(tableData.length / pageSize)}
+           totalItems={tableData.length}
            pageSize={pageSize}
            CurrentPageNo={pageNo}
            setPageSize={setPageSize}
