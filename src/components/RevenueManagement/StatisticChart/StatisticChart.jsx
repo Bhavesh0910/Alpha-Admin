@@ -9,22 +9,23 @@ const StatisticChart = () => {
   const [data, setData] = useState({payoutRequested: [], payoutApproved: [], dates: []});
 
   useEffect(() => {
-    if (chartData?.payouts) {
+    if (chartData) {
       let payoutReq = [];
       let payoutApp = [];
       let dates = [];
-      payoutReq = chartData?.payouts?.map((item) => {
-        return item?.total_payout;
+      payoutReq = chartData?.map((item) => {
+        return item?.total_payment_amount;
       });
-      // payoutApp = chartData?.payouts?.map((item) => {
-      //   return item?.approved_totalPayout;
-      // });
-      dates = chartData?.payouts?.map((item) => {
-        return item?.created_at__date;
+      payoutApp = chartData?.map((item) => {
+        return item?.paid_profit_shares;
       });
-
-      // setData({payoutRequested: payoutReq || [], payoutApproved: payoutApp || [], dates: dates || []});
-      setData({payoutRequested: payoutReq || [], dates: dates || []});
+      dates = chartData?.map((item) => {
+        return item?.date;
+      });
+      console.log("payoutReq", payoutReq);
+      console.log("payoutApp", payoutApp);
+      console.log("dates", dates);
+      setData({payoutRequested: payoutReq || [], payoutApproved: payoutApp || [], dates: dates || []});
     }
   }, [chartData]);
   const series = [
@@ -32,10 +33,10 @@ const StatisticChart = () => {
       name: "Payout Requested",
       data: data?.payoutRequested || [],
     },
-    // {
-    //   name: "Total amount paid in profit share",
-    //   data: data?.payoutApproved || [],
-    // },
+    {
+      name: "Total amount paid in profit share",
+      data: data?.payoutApproved || [],
+    },
   ];
 
   const options = {

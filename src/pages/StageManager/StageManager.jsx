@@ -131,7 +131,7 @@ const StageManager = () => {
   };
 
   const openStatusUpdateModal = (key, updatedValue, record) => {
-    console.log(" Status : ",key, updatedValue, record);
+    console.log(" Status : ", key, updatedValue, record);
     setuserToUpdate(record);
     setUpdatedStatus(updatedValue);
     setIsModalVisible(true);
@@ -168,10 +168,10 @@ const StageManager = () => {
     formData.append("status", updatedStatus);
     let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
     let isPayoutUpdate = location.pathname === "/support/payout";
-    console.log("id : ", userId);
-    console.log("updatedStatus : ", updatedStatus);
-    console.log("formData : ", formData);
-    console.log("isPayoutUpdate : ", isPayoutUpdate);
+    // console.log("id : ", userId);
+    // console.log("updatedStatus : ", updatedStatus);
+    // console.log("formData : ", formData);
+    // console.log("isPayoutUpdate : ", isPayoutUpdate);
     dispatch(statusUpdateReq({idToken, body: formData, id: userId, isPayoutUpdate, updatedStatus, dispatch}));
     setIsModalVisible(false);
   };
@@ -203,6 +203,217 @@ const StageManager = () => {
   const columns = useMemo(() => {
     switch (location.pathname) {
       case "/support/stage-1":
+        return [
+          {
+            title: "Account",
+            dataIndex: "account_id",
+            key: "account_id",
+            render: (text, row) => (
+              <Link
+                to="/trader-overview"
+                // onClick={() => handleActiveAccount(row, "account")}
+              >
+                {text ? text : "-"}
+              </Link>
+            ),
+          },
+          // Table.EXPAND_COLUMN,
+          {
+            title: "Email",
+            dataIndex: "email",
+            key: "email",
+            render: (text) => (
+              <div className="column_one_wrapper">
+                {/* <div
+                      className="sno_wrapper"
+                      style={{
+                        backgroundColor: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
+                      }}
+                    >
+                      {text && text.charAt(0).toUpperCase()}
+                    </div> */}
+                <div>{text}</div>
+                {/* <CopyToClipboard onCopy={() => handleCopyToClipboard(text)} text={text}>
+                      <p
+                        className="table_copy_button"
+                        style={{
+                          marginRight: "20px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <svg
+                          width="28"
+                          height="28"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect width="24" height="24" rx="12" fill="#1E1E1E" />
+                          <path
+                            d="M17.886 12.574C18 12.2987 18 11.9487 18 11.25C18 10.5513 18 10.2013 17.886 9.926C17.8106 9.74395 17.7001 9.57854 17.5608 9.43922C17.4215 9.29989 17.256 9.18938 17.074 9.114C16.7987 9 16.4487 9 15.75 9H11.4C10.56 9 10.14 9 9.81933 9.16333C9.53684 9.30719 9.30719 9.53684 9.16333 9.81933C9 10.1393 9 10.5593 9 11.4V15.75C9 16.4487 9 16.7987 9.114 17.074C9.26667 17.4413 9.55867 17.734 9.926 17.886C10.2013 18 10.5513 18 11.25 18C11.9487 18 12.2987 18 12.574 17.886M17.886 12.574C17.8106 12.756 17.7001 12.9215 17.5608 13.0608C17.4215 13.2001 17.256 13.3106 17.074 13.386C16.7987 13.5 16.4487 13.5 15.75 13.5C15.0513 13.5 14.7013 13.5 14.426 13.614C14.244 13.6894 14.0785 13.7999 13.9392 13.9392C13.7999 14.0785 13.6894 14.244 13.614 14.426C13.5 14.7013 13.5 15.0513 13.5 15.75C13.5 16.4487 13.5 16.7987 13.386 17.074C13.3106 17.256 13.2001 17.4215 13.0608 17.5608C12.9215 17.7001 12.756 17.8106 12.574 17.886M17.886 12.574C17.5275 13.8107 16.8678 14.9391 15.9661 15.8582C15.0645 16.7774 13.9489 17.4585 12.7193 17.8407L12.574 17.886M15 9V8.4C15 7.56 15 7.14 14.8367 6.81933C14.693 6.53694 14.4636 6.3073 14.1813 6.16333C13.86 6 13.44 6 12.6 6H8.4C7.56 6 7.14 6 6.81933 6.16333C6.53684 6.30719 6.30719 6.53684 6.16333 6.81933C6 7.13933 6 7.55933 6 8.4V12.6C6 13.44 6 13.86 6.16333 14.1807C6.30733 14.4633 6.53667 14.6927 6.81933 14.8367C7.13933 15 7.56 15 8.40067 15H9"
+                            stroke="#36D66B"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </p>
+                    </CopyToClipboard> */}
+              </div>
+            ),
+          },
+          // Table.SELECTION_COLUMN,
+          {
+            title: "Full Name",
+            dataIndex: "username",
+            key: "username",
+            render: (text) => (text ? text : "-"),
+          },
+          {
+            title: "Flag",
+            dataIndex: "country",
+            key: "country",
+            render: (country) => {
+              const countryName = country;
+              const countryCode = lookup.byCountry(countryName);
+              if (countryCode) {
+                return (
+                  <div className="country_name_wrapper">
+                    <ReactCountryFlag
+                      countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
+                      svg={true}
+                      aria-label={countryName}
+                    />
+                  </div>
+                );
+              } else {
+                return <span>{countryName}</span>;
+              }
+            },
+          },
+          {
+            title: "Stage-2",
+            dataIndex: "stage2_account",
+            key: "stage2_account",
+            render: (text, row) => (
+              <Link
+                to="/traders-list-2"
+                // onClick={() => handleActiveAccount(row, "funded_account")}
+              >
+                {text ? text : "-"}
+              </Link>
+            ),
+          },
+          {
+            title: "Status",
+            dataIndex: "status",
+            key: "status",
+            render: (text, record, index) => (
+              <Dropdown
+                overlay={() => statusMenu(text, record)}
+                trigger={["click"]}
+              >
+                <Button
+                  icon={<DownOutlined />}
+                  className="status_button"
+                  style={{
+                    width: "120px",
+                    display: "flex",
+                    flexDirection: "row-reverse",
+                    justifyContent: "space-between",
+                    padding: "6px 10px",
+                  }}
+                >
+                  <p
+                    className={text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "pending" : ""}
+                  >
+                    {text}
+                  </p>
+                </Button>
+              </Dropdown>
+            ),
+          },
+          {
+            title: "Email Generated",
+            dataIndex: "email_sent",
+            key: "email_sent",
+            render: (text, row) => (
+              <img
+                width={"25px"}
+                src={text || row.status === "approved" ? RightMark : CrossMark}
+                alt=""
+              />
+            ),
+          },
+          {
+            title: "Credential Generated",
+            dataIndex: "credential_generated",
+            key: "credential_generated",
+            render: (text, row) => (
+              <img
+                width={"25px"}
+                src={text || row.status === "approved" ? RightMark : CrossMark}
+                alt=""
+              />
+            ),
+          },
+          {
+            title: "Date (created at)",
+            dataIndex: "created_at",
+            key: "created_at",
+            render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
+          },
+          {
+            title: "Date (last updated)",
+            dataIndex: "updated_at",
+            key: "updated_at",
+            render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
+          },
+          {
+            title: "Comment",
+            dataIndex: "comment",
+            key: "comment",
+            render: (text, record, index) =>
+              text ? (
+                <div className="comment_box">
+                  <p>{text}</p>
+                  <img
+                    src={comment}
+                    alt="comment"
+                    className="edit-icon"
+                    onClick={() => openEditModal(text, record)}
+                  />
+                </div>
+              ) : (
+                <Button onClick={() => openEditModal(text, record)}>Add Comment</Button>
+              ),
+          },
+          {
+            title: "Details",
+            dataIndex: "details",
+            key: "details",
+            render: (text, record) => (
+              <Button
+                onClick={() => navigate(`/account-analysis/${record.account_id}`)}
+                className="account_metrics_btn"
+              >
+                Account Metrics
+              </Button>
+            ),
+          },
+          {
+            title: "Action",
+            key: "action",
+            render: (text, row) => (
+              <Button
+                className="action_btn standard_button"
+                onClick={() => openCreateAccountModel(row)}
+              >
+                Create Account
+              </Button>
+              // </Dropdown>
+            ),
+          },
+        ];
       case "/support/stage-2":
         return [
           {
@@ -578,7 +789,14 @@ const StageManager = () => {
             title: "Details",
             dataIndex: "details",
             key: "details",
-            render: (text, record, index) => <Button className="account_metrics_btn">Account Metrics</Button>,
+            render: (text, record, index) => (
+              <Button
+                className="account_metrics_btn"
+                onClick={() => navigate(`/account-analysis/${record.login_id}`)}
+              >
+                Account Metrics
+              </Button>
+            ),
           },
         ];
         break;
@@ -850,7 +1068,10 @@ const StageManager = () => {
         onOk={modalAction === "Update Status" ? handleUpdateStatus : modalAction === "Edit" ? handleEditComment : modalAction === "Create Account" ? handleCreateAccount : handleContract}
       >
         {modalAction === "Edit" ? (
-          <Form.Item label="Edit Comment">
+          <Form.Item
+            className="lableWhite"
+            label="Edit Comment"
+          >
             <Input.TextArea
               value={editCommentToUpdate}
               onChange={(e) => setEditCommentToUpdate(e.target.value)}
@@ -859,6 +1080,7 @@ const StageManager = () => {
           </Form.Item>
         ) : (
           <Form.Item
+            className="lableWhite"
             label="Comment"
             value={editCommentToUpdate}
             onChange={(e) => setEditCommentToUpdate(e.target.value)}

@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 import profileIcon from "../../../../assets/icons/profileIcon.svg";
 import BalanceChart from "../../Charts/BalanceChart";
 import ProfitChart from "../../Charts/ProfitChart";
-import {dollarUS, formatDate, FormatUSD} from "../../../../utils/helpers/string";
+import {dollarUS, formatCurrency, formatDate, FormatUSD} from "../../../../utils/helpers/string";
 import DrawdownChart from "../../Charts/DrawdownChart";
 
 const AccountOverview = ({overview, statistics , accountDetails, objectives , performanceChart}) => {
@@ -68,36 +68,36 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
         </div>
 
         <div className="top_right_div">
-          <div className="accountMetrics_wrapper_header">
-            <h2>Daily Summary</h2>
-          </div>
-          <div className="top_right_div_lower">
-            <div>
-              <p>Gain</p>
-              <h3>$00</h3>
-            </div>
-            <div>
-              <p>Daily</p>
-              <h3>${overview?.calculated_data?.daily_gain.toFixed(2)}</h3>
-            </div>
-            <div>
-              <p>Leverage</p>
-              <h3>1:{accountDetails?.challenge?.Leverage}</h3>
-            </div>
-            <div>
-              <p>Abs Gain</p>
-              <h3>$00</h3>
-            </div>
-            <div>
-              <p>Monthly</p>
-              <h3>${overview?.calculated_data?.monthly_gain.toFixed(2)}</h3>
-            </div>
-            <div>
-              <p>Drawdown</p>
-              <h3>{overview?.calculated_data.draw_down}</h3>
-            </div>
-          </div>
-        </div>
+                    <div className="accountMetrics_wrapper_header">
+                        <h2>Daily Summary</h2>
+                    </div>
+                    <div className="top_right_div_lower">
+                        <div>
+                            <p>Gain</p>
+                            <h3>$00</h3>
+                        </div>
+                        <div>
+                            <p>Daily</p>
+                            <h3>{overview?.calculated_data?.daily_gain ? formatCurrency(overview?.calculated_data?.daily_gain) : "$0.00"}</h3>
+                        </div>
+                        <div>
+                            <p>Leverage</p>
+                            <h3>1:{accountDetails?.challenge?.Leverage}</h3>
+                        </div>
+                        <div>
+                            <p>Abs Gain</p>
+                            <h3>$00</h3>
+                        </div>
+                        <div>
+                            <p>Monthly</p>
+                            <h3>{overview?.calculated_data?.monthly_gain ? formatCurrency(overview?.calculated_data?.monthly_gain) : "$0.00"}</h3>
+                        </div>
+                        <div>
+                            <p>Drawdown</p>
+                            <h3>{overview?.calculated_data?.draw_down ? formatCurrency(overview?.calculated_data?.draw_down) : "$0.00"}</h3>
+                        </div>
+                    </div>
+                </div>
       </div>
       <div className="accountMetrics_wrapper_bottom">
         <div className="bottom_main_left">
@@ -147,7 +147,7 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
                 </div>
                 <div>
                   <p>Win rate</p>
-                  <h3>{statistics?.win_rate.toFixed(2)}</h3>
+                  <h3>{statistics?.win_rate?.toFixed(2)}</h3>
                 </div>
                 <div>
                   <p>Highest</p>
@@ -157,15 +157,15 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
               <div className="bottom_main_left_satistic_inner_two">
                 <div>
                   <p>Average profit</p>
-                  <h3>${statistics?.Average_profit.toFixed(2)}</h3>
+                  <h3>${statistics?.Average_profit?.toFixed(2)}</h3>
                 </div>
                 <div>
                   <p>Average loss</p>
-                  <h3>${statistics?.Average_loss.toFixed(2)}</h3>
+                  <h3>${statistics?.Average_loss?.toFixed(2)}</h3>
                 </div>
                 <div>
                   <p>Average RRR</p>
-                  <h3>{statistics?.RRR.toFixed(2)}</h3>
+                  <h3>{statistics?.RRR?.toFixed(2)}</h3>
                 </div>
                 {/* <div>
                   <p>Martingale Status</p>

@@ -1,46 +1,56 @@
+import React, { useEffect, useState } from "react";
 import { Breadcrumb, Card } from "antd";
-import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AntTable from "../../../../ReusableComponents/AntTable/AntTable";
+import LoaderOverlay from "../../../../ReusableComponents/LoaderOverlay";
+import { logsListReq } from "../../../../store/NewReducers/logsSlice";
 
 const UserIPLogs = () => {
-  const [size, setSize] = useState("small");
-  const onChange = (e) => {
-    setSize(e.target.value);
-  };
+  const { idToken } = useSelector((state) => state.auth);
+  const { payoutLogData, count, isLoading } = useSelector((state) => state.logs);
+
+  const [pageNo, setPageNo] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const baseurl = "v3/ip-block-log/list/";
+    const query = `?page=${pageNo}&page_size=${pageSize}`;
+    const url = baseurl + query;
+    dispatch(logsListReq({ idToken, url, key: "payoutLogData", dispatch }));
+  }, [pageNo, pageSize, idToken, dispatch]);
 
   const columns = [
     {
       title: "Admin Email ID",
-      dataIndex: "adminEmailId",
-      key: "adminEmailId",
+      dataIndex: "admin_email",
+      key: "admin_email",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Date and Time",
-      dataIndex: "dateTime",
-      key: "dateTime",
+      dataIndex: "date_time",
+      key: "date_time",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "User ID",
-      dataIndex: "userId",
-      key: "userId",
+      dataIndex: "user_id",
+      key: "user_id",
+      render: (text) => (text ? text : "-"),
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
+      title: "Comment",
+      dataIndex: "comment",
+      key: "comment",
+      render: (text) => (text ? text : "-"),
     },
   ];
 
-  const dummyData = [
-    {
-      key: "1",
-      adminEmailId: "georgia.ku@example.com",
-      dateTime: "02/07/2024 04:07:43",
-      userId: "Example450",
-      description:
-        "Status: N/A\nAction: Block/Unblock/Delete\nComment: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    },
-  ];
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
 
   return (
     <Card className="table-wrapper viewLogs_table">
@@ -49,16 +59,30 @@ const UserIPLogs = () => {
           separator=">"
           items={[
             {
-              title: <a href="/user-ip-list/">User IP List</a>,
+              title: <a href="/support/payout/">Payout</a>,
             },
             {
-              title: <a href="">Log</a>,
+              title: <a href="#">Log</a>,
             },
           ]}
         />
       </div>
-      <AntTable columns={columns} data={dummyData} />
+      {isLoading ? (
+        <LoaderOverlay />
+      ) : (
+        <AntTable
+          columns={columns}
+          data={payoutLogData || []}
+          totalPages={Math.ceil(count / pageSize)}
+          totalItems={count}
+          pageSize={pageSize}
+          CurrentPageNo={pageNo}
+          setPageSize={setPageSize}
+          triggerChange={triggerChange}
+        />
+      )}
     </Card>
   );
 };
+
 export default UserIPLogs;

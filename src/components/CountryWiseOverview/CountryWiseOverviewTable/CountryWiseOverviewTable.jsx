@@ -2,20 +2,25 @@ import React, {useEffect, useState} from "react";
 import "./CountryWiseOverviewTable.scss";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import dayjs from "dayjs";
-import {Button, DatePicker} from "antd";
+import {Button, DatePicker, Select} from "antd";
 import AccountRangeSlider from "./AccountRangeSlider/AccountRangeSlider";
 import rangeIcon from "../../../assets/icons/range_icon_gray.svg";
 import {useDispatch, useSelector} from "react-redux";
-import {countryWiseListReq} from "../../../store/NewReducers/countryWise";
+import {countryWiseListReq, resetCountryWiseData, setCountryWiseData} from "../../../store/NewReducers/countryWise";
 const {RangePicker} = DatePicker;
 const CountryWiseOverviewTable = () => {
   const dispatch = useDispatch();
   const {idToken} = useSelector((state) => state.auth);
-  const {listData, count} = useSelector((state) => state.countryWise);
+  const {listData, count, filterListData} = useSelector((state) => state.countryWise);
   const [dates, setDates] = useState(null);
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [accRange, setAccRange] = useState(null);
+
+  const [countries, setCountries] = useState([]);
+  const [selectedCountries, setSelectedCountries] = useState([]);
+
+  const [countriesLibrary, setCountriesLibrary] = useState({});
 
   useEffect(() => {
     // let query = `?page=${pageNo}&page_size=${pageSize}`;
@@ -87,10 +92,70 @@ const CountryWiseOverviewTable = () => {
   const handleRangeBtn = (e) => {
     setIsRangeOpen(!isRangeOpen);
   };
+  const [filteredCountries, setFilteredCountries] = useState([]);
 
+  useEffect(() => {
+    const data = filterListData.map((item) => ({
+      label: item.country ? item.country : "Unknown Country",
+      value: item.country ? item.country : "unknown",
+    }));
+    setCountries(data);
+    setFilteredCountries(data);
+  }, [filterListData]);
+
+  const handleSearchInput = (value) => {
+    const filteredData = countries?.filter((item) => item.label.toLowerCase().includes(value.toLowerCase()));
+    console.log("filteredData : ", filteredData);
+    setFilteredCountries(filteredData);
+  };
+
+  useEffect(() => {
+    const data = {};
+    filterListData.forEach((item) => {
+      data[item.country] = {
+        country: item.country,
+        payout_total_amount: item.payout_total_amount,
+        payout_total_count: item.payout_total_count,
+        payment_total_amount: item.payment_total_amount,
+        payment_total_count: item.payment_total_count,
+      };
+    });
+    setCountriesLibrary(data);
+  }, [filterListData]);
+
+  function handleCountriesData() {
+    const data = selectedCountries.map((item) => countriesLibrary[item]);
+    if (selectedCountries && selectedCountries.length > 0) {
+      dispatch(setCountryWiseData(data));
+    } else {
+      console.log("hereeeeeeeeeeeeee");
+      dispatch(resetCountryWiseData());
+    }
+    setFilteredCountries(countries);
+  }
+
+  useEffect(() => {
+    console.log(filteredCountries, " filteredCountries");
+  }, [filteredCountries]);
   return (
     <div className="countryWiseOverviewTable_wrapper">
       <div className="header_wrapper">
+        <Select
+          mode="multiple"
+          placeholder="Please select countries"
+          onSearch={handleSearchInput}
+          onChange={(value) => {
+            setSelectedCountries(value);
+            setFilteredCountries(countries);
+          }}
+          options={filteredCountries}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleCountriesData();
+            }
+          }}
+          allowClear
+        />
         <div className="rangeBtn_wrapper">
           <Button
             className="accnt_range_btn"
@@ -121,12 +186,6 @@ const CountryWiseOverviewTable = () => {
         data={listData || []}
         columns={columns}
         serverSide={false}
-        // totalPages={Math.ceil(count / pageSize)}
-        // totalItems={count}
-        // pageSize={pageSize}
-        // CurrentPageNo={pageNo}
-        // setPageSize={setPageSize}
-        // triggerChange={triggerChange}
       />
     </div>
   );

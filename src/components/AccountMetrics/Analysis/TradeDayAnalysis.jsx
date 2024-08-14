@@ -12,11 +12,11 @@ const DataBox = ({ title, value }) => {
 };
 
 function TradeDayAnalysis({ data }) {
-    const categories = ['Mon', 'Tue', 'Wed', 'Thu'];
+    const categories = [];
     const seriesData1 = [
         {
             name: 'Result',
-            data: [400, 800, -400, 1200],
+            data: [],
         },
     ];
     

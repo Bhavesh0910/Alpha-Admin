@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import BarChart from './Charts/BarChart';
 import AntTable from '../../../ReusableComponents/AntTable/AntTable';
 
 function ResultByOpenHour({ data }) {
-  // Ensure data exists before attempting to access its properties
+
+  const [pageSize, setPageSize] = useState(20);
+  const [pageNo, setPageNo] = useState(1);
+
   const chartData = {
     series: [
       {
         name: 'Average Profit/Loss',
-        data: data?.chart_data?.average_profit_loss || [], // Use empty array if data is undefined
+        data: data?.chart_data?.average_profit_loss || [],
       },
     ],
-    categories: data?.chart_data?.duration || [], // Use empty array if data is undefined
+    categories: data?.chart_data?.duration || [], 
   };
 
   const tableData = data?.data?.map((item, index) => ({
@@ -19,8 +22,7 @@ function ResultByOpenHour({ data }) {
     duration: item.Duration,
     numberOfTrades: item.no_of_trade,
     results: item.results,
-  })) || []; // Default to empty array if data is undefined
-
+  })) || []; 
   const columns = [
     {
       title: 'Duration',
@@ -42,6 +44,11 @@ function ResultByOpenHour({ data }) {
     },
   ];
 
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
+
   return (
     <div className='result_by_open_hour'>
       <div className='analysis_box'>
@@ -53,11 +60,17 @@ function ResultByOpenHour({ data }) {
         </div>
       </div>
       <div style={{marginTop:'20px'}} className='analysis_box'>
-        <h2 className='standard_heading'>
+        <h2 className='standard_heading' style={{marginBottom:'20px'}}>
           Results by Duration
         </h2>
         <div className='table_wrapper'>
-          <AntTable columns={columns} data={tableData} />
+          <AntTable columns={columns} data={tableData}
+           totalPages={Math.ceil(tableData.length / pageSize)}
+           totalItems={tableData.length}
+           pageSize={pageSize}
+           CurrentPageNo={pageNo}
+           setPageSize={setPageSize}
+           triggerChange={triggerChange} />
         </div>
       </div>
     </div>
