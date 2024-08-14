@@ -139,8 +139,8 @@ const TraderJournal = ({ login_id, platform }) => {
   return (
     <div className="trader_journal_main">
       <AntTable columns={columns} data={data}
-         totalPages={Math.ceil(data?.no_of_trades / pageSize)}
-         totalItems={data?.no_of_trades}
+         totalPages={Math.ceil(data?.length / pageSize)}
+         totalItems={data?.length}
          pageSize={pageSize}
          CurrentPageNo={pageNo}
          setPageSize={setPageSize}
