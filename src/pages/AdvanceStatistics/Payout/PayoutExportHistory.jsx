@@ -1,10 +1,10 @@
 import React from "react";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import downloadIcon from "../../../assets/icons/download_to_pc.svg";
-import "./PassRates.scss";
+import "./Payout.scss";
 import {Breadcrumb} from "antd";
 
-const ExportHistoryTable = () => {
+const PayoutExportHistory = () => {
   const columns = [
     {
       title: "Admin Email ID",
@@ -25,7 +25,7 @@ const ExportHistoryTable = () => {
       render: (text) =>
         (
           <>
-            <button className="exportHistory_download_btn">
+            <button className="payoutExportHistory_download_btn">
               <p>Export.xlsx</p>
               <img
                 src={downloadIcon}
@@ -68,37 +68,19 @@ const ExportHistoryTable = () => {
       date_time: "02/07/2024 04:07:43",
       export_history: "export",
     },
-    {
-      key: "1",
-      adminEmailId: "tanya.hill@example.com",
-      date_time: "02/07/2024 04:07:43",
-      export_history: "export",
-    },
-    {
-      key: "1",
-      adminEmailId: "tanya.hill@example.com",
-      date_time: "02/07/2024 04:07:43",
-      export_history: "export",
-    },
-    {
-      key: "1",
-      adminEmailId: "tanya.hill@example.com",
-      date_time: "02/07/2024 04:07:43",
-      export_history: "export",
-    },
   ];
   return (
     <>
-      <div className="exportHistoryTable_main">
+      <div className="payoutExportHistory_main">
         <div>
           <Breadcrumb
             separator=">"
             items={[
               {
-                title: <a href="/advance-statistics/pass-rates">Pass Rates</a>,
+                title: <a href="/advance-statistics/payout">Payout</a>,
               },
               {
-                title: <a href="">Export History</a>,
+                title: <a href="">Payout Export History</a>,
               },
             ]}
           />
@@ -120,4 +102,4 @@ const ExportHistoryTable = () => {
   );
 };
 
-export default ExportHistoryTable;
+export default PayoutExportHistory;

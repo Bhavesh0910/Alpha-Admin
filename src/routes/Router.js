@@ -3,7 +3,6 @@ import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
 import RiskManagement from "../pages/RiskManagement";
 
-import Payouts from "../pages/Support/Payouts/Payouts";
 import TraderOverview from "../pages/TraderOverview/Platform/TraderOverview";
 import Signin from "../pages/Auth/Signin";
 import AccountMetrics from "../pages/AccountMetrics";
@@ -50,6 +49,8 @@ import WithdrawalStatus from "../pages/AdvanceStatistics/WithdrawalStatus/Withdr
 import WithdrawalStatusExportHistory from "../pages/AdvanceStatistics/WithdrawalStatus/WithdrawalStatusExport";
 import PassRates from "../pages/AdvanceStatistics/PassRates/PassRates";
 import ExportHistoryTable from "../pages/AdvanceStatistics/PassRates/ExportHistoryTable";
+import Payout from "../pages/AdvanceStatistics/Payout/Payout";
+import PayoutExportHistory from "../pages/AdvanceStatistics/Payout/PayoutExportHistory";
 
 function Router() {
   return (
@@ -239,20 +240,42 @@ function Router() {
             exact={true}
             path="/advance-statistics/pass-rates"
             element={
-              <PageLayout headerName="Pass Rates">
+              <PageLayout headerName="Advance Statistics">
                 <PassRates />
               </PageLayout>
             }
           />
+
+          <Route
+            exact={true}
+            path="/advance-statistics/payout"
+            element={
+              <PageLayout headerName="Advance Statistics">
+                <Payout />
+              </PageLayout>
+            }
+          />
+
           <Route
             exact={true}
             path="/advance-statistics/export-history"
             element={
-              <PageLayout headerName="Export history">
+              <PageLayout headerName="Advance Statistics">
                 <ExportHistoryTable />
               </PageLayout>
             }
           />
+
+          <Route
+            exact={true}
+            path="/advance-statistics/payout-export-history"
+            element={
+              <PageLayout headerName="Advance Statistics">
+                <PayoutExportHistory />
+              </PageLayout>
+            }
+          />
+
           <Route
             exact={true}
             path="/revenue-management"

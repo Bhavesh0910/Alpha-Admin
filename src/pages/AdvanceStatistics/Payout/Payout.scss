@@ -1,0 +1,177 @@
+.payout_main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .payout_header {
+    h2 {
+      color: #fff;
+      font-family: "Nunito Sans";
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: normal;
+    }
+  }
+
+  .payout_lower_heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .payout_lower_heading_left {
+      display: flex;
+      width: 563px;
+      height: 100px;
+      padding: 20px;
+
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 10px;
+
+      border-radius: var(--table-box, 20px);
+      background: #fff;
+
+      h3 {
+        color: var(--Text, #1e1e1e);
+        font-family: "Nunito Sans";
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+
+        span {
+          color: var(--Text-2, #686868);
+          font-family: "Nunito Sans";
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+        }
+      }
+
+      .payout_lower_heading_inner {
+        display: flex;
+        gap: 10px;
+        h2 {
+          color: var(--Text, #1e1e1e);
+          leading-trim: both;
+          text-edge: cap;
+          font-family: "Nunito Sans";
+          font-size: 22px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: normal;
+        }
+
+        button {
+          border-radius: var(--table-box, 20px);
+          border: 0.5px solid var(--sucess, #009017);
+          background: var(--Success-Body, #cdffdd);
+
+          display: flex;
+
+          padding: 0px 10px;
+          justify-content: space-between;
+          align-items: center;
+          align-self: stretch;
+        }
+      }
+    }
+
+    .payout_btn_wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      .payout_btn {
+        display: flex;
+        height: 46px;
+        padding: 0px 15px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        align-self: flex-end;
+        width: fit-content;
+
+        border-radius: 10px;
+        background: #f6fefe;
+
+        button {
+          border: none;
+        }
+      }
+      p {
+        color: var(--Brand-1, #04d9ff);
+        font-family: "Nunito Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        text-decoration-line: underline;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .payout_lower_heading_two {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .left {
+      h3 {
+        color: var(--white, #fff);
+        font-family: "Nunito Sans";
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+      }
+    }
+    .right {
+      display: flex;
+      padding: 13px 35px;
+      align-items: flex-start;
+      gap: 10px;
+
+      border-radius: 10px;
+      background: #04d9ff;
+
+      color: #12181f;
+      font-family: "Nunito Sans";
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+  }
+}
+
+// Payout history table
+
+.payoutExportHistory_main {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+
+  .payoutExportHistory_download_btn {
+    border-radius: var(--Corner-Radius, 10px);
+    border: 1px solid var(--sucess, #009017);
+    background: var(--Success-Body, #cdffdd);
+
+    display: flex;
+    height: 32px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    p {
+      color: var(--Text, #1e1e1e);
+      font-family: "Nunito Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+}

@@ -192,6 +192,11 @@ const items = [
         label: "Passes Rates",
         link: "/advance-statistics/pass-rates",
       },
+      {
+        key: "18-4",
+        label: "Payout",
+        link: "/advance-statistics/payout",
+      },
     ],
   },
   {
