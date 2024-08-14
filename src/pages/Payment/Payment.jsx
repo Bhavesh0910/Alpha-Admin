@@ -246,7 +246,7 @@ const Payment = () => {
 
   const handleUpdateStatus = () => {
     let body = {payment_id: userToUpdate?.transaction_id};
-    console.log(idToken)
+    console.log(idToken);
     dispatch(updatePaymentStatusReq({idToken, body, dispatch}));
     setStatusModelVisible(false);
   };
@@ -317,7 +317,7 @@ const Payment = () => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const handleCloseModal = () => {
-    setModalVisible(!isModalVisible);
+    setModalVisible(true);
   };
   return (
     <div className="payment_container">
@@ -430,6 +430,7 @@ const Payment = () => {
         <CalendarModal
           idToken={idToken}
           status={activeTab}
+          setModalVisible={setModalVisible}
           handleCloseModal={handleCloseModal}
         />
       ) : (
@@ -459,7 +460,7 @@ const Payment = () => {
 
 export default Payment;
 
-const CalendarModal = ({idToken, status, handleCloseModal}) => {
+const CalendarModal = ({idToken, status, handleCloseModal, setModalVisible}) => {
   const {exportLink} = useSelector((state) => state.payment);
   const {searchDates} = useSelector((state) => state.auth);
   const [dates, setdates] = useState(null);
@@ -497,7 +498,7 @@ const CalendarModal = ({idToken, status, handleCloseModal}) => {
   return (
     <div
       className="calendarModal_container"
-      onClick={handleCloseModal}
+      onClick={() => setModalVisible(false)}
     >
       <div
         className="calendarModal_wrapper"
@@ -518,7 +519,7 @@ const CalendarModal = ({idToken, status, handleCloseModal}) => {
         <div className="calandarModal_export_btn">
           {exportLink != "" ? (
             <a
-              href={`${exportLink}`}
+              href={`${exportLink?.s3_file_url}`}
               target="_blank"
             >
               <Button className="standard_button">Export</Button>

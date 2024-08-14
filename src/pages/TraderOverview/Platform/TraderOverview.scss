@@ -3,6 +3,19 @@
   flex-direction: column;
   gap: 20px;
 
+  .trader-overview-header-left {
+  }
+
+  .trader-overview-header-left_inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    @media (max-width: 720px) {
+      width: 100%;
+    }
+  }
+
   /* CSS to style custom scrollbar for Ant Design table */
 
   .ant-table {
@@ -81,6 +94,8 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    flex-wrap: wrap;
+    gap: 20px;
 
     @media only screen and (max-width: 800px) {
       flex-direction: column;
@@ -91,6 +106,8 @@
       display: flex;
       align-items: center;
       gap: 10px;
+
+      flex-wrap: wrap;
 
       @media only screen and (max-width: 800px) {
         margin-right: auto;
@@ -393,5 +410,5 @@
 }
 
 // .ant-select-selection-item {
-//   display: none !important; 
+//   display: none !important;
 // }

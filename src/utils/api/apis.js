@@ -2083,8 +2083,9 @@ const CreateTradingAccountReq = async (idToken, data, platform) => {
     },
   };
 
-  config.headers[`x-api-key`] =
-    `ONRzS8gkWBRkr76XYyI6z1e6p6NX72x83KABC4dpx90sSxgzF9n3QqlQoBHGvGZKgu3a2hVPVtMeUYxlyILZMK5cZo2VspEKWORYvdN4fk1WVmtALKKlfwAFFXRpBFyIGQOcNHRtn0dsr6YJhhdNXrDh4Fk5dlt4Cns2CPl5e7QgByxNaSpfJE6vewJVsgmp6KMMWnnOqyMmBWw33NQyTbdP0gCwaLHPlspCEWJDokCUFSVf0IwG8hWJkulr5Al`;
+  config.headers[
+    `x-api-key`
+  ] = `ONRzS8gkWBRkr76XYyI6z1e6p6NX72x83KABC4dpx90sSxgzF9n3QqlQoBHGvGZKgu3a2hVPVtMeUYxlyILZMK5cZo2VspEKWORYvdN4fk1WVmtALKKlfwAFFXRpBFyIGQOcNHRtn0dsr6YJhhdNXrDh4Fk5dlt4Cns2CPl5e7QgByxNaSpfJE6vewJVsgmp6KMMWnnOqyMmBWw33NQyTbdP0gCwaLHPlspCEWJDokCUFSVf0IwG8hWJkulr5Al`;
 
   let endpoint;
   console.log(platform);

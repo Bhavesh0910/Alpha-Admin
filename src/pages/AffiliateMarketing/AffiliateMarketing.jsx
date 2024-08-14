@@ -102,9 +102,12 @@ const AffiliateMarketing = ({userData}) => {
                   ?.split(" ")
                   .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                   .join(" ") || "-",
-                searchText
+                searchText,
               )
-            : text?.split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ") || "-"}
+            : text
+                ?.split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ") || "-"}
         </div>
       ),
     },
@@ -122,9 +125,12 @@ const AffiliateMarketing = ({userData}) => {
                   ?.split(" ")
                   .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                   .join(" ") || "-",
-                searchText
+                searchText,
               )
-            : text?.split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ") || "-"}
+            : text
+                ?.split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ") || "-"}
         </div>
       ),
     },
@@ -154,7 +160,6 @@ const AffiliateMarketing = ({userData}) => {
       ),
     },
   ];
-  
 
   const dummyData = [
     {
@@ -200,7 +205,7 @@ const AffiliateMarketing = ({userData}) => {
       <div className="header_wrapper">
         <h3 className="page_header">Affiliate List</h3>
         <Button
-          onClick={() => navigate('/affiliate-marketing/logs')}
+          onClick={() => navigate("/affiliate-marketing/logs")}
           className="view_logs__btn standard_button"
         >
           View Logs

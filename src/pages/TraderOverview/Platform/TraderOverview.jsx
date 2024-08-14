@@ -381,37 +381,42 @@ function TraderOverview() {
           </Button>
         </div>
         <div className="trader-overview-header-left">
-          <Title
-            className="title"
-            style={{fontstatus: "14px"}}
-            level={5}
-          >
-            Platform
-          </Title>
-          <Select
-            // placeholder="Select Platform"
-            defaultValue={options[0].value}
-            className="header-select"
-            onChange={handlePlatformChange}
-            options={options}
-          />
-          <Title
-            className="title"
-            style={{fontSize: "14px"}}
-            level={5}
-          >
-            Challenges
-          </Title>
-          <Select
-            mode="multiple"
-            // value={"Select Challenge"}
-            // defaultValue={ChallengesOptions[0]}
-            placeholder="Select Challenge"
-            className="header-select widthFitContent"
-            onChange={(value) => setChallenges(value)}
-            options={ChallengesOptions || []}
-            tagRender={(item) => null}
-          />
+          <div className="trader-overview-header-left_inner">
+            <Title
+              className="title"
+              style={{fontstatus: "14px"}}
+              level={5}
+            >
+              Platform
+            </Title>
+            <Select
+              // placeholder="Select Platform"
+              defaultValue={options[0].value}
+              className="header-select"
+              onChange={handlePlatformChange}
+              options={options}
+            />
+          </div>
+
+          <div className="trader-overview-header-left_inner">
+            <Title
+              className="title"
+              style={{fontSize: "14px"}}
+              level={5}
+            >
+              Challenges
+            </Title>
+            <Select
+              mode="multiple"
+              // value={"Select Challenge"}
+              // defaultValue={ChallengesOptions[0]}
+              placeholder="Select Challenge"
+              className="header-select widthFitContent"
+              onChange={(value) => setChallenges(value)}
+              options={ChallengesOptions || []}
+              tagRender={(item) => null}
+            />
+          </div>
         </div>
         {/* <div className="trader-overview-header-left"></div> */}
       </div>

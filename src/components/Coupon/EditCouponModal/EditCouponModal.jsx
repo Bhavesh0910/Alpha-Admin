@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./EditCouponModal.scss";
 import crossIcon from "../../../assets/icons/cross_icon_white.svg";
-import { Button, Checkbox, DatePicker, Input, Select, Spin } from "antd";
-import { ReactComponent as PercentageIcon } from "../../../assets/icons/precentage_icon_white.svg";
+import {Button, Checkbox, DatePicker, Input, Select, Spin} from "antd";
+import {ReactComponent as PercentageIcon} from "../../../assets/icons/precentage_icon_white.svg";
 import dayjs from "dayjs";
 import moment from "moment";
-import { editCoupon } from "../../../store/NewReducers/Coupons";
-import { useDispatch } from "react-redux";
-import { returnErrors } from "../../../store/reducers/error";
-import { returnMessages } from "../../../store/reducers/message";
-import { getChallenges, UserSearchReq } from "../../../utils/api/apis";
+import {editCoupon} from "../../../store/NewReducers/Coupons";
+import {useDispatch} from "react-redux";
+import {returnErrors} from "../../../store/reducers/error";
+import {returnMessages} from "../../../store/reducers/message";
+import {getChallenges, UserSearchReq} from "../../../utils/api/apis";
 
-const { Option } = Select;
+const {Option} = Select;
 
-const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => {
+const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
   const [category, setCategory] = useState("Alpha Pro 5K");
   const [editedData, setEditedData] = useState(editCouponData || {});
   const [challenges, setChallenges] = useState([]);
@@ -46,7 +46,7 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
           value: item?.id,
         }));
         setEmailOpts(userArray);
-      } 
+      }
     } catch (error) {
       setIsLoading(false);
       dispatch(returnErrors("Failed to fetch users. Please try again.", 400));
@@ -54,7 +54,7 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
   };
 
   const handleInputChange = (field, value) => {
-    setEditedData((prev) => ({ ...prev, [field]: value }));
+    setEditedData((prev) => ({...prev, [field]: value}));
   };
 
   const handleCloseButton = () => {
@@ -69,7 +69,7 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
   const handleDateChange = (date) => {
     handleInputChange("coupon_expiry", date ? date.format("YYYY-MM-DD") : "");
   };
-  console.log(editCouponData)
+  console.log(editCouponData);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,7 +78,7 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
     const updatedFields = {
       coupon_id: id,
       coupon_name: editedData?.coupon_name,
-      Coupon_user: editedData?.Coupon_users || [], 
+      Coupon_user: editedData?.Coupon_users || [],
       coupon_amount: parseFloat(editedData?.coupon_amount), // Ensure it's a number
       coupon_percent: parseFloat(editedData?.coupon_percent), // Ensure it's a number
       public: editedData?.public,
@@ -86,30 +86,38 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
       challenge: editedData?.challenge,
       coupon_expiry: editedData?.coupon_expiry,
     };
-    
 
     try {
-      dispatch(editCoupon({ idToken, id, body: updatedFields , dispatch}));
+      dispatch(editCoupon({idToken, id, body: updatedFields, dispatch}));
       handleCloseButton();
     } catch (error) {
-      console.log(error)
+      console.log(error);
       dispatch(returnErrors(error?.response?.data?.detail || "Action Failed! Try Again.", error?.response?.status || 400));
     }
   };
 
   return (
-    <div className="editCouponModal_container" onClick={handleCloseButton}>
-      <div className="editCouponModal_wrapper" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="editCouponModal_container"
+      onClick={handleCloseButton}
+    >
+      <div
+        className="editCouponModal_wrapper"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="header_wrapper">
           <h3>Edit Coupon</h3>
           <img
-            style={{ cursor: "pointer" }}
+            style={{cursor: "pointer"}}
             onClick={handleCloseButton}
             src={crossIcon}
             alt="cross_icon"
           />
         </div>
-        <form className="editCouponForm" onSubmit={handleSubmit}>
+        <form
+          className="editCouponForm"
+          onSubmit={handleSubmit}
+        >
           <div className="topSection">
             <div className="form_input_box">
               <label htmlFor="coupon_name">Coupon Code</label>
@@ -132,7 +140,12 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
                 showSearch
                 filterOption={false}
               >
-                {isLoading && <Spin size="small" style={{ marginLeft: 8 }} />}
+                {isLoading && (
+                  <Spin
+                    size="small"
+                    style={{marginLeft: 8}}
+                  />
+                )}
               </Select>
             </div>
           </div>
@@ -167,7 +180,10 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
                 {Object.keys(challenges).map((category) => (
                   <React.Fragment key={category}>
                     {challenges[category].map((challenge) => (
-                      <Option key={challenge.id} value={challenge.id}>
+                      <Option
+                        key={challenge.id}
+                        value={challenge.id}
+                      >
                         {challenge.name}
                       </Option>
                     ))}
@@ -204,7 +220,13 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
                 Is Public
               </Checkbox>
             </div>
-            <Button className="save_changes_btn" onClick={handleSubmit} type="submit">Save Changes</Button>
+            <Button
+              className="save_changes_btn"
+              onClick={handleSubmit}
+              type="submit"
+            >
+              Save Changes
+            </Button>
           </div>
         </form>
       </div>
