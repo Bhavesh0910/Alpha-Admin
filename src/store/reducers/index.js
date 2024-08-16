@@ -33,6 +33,7 @@ import logsReducer from "../NewReducers/logsSlice";
 import revenueMangement from "../NewReducers/revenueMangement";
 import advanceStatistics from "../NewReducers/advanceStatistics";
 import exportReducer from "../NewReducers/exportSlice";
+import exportHistoryReducer from "../NewReducers/exportHistorySlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -57,6 +58,7 @@ const rootReducer = combineReducers({
   advanceStatistics: advanceStatisticsReducer,
   accountMetrics: amReducer,
   export: exportReducer,
+  exportHistory: exportHistoryReducer,
   payoutList: payoutSlice,
   payment: paymentSlice,
   coupon: couponSlice,

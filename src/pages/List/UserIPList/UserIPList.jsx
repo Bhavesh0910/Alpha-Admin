@@ -26,6 +26,10 @@ const UserIPList = () => {
 
   const { ipLogsData, isLoading, error } = useSelector((state) => state.list);
 
+  const [pageNo, setPageNo] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+
   const fetch = () => {
     dispatch(fetchIpLogs({ idToken, search: searchText, blocked: activeTab === "blocked" ? 'True' : 'False', currentPage }));
   };
@@ -145,6 +149,14 @@ const UserIPList = () => {
     },
   ];
 
+  
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
+
+
+  console.log(ipLogsData)
   return (
     <div className="list_container">
       <div className="header_wrapper">
@@ -179,10 +191,14 @@ const UserIPList = () => {
       </div>
       {isLoading && <LoaderOverlay />}
       <AntTable
-        data={ipLogsData}
+        data={ipLogsData?.results}
         columns={columns}
-        pagination={{ pageSize: 10 }}
-      />
+        totalPages={Math.ceil(ipLogsData?.count / pageSize)}
+        totalItems={ipLogsData?.count}
+        pageSize={pageSize}
+        CurrentPageNo={pageNo}
+        setPageSize={setPageSize}
+        triggerChange={triggerChange}      />
 
       <Modal
         title={`${action} Account`}

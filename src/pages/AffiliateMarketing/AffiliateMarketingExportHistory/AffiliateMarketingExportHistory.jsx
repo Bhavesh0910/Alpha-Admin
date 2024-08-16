@@ -8,6 +8,8 @@ import "./AffiliateMarketingExportHistory.scss";
 import moment from "moment";
 import { fetchExportHistory } from "../../../store/NewReducers/affiliateSlice";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
+import dayjs from "dayjs";
+import downloadIcon from "../../../assets/icons/download_to_pc.svg";
 
 const AffiliateMarketingExportHistory = () => {
   const [pageSize, setPageSize] = useState(20);
@@ -23,49 +25,42 @@ const AffiliateMarketingExportHistory = () => {
 
   const { exportHistoryData, isLoading, error } = useSelector((state) => state.affiliate);
   console.log(exportHistoryData)
+
   const columns = [
     {
-      title: "Admin Email ID",
+      title: "Created By",
       dataIndex: "created_by",
       key: "created_by",
-      render: (text) => text || "N/A",
     },
     {
-      title: "File Name",
+      title: "Filename",
       dataIndex: "file_name",
       key: "file_name",
-      render: (text) => text ? text.split("/").pop() : "N/A",
     },
     {
-      title: "Date and Time",
+      title: "Created At",
       dataIndex: "created_at",
       key: "created_at",
-      render: (text) => (
-        <div className="date_format">
-          <div>{moment(text).format("DD/MM/YYYY")}</div>
-          <div>{moment(text).format("HH:mm:ss")}</div>
-        </div>
-      ),
-    },
-    {
-      title: "Type",
-      dataIndex: "type",
-      key: "type",
-      render: (text) => text || "N/A",
+      render: (text) => dayjs(text).format('DD/MM/YYYY HH:mm:ss'), 
     },
     {
       title: "Download",
-      dataIndex: "excel_file",
-      key: "excel_file",
-      render: (url) => (
-        <Button href={url} target="_blank" className="export_history_btn">
+      key: "download",
+      render: (_, record) => (
+        <Button
+          className="download_btn"
+          type="link"
+          href={record.excel_file} 
+          target="_blank"
+          disabled={!record.excel_file} 
+        >
           Download
-          <img src={exportIcon} alt="export_icon" />
+          <img src={downloadIcon} alt="" />
         </Button>
       ),
     },
   ];
-  
+
 
   const handlePageChange = (page, updatedPageSize) => {
     setPageNo(page);
@@ -73,7 +68,7 @@ const AffiliateMarketingExportHistory = () => {
   };
 
   return (
-    <Card className="table-wrapper viewLogs_table">
+    <Card className="table-wrapper viewLogs_table aff_export">
       <div className="header_wrapper">
         <h3 className="page_header">Export History</h3>
       </div>
@@ -92,7 +87,7 @@ const AffiliateMarketingExportHistory = () => {
       ) : (
         <AntTable
           columns={columns}
-          data={exportHistoryData || []}
+          data={exportHistoryData?.results || []}
           totalPages={Math.ceil(exportHistoryData?.count / pageSize)}
           totalItems={exportHistoryData?.count}
           pageSize={pageSize}
