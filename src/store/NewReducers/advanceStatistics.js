@@ -51,9 +51,9 @@ export const fetchPassRate = createAsyncThunk(
 // Thunk for fetching daily stats 
 export const fetchDailyStats = createAsyncThunk(
   'advanceStats/fetchDailyStats',
-  async ({ login_id, idToken }, { dispatch, rejectWithValue }) => {
+  async ({ idToken  , query  }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await getDailyStats(login_id, idToken);
+      const response = await getDailyStats(idToken , query);
       return response;
     } catch (error) {
       const msg = error.response?.data?.detail || 'Error fetching daily stats';
@@ -118,7 +118,7 @@ const advanceStatisticsSlice = createSlice({
       })
       .addCase(fetchDailyStats.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.dailyStats = action.payload;
+        state.dailyStats = action.payload.data;
       })
       .addCase(fetchDailyStats.rejected, (state, action) => {
         state.isLoading = false;

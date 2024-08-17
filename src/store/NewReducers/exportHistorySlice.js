@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { baseUrl } from '../../utils/api/apis';
 import axios from 'axios';
+import { returnErrors } from '../reducers/error';
 
 
 
@@ -21,11 +22,12 @@ export const fetchExportHistoryApi = async (idToken, url) => {
 
 export const fetchExportHistoryReq = createAsyncThunk(
     'exportHistory/fetchExportHistory',
-    async ({ idToken, url }, { rejectWithValue }) => {
+    async ({ idToken, url , dispatch }, { rejectWithValue }) => {
       try {
         const response = await fetchExportHistoryApi(idToken, url);
         return response;
       } catch (error) {
+        dispatch(returnErrors(error?.response?.data?.detail || "Error while fetching export history", 400));
         return rejectWithValue(error.response?.data || 'An error occurred');
       }
     }

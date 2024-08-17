@@ -12,6 +12,8 @@ import "./WithdrawalStatus.scss";
 import { fetchWithdrawalsStatus } from "../../../store/NewReducers/advanceStatistics";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import { exportDataReq } from "../../../store/NewReducers/exportSlice";
+import { returnMessages } from "../../../store/reducers/message";
+import { returnErrors } from "../../../store/reducers/error";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -145,7 +147,11 @@ const WithdrawalStatus = () => {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: text => text || '-', 
+      render: (text) => (
+        <div className="status_btn">
+          {text || '-'}
+        </div>
+      ),
     },
     {
       title: 'Is Expected',
@@ -248,26 +254,20 @@ const WithdrawalStatus = () => {
         .then((response) => {
           const { s3_file_url, filename } = response;
   
-          // Create a link element and set the href to the s3_file_url
           const link = document.createElement('a');
           link.href = s3_file_url;
-          link.download = filename; // Set the filename for the downloaded file
+          link.download = filename; 
           document.body.appendChild(link);
-          link.click(); // Trigger the download
+          link.click();
           document.body.removeChild(link);
   
-          notification.success({
-            message: "Export Successful",
-            description: "Your data export request has been processed.",
-          });
+         dispatch(returnMessages("Export Successful" , 200))
   
           handleCloseModal();
         })
         .catch((error) => {
-          notification.error({
-            message: "Export Failed",
-            description: error?.message || "An error occurred during export.",
-          });
+          dispatch(returnErrors("Export failed" , 400))
+
         });
     } else {
       notification.warning({

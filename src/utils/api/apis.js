@@ -1210,9 +1210,9 @@ export const getPassRate = async (login_id, idToken) => {
   }
 };
 
-export const getDailyStats = async (login_id, idToken) => {
+export const getDailyStats = async (idToken , query) => {
   try {
-    const response = await axios.get(`${baseUrl}advance-stats/DailyStats/`, {
+    const response = await axios.get(`${baseUrl}advance-stats/DailyStats/${query}`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },

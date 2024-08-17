@@ -27,7 +27,7 @@ const PaymentExportHistory = () => {
     // if (startDate && endDate) {
       // const query = `?start_date=${startDate}&end_date=${endDate}`;
       const url = `v3/admin/export-history/`;
-      dispatch(fetchExportHistoryReq({ idToken, url }));
+      dispatch(fetchExportHistoryReq({ idToken, url , dispatch }));
     // }
   }, [ dispatch, idToken]);
 

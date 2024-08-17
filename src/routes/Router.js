@@ -53,6 +53,7 @@ import PassRates from "../pages/AdvanceStatistics/PassRates/PassRates";
 import ExportHistoryTable from "../pages/AdvanceStatistics/PassRates/ExportHistoryTable";
 import Payout from "../pages/AdvanceStatistics/Payout/Payout";
 import PayoutExportHistory from "../pages/AdvanceStatistics/Payout/PayoutExportHistory";
+import DailyStats from "../pages/AdvanceStatistics/DailyStats/DailyStats";
 
 function Router() {
   return (
@@ -259,7 +260,15 @@ function Router() {
             }
           />
           
-   
+          <Route
+            exact={true}
+            path="/advance-statistics/daily-stats"
+            element={
+              <PageLayout headerName="Daily Stats">
+                <DailyStats />
+              </PageLayout>
+            }
+          />
           <Route
             exact={true}
             path="/advance-statistics/pass-rates"

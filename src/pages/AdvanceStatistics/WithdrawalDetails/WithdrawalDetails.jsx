@@ -6,11 +6,14 @@ import exportBtnIcon from "../../../assets/icons/export_btn_icon.svg";
 import { ReactComponent as CopyButton } from "../../../assets/icons/copyButtonGray.svg";
 import dayjs from "dayjs";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import { DownOutlined } from "@ant-design/icons";
+import { CloseOutlined, DownOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import "./WithdrawalDetails.scss";
 import { fetchWithdrawalsDetails, fetchWithdrawalsStatus } from "../../../store/NewReducers/advanceStatistics";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
+import { returnMessages } from "../../../store/reducers/message";
+import { returnErrors } from "../../../store/reducers/error";
+import { exportDataReq } from "../../../store/NewReducers/exportSlice";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -222,10 +225,37 @@ const WithdrawalDetails = () => {
   };
 
   const handleExport = () => {
-    console.log("Exporting data from", dates);
-    handleCloseModal();
-  };
+    if (dates.length === 2) {
+      const [startDate, endDate] = dates;
+      const url = `withdrawals/details/export/?start_date=${startDate}&end_date=${endDate}`;
+      
+      dispatch(exportDataReq({ idToken, url }))
+        .unwrap()
+        .then((response) => {
+          const { s3_file_url, filename } = response;
+  
+          const link = document.createElement('a');
+          link.href = s3_file_url;
+          link.download = filename; 
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+  
+         dispatch(returnMessages("Export Successful" , 200))
+  
+          handleCloseModal();
+        })
+        .catch((error) => {
+          dispatch(returnErrors("Export failed" , 400))
 
+        });
+    } else {
+      notification.warning({
+        message: "Invalid Dates",
+        description: "Please select a valid date range.",
+      });
+    }
+  };
   const handleDateChange = (values) => {
     if (values) {
       setDates(values);
@@ -290,26 +320,45 @@ const WithdrawalDetails = () => {
         <AntTable
           data={withdrawalsDetails?.results}
           columns={columns}
-   
+          totalPages={Math.ceil(withdrawalsDetails?.count / pageSize)}
+          totalItems={withdrawalsDetails?.count}
+          pageSize={pageSize}
+          CurrentPageNo={pageNo}
+          setPageSize={setPageSize}
+          triggerChange={triggerChange}
         />
       )}
       <Modal
-        title="Export"
-        visible={isModalVisible}
-        onOk={handleExport}
-        onCancel={handleCloseModal}
-        okText="Export"
-        className="export_modal"
-      >
-        <div className="export_modal_wrapper">
-          <RangePicker
-            onChange={updateDateRange}
-            autoFocus
-            presets={rangePresets}
-          />
-        </div>
-        File will contain information of the date you’ve selected.
-      </Modal>
+      title="Export"
+      visible={isModalVisible}
+      onCancel={handleCloseModal} 
+      footer={null} 
+      className="export_modal" 
+      closeIcon={<CloseOutlined style={{ color: '#fff' }} />} 
+    >
+      <div className="export_modal_wrapper">
+        <RangePicker
+          onChange={updateDateRange}
+          autoFocus
+          presets={rangePresets}
+          style={{ width: '100%' }} 
+        />
+      </div>
+      <p style={{ color: '#fff' }}>File will contain information of the date you’ve selected.</p>
+      <div className="btn_wrapper">
+        <Button
+          type="primary"
+          onClick={handleExport}
+          style={{
+            backgroundColor: '#1890ff', 
+            borderColor: '#1890ff',
+            color: '#fff',
+          }}
+        >
+          Export
+        </Button>
+      </div>
+    </Modal>
     </div>
   );
 };
