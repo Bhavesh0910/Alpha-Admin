@@ -9,7 +9,9 @@ const TotalPassesCharts = ({data}) => {
     setCharts(e.target.value);
   };
 
-  const chartData = Array.isArray(data) ? data : [400, 600, 550, 500, 700, 800, 1100, 1050];
+  const totalFailed = data?.results.map((item) => item.total_failed);
+
+  const chartData = Array.isArray(totalFailed) ? totalFailed : [400, 600, 550, 500, 700, 800, 1100, 1050];
 
   const options = {
     chart: {
@@ -34,7 +36,7 @@ const TotalPassesCharts = ({data}) => {
       },
     },
     xaxis: {
-      categories: ["Aug 1", "Aug 2", "Aug 3", "Aug 4", "Aug 5", "Aug 6", "Aug 7", "Aug 8"],
+      // categories: ["Aug 1", "Aug 2", "Aug 3", "Aug 4", "Aug 5", "Aug 6", "Aug 7", "Aug 8"],
       labels: {
         style: {
           colors: "#000",
@@ -45,7 +47,7 @@ const TotalPassesCharts = ({data}) => {
     },
     yaxis: {
       min: 0,
-      max: 1200,
+      // max: 1200,
       labels: {
         style: {
           colors: "#000",
@@ -68,7 +70,7 @@ const TotalPassesCharts = ({data}) => {
 
   const series = [
     {
-      name: "Total Passed",
+      name: "Total Failed",
       data: chartData,
     },
   ];
@@ -76,7 +78,7 @@ const TotalPassesCharts = ({data}) => {
   return (
     <div className="chart">
       <div className="chart_header">
-        <h3 style={{marginBottom: "10px"}}>Total Passed</h3>
+        <h3 style={{marginBottom: "10px"}}>Total Failed</h3>
         <div className="trader-overview-header-right tabs_wrapper">
           <Radio.Group
             value={charts}

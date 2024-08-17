@@ -5,11 +5,13 @@ import Chart from "react-apexcharts";
 const TotalPassesCharts = ({data}) => {
   const [charts, setCharts] = useState("D");
 
+  const totalPassed = data?.results.map((item) => item.total_passed);
+
   const onChangeActive = (e) => {
     setCharts(e.target.value);
   };
 
-  const chartData = Array.isArray(data) ? data : [400, 600, 550, 500, 700, 800, 1100, 1050];
+  const chartData = Array.isArray(totalPassed) ? totalPassed : [400, 600, 550, 500, 700, 800, 1100, 1050];
 
   const options = {
     chart: {
@@ -34,7 +36,7 @@ const TotalPassesCharts = ({data}) => {
       },
     },
     xaxis: {
-      categories: ["Aug 1", "Aug 2", "Aug 3", "Aug 4", "Aug 5", "Aug 6", "Aug 7", "Aug 8"],
+      // categories: ["Aug 1", "Aug 2", "Aug 3", "Aug 4", "Aug 5", "Aug 6", "Aug 7", "Aug 8"],
       labels: {
         style: {
           colors: "#000",
@@ -45,7 +47,7 @@ const TotalPassesCharts = ({data}) => {
     },
     yaxis: {
       min: 0,
-      max: 1200,
+      // max: 1200,
       labels: {
         style: {
           colors: "#000",

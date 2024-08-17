@@ -1182,7 +1182,7 @@ export const getWithdrawalsStatus = async (idToken, query) => {
   }
 };
 
-export const getWithdrawalsDetails = async ( idToken , query) => {
+export const getWithdrawalsDetails = async (idToken, query) => {
   try {
     const response = await axios.get(`${baseUrl}payout/Withdrawals-Details/${query}`, {
       headers: {
@@ -1196,9 +1196,9 @@ export const getWithdrawalsDetails = async ( idToken , query) => {
   }
 };
 
-export const getPassRate = async (login_id, idToken) => {
+export const getPassRate = async (idToken, query) => {
   try {
-    const response = await axios.get(`${baseUrl}advance-stats/PassRate/`, {
+    const response = await axios.get(`${baseUrl}advance-stats/PassRate/${query}`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },

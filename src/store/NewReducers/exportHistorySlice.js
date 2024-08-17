@@ -1,9 +1,7 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { baseUrl } from '../../utils/api/apis';
-import axios from 'axios';
-import { returnErrors } from '../reducers/error';
-
-
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {baseUrl} from "../../utils/api/apis";
+import axios from "axios";
+import {returnErrors} from "../reducers/error";
 
 export const fetchExportHistoryApi = async (idToken, url) => {
   try {
@@ -15,26 +13,23 @@ export const fetchExportHistoryApi = async (idToken, url) => {
     const response = await axios.get(`${baseUrl}${url}`, config);
     return response.data;
   } catch (error) {
-    console.error('Error during fetchExportHistoryApi request:', error);
+    console.error("Error during fetchExportHistoryApi request:", error);
     throw error;
   }
 };
 
-export const fetchExportHistoryReq = createAsyncThunk(
-    'exportHistory/fetchExportHistory',
-    async ({ idToken, url , dispatch }, { rejectWithValue }) => {
-      try {
-        const response = await fetchExportHistoryApi(idToken, url);
-        return response;
-      } catch (error) {
-        dispatch(returnErrors(error?.response?.data?.detail || "Error while fetching export history", 400));
-        return rejectWithValue(error.response?.data || 'An error occurred');
-      }
-    }
-  );
+export const fetchExportHistoryReq = createAsyncThunk("exportHistory/fetchExportHistory", async ({idToken, url, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await fetchExportHistoryApi(idToken, url);
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error?.response?.data?.detail || "Error while fetching export history", 400));
+    return rejectWithValue(error.response?.data || "An error occurred");
+  }
+});
 
 const exportHistorySlice = createSlice({
-  name: 'exportHistory',
+  name: "exportHistory",
   initialState: {
     isLoading: false,
     isError: false,

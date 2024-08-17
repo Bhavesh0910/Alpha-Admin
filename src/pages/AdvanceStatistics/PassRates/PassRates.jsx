@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import exportIcon from "../../../assets/icons/export_btn_icon.svg";
 import ArrowDown from "../../../assets/icons/ArrowDown.svg";
 import ArrowUp from "../../../assets/icons/ArrowUp.svg";
@@ -8,8 +8,9 @@ import TotalPassedCharts from "./TotalPassedCharts";
 import TotalPassedChartTwo from "./TotalPassedChartTwo";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import {Link, useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
+import {fetchPassRate} from "../../../store/NewReducers/advanceStatistics";
 
 const PassRates = () => {
   const [showChart, setShowChart] = useState(false);
@@ -20,9 +21,24 @@ const PassRates = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [filterData, setFilterData] = useState([]);
-
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
+
+  const {passRate, isLoading} = useSelector((state) => state.advanceStatistics);
+  const {idToken} = useSelector((state) => state.auth);
+
+  // Fetch PassRates Data
+  useEffect(() => {
+    let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
+
+    if (searchText) {
+      query = query + `&search=${searchText}`;
+    }
+
+    dispatch(fetchPassRate({idToken, query}));
+  }, [dispatch, idToken, pageNo, pageSize, searchText]);
+
+  console.log("passData", passRate);
 
   const searchRef = useRef();
 
@@ -61,164 +77,52 @@ const PassRates = () => {
   const columns = [
     {
       title: "Start Balance",
-      dataIndex: "startBalance",
-      key: "startBalance",
+      dataIndex: "starting_balance",
+      key: "starting_balance",
+      render: (text) => text || "-",
+    },
+    {
+      title: "Challenge Name",
+      dataIndex: "challenge_name",
+      key: "challenge_name",
       render: (text) => text || "-",
     },
     {
       title: "Total Passed",
-      dataIndex: "totalPassed",
-      key: "totalPassed",
+      dataIndex: "total_passed",
+      key: "total_passed",
       render: (text) => text || "-",
     },
-    {
-      title: "Pass Rate",
-      dataIndex: "passRate",
-      key: "passRate",
-      render: (text) => text || "-",
-    },
+
     {
       title: "Total Failed",
-      dataIndex: "totalFailed",
-      key: "totalFailed",
+      dataIndex: "total_failed",
+      key: "total_failed",
       render: (text) => text || "-",
     },
     {
-      title: "Failed Rate",
-      dataIndex: "failedRate",
-      key: "failedRate",
+      title: "Total Accounts",
+      dataIndex: "total_accounts",
+      key: "total_accounts",
       render: (text) => text || "-",
     },
     {
       title: "Passed/Fail Ratio",
-      dataIndex: "passedFailRatio",
-      key: "passedFailRatio",
+      dataIndex: "pf_ratio",
+      key: "pf_ratio",
       render: (text) => text || "-",
     },
     {
       title: "Total",
-      dataIndex: "total",
-      key: "total",
+      dataIndex: "total_accounts",
+      key: "total_accounts",
       render: (text) => text || "-",
     },
     {
       title: "Account Active",
-      dataIndex: "accountActive",
-      key: "accountActive",
+      dataIndex: "active_accounts",
+      key: "active_accounts",
       render: (text) => text || "-",
-    },
-  ];
-
-  const dummyData = [
-    {
-      key: "1",
-      startBalance: "$100000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "2",
-      startBalance: "$50000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "3",
-      startBalance: "$24200",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "4",
-      startBalance: "$100000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "5",
-      startBalance: "$50000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "6",
-      startBalance: "$50000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "7",
-      startBalance: "$100000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "8",
-      startBalance: "$50000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "9",
-      startBalance: "$50000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "10",
-      startBalance: "$24200",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
     },
   ];
 
@@ -293,10 +197,10 @@ const PassRates = () => {
           {showChart ? (
             <div className="chart_container">
               <div className="chart_div">
-                <TotalPassedCharts />
+                <TotalPassedCharts data={passRate} />
               </div>
               <div className="chart_div">
-                <TotalPassedChartTwo />
+                <TotalPassedChartTwo data={passRate} />
               </div>
             </div>
           ) : (
@@ -341,18 +245,18 @@ const PassRates = () => {
           </div>
 
           <div>
-            {false ? (
+            {isLoading ? (
               <LoaderOverlay />
             ) : (
               <AntTable
-                data={dummyData || []}
+                data={passRate?.results || []}
                 columns={columns}
-                // totalPages={Math.ceil(newCodeData?.count / pageSize)}
-                // totalItems={newCodeData?.count}
-                // pageSize={pageSize}
-                // CurrentPageNo={pageNo}
-                // setPageSize={setPageSize}
-                // triggerChange={triggerChange}
+                totalPages={Math.ceil(passRate?.count / pageSize)}
+                totalItems={passRate?.count}
+                pageSize={pageSize}
+                CurrentPageNo={pageNo}
+                setPageSize={setPageSize}
+                triggerChange={triggerChange}
               />
             )}
           </div>

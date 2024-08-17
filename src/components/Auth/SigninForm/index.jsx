@@ -68,9 +68,10 @@ function SigninForm() {
         navigate("/");
       })
       .catch((err) => {
+        console.log("err", err);
         setAuthenticationStatus(false);
         setLoading(false);
-        dispatch(returnErrors(formatText(err?.response?.data?.detai) || "Error Logging in! Something went wrong!", err?.response?.status));
+        dispatch(returnErrors(formatText(err?.response?.data?.detail) || "Error Logging in! Something went wrong!", err?.response?.status));
       });
 
     if (email === "") {

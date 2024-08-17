@@ -1,175 +1,159 @@
-import React from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./Payout.scss";
 import ArrowUpGreen from "../../../assets/icons/upArrowGreen.svg";
 import exportIcon from "../../../assets/icons/export_btn_icon.svg";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchPayout, fetchWithdrawalsDetails} from "../../../store/NewReducers/advanceStatistics";
+import moment from "moment/moment";
 
 const Payout = () => {
+  const [searchText, setSearchText] = useState("");
+  const [activeTab, setActiveTab] = useState("all");
+  const [category, setCategory] = useState("all");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [filterData, setFilterData] = useState([]);
+  const [pageSize, setPageSize] = useState(20);
+  const [pageNo, setPageNo] = useState(1);
+
+  const {withdrawalsDetails, isLoading} = useSelector((state) => state.advanceStatistics);
+  const {idToken} = useSelector((state) => state.auth);
+
+  // Fetch PassRates Data
+  useEffect(() => {
+    let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
+
+    if (searchText) {
+      query = query + `&search=${searchText}`;
+    }
+
+    dispatch(fetchWithdrawalsDetails({idToken, query}));
+  }, [dispatch, idToken, pageNo, pageSize, searchText]);
+
+  const searchRef = useRef();
+
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
+
+  const highlightText = (text, search) => {
+    if (!search) return text;
+    const regex = new RegExp(`(${search})`, "gi");
+    const parts = String(text)?.split(regex);
+    return (
+      <>
+        {parts.map((part, index) =>
+          regex.test(part) ? (
+            <span
+              key={index}
+              className="highlight"
+            >
+              {part}
+            </span>
+          ) : (
+            part
+          ),
+        )}
+      </>
+    );
+  };
+
+  const handleRowClick = (affiliateId, email) => {
+    const url = `/affiliate-marketing/code?email=${email}`;
+    navigate(url);
+  };
+
   const columns = [
     {
+      title: "Login ID",
+      dataIndex: "login_id",
+      key: "login_id",
+      render: (text) => text || "-",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text) => text || "-",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      render: (text) => text || "-",
+    },
+    {
+      title: "Plan",
+      dataIndex: "plan",
+      key: "plan",
+      render: (text) => text || "-",
+    },
+    {
       title: "Start Balance",
-      dataIndex: "startBalance",
-      key: "startBalance",
+      dataIndex: "starting_balance",
+      key: "starting_balance",
       render: (text) => text || "-",
     },
     {
-      title: "Total Passed",
-      dataIndex: "totalPassed",
-      key: "totalPassed",
+      title: "Current Balance",
+      dataIndex: "current_balance",
+      key: "current_balance",
       render: (text) => text || "-",
     },
     {
-      title: "Pass Rate",
-      dataIndex: "passRate",
-      key: "passRate",
+      title: "Current Equity",
+      dataIndex: "current_equity",
+      key: "current_equity",
       render: (text) => text || "-",
     },
     {
-      title: "Total Failed",
-      dataIndex: "totalFailed",
-      key: "totalFailed",
+      title: "Profit Share",
+      dataIndex: "profit_share",
+      key: "profit_share",
       render: (text) => text || "-",
     },
     {
-      title: "Failed Rate",
-      dataIndex: "failedRate",
-      key: "failedRate",
+      title: "Profit",
+      dataIndex: "profit",
+      key: "profit",
+      render: (text) => Number(text).toFixed(2) || "-",
+    },
+    {
+      title: "Bonus",
+      dataIndex: "bonus",
+      key: "bonus",
       render: (text) => text || "-",
     },
     {
-      title: "Passed/Fail Ratio",
-      dataIndex: "passedFailRatio",
-      key: "passedFailRatio",
+      title: "Withdraw Profit",
+      dataIndex: "withdraw_profit",
+      key: "withdraw_profit",
+      render: (text) => Number(text).toFixed(2) || "-",
+    },
+    {
+      title: "Verification Type",
+      dataIndex: "verification_type",
+      key: "verification_type",
       render: (text) => text || "-",
     },
     {
-      title: "Total",
-      dataIndex: "total",
-      key: "total",
-      render: (text) => text || "-",
+      title: "Start Date",
+      dataIndex: "start_date",
+      key: "start_date",
+      render: (text) => moment(text).format("DD MM YYYY") || "-",
     },
     {
-      title: "Account Active",
-      dataIndex: "accountActive",
-      key: "accountActive",
-      render: (text) => text || "-",
+      title: "Next Payout Date",
+      dataIndex: "next_payout_date",
+      key: "next_payout_date",
+      render: (text) => moment(text).format("DD MM YYYY") || "-",
     },
   ];
 
-  const dummyData = [
-    {
-      key: "1",
-      startBalance: "$100000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "2",
-      startBalance: "$50000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "3",
-      startBalance: "$24200",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "4",
-      startBalance: "$100000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "5",
-      startBalance: "$50000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "6",
-      startBalance: "$50000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "7",
-      startBalance: "$100000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "8",
-      startBalance: "$50000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "9",
-      startBalance: "$50000",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-    {
-      key: "10",
-      startBalance: "$24200",
-      totalPassed: 1121,
-      passRate: "78%",
-      totalFailed: 312,
-      failedRate: "56%",
-      passedFailRatio: "6.25%",
-      total: "$224525",
-      accountActive: "200K",
-    },
-  ];
   return (
     <>
       <div className="payout_main">
@@ -215,18 +199,18 @@ const Payout = () => {
         </div>
 
         <div>
-          {false ? (
+          {isLoading ? (
             <LoaderOverlay />
           ) : (
             <AntTable
-              data={dummyData || []}
+              data={withdrawalsDetails?.results || []}
               columns={columns}
-              // totalPages={Math.ceil(newCodeData?.count / pageSize)}
-              // totalItems={newCodeData?.count}
-              // pageSize={pageSize}
-              // CurrentPageNo={pageNo}
-              // setPageSize={setPageSize}
-              // triggerChange={triggerChange}
+              totalPages={Math.ceil(withdrawalsDetails?.count / pageSize)}
+              totalItems={withdrawalsDetails?.count}
+              pageSize={pageSize}
+              CurrentPageNo={pageNo}
+              setPageSize={setPageSize}
+              triggerChange={triggerChange}
             />
           )}
         </div>
