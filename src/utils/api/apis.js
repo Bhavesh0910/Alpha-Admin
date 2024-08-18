@@ -947,9 +947,9 @@ export const getAccountOverviewStats = async (idToken, startDate, endDate) => {
     };
     let response;
     if (startDate && endDate) {
-      response = await axios.get(`${baseUrl}v2/account-overview/stats/?start_date=${startDate}&end_date=${endDate}`, config);
+      response = await axios.get(`${baseUrl}v3/account-overview/stats/?start_date=${startDate}&end_date=${endDate}`, config);
     } else {
-      response = await axios.get(`${baseUrl}v2/account-overview/stats/`, config);
+      response = await axios.get(`${baseUrl}v3/account-overview/stats/`, config);
     }
     return response;
   } catch (error) {
@@ -973,7 +973,7 @@ export const getStageChart = async (idToken, stage, startDate, endDate) => {
 
 export const getFundingChart = async (idToken, startDate, endDate) => {
   try {
-    const response = await axios.get(`${baseUrl}v2/account-overview/funding-chart/`, {
+    const response = await axios.get(`${baseUrl}v3/account-overview/funding-chart/`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
@@ -1210,7 +1210,7 @@ export const getPassRate = async (idToken, query) => {
   }
 };
 
-export const getDailyStats = async (idToken , query) => {
+export const getDailyStats = async (idToken, query) => {
   try {
     const response = await axios.get(`${baseUrl}advance-stats/DailyStats/${query}`, {
       headers: {

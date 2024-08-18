@@ -7,6 +7,8 @@ import AccountRangeSlider from "./AccountRangeSlider/AccountRangeSlider";
 import rangeIcon from "../../../assets/icons/range_icon_gray.svg";
 import {useDispatch, useSelector} from "react-redux";
 import {countryWiseListReq, resetCountryWiseData, setCountryWiseData} from "../../../store/NewReducers/countryWise";
+import searchIcon from "../../../assets/icons/searchIcon.svg";
+
 const {RangePicker} = DatePicker;
 const CountryWiseOverviewTable = () => {
   const dispatch = useDispatch();
@@ -123,12 +125,11 @@ const CountryWiseOverviewTable = () => {
     setCountriesLibrary(data);
   }, [filterListData]);
 
-  function handleCountriesData() {
+  function handleCountriesData(val = true) {
     const data = selectedCountries.map((item) => countriesLibrary[item]);
-    if (selectedCountries && selectedCountries.length > 0) {
+    if (val && selectedCountries && selectedCountries.length > 0) {
       dispatch(setCountryWiseData(data));
     } else {
-      console.log("hereeeeeeeeeeeeee");
       dispatch(resetCountryWiseData());
     }
     setFilteredCountries(countries);
@@ -140,22 +141,29 @@ const CountryWiseOverviewTable = () => {
   return (
     <div className="countryWiseOverviewTable_wrapper">
       <div className="header_wrapper">
-        <Select
-          mode="multiple"
-          placeholder="Please select countries"
-          onSearch={handleSearchInput}
-          onChange={(value) => {
-            setSelectedCountries(value);
-            setFilteredCountries(countries);
-          }}
-          options={filteredCountries}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleCountriesData();
-            }
-          }}
-          allowClear
-        />
+        <div className="countrySearch">
+          <Select
+            mode="multiple"
+            placeholder="Please select countries"
+            onSearch={handleSearchInput}
+            onChange={(value) => {
+              if (value === null) {
+                handleCountriesData(false);
+              }
+              setSelectedCountries(value);
+              setFilteredCountries(countries);
+            }}
+            options={filteredCountries}
+            // onKeyDown={(e) => {
+            //   if (e.key === "Enter") {
+            //     handleCountriesData();
+            //   }
+            // }}
+            allowClear
+          />
+          <Button onClick={handleCountriesData}>Search</Button>
+        </div>
+
         <div className="rangeBtn_wrapper">
           <Button
             className="accnt_range_btn"

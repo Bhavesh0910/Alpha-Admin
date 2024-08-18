@@ -5,24 +5,29 @@ import {useSelector} from "react-redux";
 
 const AccountProfitChart = () => {
   const {fundingChartData} = useSelector((state) => state.risk);
-  const [data, setData] = useState({passed: [], failed: [], dates: []});
+  const [data, setData] = useState({totalProfit: [], totalLoss: [], dates: []});
 
   useEffect(() => {
     if (fundingChartData) {
+      console.log("fundingdata : ", fundingChartData?.result);
       let dates = [];
-      let passed = [];
-      let failed = [];
-      dates = Object.keys(fundingChartData?.result);
-      passed = dates?.map((date) => fundingChartData?.result[date].passed);
-      failed = dates?.map((date) => fundingChartData?.result[date].failed);
-      setData((prev) => ({passed: passed, failed: failed, dates: dates}));
+      let totalProfit = [];
+      let totalLoss = [];
+      dates = fundingChartData?.result?.map((item) => item?.date);
+      totalProfit = fundingChartData?.result?.map((item) => item?.total_profit);
+      totalLoss = fundingChartData?.result?.map((item) => item?.total_loss);
+      console.log("dates : ", dates);
+      console.log("totalProfit : ", totalProfit);
+      console.log("totalProfit : ", totalLoss);
+      // totalLoss = fundingChartData?.result?.map((item)=>item?.totalLoss));
+      setData((prev) => ({totalProfit: totalProfit, totalLoss: totalLoss, dates: dates}));
     }
   }, [fundingChartData]);
 
   const seriesData1 = {
-    name: "Data 1",
+    name: "Profit",
     type: "line",
-    data: data?.passed,
+    data: data?.totalProfit || [],
     lineStyle: {
       color: "#54e346",
     },
@@ -30,9 +35,9 @@ const AccountProfitChart = () => {
   };
 
   const seriesData2 = {
-    name: "Data 2",
+    name: "Loss",
     type: "line",
-    data: data?.failed,
+    data: data?.totalLoss || [],
     lineStyle: {
       color: "#e35446",
     },
@@ -52,7 +57,7 @@ const AccountProfitChart = () => {
     xAxis: {
       type: "category",
       boundaryGap: false,
-      data: data?.dates,
+      data: data?.dates || [],
       axisLabel: {
         color: "#1E1E1E",
       },
@@ -74,6 +79,7 @@ const AccountProfitChart = () => {
       },
     },
     series: [seriesData1, seriesData2],
+    // series: [seriesData1],
     grid: {
       left: "3%",
       right: "4%",
