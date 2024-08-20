@@ -81,6 +81,8 @@ const listSlice = createSlice({
     totalItems: 1,
     isLoading: false,
     error: null,
+    flagLoading: false,
+    refetch:false
   },
   reducers: {
     setPage: (state, action) => {
@@ -162,6 +164,18 @@ const listSlice = createSlice({
       .addCase(updateUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
+      })
+      .addCase(updateFlagReq.pending, (state) => {
+        state.flagLoading = true;
+        state.error = null;
+      })
+      .addCase(updateFlagReq.fulfilled, (state, action) => {
+        state.flagLoading = false;
+        state.refetch = !state.refetch;
+      })
+      .addCase(updateFlagReq.rejected, (state, action) => {
+        state.flagLoading = false;
+        state.error = action.payload || action.error.message;
       });
   },
 });
@@ -169,3 +183,29 @@ const listSlice = createSlice({
 export const {setPage} = listSlice.actions;
 
 export default listSlice.reducer;
+
+export const updateFlagReq = createAsyncThunk("list/updateFlagReq", async ({idToken, body, id}, {rejectWithValue, dispatch}) => {
+  try {
+    const response = await updateFlagReqApi(idToken, body, id);
+    dispatch(returnMessages("Status Changed Successfully"));
+    console.log(response);
+    return response.data; // Adjust based on your API response
+  } catch (error) {
+    dispatch(returnErrors(error?.response?.data?.detail || "Error changing user status", 400));
+    return rejectWithValue(error.response?.data || "Error changing user status");
+  }
+});
+
+async function updateFlagReqApi(idToken, body, id) {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    };
+    const res = axios.post(`${baseUrl}flag-user/${id}/`, body, config);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}

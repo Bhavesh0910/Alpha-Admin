@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import "./UserList.scss";
-import {Table, Input, Select, Button, Modal, Tooltip, message, Radio, Form, Input as AntInput} from "antd";
+import {Table, Input, Select, Button, Modal, Tooltip, message, Radio, Form, Input as AntInput, Dropdown, Menu} from "antd";
 import moment from "moment";
-import {CopyOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
+import {CopyOutlined, DownOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
 import CopyToClipboard from "react-copy-to-clipboard";
-import {fetchUserList, toggleActiveUser, updateUser} from "../../../store/NewReducers/listSlice";
+import {fetchUserList, toggleActiveUser, updateFlagReq, updateUser} from "../../../store/NewReducers/listSlice";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
@@ -34,7 +34,12 @@ const UserListTable = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  const {tableData, currentPage, totalPages, totalItems, isLoading} = useSelector((state) => state.list);
+  const [flagUser, setFlagUser] = useState(null);
+  const [flagModal, setFlagModel] = useState(false);
+  const [flagUpdatedValue, setFlagUpdatedValue] = useState(null);
+  const [comment, setComment] = useState(null);
+
+  const {tableData, currentPage, totalPages, totalItems, isLoading, flagLoading, refetch} = useSelector((state) => state.list);
   const {msg, title, status} = useSelector((state) => state.message);
 
   useEffect(() => {
@@ -50,7 +55,7 @@ const UserListTable = () => {
         }),
       );
     }
-  }, [dispatch, idToken, searchText, pageNo, pageSize, authType, active]);
+  }, [dispatch, idToken, searchText, pageNo, pageSize, authType, active, refetch]);
 
   const handleSearch = (e) => {
     if (e.key === "Enter") {
@@ -105,6 +110,17 @@ const UserListTable = () => {
     });
   };
 
+  function handleUpdateFlag() {
+    const formData = new FormData();
+    formData.append("status", flagUpdatedValue);
+    formData.append("notes", comment);
+    dispatch(updateFlagReq({idToken, body: formData, id: flagUser?.id}));
+    setFlagModel(false);
+  }
+
+  useEffect(() => {
+    console.log(comment, " comment");
+  }, [comment]);
   const onChangeActive = (e) => {
     setPageNo(1);
     setActive(e.target.value);
@@ -170,7 +186,44 @@ const UserListTable = () => {
     setIsModalVisible(false);
   };
 
+  function reset() {
+    setFlagUser(null);
+    setFlagUpdatedValue(null);
+    setComment(null);
+  }
+  const openStatusUpdateModal = (updatedValue, record) => {
+    setFlagModel(true);
+    setFlagUser(record);
+    setFlagUpdatedValue(updatedValue);
+  };
+
+  const statusMenu = (key, record) => (
+    <Menu
+      className="menuCard"
+      onClick={(e) => openStatusUpdateModal(e.key, record)}
+    >
+      <Menu.Item key="Safe">Safe</Menu.Item>
+      <Menu.Item key="Warning">Warning</Menu.Item>
+      <Menu.Item key="Blacklisted">Blacklisted</Menu.Item>
+    </Menu>
+  );
+
   const columns = [
+    {
+      title: "Flag",
+      dataIndex: "status",
+      render: (text, record) => (
+        <div className="flagContainer">
+          <p className={`flag ${text === "Blacklisted" ? "Red" : text === "Warning" ? "Yellow" : "Green"}`}></p>,
+          <Dropdown
+            overlay={() => statusMenu(text, record)}
+            trigger={["click"]}
+          >
+            <DownOutlined />
+          </Dropdown>
+        </div>
+      ),
+    },
     {
       title: "Name",
       dataIndex: "full_name",
@@ -302,7 +355,7 @@ const UserListTable = () => {
           </div>
         </div>
       </div>
-      {isLoading && <LoaderOverlay />}
+      {(isLoading || flagLoading) && <LoaderOverlay />}
       <AntTable
         data={tableData}
         columns={columns}
@@ -312,6 +365,7 @@ const UserListTable = () => {
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}
         triggerChange={triggerChange}
+        customRowClass={true}
       />
       <Modal
         title="Edit User"
@@ -363,6 +417,25 @@ const UserListTable = () => {
             </Form.Item>
           </Form>
         )}
+      </Modal>
+      <Modal
+        title={"Flag User"}
+        open={flagModal}
+        className="reset"
+        onCancel={() => {
+          reset();
+          setFlagModel(false);
+        }}
+        onOk={handleUpdateFlag}
+      >
+        <Form.Item
+          label="Reason"
+          value={comment}
+          className="reset"
+          onChange={(e) => setComment(e.target.value)}
+        >
+          <Input.TextArea placeholder="Write your comment here.." />
+        </Form.Item>
       </Modal>
     </div>
   );
