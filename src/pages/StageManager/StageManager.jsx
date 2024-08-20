@@ -139,15 +139,18 @@ const StageManager = () => {
   };
 
   const openContractUpdateModal = (value, record) => {
+    console.log(value, record, " value, record");
     setuserToUpdate(record);
     setUpdatedStatus(value);
+    setUpdatedContract(value);
     setIsModalVisible(true);
     setModalAction("Contract");
   };
 
-  const openCreateAccountModel = (updatedValue, record) => {
+  const openCreateAccountModel = (record) => {
     setuserToUpdate(record);
-    setUpdatedContract(updatedValue);
+    console.log(record," : updatedValue, record")
+    // setUpdatedContract(updatedValue);
     setIsModalVisible(true);
     setModalAction("Create Account");
   };
@@ -188,12 +191,15 @@ const StageManager = () => {
     const formData = new FormData();
     formData.append("issue_contract", updatedContract);
     let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
-    dispatch(updateContactReq({idToken, body: formData, userId, dispatch}));
+    console.log("userId : ", userId);
+    dispatch(updateContactReq({idToken, body: formData, id: userId, dispatch}));
     setIsModalVisible(false);
   };
 
   const handleCreateAccount = () => {
     const body = {id: userToUpdate?.id};
+    console.log("userToUpdate?.id", userToUpdate?.id)
+    console.log(body,"body")
     dispatch(createAccountReq({idToken, body, dispatch}));
     setIsModalVisible(false);
   };
@@ -680,6 +686,19 @@ const StageManager = () => {
               // </Dropdown>
             ),
           },
+          {
+            title: "Contract",
+            dataIndex: "issue_contract",
+            key: "issue_contract",
+            render: (text, row) => (
+              <Button
+                className="action_btn standard_button"
+                onClick={() => openContractUpdateModal(!text, row)}
+              >
+                {text ? "Revoke" : "Generate"}
+              </Button>
+            ),
+          },
         ];
         break;
       case "/support/funded":
@@ -941,21 +960,21 @@ const StageManager = () => {
     }
   }, [location.pathname]);
 
-  if (location.pathname === "/support/stage-2") {
-    columns.push({
-      title: "Contract",
-      dataIndex: "issue_contract",
-      key: "issue_contract",
-      render: (text, row) => (
-        <Button
-          className="action_btn standard_button"
-          onClick={() => openContractUpdateModal(!text, row)}
-        >
-          {text ? "Revoke" : "Generate"}
-        </Button>
-      ),
-    });
-  }
+  // if (location.pathname === "/support/stage-2") {
+  //   columns.push({
+  //     title: "Contract",
+  //     dataIndex: "issue_contract",
+  //     key: "issue_contract",
+  //     render: (text, row) => (
+  //       <Button
+  //         className="action_btn standard_button"
+  //         onClick={() => openContractUpdateModal(!text, row)}
+  //       >
+  //         {text ? "Revoke" : "Generate"}
+  //       </Button>
+  //     ),
+  //   });
+  // }
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
@@ -1066,6 +1085,7 @@ const StageManager = () => {
           setUpdatedContract(null);
         }}
         onOk={modalAction === "Update Status" ? handleUpdateStatus : modalAction === "Edit" ? handleEditComment : modalAction === "Create Account" ? handleCreateAccount : handleContract}
+        className="supportModel"
       >
         {modalAction === "Edit" ? (
           <Form.Item
@@ -1084,6 +1104,7 @@ const StageManager = () => {
             label="Comment"
             value={editCommentToUpdate}
             onChange={(e) => setEditCommentToUpdate(e.target.value)}
+            style={{color: "white"}}
           >
             <Input.TextArea placeholder="Write your comment here.." />
           </Form.Item>

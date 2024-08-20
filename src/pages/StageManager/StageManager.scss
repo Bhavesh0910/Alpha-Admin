@@ -305,6 +305,13 @@
 }
 
 .lableWhite {
+  color: white;
+  > label {
+    color: white;
+  }
+}
+
+.supportModel {
   > label {
     color: white;
   }

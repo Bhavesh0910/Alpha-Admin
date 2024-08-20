@@ -215,15 +215,15 @@ const Payment = () => {
               icon={<DownOutlined />}
               className="status_button"
               style={{
-                width: "120px",
+                width: "160px",
                 display: "flex",
                 flexDirection: "row-reverse",
                 justifyContent: "space-between",
                 padding: "6px 10px",
               }}
             >
-              <p className={text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "pending" : ""}>
-                {text}
+              <p className={text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "Pending" : ""}>
+                {text?.slice(0, 1).toUpperCase() + text?.slice(1, text?.length) || "-"}
               </p>
             </Button>
           </Dropdown>
