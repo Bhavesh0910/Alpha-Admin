@@ -205,6 +205,12 @@ const items = [
     ],
   },
   {
+    key: "19",
+    icon: <ComplianceIcon />,
+    label: "More Advance Statistics",
+    link: "/advance-statistics/trading-pairs",
+  },
+  {
     key: "12",
     icon: <Logout />,
     label: "Logout",

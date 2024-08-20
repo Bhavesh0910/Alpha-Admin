@@ -146,7 +146,23 @@ const WithdrawalStatus = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (text) => <div className="status_btn">{text || "-"}</div>,
+      render: (text) => {
+        let statusClass = "";
+        switch (text) {
+          case "In Loss":
+            statusClass = "status_red";
+            break;
+          case "Pending":
+            statusClass = "status_yellow";
+            break;
+          case "New":
+            statusClass = "status_green";
+            break;
+          default:
+            break;
+        }
+        return <div className={`status_btn ${statusClass}`}>{text || "-"}</div>;
+      },
     },
     {
       title: "Is Expected",

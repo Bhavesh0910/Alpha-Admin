@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
 import RiskManagement from "../pages/RiskManagement";
 
@@ -54,6 +54,7 @@ import ExportHistoryTable from "../pages/AdvanceStatistics/PassRates/ExportHisto
 import Payout from "../pages/AdvanceStatistics/Payout/Payout";
 import PayoutExportHistory from "../pages/AdvanceStatistics/Payout/PayoutExportHistory";
 import DailyStats from "../pages/AdvanceStatistics/DailyStats/DailyStats";
+import TradingPairs from "../pages/MoreAdvancedStatistics/TradingPairs/TradingPairs";
 
 function Router() {
   return (
@@ -259,7 +260,7 @@ function Router() {
               </PageLayout>
             }
           />
-          
+
           <Route
             exact={true}
             path="/advance-statistics/daily-stats"
@@ -309,6 +310,16 @@ function Router() {
             }
           />
 
+
+          <Route
+            exact={true}
+            path="/advance-statistics/trading-pairs"
+            element={
+              <PageLayout headerName="Trading Pairs">
+                <TradingPairs />
+              </PageLayout>
+            }
+          />
           <Route
             exact={true}
             path="/revenue-management"

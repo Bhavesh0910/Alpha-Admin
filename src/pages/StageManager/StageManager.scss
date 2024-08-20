@@ -17,6 +17,24 @@
     justify-content: space-between;
   }
 
+  .status_green{
+    border-radius: var(--Corner-Radius, 10px);
+border: 1px solid var(--sucess, #009017);
+background: var(--Success-Body, #CDFFDD);
+  }
+
+  .status_red{
+    border-radius: var(--Corner-Radius, 10px);
+    border: 1px solid var(--Failed, #F20000);
+    background: var(--Failed-body, #FFE1E1);
+  }
+
+  .status_yellow{
+    border-radius: var(--Corner-Radius, 10px);
+border: 1px solid var(--In-progress, #F4EA0F);
+background: var(--in-Progress-Body, #FFFDCF);
+  }
+
   .table_header_filter {
     display: flex !important;
     gap: 20px;

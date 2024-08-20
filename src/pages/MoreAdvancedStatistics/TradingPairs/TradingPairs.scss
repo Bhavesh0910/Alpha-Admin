@@ -1,0 +1,197 @@
+.trading_pairs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .date_box {
+            border-radius: 10px;
+            background: #f6fefe;
+            display: flex;
+            height: 46px;
+            padding: 0px 15px;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            cursor: pointer;
+
+            .ant-picker {
+                border: none;
+                &:hover {
+                    border: none;
+                }
+                .ant-picker-suffix {
+                    display: none;
+                }
+            }
+
+            .today_text {
+                color: #1e1e1e;
+                font-family: "Nunito Sans";
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+            }
+
+            .calendar_popup {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                z-index: 1000;
+                background: #fff;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                padding: 10px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+                margin-top: 5px; 
+            }
+        }
+    }
+
+    .trading_pairs_top {
+        display: flex;
+        width: 100%;
+        gap: 20px;
+        flex-wrap: wrap;
+        @media (max-width: 1000px) {
+          flex-direction: column;
+        }
+        div {
+            border-radius: var(--table-box, 20px);
+            background: #fff;
+            display: flex;
+            height: 70px;
+            padding: 20px;
+            justify-content: space-between;
+            align-items: center;
+            flex: 1 1 calc(50% - 20px);
+            box-sizing: border-box;
+
+            .title {
+                color: var(--Text-2, #686868);
+                font-family: "Nunito Sans";
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+            }
+
+            .value {
+                color: var(--Text, #1e1e1e);
+                font-family: "Nunito Sans";
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+        }
+    }
+
+    .trading_pairs_content {
+        .chart_box_wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-radius: var(--table-box, 20px);
+            background: #fff;
+            padding: 20px;
+
+            .header {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+
+                h4 {
+                    color: var(--Text, #1e1e1e);
+                    font-family: "Nunito Sans";
+                    font-size: 20px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+            }
+
+            .chart_info {
+                border-radius: var(--table-box, 20px);
+                background: var(--Table-header-fill, #edf0f0);
+                display: flex;
+                padding: 15px 20px;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                max-width: 230px;
+
+                h4 {
+                    color: var(--Text, #1e1e1e);
+                    font-family: "Nunito Sans";
+                    font-size: 20px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+
+                p {
+                    color: var(--sucess, #009017);
+                    font-family: "Nunito Sans";
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                }
+            }
+        }
+    }
+
+    .filter_button_wrapper {
+        display: flex;
+        gap: 6px;
+        padding: 4px;
+        align-items: center;
+        border-radius: var(--Corner-Radius, 10px);
+        background: var(--Table-box-selected, #f5f5f5);
+
+        .ant-btn {
+            background: var(--Table-box-selected, #f5f5f5);
+            border: none !important;
+        }
+
+        .active {
+            border-radius: var(--Corner-Radius, 10px);
+            background: #04d9ff;
+            color: #fff; 
+        }
+    }
+
+    .box_wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+        margin-top: 20px;
+
+        @media (max-width: 1200px) {
+            grid-template-columns: 1fr; 
+        }
+    }
+
+    .chart_wrapper {
+        border-radius: 20px;
+        background: var(--Table-header-fill, #edf0f0);
+        height: 286px;
+        align-self: stretch;
+
+        .line-chart {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 400px;
+            margin: auto;
+        }
+    }
+}
