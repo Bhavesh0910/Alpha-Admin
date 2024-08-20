@@ -116,11 +116,9 @@ const UserListTable = () => {
     formData.append("notes", comment);
     dispatch(updateFlagReq({idToken, body: formData, id: flagUser?.id}));
     setFlagModel(false);
+    reset();
   }
 
-  useEffect(() => {
-    console.log(comment, " comment");
-  }, [comment]);
   const onChangeActive = (e) => {
     setPageNo(1);
     setActive(e.target.value);

@@ -16,6 +16,7 @@ import {supportListReq, nestedTableDataReq, statusUpdateReq, editCommentReq, upd
 import ReactCountryFlag from "react-country-flag";
 import dayjs from "dayjs";
 import {formatDate, formatDateTime, formatDateTimeNew, FormatUSD} from "../../utils/helpers/string";
+import {updateFlagReq} from "../../store/NewReducers/listSlice";
 const {RangePicker} = DatePicker;
 
 const {Option} = Select;
@@ -35,12 +36,18 @@ const StageManager = () => {
   const [updatedStatus, setUpdatedStatus] = useState(null);
   const [updatedContract, setUpdatedContract] = useState(null);
 
+  const [flagUser, setFlagUser] = useState(null);
+  const [flagModal, setFlagModel] = useState(false);
+  const [flagUpdatedValue, setFlagUpdatedValue] = useState(null);
+  const [comment, setComment] = useState(null);
+
   const [status, setStatus] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
   const [dates, setDates] = useState(null);
   const {idToken} = useSelector((state) => state.auth);
   const {count, data, isLoading, stageStatusOptions} = useSelector((state) => state.support);
+  const {refetch} = useSelector((state) => state.list);
   const [fetchUpdate, setFetchUpdate] = useState(true);
   const location = useLocation();
   const dispatch = useDispatch();
@@ -49,7 +56,7 @@ const StageManager = () => {
   useEffect(() => {
     // console.log("Fetching UseEffect");
     fetchStageList(idToken, pageNo, pageSize, searchText, status, dates);
-  }, [searchText, pageNo, pageSize, status, idToken, dates, fetchUpdate]);
+  }, [searchText, pageNo, pageSize, status, idToken, dates, fetchUpdate, refetch]);
 
   useEffect(() => {
     // console.log("Indirect Update ");
@@ -149,7 +156,7 @@ const StageManager = () => {
 
   const openCreateAccountModel = (record) => {
     setuserToUpdate(record);
-    console.log(record," : updatedValue, record")
+    console.log(record, " : updatedValue, record");
     // setUpdatedContract(updatedValue);
     setIsModalVisible(true);
     setModalAction("Create Account");
@@ -198,18 +205,78 @@ const StageManager = () => {
 
   const handleCreateAccount = () => {
     const body = {id: userToUpdate?.id};
-    console.log("userToUpdate?.id", userToUpdate?.id)
-    console.log(body,"body")
+    console.log("userToUpdate?.id", userToUpdate?.id);
+    console.log(body, "body");
     dispatch(createAccountReq({idToken, body, dispatch}));
     setIsModalVisible(false);
   };
 
   const navigate = useNavigate();
 
+  function reset() {
+    setFlagUser(null);
+    setFlagUpdatedValue(null);
+    setComment(null);
+  }
+
+  const openFlagUpdateModal = (updatedValue, record) => {
+    console.log(updatedValue, record, " updatedValue, record ");
+    setFlagModel(true);
+    setFlagUser(record);
+    setFlagUpdatedValue(updatedValue);
+  };
+
+  const statusMenuFlag = (key, record) => (
+    <Menu
+      className="menuCard"
+      onClick={(e) => openFlagUpdateModal(e.key, record)}
+    >
+      <Menu.Item key="Safe">Safe</Menu.Item>
+      <Menu.Item key="Warning">Warning</Menu.Item>
+      <Menu.Item key="Blacklisted">Blacklisted</Menu.Item>
+    </Menu>
+  );
+
+  function handleUpdateFlag() {
+    const formData = new FormData();
+    formData.append("status", flagUpdatedValue);
+    formData.append("notes", comment);
+
+    let id = "";
+
+    if (location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2") {
+      id = flagUser?.id;
+    } else if (location.pathname === "/support/funded") {
+      id = flagUser?.login_id;
+    } else if (location.pathname === "/support/payout") {
+      id = flagUser?.id;
+    }
+
+    dispatch(updateFlagReq({idToken, body: formData, id: flagUser?.id}));
+    setFlagModel(false);
+    reset();
+  }
+
   const columns = useMemo(() => {
-    switch (location.pathname) {
+    switch (location?.pathname) {
       case "/support/stage-1":
         return [
+          {
+            title: "Flag",
+            dataIndex: "User_id",
+            key: "User_id",
+            render: (text, row) => (
+              <div className="flagContainer">
+                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>,
+                <Dropdown
+                  overlay={() => statusMenuFlag(text?.status, row)}
+                  trigger={["click"]}
+                >
+                  <DownOutlined />
+                </Dropdown>
+              </div>
+            ),
+          },
           {
             title: "Account",
             dataIndex: "account_id",
@@ -422,6 +489,22 @@ const StageManager = () => {
         ];
       case "/support/stage-2":
         return [
+          {
+            title: "Flag",
+            dataIndex: "User_id",
+            key: "User_id",
+            render: (text, row) => (
+              <div className="flagContainer">
+                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>,
+                <Dropdown
+                  overlay={() => statusMenuFlag(text?.status, row)}
+                  trigger={["click"]}
+                >
+                  <DownOutlined />
+                </Dropdown>
+              </div>
+            ),
+          },
           {
             title: "Account",
             dataIndex: "account_id",
@@ -705,6 +788,22 @@ const StageManager = () => {
         return [
           {
             title: "Flag",
+            dataIndex: "user_id",
+            key: "user_id",
+            render: (text, row) => (
+              <div className="flagContainer">
+                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>,
+                <Dropdown
+                  overlay={() => statusMenuFlag(text?.status, row)}
+                  trigger={["click"]}
+                >
+                  <DownOutlined />
+                </Dropdown>
+              </div>
+            ),
+          },
+          {
+            title: "Flag",
             dataIndex: "flag",
             key: "flag",
           },
@@ -821,6 +920,22 @@ const StageManager = () => {
         break;
       case "/support/payout":
         return [
+          {
+            title: "Flag",
+            dataIndex: "user",
+            key: "user",
+            render: (text, row) => (
+              <div className="flagContainer">
+                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>,
+                <Dropdown
+                  overlay={() => statusMenuFlag(text?.status, row)}
+                  trigger={["click"]}
+                >
+                  <DownOutlined />
+                </Dropdown>
+              </div>
+            ),
+          },
           {
             title: "Email",
             dataIndex: "user_email",
@@ -960,22 +1075,6 @@ const StageManager = () => {
     }
   }, [location.pathname]);
 
-  // if (location.pathname === "/support/stage-2") {
-  //   columns.push({
-  //     title: "Contract",
-  //     dataIndex: "issue_contract",
-  //     key: "issue_contract",
-  //     render: (text, row) => (
-  //       <Button
-  //         className="action_btn standard_button"
-  //         onClick={() => openContractUpdateModal(!text, row)}
-  //       >
-  //         {text ? "Revoke" : "Generate"}
-  //       </Button>
-  //     ),
-  //   });
-  // }
-
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
     setPageSize(updatedPageSize);
@@ -1109,6 +1208,25 @@ const StageManager = () => {
             <Input.TextArea placeholder="Write your comment here.." />
           </Form.Item>
         )}
+      </Modal>
+      <Modal
+        title={"Flag User"}
+        open={flagModal}
+        className="reset"
+        onCancel={() => {
+          reset();
+          setFlagModel(false);
+        }}
+        onOk={handleUpdateFlag}
+      >
+        <Form.Item
+          label="Reason"
+          value={comment}
+          className="reset"
+          onChange={(e) => setComment(e.target.value)}
+        >
+          <Input.TextArea placeholder="Write your comment here.." />
+        </Form.Item>
       </Modal>
     </div>
   );
