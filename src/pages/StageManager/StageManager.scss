@@ -323,6 +323,13 @@ background: var(--in-Progress-Body, #FFFDCF);
 }
 
 .lableWhite {
+  color: white;
+  > label {
+    color: white;
+  }
+}
+
+.supportModel {
   > label {
     color: white;
   }

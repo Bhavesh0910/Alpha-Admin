@@ -904,3 +904,21 @@ input:-webkit-autofill:active {
   border: none !important;
   background: #f5f5f5;
 }
+
+.status_green {
+  border-radius: var(--Corner-Radius, 10px);
+  border: 1px solid var(--sucess, #009017);
+  background: var(--Success-Body, #cdffdd);
+}
+
+.status_red {
+  border-radius: var(--Corner-Radius, 10px);
+  border: 1px solid var(--Failed, #f20000);
+  background: var(--Failed-body, #ffe1e1);
+}
+
+.status_yellow {
+  border-radius: var(--Corner-Radius, 10px);
+  border: 1px solid var(--In-progress, #f4ea0f);
+  background: var(--in-Progress-Body, #fffdcf);
+}

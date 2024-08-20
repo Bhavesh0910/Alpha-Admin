@@ -18,6 +18,7 @@ async function supportListApi(idToken, query, url) {
       response = await axios(`${baseUrl}${url}${query}`, config);
     } else {
       response = await axios(`${baseUrl}support/admin/get/cases/${query}`, config);
+      // response = await axios(`${baseUrl}support/admin/v3/stage2/`, config);
     }
     return response;
   } catch (error) {
@@ -261,6 +262,7 @@ async function createAccountApi(idToken, body) {
         Authorization: `Bearer ${idToken}`,
       },
     };
+    console.log("body : ",body)
     let response = await axios.post(`${baseUrl}support/admin/create/account/`, body, config);
     return response;
   } catch (error) {
