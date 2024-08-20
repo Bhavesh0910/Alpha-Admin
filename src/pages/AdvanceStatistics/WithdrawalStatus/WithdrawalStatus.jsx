@@ -303,24 +303,24 @@ const WithdrawalStatus = () => {
             </div>
           </div>
           <div className="header_middle">
-            <div className="filter_buttons">
+            <div className="filter_btns">
               <Button
                 className={activeTab === "all" ? "active" : ""}
                 onClick={() => handleTabChange("all")}
               >
-                All
+                In Loss
               </Button>
               <Button
                 className={activeTab === "paid" ? "active" : ""}
                 onClick={() => handleTabChange("paid")}
               >
-                Paid
+                Pending
               </Button>
               <Button
                 className={activeTab === "unpaid" ? "active" : ""}
                 onClick={() => handleTabChange("unpaid")}
               >
-                Unpaid
+                New
               </Button>
             </div>
           </div>
