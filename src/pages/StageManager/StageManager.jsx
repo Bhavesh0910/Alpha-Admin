@@ -224,8 +224,18 @@ const StageManager = () => {
 
   const openFlagUpdateModal = (updatedValue, record) => {
     console.log(updatedValue, record, " updatedValue, record ");
+
+    let user = "";
+
+    if (location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2") {
+      user = record?.User_id;
+    } else if (location.pathname === "/support/funded") {
+      user = record?.user_id;
+    } else if (location.pathname === "/support/payout") {
+      user = record?.user;
+    }
     setFlagModel(true);
-    setFlagUser(record);
+    setFlagUser(user);
     setFlagUpdatedValue(updatedValue);
   };
 
@@ -244,16 +254,6 @@ const StageManager = () => {
     const formData = new FormData();
     formData.append("status", flagUpdatedValue);
     formData.append("notes", comment);
-
-    let id = "";
-
-    if (location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2") {
-      id = flagUser?.id;
-    } else if (location.pathname === "/support/funded") {
-      id = flagUser?.login_id;
-    } else if (location.pathname === "/support/payout") {
-      id = flagUser?.id;
-    }
 
     dispatch(updateFlagReq({idToken, body: formData, id: flagUser?.id}));
     setFlagModel(false);
