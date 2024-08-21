@@ -400,9 +400,11 @@ const StageManager = () => {
                   }}
                 >
                   <p
-                    className={text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "pending" : ""}
+                    className={
+                      text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Flagged" ? "flagged" : ""
+                    }
                   >
-                    {text === "New" ? "Action Required" : text === "Dissmissed" ? "Subject to interview" : text === "Failed" ? "Rejected" : text}
+                    {text === "New" ? "Action Required" : text === "Dissmissed" ? "Subject to interview" : text === "Failed" ? "Rejected" : text === "Flagged" ? "In review" : text}
                   </p>
                 </Button>
               </Dropdown>
@@ -628,7 +630,9 @@ const StageManager = () => {
                   }}
                 >
                   <p
-                    className={text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "pending" : ""}
+                    className={
+                      text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Flagged" ? "flagged" : ""
+                    }
                   >
                     {text === "New" ? "Action Required" : text === "Dissmissed" ? "Subject to interview" : text === "Failed" ? "Rejected" : text}
                   </p>
@@ -881,7 +885,9 @@ const StageManager = () => {
                   }}
                 >
                   <p
-                    className={text === "All" ? "all" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "pending" : text === "In Progress" ? "in_progress" : ""}
+                    className={
+                      text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Flagged" ? "flagged" : ""
+                    }
                   >
                     {text === "New" ? "Action Required" : text === "Dissmissed" ? "Subject to interview" : text === "Failed" ? "Rejected" : text}{" "}
                   </p>
@@ -1035,7 +1041,11 @@ const StageManager = () => {
                   }}
                 >
                   {/* "New", "Approved", "Rejected", "Flagged" */}
-                  <p className={text === "New" ? "new" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Flagged" ? "rejected" : ""}>
+                  <p
+                    className={
+                      text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Flagged" ? "flagged" : ""
+                    }
+                  >
                     {text === "New" ? "Action Required" : text === "Dissmissed" ? "Subject to interview" : text === "Failed" ? "Rejected" : text}{" "}
                   </p>
                 </Button>
