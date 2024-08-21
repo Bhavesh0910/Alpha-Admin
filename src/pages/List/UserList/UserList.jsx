@@ -210,9 +210,10 @@ const UserListTable = () => {
     {
       title: "Flag",
       dataIndex: "status",
+      width: "80px",
       render: (text, record) => (
         <div className="flagContainer">
-          <p className={`flag ${text === "Blacklisted" ? "Red" : text === "Warning" ? "Yellow" : "Green"}`}></p>,
+          <p className={`flag ${text === "Blacklisted" ? "Red" : text === "Warning" ? "Yellow" : "Green"}`}></p>
           <Dropdown
             overlay={() => statusMenu(text, record)}
             trigger={["click"]}

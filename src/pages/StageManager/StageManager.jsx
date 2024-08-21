@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import searchIcon from "../../assets/icons/searchIcon.svg";
-import comment from "../../assets/icons/comment.svg";
+import commentIcon from "../../assets/icons/comment.svg";
 import RightMark from "../../assets/icons/verified_green_circleIcon.svg";
 import CrossMark from "../../assets/icons/notverified_red_circleIcon.svg";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
@@ -51,7 +51,10 @@ const StageManager = () => {
   const [fetchUpdate, setFetchUpdate] = useState(true);
   const location = useLocation();
   const dispatch = useDispatch();
-  const options = stageStatusOptions || location.pathname === "/support/funded" ? ["In Progress", "Approved", "Failed", "Pending"] : ["New", "Approved", "Rejected", "Flagged"];
+  const options =
+    stageStatusOptions || location.pathname === "/support/funded"
+      ? ["New", "In Progress", "Flagged", "Dissmissed", "Rejected", "Approved"]
+      : ["New", "In Progress", "Flagged", "Dissmissed", "Rejected", "Approved"];
 
   useEffect(() => {
     // console.log("Fetching UseEffect");
@@ -164,12 +167,12 @@ const StageManager = () => {
 
   const statusMenu = (key, record) => (
     <Menu onClick={(e) => openStatusUpdateModal(key, e.key, record)}>
-      <Menu.Item key="New">New</Menu.Item>
-      <Menu.Item key="Approved">Approved</Menu.Item>
+      <Menu.Item key="New">Action Required</Menu.Item>
       <Menu.Item key="In Progress">In Progress</Menu.Item>
+      <Menu.Item key="Flagged">In Review</Menu.Item>
       <Menu.Item key="Rejected">Rejected</Menu.Item>
-      <Menu.Item key="Flagged">Flagged</Menu.Item>
-      <Menu.Item key="Dissmissed">Dissmissed</Menu.Item>
+      <Menu.Item key="Approved">Approved</Menu.Item>
+      <Menu.Item key="Dissmissed">Subject to interview</Menu.Item>
     </Menu>
   );
 
@@ -267,7 +270,7 @@ const StageManager = () => {
             key: "User_id",
             render: (text, row) => (
               <div className="flagContainer">
-                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>,
+                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
                 <Dropdown
                   overlay={() => statusMenuFlag(text?.status, row)}
                   trigger={["click"]}
@@ -389,7 +392,7 @@ const StageManager = () => {
                   icon={<DownOutlined />}
                   className="status_button"
                   style={{
-                    width: "120px",
+                    minWidth: "120px",
                     display: "flex",
                     flexDirection: "row-reverse",
                     justifyContent: "space-between",
@@ -399,7 +402,7 @@ const StageManager = () => {
                   <p
                     className={text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "pending" : ""}
                   >
-                    {text}
+                    {text === "New" ? "Action Required" : text === "Dissmissed" ? "Subject to interview" : text === "Failed" ? "Rejected" : text}
                   </p>
                 </Button>
               </Dropdown>
@@ -450,7 +453,7 @@ const StageManager = () => {
                 <div className="comment_box">
                   <p>{text}</p>
                   <img
-                    src={comment}
+                    src={commentIcon}
                     alt="comment"
                     className="edit-icon"
                     onClick={() => openEditModal(text, record)}
@@ -495,7 +498,7 @@ const StageManager = () => {
             key: "User_id",
             render: (text, row) => (
               <div className="flagContainer">
-                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>,
+                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
                 <Dropdown
                   overlay={() => statusMenuFlag(text?.status, row)}
                   trigger={["click"]}
@@ -617,7 +620,7 @@ const StageManager = () => {
                   icon={<DownOutlined />}
                   className="status_button"
                   style={{
-                    width: "120px",
+                    minWidth: "120px",
                     display: "flex",
                     flexDirection: "row-reverse",
                     justifyContent: "space-between",
@@ -627,7 +630,7 @@ const StageManager = () => {
                   <p
                     className={text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "pending" : ""}
                   >
-                    {text}
+                    {text === "New" ? "Action Required" : text === "Dissmissed" ? "Subject to interview" : text === "Failed" ? "Rejected" : text}
                   </p>
                 </Button>
               </Dropdown>
@@ -714,7 +717,7 @@ const StageManager = () => {
                 <div className="comment_box">
                   <p>{text}</p>
                   <img
-                    src={comment}
+                    src={commentIcon}
                     alt="comment"
                     className="edit-icon"
                     onClick={() => openEditModal(text, record)}
@@ -792,7 +795,7 @@ const StageManager = () => {
             key: "user_id",
             render: (text, row) => (
               <div className="flagContainer">
-                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>,
+                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
                 <Dropdown
                   overlay={() => statusMenuFlag(text?.status, row)}
                   trigger={["click"]}
@@ -801,11 +804,6 @@ const StageManager = () => {
                 </Dropdown>
               </div>
             ),
-          },
-          {
-            title: "Flag",
-            dataIndex: "flag",
-            key: "flag",
           },
           {
             title: "Email",
@@ -852,7 +850,7 @@ const StageManager = () => {
                 <div className="comment_box">
                   <p>{text}</p>
                   <img
-                    src={comment}
+                    src={commentIcon}
                     alt="comment"
                     className="edit-icon"
                     onClick={() => openEditModal(text, record)}
@@ -875,7 +873,7 @@ const StageManager = () => {
                   icon={<DownOutlined />}
                   className="status_button"
                   style={{
-                    width: "120px",
+                    minWidth: "120px",
                     display: "flex",
                     flexDirection: "row-reverse",
                     justifyContent: "space-between",
@@ -885,7 +883,7 @@ const StageManager = () => {
                   <p
                     className={text === "All" ? "all" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "pending" : text === "In Progress" ? "in_progress" : ""}
                   >
-                    {text}
+                    {text === "New" ? "Action Required" : text === "Dissmissed" ? "Subject to interview" : text === "Failed" ? "Rejected" : text}{" "}
                   </p>
                 </Button>
               </Dropdown>
@@ -926,7 +924,7 @@ const StageManager = () => {
             key: "user",
             render: (text, row) => (
               <div className="flagContainer">
-                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>,
+                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
                 <Dropdown
                   overlay={() => statusMenuFlag(text?.status, row)}
                   trigger={["click"]}
@@ -1005,7 +1003,7 @@ const StageManager = () => {
                 <div className="comment_box">
                   <p>{text}</p>
                   <img
-                    src={comment}
+                    src={commentIcon}
                     alt="comment"
                     className="edit-icon"
                     onClick={() => openEditModal(text, record)}
@@ -1029,7 +1027,7 @@ const StageManager = () => {
                   icon={<DownOutlined />}
                   className="status_button"
                   style={{
-                    width: "120px",
+                    minWidth: "120px",
                     display: "flex",
                     flexDirection: "row-reverse",
                     justifyContent: "space-between",
@@ -1037,7 +1035,9 @@ const StageManager = () => {
                   }}
                 >
                   {/* "New", "Approved", "Rejected", "Flagged" */}
-                  <p className={text === "New" ? "new" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Flagged" ? "rejected" : ""}>{text}</p>
+                  <p className={text === "New" ? "new" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Flagged" ? "rejected" : ""}>
+                    {text === "New" ? "Action Required" : text === "Dissmissed" ? "Subject to interview" : text === "Failed" ? "Rejected" : text}{" "}
+                  </p>
                 </Button>
               </Dropdown>
             ),
@@ -1094,25 +1094,33 @@ const StageManager = () => {
     <div className="stageManager_container">
       <div className="header_wrapper">
         <h2>{location.pathname.split("/")[2].charAt(0).toUpperCase() + location.pathname.split("/")[2].slice(1)}</h2>
-        <Button
-          onClick={() => navigate(viewLogsLink)}
-          className="view_logs__btn standard_button"
-        >
-          View Logs
-        </Button>
+        <div className="supportFilterParent">
+          <RangePicker
+            value={dates ? [dayjs(dates[0], "YYYY-MM-DD"), dayjs(dates[0], "YYYY-MM-DD")] : null}
+            onChange={updateDateRange}
+            autoFocus
+            // presets={rangePresets}
+          />
+          <Button
+            onClick={() => navigate(viewLogsLink)}
+            className="view_logs__btn standard_button"
+          >
+            View Logs
+          </Button>
+        </div>
       </div>
 
       <div className="table_header_filter">
-        <div className="search_box_wrapper">
-          <Select
+        <div className="search_box_wrapper stageSearchBox">
+          {/* <Select
             className="category_dropdown"
             defaultValue="all"
             // onChange={handleCategoryChange}
           >
-            <Option value="all">All Categories</Option>
-            {/* <Option value="swift">Swift</Option>
+            <Option value="all">All Categories</Option> */}
+          {/* <Option value="swift">Swift</Option>
             <Option value="wire">Wire</Option> */}
-          </Select>
+          {/* </Select> */}
           <input
             placeholder="Search..."
             className="search_input"
@@ -1147,16 +1155,10 @@ const StageManager = () => {
               className={status === `${item}` ? "active" : ""}
               onClick={() => handleTabChange(`${item}`)}
             >
-              {item}
+              {item === "New" ? "Action Required" : item === "Dissmissed" ? "Subject to interview" : item === "Failed" ? "Rejected" : item}
             </Button>
           ))}
         </div>
-        <RangePicker
-          value={dates ? [dayjs(dates[0], "YYYY-MM-DD"), dayjs(dates[0], "YYYY-MM-DD")] : null}
-          onChange={updateDateRange}
-          autoFocus
-          // presets={rangePresets}
-        />
       </div>
       {isLoading && <LoaderOverlay />}
 

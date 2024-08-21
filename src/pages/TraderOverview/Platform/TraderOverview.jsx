@@ -465,7 +465,7 @@ function TraderOverview() {
         >
           <Radio.Button value="">All</Radio.Button>
           <Radio.Button value="Evalution/Funded">Evalution/Funded</Radio.Button>
-          <Radio.Button value="Free Trail">Free Trail</Radio.Button>
+          <Radio.Button value="Free Trail">Free Trial</Radio.Button>
         </Radio.Group>
       </div>
       <Card className="table-wrapper">
