@@ -27,8 +27,14 @@ function RiskManagement() {
       const startDate = dates[0].format("DD/MMM/YYYY");
       const endDate = dates[1].format("DD/MMM/YYYY");
       dispatch(fetchAccountOverviewStats({idToken, startDate, endDate}));
+      dispatch(fetchFundingChart({idToken, startDate, endDate}));
+      dispatch(fetchStageChart({idToken, stage: 1, startDate, endDate}));
+      dispatch(fetchStageChart({idToken, stage: 2, startDate, endDate}));
     } else {
       dispatch(fetchAccountOverviewStats({idToken, startDate: null}));
+      dispatch(fetchFundingChart({idToken, startDate: null}));
+      dispatch(fetchStageChart({idToken, stage: 1, startDate: null}));
+      dispatch(fetchStageChart({idToken, stage: 2, startDate: null}));
     }
   };
 
@@ -45,9 +51,6 @@ function RiskManagement() {
       const defaultDates = [dayjs().subtract(1, "month"), dayjs()];
       onRangeChange(defaultDates);
     }
-    dispatch(fetchFundingChart({idToken}));
-    dispatch(fetchStageChart({idToken, stage: 1}));
-    dispatch(fetchStageChart({idToken, stage: 2}));
   }, [dispatch, idToken]);
 
   return (

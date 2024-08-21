@@ -46,8 +46,7 @@ const StageManager = () => {
   const [search, setSearch] = useState("");
   const [dates, setDates] = useState(null);
   const {idToken} = useSelector((state) => state.auth);
-  const {count, data, isLoading, stageStatusOptions} = useSelector((state) => state.support);
-  const {refetch} = useSelector((state) => state.list);
+  const {count, data, isLoading, stageStatusOptions, refetch} = useSelector((state) => state.support);
   const [fetchUpdate, setFetchUpdate] = useState(true);
   const location = useLocation();
   const dispatch = useDispatch();
