@@ -790,7 +790,7 @@ const StageManager = () => {
                   className="action_btn standard_button"
                   overlay={
                     <Menu>
-                      <Menu.Item onClick={() => openContractUpdateModal(!text, row, false)}>{row?.issue_contract ? "Revoke" : "Generate"}Contract</Menu.Item>
+                      <Menu.Item onClick={() => openContractUpdateModal(!text, row, false)}>{row?.issue_contract ? "Revoke" : "Generate"} Contract</Menu.Item>
                       <Menu.Item onClick={() => openContractUpdateModal(!text, row, true)}>{row?.issue_contract ? "Revoke" : "Generate"} Risk Contract</Menu.Item>
                     </Menu>
                   }
