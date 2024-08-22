@@ -147,11 +147,11 @@ const StageManager = () => {
     setModalAction("Update Status");
   };
 
-  const openContractUpdateModal = (value, record) => {
+  const openContractUpdateModal = (value, record, isRisk = false) => {
     console.log(value, record, " value, record");
     setuserToUpdate(record);
     setUpdatedStatus(value);
-    setUpdatedContract(value);
+    setUpdatedContract({value: value, isRisk: isRisk});
     setIsModalVisible(true);
     setModalAction("Contract");
   };
@@ -198,7 +198,12 @@ const StageManager = () => {
 
   const handleContract = () => {
     const formData = new FormData();
-    formData.append("issue_contract", updatedContract);
+    if (updatedContract?.isRisk) {
+      formData.append("issue_contract", false);
+      formData.append("issue_contract", updatedContract?.value);
+    } else {
+      formData.append("issue_contract", updatedContract?.value);
+    }
     let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
     console.log("userId : ", userId);
     dispatch(updateContactReq({idToken, body: formData, id: userId, dispatch}));
@@ -780,12 +785,26 @@ const StageManager = () => {
             dataIndex: "issue_contract",
             key: "issue_contract",
             render: (text, row) => (
-              <Button
-                className="action_btn standard_button"
-                onClick={() => openContractUpdateModal(!text, row)}
-              >
-                {text ? "Revoke" : "Generate"}
-              </Button>
+              <div>
+                <Dropdown
+                  className="action_btn standard_button"
+                  overlay={
+                    <Menu>
+                      <Menu.Item onClick={() => openContractUpdateModal(!text, row, false)}>{row?.issue_contract ? "Revoke" : "Generate"}Contract</Menu.Item>
+                      <Menu.Item onClick={() => openContractUpdateModal(!text, row, true)}>{row?.issue_contract ? "Revoke" : "Generate"} Risk Contract</Menu.Item>
+                    </Menu>
+                  }
+                  trigger={["click"]}
+                >
+                  <Button>{text ? "Revoke" : "Generate"}</Button>
+                </Dropdown>
+                {/* <Button
+                  className="action_btn standard_button"
+                  onClick={() => openContractUpdateModal(!text, row)}
+                >
+                  {text ? "Revoke" : "Generate"}
+                </Button> */}
+              </div>
             ),
           },
         ];
