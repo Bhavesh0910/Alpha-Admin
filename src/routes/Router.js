@@ -55,6 +55,9 @@ import Payout from "../pages/AdvanceStatistics/Payout/Payout";
 import PayoutExportHistory from "../pages/AdvanceStatistics/Payout/PayoutExportHistory";
 import DailyStats from "../pages/AdvanceStatistics/DailyStats/DailyStats";
 import TradingPairs from "../pages/MoreAdvancedStatistics/TradingPairs/TradingPairs";
+import PassAndFailed from "../pages/PassedAndFailed/PassAndFailed";
+import DashStats from "../pages/DashStats/DashStats";
+import DashStatsExportHistory from "../pages/DashStats/DashStatsExportHistory";
 
 function Router() {
   return (
@@ -320,6 +323,37 @@ function Router() {
               </PageLayout>
             }
           />
+
+          <Route
+            exact={true}
+            path="/advance-statistics/passed-and-failed"
+            element={
+              <PageLayout headerName="Advanced Statistics">
+                <PassAndFailed />
+              </PageLayout>
+            }
+          />
+
+          <Route
+            exact={true}
+            path="/advance-statistics/dash-stats"
+            element={
+              <PageLayout headerName="Dash Stats">
+                <DashStats />
+              </PageLayout>
+            }
+          />
+
+          <Route
+            exact={true}
+            path="/advance-statistics/dash-stats/export-history"
+            element={
+              <PageLayout headerName="New Page">
+                <DashStatsExportHistory />
+              </PageLayout>
+            }
+          />
+
           <Route
             exact={true}
             path="/revenue-management"

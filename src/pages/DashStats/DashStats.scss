@@ -1,0 +1,204 @@
+.dashStats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .header{
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+    .chart_box_wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        border-radius: var(--table-box, 20px);
+        background: #fff;
+        padding: 20px;
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+
+            h4 {
+                color: var(--Text, #1e1e1e);
+                font-family: "Nunito Sans";
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+
+            .ant-dropdown-trigger {
+                border-radius: var(--Corner-Radius, 10px);
+                background: var(--Table-box-selected, #F5F5F5);
+                display: flex;
+                width: 122px;
+                height: 42px;
+                border: none;
+                padding: 10px 20px;
+                align-items: center;
+                gap: 10px;          
+                color: var(--Text, #1E1E1E);
+                font-family: "Nunito Sans";
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;       
+                .anticon {
+                  margin-right: 8px;
+                
+              }
+            }
+        
+        }
+
+        .chart_info {
+            border-radius: var(--table-box, 20px);
+            background: var(--Table-header-fill, #edf0f0);
+            display: flex;
+            padding: 15px 20px;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            max-width: 230px;
+
+            h4 {
+                color: var(--Text, #1e1e1e);
+                font-family: "Nunito Sans";
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+
+            p {
+                color: var(--sucess, #009017);
+                font-family: "Nunito Sans";
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+            }
+        }
+    }
+
+.filter_button_wrapper {
+    display: flex;
+    gap: 6px;
+    padding: 4px;
+    align-items: center;
+    border-radius: var(--Corner-Radius, 10px);
+    background: var(--Table-box-selected, #f5f5f5);
+
+    .ant-btn {
+        background: var(--Table-box-selected, #f5f5f5);
+        border: none !important;
+    }
+
+    .active {
+        border-radius: var(--Corner-Radius, 10px);
+        background: #04d9ff;
+        color: #fff; 
+    }
+
+}
+
+
+.export_btn {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+
+    @media only screen and (max-width: 1400px) {
+      margin-left: auto;
+    }
+
+    .link{
+      color: var(--Brand-1, #04D9FF);
+font-family: "Nunito Sans";
+font-size: 14px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+text-decoration-line: underline;
+text-wrap: nowrap;
+
+    }
+
+    
+    button {
+        color: var(--Text-white, #1e1e1e);
+        font-family: "Nunito Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        min-height: 44px;
+        padding: 0px 15px;
+        border-radius: 10px;
+        background: #f6fefe;
+        
+        &:hover {
+          border: 1px solid var(--Text-white, #f6fefe) !important;
+          color: var(--Text-white, #1e1e1e) !important;
+          background: var(--Stroke, #f6fefe) !important;
+        }
+      }
+
+}
+
+
+.table_date{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+.date_box {
+    border-radius: 10px;
+    background: #f6fefe;
+    display: flex;
+    height: 46px;
+    padding: 0px 15px;
+    justify-content: flex-end;
+    align-items: center;
+    max-width: 200px;
+    gap: 10px;
+    position: relative;
+    cursor: pointer;
+
+    .ant-picker {
+        border: none;
+        &:hover {
+            border: none;
+        }
+        .ant-picker-suffix {
+            display: none;
+        }
+    }
+
+    .today_text {
+        color: #1e1e1e;
+        font-family: "Nunito Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+
+    .calendar_popup {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        margin-top: 5px; 
+    }
+}
+}

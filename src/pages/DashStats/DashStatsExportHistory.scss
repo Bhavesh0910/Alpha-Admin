@@ -1,0 +1,8 @@
+.payment_export{
+    background: #27313E;
+        .download_btn{
+            border-radius: var(--Corner-Radius, 10px);
+            border: 1px solid var(--sucess, #009017);
+            background: var(--Success-Body, #CDFFDD); 
+        }
+    }

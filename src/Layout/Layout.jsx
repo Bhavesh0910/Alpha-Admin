@@ -1,33 +1,33 @@
-import React, {useEffect, useState} from "react";
-import {CloseCircleOutlined, DesktopOutlined, FileOutlined, MenuOutlined, PieChartOutlined, TeamOutlined, UserOutlined} from "@ant-design/icons";
-import {Button, Drawer, Layout, Menu, Space} from "antd";
+import React, { useEffect, useState } from "react";
+import { CloseCircleOutlined, DesktopOutlined, FileOutlined, MenuOutlined, PieChartOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Drawer, Layout, Menu, Space } from "antd";
 import "./Layout.scss";
 import logo from "../assets/icons/logo.svg";
 import profilePic from "../assets/icons/userProfilePic.svg";
-import {useNavigate, useLocation, Link} from "react-router-dom";
-import {ReactComponent as Logout} from "../assets/icons/logout.svg";
-import {clearPersistedData} from "../store/configureStore";
-import {setAuthenticationStatus} from "../store/reducers/authSlice";
-import {useDispatch, useSelector} from "react-redux";
-import {returnErrors} from "../store/reducers/error";
-import {deAuthenticateAll} from "../store/NewReducers/logout";
-import {ReactComponent as RiskManagementIcon} from "../assets/icons/riskManagementIcon.svg";
-import {ReactComponent as RevenueManagementIcon} from "../assets/icons/revenueManagementIcon.svg";
-import {ReactComponent as CountryWiseIcon} from "../assets/icons/countryWiseIcon.svg";
-import {ReactComponent as TraderOverviewIcon} from "../assets/icons/traderOverviewMenu.svg";
-import {ReactComponent as SupportIcon} from "../assets/icons/supportIcon.svg";
-import {ReactComponent as StageManagerIcon} from "../assets/icons/stageManagerIcon.svg";
-import {ReactComponent as FundingEvaluationIcon} from "../assets/icons/fundingEvaluationIcon.svg";
-import {ReactComponent as PaymentsIcon} from "../assets/icons/paymentsIcon.svg";
-import {ReactComponent as AffiliateIcon} from "../assets/icons/affiliateIcon.svg";
-import {ReactComponent as UserSupportIcon} from "../assets/icons/userSupportIcon.svg";
-import {ReactComponent as CompetitionIcon} from "../assets/icons/competitionIcon.svg";
-import {ReactComponent as GeneralLogIcon} from "../assets/icons/generalLogIcon.svg";
-import {ReactComponent as CouponIcon} from "../assets/icons/couponIcon.svg";
-import {ReactComponent as ListIcon} from "../assets/icons/listIcon.svg";
-import {ReactComponent as ComplianceIcon} from "../assets/icons/complianceIcon.svg";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { ReactComponent as Logout } from "../assets/icons/logout.svg";
+import { clearPersistedData } from "../store/configureStore";
+import { setAuthenticationStatus } from "../store/reducers/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { returnErrors } from "../store/reducers/error";
+import { deAuthenticateAll } from "../store/NewReducers/logout";
+import { ReactComponent as RiskManagementIcon } from "../assets/icons/riskManagementIcon.svg";
+import { ReactComponent as RevenueManagementIcon } from "../assets/icons/revenueManagementIcon.svg";
+import { ReactComponent as CountryWiseIcon } from "../assets/icons/countryWiseIcon.svg";
+import { ReactComponent as TraderOverviewIcon } from "../assets/icons/traderOverviewMenu.svg";
+import { ReactComponent as SupportIcon } from "../assets/icons/supportIcon.svg";
+import { ReactComponent as StageManagerIcon } from "../assets/icons/stageManagerIcon.svg";
+import { ReactComponent as FundingEvaluationIcon } from "../assets/icons/fundingEvaluationIcon.svg";
+import { ReactComponent as PaymentsIcon } from "../assets/icons/paymentsIcon.svg";
+import { ReactComponent as AffiliateIcon } from "../assets/icons/affiliateIcon.svg";
+import { ReactComponent as UserSupportIcon } from "../assets/icons/userSupportIcon.svg";
+import { ReactComponent as CompetitionIcon } from "../assets/icons/competitionIcon.svg";
+import { ReactComponent as GeneralLogIcon } from "../assets/icons/generalLogIcon.svg";
+import { ReactComponent as CouponIcon } from "../assets/icons/couponIcon.svg";
+import { ReactComponent as ListIcon } from "../assets/icons/listIcon.svg";
+import { ReactComponent as ComplianceIcon } from "../assets/icons/complianceIcon.svg";
 
-const {Header, Sider, Content} = Layout;
+const { Header, Sider, Content } = Layout;
 
 const items = [
   {
@@ -211,6 +211,18 @@ const items = [
     link: "/advance-statistics/trading-pairs",
   },
   {
+    key: "20",
+    icon: <ComplianceIcon />,
+    label: "Passed And Failed",
+    link: "/advance-statistics/passed-and-failed",
+  },
+  {
+    key: "21",
+    icon: <ComplianceIcon />,
+    label: "Dash Stats",
+    link: "/advance-statistics/dash-stats",
+  },
+  {
     key: "12",
     icon: <Logout />,
     label: "Logout",
@@ -218,7 +230,7 @@ const items = [
   },
 ];
 
-const PageLayout = ({headerName, children}) => {
+const PageLayout = ({ headerName, children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [openKeys, setOpenKeys] = useState([]);
   const [open, setOpen] = useState(false);
@@ -236,7 +248,7 @@ const PageLayout = ({headerName, children}) => {
     setOpenKeys([]);
   };
 
-  const handleMenuClick = ({key}) => {
+  const handleMenuClick = ({ key }) => {
     const selectedItem = items.find((item) => item.key === key);
 
     if (key === "12") {
@@ -272,11 +284,11 @@ const PageLayout = ({headerName, children}) => {
     })();
 
     if (key) {
-      handleMenuClick({key});
+      handleMenuClick({ key });
     }
   }, [location.pathname]);
 
-  const handleSubMenuClick = ({key}) => {
+  const handleSubMenuClick = ({ key }) => {
     const selectedChildItem = items
       .filter((item) => item.children)
       .map((item) => item.children)
@@ -344,7 +356,7 @@ const PageLayout = ({headerName, children}) => {
   })();
 
   return (
-    <Layout style={{minHeight: "100vh"}}>
+    <Layout style={{ minHeight: "100vh" }}>
       <Sider
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -364,7 +376,7 @@ const PageLayout = ({headerName, children}) => {
             alt="Logo"
             className="sidebar-logo"
             onClick={() => navigate("/trader-overview")}
-            style={{cursor: "pointer"}}
+            style={{ cursor: "pointer" }}
           />
         </div>
         <Menu

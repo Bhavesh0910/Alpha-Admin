@@ -75,12 +75,12 @@ const PassRates = () => {
   };
 
   const columns = [
-    {
-      title: "Start Balance",
-      dataIndex: "starting_balance",
-      key: "starting_balance",
-      render: (text) => text || "-",
-    },
+    // {
+    //   title: "Start Balance",
+    //   dataIndex: "starting_balance",
+    //   key: "starting_balance",
+    //   render: (text) => text || "-",
+    // },
     {
       title: "Challenge Name",
       dataIndex: "challenge_name",
@@ -112,12 +112,12 @@ const PassRates = () => {
       key: "pf_ratio",
       render: (text) => text || "-",
     },
-    {
-      title: "Total",
-      dataIndex: "total_accounts",
-      key: "total_accounts",
-      render: (text) => text || "-",
-    },
+    // {
+    //   title: "Total",
+    //   dataIndex: "total_accounts",
+    //   key: "total_accounts",
+    //   render: (text) => text || "-",
+    // },
     {
       title: "Account Active",
       dataIndex: "active_accounts",
