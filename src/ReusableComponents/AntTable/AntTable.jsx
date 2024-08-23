@@ -3,7 +3,7 @@ import {Table} from "antd";
 import "./AntTable.scss";
 import {useLocation} from "react-router-dom";
 
-const AntTable = ({serverSide = true, triggerChange, data, columns, totalItems, pageSize, setPageSize, CurrentPageNo, isExpandable, ExpandedComp, rowId}) => {
+const AntTable = ({serverSide = true, triggerChange, data, columns, totalItems, pageSize, setPageSize, CurrentPageNo, isExpandable, ExpandedComp, rowId, customRowClass = false}) => {
   const [pagination, setPagination] = useState(() => {
     if (serverSide) {
       return {current: CurrentPageNo, pageSize, total: totalItems};
@@ -56,9 +56,9 @@ const AntTable = ({serverSide = true, triggerChange, data, columns, totalItems, 
     }
   };
 
-  useEffect(()=>{
-    console.log(expandedRowKeys, " expandedrowkey")
-  },[expandedRowKeys])
+  useEffect(() => {
+    console.log(expandedRowKeys, " expandedrowkey");
+  }, [expandedRowKeys]);
 
   return (
     <div className="ant_table_container">
@@ -91,6 +91,13 @@ const AntTable = ({serverSide = true, triggerChange, data, columns, totalItems, 
               }
             : undefined
         }
+        rowClassName={(record) => {
+          if (customRowClass) {
+            return record?.status === "Blacklisted" ? "Blacklisted" : record?.flag === "Warning" ? "Warning" : "Safe";
+          } else {
+            return null;
+          }
+        }}
       />
     </div>
   );

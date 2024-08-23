@@ -5,6 +5,7 @@
   --fw-medium: 700;
   --fw-bold: 800;
   --primary-font-family: "Nunito Sans";
+  
 }
 body {
   background-color: var(--bg-color);

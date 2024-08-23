@@ -53,12 +53,11 @@
     border-radius: var(--Corner-Radius, 10px);
     border: 1px solid var(--Green, #a3ea93);
     background: var(--Success-Body, #cdffdd);
-
   }
   .status_wrapper.blocked {
     border-radius: var(--Corner-Radius, 10px);
     border: 1px solid var(--Green, red);
-    background:none;
+    background: none;
   }
   .header_wrapper {
     display: flex;
@@ -104,4 +103,34 @@
     align-items: center;
     gap: 10px;
   }
+}
+
+.flag {
+  width: 20px !important;
+  min-height: 20px;
+  border-radius: 20px;
+}
+
+.flagContainer {
+  display: flex;
+  gap: 5px;
+}
+
+.Red {
+  background-color: #f20000;
+  border: 2px solid #f20000;
+}
+
+.Yellow {
+  background-color: #f4ea0f;
+  border: 2px solid #f4ea0f;
+}
+
+.Green {
+  background-color: #009017;
+  border: 2px solid #009017;
+}
+
+.menuCard{
+  background-color: black;
 }

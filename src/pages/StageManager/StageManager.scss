@@ -234,7 +234,7 @@ background: var(--in-Progress-Body, #FFFDCF);
     p,
     .status-button {
       display: flex;
-      width: 92px;
+      min-width: 120px;
       height: 31px;
       padding: 6px 10px;
       justify-content: center;
@@ -333,4 +333,15 @@ background: var(--in-Progress-Body, #FFFDCF);
   > label {
     color: white;
   }
+}
+
+.supportFilterParent{
+  display: flex;
+  >.ant-picker{
+    margin-right: 20px;
+  }
+}
+
+.stageSearchBox{
+  min-width: 50px;
 }

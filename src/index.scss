@@ -391,7 +391,7 @@ input:-webkit-autofill:active {
     background: var(--Main-Background, #f6fefe);
     padding: 12px 20px;
     width: 100%;
-    max-width: 325px;
+    // max-width: 325px;
     @media only screen and (max-width: 768px) {
       font-size: 14px !important;
       padding: 0px 10px !important;

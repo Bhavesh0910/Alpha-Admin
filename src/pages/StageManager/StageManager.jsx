@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import searchIcon from "../../assets/icons/searchIcon.svg";
-import comment from "../../assets/icons/comment.svg";
+import commentIcon from "../../assets/icons/comment.svg";
 import RightMark from "../../assets/icons/verified_green_circleIcon.svg";
 import CrossMark from "../../assets/icons/notverified_red_circleIcon.svg";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
@@ -16,6 +16,7 @@ import {supportListReq, nestedTableDataReq, statusUpdateReq, editCommentReq, upd
 import ReactCountryFlag from "react-country-flag";
 import dayjs from "dayjs";
 import {formatDate, formatDateTime, formatDateTimeNew, FormatUSD} from "../../utils/helpers/string";
+import {updateFlagReq} from "../../store/NewReducers/listSlice";
 const {RangePicker} = DatePicker;
 
 const {Option} = Select;
@@ -35,21 +36,29 @@ const StageManager = () => {
   const [updatedStatus, setUpdatedStatus] = useState(null);
   const [updatedContract, setUpdatedContract] = useState(null);
 
+  const [flagUser, setFlagUser] = useState(null);
+  const [flagModal, setFlagModel] = useState(false);
+  const [flagUpdatedValue, setFlagUpdatedValue] = useState(null);
+  const [comment, setComment] = useState(null);
+
   const [status, setStatus] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
   const [dates, setDates] = useState(null);
   const {idToken} = useSelector((state) => state.auth);
-  const {count, data, isLoading, stageStatusOptions} = useSelector((state) => state.support);
+  const {count, data, isLoading, stageStatusOptions, refetch} = useSelector((state) => state.support);
   const [fetchUpdate, setFetchUpdate] = useState(true);
   const location = useLocation();
   const dispatch = useDispatch();
-  const options = stageStatusOptions || location.pathname === "/support/funded" ? ["In Progress", "Approved", "Failed", "Pending"] : ["New", "Approved", "Rejected", "Flagged"];
+  const options =
+    stageStatusOptions || location.pathname === "/support/funded"
+      ? ["New", "In Progress", "Flagged", "Dissmissed", "Rejected", "Approved"]
+      : ["New", "In Progress", "Flagged", "Dissmissed", "Rejected", "Approved"];
 
   useEffect(() => {
     // console.log("Fetching UseEffect");
     fetchStageList(idToken, pageNo, pageSize, searchText, status, dates);
-  }, [searchText, pageNo, pageSize, status, idToken, dates, fetchUpdate]);
+  }, [searchText, pageNo, pageSize, status, idToken, dates, fetchUpdate, refetch]);
 
   useEffect(() => {
     // console.log("Indirect Update ");
@@ -138,18 +147,18 @@ const StageManager = () => {
     setModalAction("Update Status");
   };
 
-  const openContractUpdateModal = (value, record) => {
+  const openContractUpdateModal = (value, record, isRisk = false) => {
     console.log(value, record, " value, record");
     setuserToUpdate(record);
     setUpdatedStatus(value);
-    setUpdatedContract(value);
+    setUpdatedContract({value: value, isRisk: isRisk});
     setIsModalVisible(true);
     setModalAction("Contract");
   };
 
   const openCreateAccountModel = (record) => {
     setuserToUpdate(record);
-    console.log(record," : updatedValue, record")
+    console.log(record, " : updatedValue, record");
     // setUpdatedContract(updatedValue);
     setIsModalVisible(true);
     setModalAction("Create Account");
@@ -157,12 +166,12 @@ const StageManager = () => {
 
   const statusMenu = (key, record) => (
     <Menu onClick={(e) => openStatusUpdateModal(key, e.key, record)}>
-      <Menu.Item key="New">New</Menu.Item>
-      <Menu.Item key="Approved">Approved</Menu.Item>
+      <Menu.Item key="New">Action Required</Menu.Item>
       <Menu.Item key="In Progress">In Progress</Menu.Item>
+      <Menu.Item key="Flagged">In Review</Menu.Item>
       <Menu.Item key="Rejected">Rejected</Menu.Item>
-      <Menu.Item key="Flagged">Flagged</Menu.Item>
-      <Menu.Item key="Dissmissed">Dissmissed</Menu.Item>
+      <Menu.Item key="Approved">Approved</Menu.Item>
+      <Menu.Item key="Dissmissed">Subject to interview</Menu.Item>
     </Menu>
   );
 
@@ -189,7 +198,12 @@ const StageManager = () => {
 
   const handleContract = () => {
     const formData = new FormData();
-    formData.append("issue_contract", updatedContract);
+    if (updatedContract?.isRisk) {
+      formData.append("issue_contract", false);
+      formData.append("issue_contract", updatedContract?.value);
+    } else {
+      formData.append("issue_contract", updatedContract?.value);
+    }
     let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
     console.log("userId : ", userId);
     dispatch(updateContactReq({idToken, body: formData, id: userId, dispatch}));
@@ -198,18 +212,78 @@ const StageManager = () => {
 
   const handleCreateAccount = () => {
     const body = {id: userToUpdate?.id};
-    console.log("userToUpdate?.id", userToUpdate?.id)
-    console.log(body,"body")
+    console.log("userToUpdate?.id", userToUpdate?.id);
+    console.log(body, "body");
     dispatch(createAccountReq({idToken, body, dispatch}));
     setIsModalVisible(false);
   };
 
   const navigate = useNavigate();
 
+  function reset() {
+    setFlagUser(null);
+    setFlagUpdatedValue(null);
+    setComment(null);
+  }
+
+  const openFlagUpdateModal = (updatedValue, record) => {
+    console.log(updatedValue, record, " updatedValue, record ");
+
+    let user = "";
+
+    if (location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2") {
+      user = record?.User_id;
+    } else if (location.pathname === "/support/funded") {
+      user = record?.user_id;
+    } else if (location.pathname === "/support/payout") {
+      user = record?.user;
+    }
+    setFlagModel(true);
+    setFlagUser(user);
+    setFlagUpdatedValue(updatedValue);
+  };
+
+  const statusMenuFlag = (key, record) => (
+    <Menu
+      className="menuCard"
+      onClick={(e) => openFlagUpdateModal(e.key, record)}
+    >
+      <Menu.Item key="Safe">Safe</Menu.Item>
+      <Menu.Item key="Warning">Warning</Menu.Item>
+      <Menu.Item key="Blacklisted">Blacklisted</Menu.Item>
+    </Menu>
+  );
+
+  function handleUpdateFlag() {
+    const formData = new FormData();
+    formData.append("status", flagUpdatedValue);
+    formData.append("notes", comment);
+
+    dispatch(updateFlagReq({idToken, body: formData, id: flagUser?.id}));
+    setFlagModel(false);
+    reset();
+  }
+
   const columns = useMemo(() => {
-    switch (location.pathname) {
+    switch (location?.pathname) {
       case "/support/stage-1":
         return [
+          {
+            title: "Flag",
+            dataIndex: "User_id",
+            key: "User_id",
+            render: (text, row) => (
+              <div className="flagContainer">
+                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
+                <Dropdown
+                  overlay={() => statusMenuFlag(text?.status, row)}
+                  trigger={["click"]}
+                >
+                  <DownOutlined />
+                </Dropdown>
+              </div>
+            ),
+          },
           {
             title: "Account",
             dataIndex: "account_id",
@@ -322,7 +396,7 @@ const StageManager = () => {
                   icon={<DownOutlined />}
                   className="status_button"
                   style={{
-                    width: "120px",
+                    minWidth: "120px",
                     display: "flex",
                     flexDirection: "row-reverse",
                     justifyContent: "space-between",
@@ -330,9 +404,11 @@ const StageManager = () => {
                   }}
                 >
                   <p
-                    className={text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "pending" : ""}
+                    className={
+                      text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Flagged" ? "flagged" : ""
+                    }
                   >
-                    {text}
+                    {text === "New" ? "Action Required" : text === "Dissmissed" ? "Subject to interview" : text === "Failed" ? "Rejected" : text === "Flagged" ? "In review" : text}
                   </p>
                 </Button>
               </Dropdown>
@@ -383,7 +459,7 @@ const StageManager = () => {
                 <div className="comment_box">
                   <p>{text}</p>
                   <img
-                    src={comment}
+                    src={commentIcon}
                     alt="comment"
                     className="edit-icon"
                     onClick={() => openEditModal(text, record)}
@@ -422,6 +498,22 @@ const StageManager = () => {
         ];
       case "/support/stage-2":
         return [
+          {
+            title: "Flag",
+            dataIndex: "User_id",
+            key: "User_id",
+            render: (text, row) => (
+              <div className="flagContainer">
+                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
+                <Dropdown
+                  overlay={() => statusMenuFlag(text?.status, row)}
+                  trigger={["click"]}
+                >
+                  <DownOutlined />
+                </Dropdown>
+              </div>
+            ),
+          },
           {
             title: "Account",
             dataIndex: "account_id",
@@ -534,7 +626,7 @@ const StageManager = () => {
                   icon={<DownOutlined />}
                   className="status_button"
                   style={{
-                    width: "120px",
+                    minWidth: "120px",
                     display: "flex",
                     flexDirection: "row-reverse",
                     justifyContent: "space-between",
@@ -542,9 +634,11 @@ const StageManager = () => {
                   }}
                 >
                   <p
-                    className={text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "pending" : ""}
+                    className={
+                      text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Flagged" ? "flagged" : ""
+                    }
                   >
-                    {text}
+                    {text === "New" ? "Action Required" : text === "Dissmissed" ? "Subject to interview" : text === "Failed" ? "Rejected" : text}
                   </p>
                 </Button>
               </Dropdown>
@@ -631,7 +725,7 @@ const StageManager = () => {
                 <div className="comment_box">
                   <p>{text}</p>
                   <img
-                    src={comment}
+                    src={commentIcon}
                     alt="comment"
                     className="edit-icon"
                     onClick={() => openEditModal(text, record)}
@@ -691,12 +785,26 @@ const StageManager = () => {
             dataIndex: "issue_contract",
             key: "issue_contract",
             render: (text, row) => (
-              <Button
-                className="action_btn standard_button"
-                onClick={() => openContractUpdateModal(!text, row)}
-              >
-                {text ? "Revoke" : "Generate"}
-              </Button>
+              <div>
+                <Dropdown
+                  className="action_btn standard_button"
+                  overlay={
+                    <Menu>
+                      <Menu.Item onClick={() => openContractUpdateModal(!text, row, false)}>{row?.issue_contract ? "Revoke" : "Generate"} Contract</Menu.Item>
+                      <Menu.Item onClick={() => openContractUpdateModal(!text, row, true)}>{row?.issue_contract ? "Revoke" : "Generate"} Risk Contract</Menu.Item>
+                    </Menu>
+                  }
+                  trigger={["click"]}
+                >
+                  <Button>{text ? "Revoke" : "Generate"}</Button>
+                </Dropdown>
+                {/* <Button
+                  className="action_btn standard_button"
+                  onClick={() => openContractUpdateModal(!text, row)}
+                >
+                  {text ? "Revoke" : "Generate"}
+                </Button> */}
+              </div>
             ),
           },
         ];
@@ -705,8 +813,19 @@ const StageManager = () => {
         return [
           {
             title: "Flag",
-            dataIndex: "flag",
-            key: "flag",
+            dataIndex: "user_id",
+            key: "user_id",
+            render: (text, row) => (
+              <div className="flagContainer">
+                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
+                <Dropdown
+                  overlay={() => statusMenuFlag(text?.status, row)}
+                  trigger={["click"]}
+                >
+                  <DownOutlined />
+                </Dropdown>
+              </div>
+            ),
           },
           {
             title: "Email",
@@ -753,7 +872,7 @@ const StageManager = () => {
                 <div className="comment_box">
                   <p>{text}</p>
                   <img
-                    src={comment}
+                    src={commentIcon}
                     alt="comment"
                     className="edit-icon"
                     onClick={() => openEditModal(text, record)}
@@ -776,7 +895,7 @@ const StageManager = () => {
                   icon={<DownOutlined />}
                   className="status_button"
                   style={{
-                    width: "120px",
+                    minWidth: "120px",
                     display: "flex",
                     flexDirection: "row-reverse",
                     justifyContent: "space-between",
@@ -784,9 +903,11 @@ const StageManager = () => {
                   }}
                 >
                   <p
-                    className={text === "All" ? "all" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "pending" : text === "In Progress" ? "in_progress" : ""}
+                    className={
+                      text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Flagged" ? "flagged" : ""
+                    }
                   >
-                    {text}
+                    {text === "New" ? "Action Required" : text === "Dissmissed" ? "Subject to interview" : text === "Failed" ? "Rejected" : text}{" "}
                   </p>
                 </Button>
               </Dropdown>
@@ -821,6 +942,22 @@ const StageManager = () => {
         break;
       case "/support/payout":
         return [
+          {
+            title: "Flag",
+            dataIndex: "user",
+            key: "user",
+            render: (text, row) => (
+              <div className="flagContainer">
+                <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
+                <Dropdown
+                  overlay={() => statusMenuFlag(text?.status, row)}
+                  trigger={["click"]}
+                >
+                  <DownOutlined />
+                </Dropdown>
+              </div>
+            ),
+          },
           {
             title: "Email",
             dataIndex: "user_email",
@@ -890,7 +1027,7 @@ const StageManager = () => {
                 <div className="comment_box">
                   <p>{text}</p>
                   <img
-                    src={comment}
+                    src={commentIcon}
                     alt="comment"
                     className="edit-icon"
                     onClick={() => openEditModal(text, record)}
@@ -914,7 +1051,7 @@ const StageManager = () => {
                   icon={<DownOutlined />}
                   className="status_button"
                   style={{
-                    width: "120px",
+                    minWidth: "120px",
                     display: "flex",
                     flexDirection: "row-reverse",
                     justifyContent: "space-between",
@@ -922,7 +1059,13 @@ const StageManager = () => {
                   }}
                 >
                   {/* "New", "Approved", "Rejected", "Flagged" */}
-                  <p className={text === "New" ? "new" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Flagged" ? "rejected" : ""}>{text}</p>
+                  <p
+                    className={
+                      text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Flagged" ? "flagged" : ""
+                    }
+                  >
+                    {text === "New" ? "Action Required" : text === "Dissmissed" ? "Subject to interview" : text === "Failed" ? "Rejected" : text}{" "}
+                  </p>
                 </Button>
               </Dropdown>
             ),
@@ -960,22 +1103,6 @@ const StageManager = () => {
     }
   }, [location.pathname]);
 
-  // if (location.pathname === "/support/stage-2") {
-  //   columns.push({
-  //     title: "Contract",
-  //     dataIndex: "issue_contract",
-  //     key: "issue_contract",
-  //     render: (text, row) => (
-  //       <Button
-  //         className="action_btn standard_button"
-  //         onClick={() => openContractUpdateModal(!text, row)}
-  //       >
-  //         {text ? "Revoke" : "Generate"}
-  //       </Button>
-  //     ),
-  //   });
-  // }
-
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
     setPageSize(updatedPageSize);
@@ -995,25 +1122,33 @@ const StageManager = () => {
     <div className="stageManager_container">
       <div className="header_wrapper">
         <h2>{location.pathname.split("/")[2].charAt(0).toUpperCase() + location.pathname.split("/")[2].slice(1)}</h2>
-        <Button
-          onClick={() => navigate(viewLogsLink)}
-          className="view_logs__btn standard_button"
-        >
-          View Logs
-        </Button>
+        <div className="supportFilterParent">
+          <RangePicker
+            value={dates ? [dayjs(dates[0], "YYYY-MM-DD"), dayjs(dates[0], "YYYY-MM-DD")] : null}
+            onChange={updateDateRange}
+            autoFocus
+            // presets={rangePresets}
+          />
+          <Button
+            onClick={() => navigate(viewLogsLink)}
+            className="view_logs__btn standard_button"
+          >
+            View Logs
+          </Button>
+        </div>
       </div>
 
       <div className="table_header_filter">
-        <div className="search_box_wrapper">
-          <Select
+        <div className="search_box_wrapper stageSearchBox">
+          {/* <Select
             className="category_dropdown"
             defaultValue="all"
             // onChange={handleCategoryChange}
           >
-            <Option value="all">All Categories</Option>
-            {/* <Option value="swift">Swift</Option>
+            <Option value="all">All Categories</Option> */}
+          {/* <Option value="swift">Swift</Option>
             <Option value="wire">Wire</Option> */}
-          </Select>
+          {/* </Select> */}
           <input
             placeholder="Search..."
             className="search_input"
@@ -1048,16 +1183,10 @@ const StageManager = () => {
               className={status === `${item}` ? "active" : ""}
               onClick={() => handleTabChange(`${item}`)}
             >
-              {item}
+              {item === "New" ? "Action Required" : item === "Dissmissed" ? "Subject to interview" : item === "Failed" ? "Rejected" : item}
             </Button>
           ))}
         </div>
-        <RangePicker
-          value={dates ? [dayjs(dates[0], "YYYY-MM-DD"), dayjs(dates[0], "YYYY-MM-DD")] : null}
-          onChange={updateDateRange}
-          autoFocus
-          // presets={rangePresets}
-        />
       </div>
       {isLoading && <LoaderOverlay />}
 
@@ -1109,6 +1238,25 @@ const StageManager = () => {
             <Input.TextArea placeholder="Write your comment here.." />
           </Form.Item>
         )}
+      </Modal>
+      <Modal
+        title={"Flag User"}
+        open={flagModal}
+        className="reset"
+        onCancel={() => {
+          reset();
+          setFlagModel(false);
+        }}
+        onOk={handleUpdateFlag}
+      >
+        <Form.Item
+          label="Reason"
+          value={comment}
+          className="reset"
+          onChange={(e) => setComment(e.target.value)}
+        >
+          <Input.TextArea placeholder="Write your comment here.." />
+        </Form.Item>
       </Modal>
     </div>
   );
