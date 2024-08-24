@@ -55,92 +55,52 @@ const WithdrawalStatus = () => {
 
   const columns = [
     {
-      title: "Login ID",
-      dataIndex: "login_id",
-      key: "login_id",
+      title: 'ACG Share',
+      dataIndex: 'acg_share',
+      key: 'acg_share',
+      render: text => text ? text : '-',
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (text) => text || "-",
+      title: 'Client Share',
+      dataIndex: 'client_share',
+      key: 'client_share',
+      render: text => text ? text : '-',
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: 'Date',
+      dataIndex: 'date',
+      key: 'date',
+      render: text => text ? text : '-',
     },
     {
-      title: "Plan",
-      dataIndex: "plan",
-      key: "plan",
-      render: (text) => (text !== null && text !== undefined ? `$${text.toFixed(2)}` : "-"),
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+      render: text => text ? text : '-',
     },
     {
-      title: "MT4 Amount",
-      dataIndex: "mt4_amount",
-      key: "mt4_amount",
-      render: (text) => (text !== null && text !== undefined ? `$${text.toFixed(2)}` : "-"),
+      title: 'Login ID',
+      dataIndex: 'login_id',
+      key: 'login_id',
+      render: text => text ? text : '-',
     },
     {
-      title: "Client Amount",
-      dataIndex: "client_amount",
-      key: "client_amount",
-      render: (text) => (text !== null && text !== undefined ? `$${text.toFixed(2)}` : "-"),
+      title: 'Method',
+      dataIndex: 'method',
+      key: 'method',
+      render: text => text ? text : '-',
     },
     {
-      title: "Profit Share",
-      dataIndex: "profit_share",
-      key: "profit_share",
-      render: (text) => (text !== null && text !== undefined ? `${text}%` : "-"),
+      title: 'Plan Name',
+      dataIndex: 'plan_name',
+      key: 'plan_name',
+      render: text => text ? text : '-',
     },
     {
-      title: "Payable Amount",
-      dataIndex: "payable_amount",
-      key: "payable_amount",
-      render: (text) => (text !== null && text !== undefined ? `$${text.toFixed(2)}` : "-"),
-    },
-    {
-      title: "Bonus",
-      dataIndex: "bonus",
-      key: "bonus",
-      render: (text) => (text !== null && text !== undefined ? `$${text.toFixed(2)}` : "-"),
-    },
-    {
-      title: "Total Payable",
-      dataIndex: "total_payable",
-      key: "total_payable",
-      render: (text) => (text !== null && text !== undefined ? `$${text.toFixed(2)}` : "-"),
-    },
-    {
-      title: "Method",
-      dataIndex: "method",
-      key: "method",
-      render: (text) => text || "-",
-    },
-    {
-      title: "Started On",
-      dataIndex: "started_on",
-      key: "started_on",
-      render: (text) => (text ? new Date(text).toLocaleDateString() : "-"),
-    },
-    {
-      title: "Created On",
-      dataIndex: "created_on",
-      key: "created_on",
-      render: (text) => (text ? new Date(text).toLocaleDateString() : "-"),
-    },
-    {
-      title: "Next Payout Date",
-      dataIndex: "next_payout_date",
-      key: "next_payout_date",
-      render: (text) => (text ? new Date(text).toLocaleDateString() : "-"),
-    },
-    {
-      title: "Trade From",
-      dataIndex: "trade_from",
-      key: "trade_from",
-      render: (text) => text || "-",
+      title: 'Plan Size',
+      dataIndex: 'plan_size',
+      key: 'plan_size',
+      render: text => text ? text : '-',
     },
     {
       title: "Status",
@@ -165,11 +125,11 @@ const WithdrawalStatus = () => {
       },
     },
     {
-      title: "Is Expected",
-      dataIndex: "is_expected",
-      key: "is_expected",
-      render: (text) => (text ? "Yes" : "No"),
-    },
+      title: 'Withdrawal Amount',
+      dataIndex: 'withdrawl_amount',
+      key: 'withdrawal_amount',
+      render: text => text ? text : '-',
+    }
   ];
 
   const statusMenu = (key, record) => (
@@ -288,15 +248,14 @@ const WithdrawalStatus = () => {
       <div className="table_header_filter">
         <div className="header_left">
           <div className="search_box_wrapper">
-            <Select
+            {/* <Select
               className="category_dropdown"
               defaultValue="all"
               onChange={handleCategoryChange}
             >
               <Option value="all">All Categories</Option>
-              {/* <Option value="swift">Swift</Option>
-              <Option value="wire">Wire</Option> */}
-            </Select>
+          
+            </Select> */}
             <input
               placeholder="Search..."
               className="search_input"

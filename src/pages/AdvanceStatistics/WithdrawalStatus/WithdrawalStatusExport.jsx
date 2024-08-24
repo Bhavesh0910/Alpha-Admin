@@ -26,7 +26,7 @@ const WithdrawalStatusExportHistory = () => {
 
     // if (startDate && endDate) {
       // const query = `?start_date=${startDate}&end_date=${endDate}`;
-      const url = `v3/withdrawal/status-export/history/`;
+      const url = `withdrawal/status-export/history/`;
       dispatch(fetchExportHistoryReq({ idToken, url , dispatch }));
     // }
   }, [ dispatch, idToken]);

@@ -14,6 +14,47 @@
     }
   }
 
+  .export_btn {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+
+    @media only screen and (max-width: 1400px) {
+      margin-left: auto;
+    }
+
+    .link {
+      color: var(--Brand-1, #04d9ff);
+      font-family: "Nunito Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      text-decoration-line: underline;
+      text-wrap: nowrap;
+    }
+
+    button {
+      color: var(--Text-white, #1e1e1e);
+      font-family: "Nunito Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      min-height: 44px;
+      padding: 0px 15px;
+      border-radius: 10px;
+      background: #f6fefe;
+
+      &:hover {
+        border: 1px solid var(--Text-white, #f6fefe) !important;
+        color: var(--Text-white, #1e1e1e) !important;
+        background: var(--Stroke, #f6fefe) !important;
+      }
+    }
+  }
+  
   .payout_lower_heading {
     display: flex;
     justify-content: space-between;

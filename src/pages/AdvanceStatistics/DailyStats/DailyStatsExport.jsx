@@ -26,7 +26,7 @@ const DailyStatsExportHistory = () => {
 
     // if (startDate && endDate) {
       // const query = `?start_date=${startDate}&end_date=${endDate}`;
-      const url = `v3/daily-details-export/history/`;
+      const url = `daily-details-export/history/`;
       dispatch(fetchExportHistoryReq({ idToken, url , dispatch }));
     // }
   }, [ dispatch, idToken]);
@@ -86,7 +86,7 @@ const DailyStatsExportHistory = () => {
           separator=">"
           items={[
             {
-              title: <Link to="/advance-statistics/withdrawal-status">Withdrawal Status</Link>,
+              title: <Link to="/advance-statistics/daily-stats"> Daily Stats</Link>,
             },
             {
               title: <Link to="">Export History</Link>,

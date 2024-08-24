@@ -58,6 +58,7 @@ import TradingPairs from "../pages/MoreAdvancedStatistics/TradingPairs/TradingPa
 import PassAndFailed from "../pages/PassedAndFailed/PassAndFailed";
 import DashStats from "../pages/DashStats/DashStats";
 import DashStatsExportHistory from "../pages/DashStats/DashStatsExportHistory";
+import DailyStatsExportHistory from "../pages/AdvanceStatistics/DailyStats/DailyStatsExport";
 
 function Router() {
   return (
@@ -273,6 +274,17 @@ function Router() {
               </PageLayout>
             }
           />
+
+          <Route
+            exact={true}
+            path="/advance-statistics/daily-stats/export-history"
+            element={
+              <PageLayout headerName="Daily Stats">
+                <DailyStatsExportHistory />
+              </PageLayout>
+            }
+          />
+
           <Route
             exact={true}
             path="/advance-statistics/pass-rates"

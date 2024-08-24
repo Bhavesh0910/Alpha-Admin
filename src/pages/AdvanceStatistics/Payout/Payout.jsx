@@ -6,8 +6,17 @@ import {Link, useNavigate} from "react-router-dom";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchPayout, fetchWithdrawalsDetails} from "../../../store/NewReducers/advanceStatistics";
+import {fetchPayout, fetchPayoutDetails, fetchpayoutDetails, fetchTotalPayments} from "../../../store/NewReducers/advanceStatistics";
 import moment from "moment/moment";
+import { Button, DatePicker, Modal, notification } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
+import { returnMessages } from "../../../store/reducers/message";
+import { exportDataReq } from "../../../store/NewReducers/exportSlice";
+import { returnErrors } from "../../../store/reducers/error";
+import dayjs from "dayjs";
+
+const {RangePicker} = DatePicker;
+
 
 const Payout = () => {
   const [searchText, setSearchText] = useState("");
@@ -18,11 +27,12 @@ const Payout = () => {
   const [filterData, setFilterData] = useState([]);
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [dates, setDates] = useState();
 
-  const {withdrawalsDetails, isLoading} = useSelector((state) => state.advanceStatistics);
+  const {payoutDetails, isLoading} = useSelector((state) => state.advanceStatistics);
   const {idToken} = useSelector((state) => state.auth);
 
-  // Fetch PassRates Data
   useEffect(() => {
     let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
 
@@ -30,7 +40,8 @@ const Payout = () => {
       query = query + `&search=${searchText}`;
     }
 
-    dispatch(fetchWithdrawalsDetails({idToken, query}));
+    dispatch(fetchPayoutDetails({idToken, query}));
+    dispatch(fetchTotalPayments(idToken));
   }, [dispatch, idToken, pageNo, pageSize, searchText]);
 
   const searchRef = useRef();
@@ -40,6 +51,63 @@ const Payout = () => {
     setPageSize(updatedPageSize);
   }
 
+  function updateDateRange(dates) {
+    setPageNo(1);
+    if (dates) {
+      setDates(dates.map((date) => date.format("DD MMM YYYY")));
+    } else {
+      setDates(null);
+    }
+  }
+
+  const rangePresets = [
+    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
+    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
+    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
+    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
+    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] },
+  ];
+
+  const handleOpenModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
+
+  const handleExport = () => {
+    if (dates.length === 2) {
+      const [startDate, endDate] = dates;
+      const url = `expoet/payout-details/?start_date=${startDate}&end_date=${endDate}`;
+      
+      dispatch(exportDataReq({ idToken, url }))
+        .unwrap()
+        .then((response) => {
+          const { s3_file_url, filename } = response;
+  
+          const link = document.createElement('a');
+          link.href = s3_file_url;
+          link.download = filename; 
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+  
+         dispatch(returnMessages("Export Successful" , 200))
+  
+          handleCloseModal();
+        })
+        .catch((error) => {
+          dispatch(returnErrors("Export failed" , 400))
+
+        });
+    } else {
+      notification.warning({
+        message: "Invalid Dates",
+        description: "Please select a valid date range.",
+      });
+    }
+  };
   const highlightText = (text, search) => {
     if (!search) return text;
     const regex = new RegExp(`(${search})`, "gi");
@@ -177,18 +245,21 @@ const Payout = () => {
             </div>
           </div>
 
-          <div className="payout_btn_wrapper">
-            <div className="payout_btn">
-              <img
-                src={exportIcon}
-                alt="exportIcon"
-              />
-              <button>Export</button>
-            </div>
-            <Link to="/advance-statistics/payout-export-history">
-              <p>View Export History</p>
-            </Link>
-          </div>
+          <div className="export_btn">
+          <Button onClick={handleOpenModal}>
+            <img
+              src={exportIcon}
+              alt="export_btn_icon"
+            />
+            Export
+          </Button>
+          <Link
+            className="link"
+            to={"/advance-statistics/payout-export-history"}
+          >
+            View Export History
+          </Link>
+        </div>
         </div>
 
         <div className="payout_lower_heading_two">
@@ -203,10 +274,10 @@ const Payout = () => {
             <LoaderOverlay />
           ) : (
             <AntTable
-              data={withdrawalsDetails?.results || []}
+              data={payoutDetails?.results || []}
               columns={columns}
-              totalPages={Math.ceil(withdrawalsDetails?.count / pageSize)}
-              totalItems={withdrawalsDetails?.count}
+              totalPages={Math.ceil(payoutDetails?.count / pageSize)}
+              totalItems={payoutDetails?.count}
               pageSize={pageSize}
               CurrentPageNo={pageNo}
               setPageSize={setPageSize}
@@ -214,6 +285,38 @@ const Payout = () => {
             />
           )}
         </div>
+
+        <Modal
+      title="Export"
+      visible={isModalVisible}
+      onCancel={handleCloseModal} 
+      footer={null} 
+      className="export_modal" 
+      closeIcon={<CloseOutlined style={{ color: '#fff' }} />} 
+    >
+      <div className="export_modal_wrapper">
+        <RangePicker
+          onChange={updateDateRange}
+          autoFocus
+          presets={rangePresets}
+          style={{ width: '100%' }} 
+        />
+      </div>
+      <p style={{ color: '#fff' }}>File will contain information of the date you’ve selected.</p>
+      <div className="btn_wrapper">
+        <Button
+          type="primary"
+          onClick={handleExport}
+          style={{
+            backgroundColor: '#1890ff', 
+            borderColor: '#1890ff',
+            color: '#fff',
+          }}
+        >
+          Export
+        </Button>
+      </div>
+    </Modal>
       </div>
     </>
   );

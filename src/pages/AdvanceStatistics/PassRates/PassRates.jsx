@@ -11,6 +11,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import {fetchPassRate} from "../../../store/NewReducers/advanceStatistics";
+import { fetchStageChart } from "../../../store/NewReducers/riskSlice";
 
 const PassRates = () => {
   const [showChart, setShowChart] = useState(false);
@@ -75,55 +76,84 @@ const PassRates = () => {
   };
 
   const columns = [
-    // {
-    //   title: "Start Balance",
-    //   dataIndex: "starting_balance",
-    //   key: "starting_balance",
-    //   render: (text) => text || "-",
-    // },
     {
-      title: "Challenge Name",
-      dataIndex: "challenge_name",
-      key: "challenge_name",
-      render: (text) => text || "-",
+      title: 'Plan Type',
+      dataIndex: 'plan_type',
+      key: 'plan_type',
+      render: text => text || '-',
     },
     {
-      title: "Total Passed",
-      dataIndex: "total_passed",
-      key: "total_passed",
-      render: (text) => text || "-",
-    },
-
-    {
-      title: "Total Failed",
-      dataIndex: "total_failed",
-      key: "total_failed",
-      render: (text) => text || "-",
+      title: 'Created Date',
+      dataIndex: 'created_date',
+      key: 'created_date',
+      render: text => text || '-',
     },
     {
-      title: "Total Accounts",
-      dataIndex: "total_accounts",
-      key: "total_accounts",
-      render: (text) => text || "-",
+      title: 'Account Balance',
+      dataIndex: 'account_balance',
+      key: 'account_balance',
+      render: text => text || '-',
     },
     {
-      title: "Passed/Fail Ratio",
-      dataIndex: "pf_ratio",
-      key: "pf_ratio",
-      render: (text) => text || "-",
+      title: 'Stage',
+      dataIndex: 'stage',
+      key: 'stage',
+      render: text => text || '-',
     },
-    // {
-    //   title: "Total",
-    //   dataIndex: "total_accounts",
-    //   key: "total_accounts",
-    //   render: (text) => text || "-",
-    // },
     {
-      title: "Account Active",
-      dataIndex: "active_accounts",
-      key: "active_accounts",
-      render: (text) => text || "-",
+      title: 'Passed',
+      dataIndex: 'passed',
+      key: 'passed',
+      render: text => text !== undefined ? text : '-',
     },
+    {
+      title: 'Pass Rate (%)',
+      dataIndex: 'pass_rate',
+      key: 'pass_rate',
+      render: text => text !== undefined ? text : '-',
+    },
+    {
+      title: 'Pass Ratio',
+      dataIndex: 'pass_ratio',
+      key: 'pass_ratio',
+      render: text => text !== undefined ? text : '-',
+    },
+    {
+      title: 'Breached',
+      dataIndex: 'breached',
+      key: 'breached',
+      render: text => text !== undefined ? text : '-',
+    },
+    {
+      title: 'Fail Rate (%)',
+      dataIndex: 'fail_rate',
+      key: 'fail_rate',
+      render: text => text !== undefined ? text : '-',
+    },
+    {
+      title: 'Fail Ratio',
+      dataIndex: 'fail_ratio',
+      key: 'fail_ratio',
+      render: text => text !== undefined ? text : '-',
+    },
+    {
+      title: 'Total Accounts',
+      dataIndex: 'total_accounts',
+      key: 'total_accounts',
+      render: text => text !== undefined ? text : '-',
+    },
+    {
+      title: 'Repeated',
+      dataIndex: 'repeated',
+      key: 'repeated',
+      render: text => text !== undefined ? text : '-',
+    },
+    {
+      title: 'New',
+      dataIndex: 'new',
+      key: 'new',
+      render: text => text !== undefined ? text : '-',
+    }
   ];
 
   const handleSearch = (e) => {
@@ -197,10 +227,10 @@ const PassRates = () => {
           {showChart ? (
             <div className="chart_container">
               <div className="chart_div">
-                <TotalPassedCharts data={passRate} />
+                {/* <TotalPassedCharts data={accountOverviewData?.stage1} /> */}
               </div>
               <div className="chart_div">
-                <TotalPassedChartTwo data={passRate} />
+                {/* <TotalPassedChartTwo data={accountOverviewData?.stage1} /> */}
               </div>
             </div>
           ) : (

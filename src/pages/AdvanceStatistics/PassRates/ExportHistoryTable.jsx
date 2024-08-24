@@ -18,7 +18,7 @@ const ExportHistoryTable = () => {
     const startDate = dates[0]?.format("DD/MMM/YYYY").toLowerCase(); // Adjusted format to abbreviated month in lowercase
     const endDate = dates[1]?.format("DD/MMM/YYYY").toLowerCase(); // Adjusted format to abbreviated month in lowercase
 
-    const url = "pass-rates/export/";
+    const url = "pass-rate-export/history/";
 
     if (startDate && endDate) {
       const query = `?start_date=${startDate}&end_date=${endDate}`;

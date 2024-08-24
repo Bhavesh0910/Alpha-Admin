@@ -415,7 +415,7 @@ const DailyStats = () => {
           Export
         </Button>
         <Link className="link"
-          to={"/advance-statistics/withdrawal-status/export-history"}
+          to={"/advance-statistics/daily-stats/export-history"}
         >
           View Export History
         </Link>

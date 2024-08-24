@@ -1219,6 +1219,39 @@ export const getPassRate = async (idToken, query) => {
   }
 };
 
+
+export const getPayoutDetails = async (idToken, query) => {
+  try {
+    const response = await axios.get(`${baseUrl}advance/payout-details/${query}`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching payout:", error);
+    throw error;
+  }
+};
+
+
+export const getTotatPayments = async (idToken, query) => {
+  try {
+    const response = await axios.get(`${baseUrl}TotalPaymentRequestAPI/`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching payment :", error);
+    throw error;
+  }
+};
+
+
+
+
 export const getDailyStats = async (idToken, query) => {
   try {
     const response = await axios.get(`${baseUrl}advance-stats/DailyStats/${query}`, {
