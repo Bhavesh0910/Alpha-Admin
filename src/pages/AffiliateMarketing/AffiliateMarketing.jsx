@@ -213,7 +213,7 @@ const AffiliateMarketing = ({userData}) => {
       </div>
       <div className="table_header_filter">
         <div className="search_box_wrapper">
-          <Select
+          {/* <Select
             className="category_dropdown"
             defaultValue="all"
             onChange={handleCategoryChange}
@@ -221,7 +221,7 @@ const AffiliateMarketing = ({userData}) => {
             <Option value="all">All Categories</Option>
             <Option value="name">Name</Option>
             <Option value="email">Email</Option>
-          </Select>
+          </Select> */}
           <input
             placeholder="Search..."
             className="search_input"

@@ -579,15 +579,7 @@ const Payouts = () => {
         </div>
         <div className="table_header_filter">
           <div className="search_box_wrapper search_box_wrapper">
-            <Select
-              className="category_dropdown"
-              defaultValue="all"
-              onChange={handleCategoryChange}
-            >
-              <Option value="all">All Categories</Option>
-              {/* <Option value="swift">Swift</Option>
-              <Option value="wire">Wire</Option> */}
-            </Select>
+
             <input
               placeholder="Search..."
               className="search_input"

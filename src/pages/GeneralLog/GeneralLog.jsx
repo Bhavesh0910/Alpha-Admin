@@ -91,7 +91,7 @@ const GeneralLog = () => {
       <div className="header_wrapper">
         <h3> General Log</h3>
         <div className="search_box_wrapper">
-          <Select
+          {/* <Select
             className="category_dropdown"
             defaultValue="all"
             onChange={handleCategoryChange}
@@ -99,7 +99,7 @@ const GeneralLog = () => {
             <Option value="all">All Categories</Option>
             <Option value="swift">Swift</Option>
             <Option value="wire">Wire</Option>
-          </Select>
+          </Select> */}
           <input
             placeholder="Search..."
             className="search_input"

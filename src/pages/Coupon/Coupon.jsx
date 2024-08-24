@@ -157,9 +157,9 @@ const Coupon = () => {
         </Button>
         <div className="header_row2">
           <div className="search_box_wrapper">
-            <Select className="category_dropdown" defaultValue="all" onChange={handleCategoryChange}>
+            {/* <Select className="category_dropdown" defaultValue="all" onChange={handleCategoryChange}>
               <Option value="all">All Categories</Option>
-            </Select>
+            </Select> */}
             <input
               placeholder="Search..."
               className="search_input"

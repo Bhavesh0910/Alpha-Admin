@@ -130,7 +130,7 @@ const Funded = () => {
       </div>
       <div className="table_header_filter">
         <div className="search_box_wrapper">
-          <Select
+          {/* <Select
             className="category_dropdown"
             defaultValue="all"
             onChange={handleCategoryChange}
@@ -138,7 +138,7 @@ const Funded = () => {
             <Option value="all">All Categories</Option>
             <Option value="swift">Swift</Option>
             <Option value="wire">Wire</Option>
-          </Select>
+          </Select> */}
           <input
             placeholder="Search..."
             className="search_input"

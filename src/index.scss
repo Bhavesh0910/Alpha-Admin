@@ -348,6 +348,7 @@ input:-webkit-autofill:active {
   @media only screen and (max-width: 806px) {
     min-width: 100%;
     max-width: 100% !important;
+    min-height: 40px;
   }
 
   .left_side_box {

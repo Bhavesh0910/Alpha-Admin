@@ -332,15 +332,14 @@ const Payment = () => {
       <div className="table_header_filter">
         <div className="header_left">
           <div className="search_box_wrapper">
-            <Select
+            {/* <Select
               className="category_dropdown"
               defaultValue="all"
               onChange={handleCategoryChange}
             >
               <Option value="all">All Categories</Option>
-              {/* <Option value="swift">Swift</Option>
-            <Option value="wire">Wire</Option> */}
-            </Select>
+         
+            </Select> */}
             <input
               placeholder="Search..."
               className="search_input"
