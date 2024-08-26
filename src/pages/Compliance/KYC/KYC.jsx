@@ -88,7 +88,7 @@ const KYC = () => {
       key: "created_at",
     },
     {
-      title: "Sumsub Status",
+      title: "Veriff",
       dataIndex: "admin_status",
       key: "admin_status",
       render: (text) => (

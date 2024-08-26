@@ -260,6 +260,7 @@ const AffiliateMarketing = ({userData}) => {
           CurrentPageNo={pageNo}
           setPageSize={setPageSize}
           triggerChange={triggerChange}
+          scrollY={400}
         />
       )}
 

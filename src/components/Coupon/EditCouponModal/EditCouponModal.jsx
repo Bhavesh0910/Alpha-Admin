@@ -74,6 +74,7 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const id = editCouponData?.id;
+    
 
     const updatedFields = {
       coupon_id: id,
@@ -85,6 +86,8 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
       is_active: editedData?.is_active,
       challenge: editedData?.challenge,
       coupon_expiry: editedData?.coupon_expiry,
+      multi_use: editedData?.multi_use,
+
     };
 
     console.log(updatedFields )
@@ -220,6 +223,11 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
                 onChange={(e) => handleInputChange("public", e.target.checked)}
               >
                 Is Public
+              </Checkbox>
+              <Checkbox checked={editedData?.is_multi || false} 
+               onChange={(e) => handleInputChange("is_multi", e.target.checked)}
+              >
+                 Multi Use?
               </Checkbox>
             </div>
             <Button

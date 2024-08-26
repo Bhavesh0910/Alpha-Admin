@@ -24,6 +24,7 @@ const CreateCoupon = () => {
   const [percent, setPercent] = useState();
   const [isActivate, setIsActivate] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
+  const [isMulti, setIsMulti] = useState(false);
   const [challenges, setChallenges] = useState({});
   const timeoutRef = useRef(null);
 
@@ -135,11 +136,15 @@ const CreateCoupon = () => {
       Coupon_user: users,
       coupon_amount: couponAmount,
       coupon_percent: percent,
-      challenge: category,  // Directly use the challenge ID
+      challenge: category,  
       coupon_expiry: date,
       public: isPublic,
-      is_active: isActivate
+      is_active: isActivate,
+      multi_use: isMulti,
+
     };
+
+
     console.log("Here...");
     console.log(idToken, couponData, dispatch);
     dispatch(createCoupon({ idToken, couponData, dispatch }));
@@ -217,6 +222,7 @@ const CreateCoupon = () => {
                 id="challenge_id"
                 placeholder="Select Challenge"
                 value={category}
+                // mode="multiple"
                 onChange={handleCategoryChange}
               >
                 {Object.keys(challenges).map((category) => (
@@ -248,6 +254,9 @@ const CreateCoupon = () => {
               </Checkbox>
               <Checkbox checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)}>
                 Is Public
+              </Checkbox>
+              <Checkbox checked={isMulti} onChange={(e) => setIsMulti(e.target.checked)}>
+                 Multi Use?
               </Checkbox>
             </div>
             <Button type="primary" htmlType="submit" className="save_changes_btn">

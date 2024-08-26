@@ -1,22 +1,23 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./UserList.scss";
-import {Table, Input, Select, Button, Modal, Tooltip, message, Radio, Form, Input as AntInput, Dropdown, Menu} from "antd";
+import { Table, Input, Select, Button, Modal, Tooltip, message, Radio, Form, Input as AntInput, Dropdown, Menu } from "antd";
 import moment from "moment";
-import {CopyOutlined, DownOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
-import {useDispatch, useSelector} from "react-redux";
+import { CopyOutlined, DownOutlined, ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
 import CopyToClipboard from "react-copy-to-clipboard";
-import {fetchUserList, toggleActiveUser, updateFlagReq, updateUser} from "../../../store/NewReducers/listSlice";
+import { fetchUserList, toggleActiveUser, updateFlagReq, updateUser } from "../../../store/NewReducers/listSlice";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import {returnMessages} from "../../../store/reducers/message";
+import { returnMessages } from "../../../store/reducers/message";
 import ReactCountryFlag from "react-country-flag";
-import {useNavigate} from "react-router-dom";
-import {baseUrl} from "../../../utils/api/apis";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import blockIcon from '../../../assets/icons/block.svg'
+import unblockIcon from '../../../assets/icons/unblock.svg'
+import editIcon from '../../../assets/icons/edit.svg'
 
-const {confirm} = Modal;
-const {Option} = Select;
+const { confirm } = Modal;
+const { Option } = Select;
 
 const UserListTable = () => {
   const lookup = require("country-code-lookup");
@@ -39,8 +40,8 @@ const UserListTable = () => {
   const [flagUpdatedValue, setFlagUpdatedValue] = useState(null);
   const [comment, setComment] = useState(null);
 
-  const {tableData, currentPage, totalPages, totalItems, isLoading, flagLoading, refetch} = useSelector((state) => state.list);
-  const {msg, title, status} = useSelector((state) => state.message);
+  const { tableData, currentPage, totalPages, totalItems, isLoading, flagLoading, refetch } = useSelector((state) => state.list);
+  const { msg, title, status } = useSelector((state) => state.message);
 
   useEffect(() => {
     if (idToken) {
@@ -82,9 +83,9 @@ const UserListTable = () => {
         const id = user.id;
         const note = user.is_active ? "Deactivating user" : "Activating user";
         try {
-          await dispatch(toggleActiveUser({id, note, idToken})).unwrap();
+          await dispatch(toggleActiveUser({ id, note, idToken })).unwrap();
           dispatch(returnMessages(`User ${user.is_active ? "blocked" : "activated"} successfully.`, "success"));
-          dispatch(fetchUserList({idToken, searchText, pageNo, pageSize, authType, active}));
+          dispatch(fetchUserList({ idToken, searchText, pageNo, pageSize, authType, active }));
         } catch (error) {
           dispatch(returnMessages("Error changing user status.", "error"));
         }
@@ -114,7 +115,7 @@ const UserListTable = () => {
     const formData = new FormData();
     formData.append("status", flagUpdatedValue);
     formData.append("notes", comment);
-    dispatch(updateFlagReq({idToken, body: formData, id: flagUser?.id}));
+    dispatch(updateFlagReq({ idToken, body: formData, id: flagUser?.id }));
     setFlagModel(false);
     reset();
   }
@@ -147,39 +148,22 @@ const UserListTable = () => {
     });
   };
 
-  // const handleModalOk = () => {
-  //   // Implement save logic here
-  //   setIsModalVisible(false);
-  // };
-
   const handleModalOk = async () => {
     try {
       const values = await form.validateFields();
       const payload = {
-        // ...selectedUser,
         ...values,
       };
 
-      dispatch(updateUser({payload, idToken, dispatch}));
+      dispatch(updateUser({ payload, idToken, dispatch }));
 
-      // const response = await axios.patch(`${baseUrl}profile/update/`, payload, {
-      //   headers: {
-      //     Authorization: `Bearer ${idToken}`,
-      //     "Content-Type": "application/json",
-      //   },
-      // });
-
-      // if (response.status !== 200) {
-      //   throw new Error("Failed to update user");
-      // }
-
-      // message.success("User updated successfully");
       setIsModalVisible(false);
-      dispatch(fetchUserList({idToken, searchText, pageNo, pageSize, authType, active}));
+      dispatch(fetchUserList({ idToken, searchText, pageNo, pageSize, authType, active }));
     } catch (error) {
       message.error(error.message || "Error updating user");
     }
   };
+
   const handleModalCancel = () => {
     setIsModalVisible(false);
   };
@@ -189,6 +173,7 @@ const UserListTable = () => {
     setFlagUpdatedValue(null);
     setComment(null);
   }
+
   const openStatusUpdateModal = (updatedValue, record) => {
     setFlagModel(true);
     setFlagUser(record);
@@ -224,11 +209,6 @@ const UserListTable = () => {
       ),
     },
     {
-      title: "Name",
-      dataIndex: "full_name",
-      render: (text) => <span>{text || "-"}</span>,
-    },
-    {
       title: "Email",
       dataIndex: "email",
       render: (text) => (
@@ -238,7 +218,7 @@ const UserListTable = () => {
             <Tooltip title="Copy email">
               <Button
                 type="link"
-                icon={<CopyOutlined style={{color: "#04D9FF"}} />}
+                icon={<CopyOutlined style={{ color: "#04D9FF" }} />}
                 onClick={() => message.success("Copied email")}
                 disabled={!text}
               />
@@ -280,11 +260,6 @@ const UserListTable = () => {
       render: (text) => <span>{text || "-"}</span>,
     },
     {
-      title: "Date joined",
-      dataIndex: "date_joined",
-      render: (text) => <span>{text ? moment(text).format("ll") : "-"}</span>,
-    },
-    {
       title: "Active",
       dataIndex: "is_active",
       render: (text, record) => <span className={`status_wrapper ${record.is_active ? "active" : "blocked"}`}>{record.is_active !== undefined ? (record.is_active ? "Active" : "Blocked") : "-"}</span>,
@@ -294,17 +269,37 @@ const UserListTable = () => {
       dataIndex: "actions",
       render: (_, record) => (
         <div className="action_wrapper">
-          <Button onClick={() => handleEditClick(record)}>Edit</Button>
-          <Button
+          <div
             onClick={() => handleStatusChange(record)}
             disabled={record.is_active === undefined}
           >
-            {record.is_active !== undefined ? (record.is_active ? "Block" : "Activate") : "-"}
-          </Button>
+            {record.is_active !== undefined ? (record.is_active ?
+              <img src={blockIcon} alt="" />
+              : <img src={unblockIcon} alt="" />) : "-"}
+          </div>
+          <div onClick={() => handleEditClick(record)}><img src={editIcon} alt="" /></div>
         </div>
       ),
     },
   ];
+
+  const handleExpand = (record) => {
+  };
+
+  console.log(tableData)
+  const ExpandedRowRender = ({record}) => {
+
+    return (
+    <div className="expanded-row-content">
+      <div>
+      <p><strong>Name: </strong> {record.full_name || "-"}</p>
+      </div>
+      <div>
+      <p><strong>Date Joined: </strong> {record.date_joined ? moment(record.date_joined).format("ll") : "-"}</p>
+      </div>
+    </div>
+  );
+}
 
   const navigate = useNavigate();
 
@@ -364,7 +359,11 @@ const UserListTable = () => {
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}
         triggerChange={triggerChange}
-        customRowClass={true}
+        isExpandable={true}
+        // expandedRowRender={expandedRowRender}
+        ExpandedComp={ExpandedRowRender}
+        rowId="id"
+        scrollY={420}
       />
       <Modal
         title="Edit User"
@@ -382,7 +381,7 @@ const UserListTable = () => {
             <Form.Item
               name="full_name"
               label="Full Name"
-              rules={[{required: true, message: "Please input the full name"}]}
+              rules={[{ required: true, message: "Please input the full name" }]}
             >
               <AntInput placeholder="Enter full name" />
             </Form.Item>
@@ -390,8 +389,8 @@ const UserListTable = () => {
               name="Email"
               label="Email"
               rules={[
-                {required: true, message: "Please input the email"},
-                {type: "email", message: "Please enter a valid email"},
+                { required: true, message: "Please input the email" },
+                { type: "email", message: "Please enter a valid email" },
               ]}
             >
               <AntInput placeholder="Enter email" />

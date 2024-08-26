@@ -1,6 +1,6 @@
+import React, { useState, useEffect } from "react";
 import { Select } from "antd";
 import "./GeneralLog.scss";
-import React, { useState, useEffect } from "react";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +20,7 @@ const GeneralLog = () => {
   const dispatch = useDispatch();
   const { generalLogData, isLoading } = useSelector((state) => state.general);
   const idToken = useSelector((state) => state.auth.idToken);
- console.log(generalLogData)
+
   useEffect(() => {
     if (idToken) {
       dispatch(fetchGeneralLog({ idToken, pageNo, pageSize, search: searchText }));
@@ -41,13 +41,10 @@ const GeneralLog = () => {
     setCategory(value);
   };
 
-
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
     setPageSize(updatedPageSize);
   }
-
-
 
   const columns = [
     {
@@ -73,33 +70,14 @@ const GeneralLog = () => {
       dataIndex: "description",
       key: "description",
     },
-    {
-      title: "Created",
-      dataIndex: "created",
-      key: "created",
-      render: (text) => dayjs(text).format("YYYY-MM-DD HH:mm:ss"),
-    },
-    {
-      title: "Updated",
-      dataIndex: "updated",
-      key: "updated",
-      render: (text) => dayjs(text).format("YYYY-MM-DD HH:mm:ss"),
-    },
+  
   ];
+
   return (
     <div className="generalLog_container">
       <div className="header_wrapper">
         <h3> General Log</h3>
         <div className="search_box_wrapper">
-          {/* <Select
-            className="category_dropdown"
-            defaultValue="all"
-            onChange={handleCategoryChange}
-          >
-            <Option value="all">All Categories</Option>
-            <Option value="swift">Swift</Option>
-            <Option value="wire">Wire</Option>
-          </Select> */}
           <input
             placeholder="Search..."
             className="search_input"
@@ -112,17 +90,39 @@ const GeneralLog = () => {
       </div>
       {isLoading && <LoaderOverlay />}
       <AntTable
-           data={generalLogData?.results}
-           columns={columns}
-           totalPages={Math.ceil(generalLogData?.count / pageSize)}
-           totalItems={generalLogData?.count}
-           pageSize={pageSize}
-           CurrentPageNo={pageNo}
-           setPageSize={setPageSize}
-           triggerChange={triggerChange}
+        data={generalLogData?.results}
+        columns={columns}
+        totalPages={Math.ceil(generalLogData?.count / pageSize)}
+        totalItems={generalLogData?.count}
+        pageSize={pageSize}
+        CurrentPageNo={pageNo}
+        setPageSize={setPageSize}
+        triggerChange={triggerChange}
+        scrollY={440}
+        isExpandable={true}
+        ExpandedComp={ExpandedRowRender}
+        rowId="id"
       />
     </div>
   );
 };
 
+
+
 export default GeneralLog;
+
+
+
+
+const ExpandedRowRender = ({ record }) => {
+  return (
+    <div className="expanded-row-content">
+      <div>
+        <p className="value"><strong>Created at: </strong> : {dayjs(record.created).format("YYYY-MM-DD HH:mm:ss")}</p>
+      </div>
+      <div>
+        <p className="value"><strong>Updated at: </strong> {dayjs(record.updated).format("YYYY-MM-DD HH:mm:ss")}</p>
+      </div>
+    </div>
+  );
+};

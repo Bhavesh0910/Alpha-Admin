@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { blockOrUnblockIp, fetchIpLogs } from "../../../store/NewReducers/listSlice";
 import { CopyOutlined } from "@ant-design/icons";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
+import blockIcon from '../../../assets/icons/block.svg'
+import unblockIcon from '../../../assets/icons/unblock.svg'
 
 const { Option } = Select;
 
@@ -130,19 +132,19 @@ const UserIPList = () => {
       render: (_, record) => (
         <div className="action_wrapper">
           {record.blocked ? (
-            <Button
-              className="btn-unblock"
+            <div
+              className=""
               onClick={() => handleAction("Unblock", record)}
             >
-              Unblock
-            </Button>
+              <img src={unblockIcon} alt="" />
+            </div>
           ) : (
-            <Button
-              className="btn-block"
+            <div
+              className=""
               onClick={() => handleAction("Block", record)}
             >
-              Block
-            </Button>
+              <img src={blockIcon} alt="" />
+            </div>
           )}
         </div>
       ),
@@ -197,7 +199,9 @@ const UserIPList = () => {
         pageSize={pageSize}
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}
-        triggerChange={triggerChange}      />
+        triggerChange={triggerChange}     
+        scrollY={400}
+        />
 
       <Modal
         title={`${action} Account`}

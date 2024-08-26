@@ -9,6 +9,9 @@ import EditCouponModal from "../../components/Coupon/EditCouponModal/EditCouponM
 import { useDispatch, useSelector } from "react-redux";
 import { getCoupons } from "../../store/NewReducers/Coupons";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
+import editIcon from '../../assets/icons/edit.svg'
+import publicIcon from '../../assets/icons/public.svg'
+import privateIcon from '../../assets/icons/private.svg'
 
 const { Option } = Select;
 
@@ -103,12 +106,12 @@ const Coupon = () => {
       key: "percent",
       render: text => text || "-",
     },
-    {
-      title: "Challenge",
-      dataIndex: "challenge",
-      key: "challenge",
-      render: text => text || "-",
-    },
+    // {
+    //   title: "Challenge",
+    //   dataIndex: "challenge",
+    //   key: "challenge",
+    //   render: text => text || "-",
+    // },
     {
       title: "Single Use",
       dataIndex: "multi_use",
@@ -128,25 +131,26 @@ const Coupon = () => {
     },
     {
       title: "Action",
-      dataIndex: "action",
+      dataIndex: "public",
       key: "action",
       render: (text, record) => (
         <div className="actn_btn_container">
-          <Button onClick={() => {
+          {text ? <img src={publicIcon} alt="" /> : <img src={privateIcon} alt="" /> }
+          <div onClick={() => {
             setEditCouponData(record);
             editButtonClick();
           }}>
-            Edit
-          </Button>
+            <img src={editIcon} alt="" />
+          </div>
         </div>
       ),
     },
-    {
-      title: "Users",
-      dataIndex: "users",
-      key: "users",
-      render: text => <div className="actn_btn_container">{text?.length || "-"}</div>,
-    },
+    // {
+    //   title: "Users",
+    //   dataIndex: "users",
+    //   key: "users",
+    //   render: text => <div className="actn_btn_container">{text?.length || "-"}</div>,
+    // },
   ];
 
   return (
@@ -195,6 +199,7 @@ const Coupon = () => {
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}
         triggerChange={triggerChange}
+        scrollY={440}
       />
       {isEditModalVisible && (
         <EditCouponModal

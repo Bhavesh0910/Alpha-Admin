@@ -51,12 +51,14 @@
   white-space: normal;
   width: 100px !important;
   text-wrap: nowrap;
+  padding: 16px 8px !important;
 }
 
 .ant-table-tbody > tr > td {
   color: #686868 !important;
   white-space: normal;
-  min-width: 150px !important;
+  min-width: 120px !important;
+  padding: 16px 4px !important;
   // min-width: 100px !important;
   background: var(--white, #fff);
 }
