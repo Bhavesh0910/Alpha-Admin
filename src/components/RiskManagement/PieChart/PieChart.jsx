@@ -5,9 +5,9 @@ const PieChart = ({data}) => {
   const chartRef = useRef(null);
 
   const options = {
-    series: [data?.pass_count || [], data?.fail_count || []],
-    labels: ["Total Pass", "Total Fail"],
-    colors: ["#A3EA93", "#F97F7F"],
+    series: [data?.pass_count || [], data?.fail_count || [], data?.in_progress_count || []],
+    labels: ["Total Pass", "Total Fail", "Total In progress"],
+    colors: ["#A3EA93", "#F97F7F", "#efef35"],
     chart: {
       width: 380,
       type: "donut",
@@ -65,8 +65,9 @@ const PieChart = ({data}) => {
             options={options}
             series={options.series}
             type="donut"
-            width={300}
+            width={330}
             height={150}
+            className="stage1Chart"
           />
         </div>
         <div className="labels_container">

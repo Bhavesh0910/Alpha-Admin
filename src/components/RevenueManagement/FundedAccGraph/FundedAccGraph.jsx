@@ -3,27 +3,27 @@ import "./FundedAccGraph.scss";
 import ReactApexChart from "react-apexcharts";
 import {useSelector} from "react-redux";
 import {color} from "echarts";
-const FundedAccGraph = () => {
+import {DatePicker} from "antd";
+const {RangePicker} = DatePicker;
+
+const FundedAccGraph = ({setDates, rangePresets}) => {
   const {barData} = useSelector((state) => state.revenue);
   const [data, setData] = useState(new Array(12).fill(0));
 
   useEffect(() => {
     if (barData && barData.length > 0) {
-      const monthNames = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-      ];
-  
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
       const newData = new Array(12).fill(0);
-  
+
       barData.forEach((item) => {
         if (item && item.month) {
           console.log(item.month, "Processing month");
-          
+
           const [monthName, year] = item.month.split(" ");
           const monthIndex = monthNames.indexOf(monthName);
-  
-          if (monthIndex !== -1 && typeof item.count === 'number') {
+
+          if (monthIndex !== -1 && typeof item.count === "number") {
             newData[monthIndex] = item.count;
           } else {
             console.warn(`Invalid month or count: ${monthName}, ${item.count}`);
@@ -32,11 +32,10 @@ const FundedAccGraph = () => {
           console.warn("Invalid item or month:", item);
         }
       });
-  
+
       setData(newData);
     }
   }, [barData]);
-  
 
   const options = {
     chart: {
@@ -109,10 +108,25 @@ const FundedAccGraph = () => {
       data: data || [],
     },
   ];
+
+  function handleDateChange(dates) {
+    if (dates) {
+      setDates(dates?.map((item) => item.format("YYYY-MM-DD")));
+    } else {
+      setDates(null);
+    }
+  }
+
   return (
     <div className="fundedAccGraph_wrapper">
       <div className="header_wrapper">
         <h3>No. of Funded Accounts</h3>
+        <div className="chotaCalendar">
+          <RangePicker
+            onChange={handleDateChange}
+            presets={rangePresets}
+          />
+        </div>
       </div>
       <ReactApexChart
         options={options}

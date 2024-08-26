@@ -47,7 +47,12 @@ const payoutStatsApi = async (idToken, query) => {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get(`${baseUrl}v3/statistics/`, config);
+    let response;
+    if (query) {
+      response = await axios.get(`${baseUrl}v3/statistics/${query}`, config);
+    } else {
+      response = await axios.get(`${baseUrl}v3/statistics/`, config);
+    }
     return response.data;
   } catch (error) {
     console.error("Error during billingdata request", error);
@@ -62,7 +67,13 @@ const qualifiedAccountApi = async (idToken, query) => {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get(`${baseUrl}v3/funded_accounts/`, config);
+
+    let response;
+    if (query) {
+      response = await axios.get(`${baseUrl}v3/funded_accounts/${query}`, config);
+    } else {
+      response = await axios.get(`${baseUrl}v3/funded_accounts/`, config);
+    }
     return response.data;
   } catch (error) {
     console.error("Error during kyclistdata request:", error);
@@ -174,7 +185,7 @@ const revenueManagementSlice = createSlice({
       })
       .addCase(payoutPaymentReq.fulfilled, (state, action) => {
         state.tableDataLoader = false;
-        console.log(action.payload, " nsbcjsabdcjhsbd ")
+        console.log(action.payload, " nsbcjsabdcjhsbd ");
         state.tableData = action.payload?.results; // Update state with fetched data
         state.tableDataCount = action.payload?.count; // Update state with fetched data
       })
