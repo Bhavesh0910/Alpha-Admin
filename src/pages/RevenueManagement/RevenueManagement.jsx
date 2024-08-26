@@ -15,6 +15,8 @@ const RevenueManagement = () => {
   const [pageSize, setPageSize] = useState(10);
   const [pageNo, setPageNo] = useState(1);
   const [dates, setDates] = useState(null);
+  const [datesStastics, setDatesStastics] = useState(null);
+  const [datesRevenue, setDatesRevenue] = useState(null);
   const {idToken} = useSelector((state) => state.auth);
   const {barDataLoader, chartDataLoader, statsDataLoader} = useSelector((state) => state.revenue);
   const {isLoading} = useSelector((state) => state.payment);
@@ -22,10 +24,20 @@ const RevenueManagement = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let query = "";
+    let query = null;
+    if (datesStastics) {
+      query = `?start_date=${datesStastics[0]}&end_date=${datesStastics[1]}`;
+    }
     dispatch(payoutStatsReq({idToken, dispatch, query}));
+  }, [idToken, datesStastics]);
+
+  useEffect(() => {
+    let query = null;
+    if (datesRevenue) {
+      query = `?start_date=${datesRevenue[0]}&end_date=${datesRevenue[1]}`;
+    }
     dispatch(qualifiedAccountReq({idToken, dispatch, query}));
-  }, [idToken]);
+  }, [idToken, datesRevenue]);
 
   useEffect(() => {
     let query = null;
@@ -46,6 +58,7 @@ const RevenueManagement = () => {
       setDates(null);
     }
   };
+
   const rangePresets = [
     {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
     {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
@@ -67,8 +80,14 @@ const RevenueManagement = () => {
         <Infobox />
       </div>
       <div className="row2_box">
-        <StatisticChart />
-        <FundedAccGraph />
+        <StatisticChart
+          setDates={setDatesStastics}
+          rangePresets={rangePresets}
+        />
+        <FundedAccGraph
+          setDates={setDatesRevenue}
+          rangePresets={rangePresets}
+        />
       </div>
       <div className="row3_box">
         <div className="header_box">

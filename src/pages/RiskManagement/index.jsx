@@ -21,7 +21,6 @@ function RiskManagement() {
   const idToken = useSelector((state) => state.auth.idToken);
   const [defaultDates, setDefaultDates] = useState([dayjs(), dayjs().subtract(1, "month")]);
 
-  // console.log(stage1ChartData, stage2ChartData , fundingChartData)
   const onRangeChange = (dates) => {
     if (dates && idToken) {
       const startDate = dates[0].format("DD/MMM/YYYY");

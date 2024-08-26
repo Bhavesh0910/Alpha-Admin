@@ -31,3 +31,17 @@
     }
   }
 }
+
+.chotaCalendar {
+  .ant-select-selector,
+  .ant-picker-range-separator,
+  .ant-picker-active-bar {
+    display: none;
+  }
+  .ant-picker {
+    width: 44px;
+  }
+  .ant-picker-input{
+    width: 1px;
+  }
+}

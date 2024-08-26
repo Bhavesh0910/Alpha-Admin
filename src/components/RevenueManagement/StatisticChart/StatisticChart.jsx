@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from "react";
 import "./StatisticChart.scss";
 import ReactApexChart from "react-apexcharts";
-import {Select} from "antd";
+import {DatePicker, Select} from "antd";
 import {useSelector} from "react-redux";
+import dayjs from "dayjs";
 
-const StatisticChart = () => {
+const {RangePicker} = DatePicker;
+
+const StatisticChart = ({setDates, rangePresets}) => {
   const {chartData} = useSelector((state) => state.revenue);
   const [data, setData] = useState({payoutRequested: [], payoutApproved: [], dates: []});
 
@@ -22,9 +25,6 @@ const StatisticChart = () => {
       dates = chartData?.map((item) => {
         return item?.date;
       });
-      console.log("payoutReq", payoutReq);
-      console.log("payoutApp", payoutApp);
-      console.log("dates", dates);
       setData({payoutRequested: payoutReq || [], payoutApproved: payoutApp || [], dates: dates || []});
     }
   }, [chartData]);
@@ -88,16 +88,24 @@ const StatisticChart = () => {
     },
   };
 
+  function handleDateChange(dates) {
+    if (dates) {
+      setDates(dates?.map((item) => item.format("YYYY-MM-DD")));
+    } else {
+      setDates(null);
+    }
+  }
+
   return (
     <div className="statisticChart_wrapper">
       <div className="header_wrapper">
         <h3>Statistics</h3>
-        {/* <Select
-          defaultValue={""}
-          className="chart_filter"
-          onChange={""}
-          options={options}
-        /> */}
+        <div className="chotaCalendar">
+          <RangePicker
+            presets={rangePresets}
+            onChange={handleDateChange}
+          />
+        </div>
       </div>
       <ReactApexChart
         options={options}

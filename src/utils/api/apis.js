@@ -986,7 +986,7 @@ export const getFundingChart = async (idToken, startDate, endDate) => {
       },
     };
     if (startDate && endDate) {
-      response = await axios.get(`${baseUrl}v3/account-overview/funding-chart/`, config);
+      response = await axios.get(`${baseUrl}v3/account-overview/funding-chart/?start_date=${startDate}&end_date=${endDate}`, config);
     } else {
       response = await axios.get(`${baseUrl}v3/account-overview/funding-chart/`, config);
     }
