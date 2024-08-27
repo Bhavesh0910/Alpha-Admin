@@ -7,7 +7,14 @@ import {toast} from "react-toastify";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import commentIcon from "../../assets/icons/comment.svg";
 import RightMark from "../../assets/icons/verified_green_circleIcon.svg";
+import createIcon from '../../assets/icons/createAcc.svg'
+import addIcon from '../../assets/icons/add-edit.svg'
+import acceptIcon from '../../assets/icons/accept.svg'
+import rejectIcon from '../../assets/icons/reject.svg'
+import toggleGreen from '../../assets/icons/toggle-green.svg'
+import toggleRed from '../../assets/icons/toggle-red.svg'
 import CrossMark from "../../assets/icons/notverified_red_circleIcon.svg";
+
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 import {DownOutlined} from "@ant-design/icons";
@@ -466,7 +473,7 @@ const StageManager = () => {
                   />
                 </div>
               ) : (
-                <Button onClick={() => openEditModal(text, record)}>Add Comment</Button>
+                <div onClick={() => openEditModal(text, record)}><img src={addIcon} alt="" /></div>
               ),
           },
           {
@@ -486,12 +493,11 @@ const StageManager = () => {
             title: "Action",
             key: "action",
             render: (text, row) => (
-              <Button
-                className="action_btn standard_button"
+              <div
                 onClick={() => openCreateAccountModel(row)}
               >
-                Create Account
-              </Button>
+                <img src={createIcon} alt="" />
+              </div>
               // </Dropdown>
             ),
           },
@@ -732,7 +738,7 @@ const StageManager = () => {
                   />
                 </div>
               ) : (
-                <Button onClick={() => openEditModal(text, record)}>Add Comment</Button>
+                <div onClick={() => openEditModal(text, record)}><img src={addIcon} alt="" /></div>
               ),
           },
           {
@@ -771,12 +777,11 @@ const StageManager = () => {
               //   }
               //   trigger={["click"]}
               // >
-              <Button
-                className="action_btn standard_button"
+              <div
                 onClick={() => openCreateAccountModel(row)}
               >
-                Create Account
-              </Button>
+                <img src={createIcon} alt="" />
+              </div>
               // </Dropdown>
             ),
           },
@@ -881,7 +886,7 @@ const StageManager = () => {
                   />
                 </div>
               ) : (
-                <Button onClick={() => openEditModal(text, record)}>Add Comment</Button>
+                <div onClick={() => openEditModal(text, record)}><img src={addIcon} alt="" /></div>
               ),
           },
           {
@@ -1036,7 +1041,7 @@ const StageManager = () => {
                   />
                 </div>
               ) : (
-                <Button onClick={() => openEditModal(text, record)}>Add Comment</Button>
+                <div onClick={() => openEditModal(text, record)}><img src={addIcon} alt="" /></div>
               ),
           },
           ,
@@ -1079,18 +1084,16 @@ const StageManager = () => {
             render: (text, row, index) => (
               <>
                 <div className="action_button">
-                  <Button
-                    className="standard_button custom"
+                  <div
                     onClick={() => openContractUpdateModal("Approved", row)}
                   >
-                    {"Accept"}
-                  </Button>
-                  <Button
-                    className="reject_button"
+                    <img src={acceptIcon} alt="" />
+                  </div>
+                  <div
                     onClick={() => openContractUpdateModal("Rejected", row)}
                   >
-                    {"Reject"}
-                  </Button>
+                    <img src={rejectIcon} alt="" />
+                  </div>
                 </div>
                 {/* <div className="action_button">
                 <Button className="standard_button custom">{"Accept/Reject"}</Button>

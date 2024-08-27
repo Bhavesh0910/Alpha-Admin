@@ -12,6 +12,9 @@ import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import {setDefaultLoginId, accountList, changeAccountStatus, deleteAcount} from "../../../store/NewReducers/accountList";
 import {clearPersistedData} from "../../../store/configureStore";
 import dayjs from "dayjs";
+import blockIcon from '../../../assets/icons/block.svg'
+import unblockIcon from '../../../assets/icons/unblock.svg'
+import deleteIcon from '../../../assets/icons/delete.svg'
 import {formatDate} from "fullcalendar/index.js";
 import ReactCountryFlag from "react-country-flag";
 import {changeAccountStatusApi} from "../../../utils/apis/accountsApi";
@@ -286,27 +289,24 @@ function TraderOverview() {
         render: (_, record) => (
           <div className="btn-wrapper">
             {record.user_is_active ? (
-              <Button
-                className="btn-block"
+              <div
                 onClick={() => handleAction("Block", record)}
               >
-                Block
-              </Button>
+                <img src={blockIcon} alt="" />
+              </div>
             ) : (
-              <Button
-                className="btn-unblock"
+              <div
                 onClick={() => handleAction("UnBlock", record)}
               >
-                Unblock
-              </Button>
+                 <img src={unblockIcon} alt="" />
+              </div>
             )}
-            <Button
-              className="btn-delete"
+            <div
               onClick={() => handleAction("Delete", record)}
               danger
             >
-              Delete
-            </Button>
+              <img src={deleteIcon} alt="" />
+            </div>
           </div>
         ),
       },
