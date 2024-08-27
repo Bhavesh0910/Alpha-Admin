@@ -11,31 +11,34 @@ const FundedAccGraph = ({setDates, rangePresets}) => {
   const [data, setData] = useState(new Array(12).fill(0));
 
   useEffect(() => {
-    if (barData && barData.length > 0) {
+    if (barData?.data && barData?.data.length > 0) {
       const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
       const newData = new Array(12).fill(0);
 
-      barData.forEach((item) => {
-        if (item && item.month) {
-          console.log(item.month, "Processing month");
+      barData?.data.forEach((item) => {
+        if (item && item.month_year) {
+          console.log(item.month_year, "Processing month");
 
-          const [monthName, year] = item.month.split(" ");
+          const [monthName, year] = item.month_year.split(" ");
+          console.log("Month name : ",monthName)
           const monthIndex = monthNames.indexOf(monthName);
 
-          if (monthIndex !== -1 && typeof item.count === "number") {
-            newData[monthIndex] = item.count;
+          if (monthIndex !== -1 && typeof item.total_funded_accounts === "number") {
+            newData[monthIndex] = item.total_funded_accounts;
           } else {
-            console.warn(`Invalid month or count: ${monthName}, ${item.count}`);
+            console.warn(`Invalid month or count: ${monthName}, ${item.total_funded_accounts}`);
           }
         } else {
           console.warn("Invalid item or month:", item);
         }
       });
 
+      console.log("New data : ",newData)
+
       setData(newData);
     }
-  }, [barData]);
+  }, [barData?.data]);
 
   const options = {
     chart: {
