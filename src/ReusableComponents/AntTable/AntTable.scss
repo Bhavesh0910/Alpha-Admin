@@ -10,10 +10,10 @@
   color: #1e1e1e !important;
 }
 
-.ant-table-tbody > tr > td {
-  background-color: #141a17;
-  color: #a6a6a6 !important;
-}
+// .ant-table-tbody > tr > td {
+//   background-color: #141a17;
+//   color: #a6a6a6 !important;
+// }
 
 .highlight {
   background-color: #04d9ff;
@@ -54,14 +54,14 @@
   padding: 16px 8px !important;
 }
 
-.ant-table-tbody > tr > td {
-  color: #686868 !important;
-  white-space: normal;
-  min-width: 120px !important;
-  padding: 16px 4px !important;
-  // min-width: 100px !important;
-  background: var(--white, #fff);
-}
+// .ant-table-tbody > tr > td {
+//   color: #686868 !important;
+//   white-space: normal;
+//   min-width: 120px !important;
+//   padding: 1px 4px !important;
+//   // min-width: 100px !important;
+//   background: var(--white, #fff);
+// }
 
 .ant-table-pagination {
   background: #000;
@@ -105,11 +105,13 @@ td {
   border: none !important;
 }
 
-tbody {
+.ant-table-tbody {
   tr {
+
   }
 
   td {
+    background: var(--white, #fff);
     color: var(--Paragraph-text-colour, #a6a6a6);
     font-family: "Nunito Sans";
     font-size: 14px;
@@ -198,7 +200,7 @@ tbody {
 }
 
 .ant-table-body {
-  height: 50vh;
+  max-height: 50vh;
 }
 // Pangination
 

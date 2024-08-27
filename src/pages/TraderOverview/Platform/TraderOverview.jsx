@@ -424,13 +424,13 @@ function TraderOverview() {
         <div className="trader_overview_row2_groupA">
           <div className="search_box_wrapper search_box_wrapper">
             <div className="left_side_box">
-              <Select
+              {/* <Select
                 className="category_dropdown"
                 defaultValue="all"
                 onChange={handlePlatformChange}
               >
                 <Option value="all">All Categories</Option>
-              </Select>
+              </Select> */}
               <input
                 placeholder="Search..."
                 className="search_input"

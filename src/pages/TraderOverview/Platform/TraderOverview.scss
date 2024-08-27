@@ -114,7 +114,7 @@
       }
 
       .header-select {
-        display: flex;
+        // display: flex;
         height: 42px;
         align-items: center;
         gap: 10px;
@@ -364,7 +364,7 @@
   max-width: fit-content;
   // flex-basis: 20%;
   flex-shrink: 1;
-  overflow: auto;
+  // overflow: auto;
   .ant-radio-button-wrapper {
     display: flex;
     min-height: 36px;
