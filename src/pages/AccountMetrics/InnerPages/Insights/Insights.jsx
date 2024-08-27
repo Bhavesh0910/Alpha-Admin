@@ -92,7 +92,7 @@ const Insights = ({ login_id, platform }) => {
             </div>
             <div>
               <p>Worst Trade Pip</p>
-              <p>{accountInsights?.worst_trade_pip?.toFixed(2)}</p>
+              <p>{accountInsights?.worst_trade_pip && accountInsights?.worst_trade_pip?.toFixed(2)}</p>
             </div>
             <div>
               <p>Average Win</p>

@@ -32,7 +32,7 @@ const AccountMetrics = () => {
     dispatch(fetchTradingAccountOverview({ login_id, platform, idToken }));
     dispatch(fetchAccountDetails({ login_id, platform, idToken }));
     dispatch(fetchObjectives({ login_id, platform, idToken }));
-    dispatch(fetchPerformanceChart({ login_id , idToken }));
+    dispatch(fetchPerformanceChart({ login_id ,platform, idToken }));
     
     dispatch(fetchAccountAnalysis({ login_id, platform, idToken }));
 

@@ -98,7 +98,7 @@ export const fetchPerformanceChart = createAsyncThunk(
   'amSlice/fetchPerformanceChart',
   async ({ login_id, platform, idToken }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await getPerformanceChart(login_id, idToken);
+      const response = await getPerformanceChart(login_id,platform, idToken);
       return response;
     } catch (error) {
       const msg = error.response?.data?.detail || 'Error fetching performance chart';
