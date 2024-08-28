@@ -82,12 +82,12 @@ const PassRates = () => {
       key: 'plan_type',
       render: text => text || '-',
     },
-    {
-      title: 'Created Date',
-      dataIndex: 'created_date',
-      key: 'created_date',
-      render: text => text || '-',
-    },
+    // {
+    //   title: 'Created Date',
+    //   dataIndex: 'created_date',
+    //   key: 'created_date',
+    //   render: text => text || '-',
+    // },
     {
       title: 'Account Balance',
       dataIndex: 'account_balance',
@@ -118,12 +118,12 @@ const PassRates = () => {
       key: 'pass_ratio',
       render: text => text !== undefined ? text : '-',
     },
-    {
-      title: 'Breached',
-      dataIndex: 'breached',
-      key: 'breached',
-      render: text => text !== undefined ? text : '-',
-    },
+    // {
+    //   title: 'Breached',
+    //   dataIndex: 'breached',
+    //   key: 'breached',
+    //   render: text => text !== undefined ? text : '-',
+    // },
     {
       title: 'Fail Rate (%)',
       dataIndex: 'fail_rate',
@@ -142,18 +142,18 @@ const PassRates = () => {
       key: 'total_accounts',
       render: text => text !== undefined ? text : '-',
     },
-    {
-      title: 'Repeated',
-      dataIndex: 'repeated',
-      key: 'repeated',
-      render: text => text !== undefined ? text : '-',
-    },
-    {
-      title: 'New',
-      dataIndex: 'new',
-      key: 'new',
-      render: text => text !== undefined ? text : '-',
-    }
+    // {
+    //   title: 'Repeated',
+    //   dataIndex: 'repeated',
+    //   key: 'repeated',
+    //   render: text => text !== undefined ? text : '-',
+    // },
+    // {
+    //   title: 'New',
+    //   dataIndex: 'new',
+    //   key: 'new',
+    //   render: text => text !== undefined ? text : '-',
+    // }
   ];
 
   const handleSearch = (e) => {
@@ -287,11 +287,15 @@ const PassRates = () => {
                 CurrentPageNo={pageNo}
                 setPageSize={setPageSize}
                 triggerChange={triggerChange}
+                isExpandable={true}
+                // expandedRowRender={expandedRowRender}
+                ExpandedComp={ExpandedRowRender}
+                rowId="login_id"
+                scrollY={420}
               />
             )}
           </div>
 
-          {/* {showChart ? <TotalPassesCharts /> : <></>} */}
         </div>
       </div>
     </>
@@ -299,3 +303,15 @@ const PassRates = () => {
 };
 
 export default PassRates;
+
+
+const ExpandedRowRender = ({ record }) => {
+  return (
+    <div className="expanded-row-content">
+      <p><strong>Created Date:</strong> {record.created_date || '-'}</p>
+      <p><strong>Breached:</strong> {record.breached !== undefined ? record.breached : '-'}</p>
+      <p><strong>New:</strong> {record.new !== undefined ? record.new : '-'}</p>
+      <p><strong>Repeated:</strong> {record.repeated !== undefined ? record.repeated : '-'}</p>
+    </div>
+  );
+};

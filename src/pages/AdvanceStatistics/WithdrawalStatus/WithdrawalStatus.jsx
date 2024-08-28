@@ -22,7 +22,7 @@ const WithdrawalStatus = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState("New");
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
@@ -39,17 +39,38 @@ const WithdrawalStatus = () => {
 
   const {withdrawalsStatus, isLoading} = useSelector((state) => state.advanceStatistics);
   const {idToken} = useSelector((state) => state.auth);
+  const rangePresets = [
+    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
+    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
+    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
+    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
+    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]}, // Assuming "All time" covers a very long period
+  ];
+
+
+
 
   useEffect(() => {
-    let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
 
+    let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
+    
     if (searchText) {
       query = query + `&search=${searchText}`;
     }
-
-    dispatch(fetchWithdrawalsStatus({idToken, query}));
+ 
+    if (dates && dates.length === 2) {
+      const [startDate, endDate] = dates;
+      query = query + `&start_date=${startDate}&end_date=${endDate}`;
+    }
+    else {
+      notification.warning({
+        message: "Invalid Dates",
+        description: "Please select a valid date range.",
+      })
+    }
+    dispatch(fetchWithdrawalsStatus({idToken, query , activeTab}));
     console.log(query);
-  }, [dispatch, idToken, pageNo, pageSize, searchText]);
+  }, [dispatch, idToken, pageNo, pageSize, searchText , activeTab , dates ]);
 
   console.log("withdrawalsStatus", withdrawalsStatus);
 
@@ -185,13 +206,8 @@ const WithdrawalStatus = () => {
     }
   }
 
-  const rangePresets = [
-    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
-    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
-    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
-    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
-    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]},
-  ];
+
+
 
   const handleOpenModal = () => {
     setModalVisible(true);
@@ -278,22 +294,26 @@ const WithdrawalStatus = () => {
             </div>
           </div>
           <div className="header_middle">
+          <RangePicker
+          presets={rangePresets}
+          onChange={updateDateRange}
+        />
             <div className="filter_btns">
               <Button
-                className={activeTab === "all" ? "active" : ""}
-                onClick={() => handleTabChange("all")}
+                className={activeTab === "Approved" ? "active" : ""}
+                onClick={() => handleTabChange("Approved")}
               >
-                In Loss
+                Approved
               </Button>
               <Button
-                className={activeTab === "paid" ? "active" : ""}
-                onClick={() => handleTabChange("paid")}
+                className={activeTab === "Rejected" ? "active" : ""}
+                onClick={() => handleTabChange("Rejected")}
               >
-                Pending
+                Rejected
               </Button>
               <Button
-                className={activeTab === "unpaid" ? "active" : ""}
-                onClick={() => handleTabChange("unpaid")}
+                className={activeTab === "New" ? "active" : ""}
+                onClick={() => handleTabChange("New")}
               >
                 New
               </Button>

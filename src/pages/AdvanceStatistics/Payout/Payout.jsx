@@ -30,7 +30,7 @@ const Payout = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [dates, setDates] = useState();
 
-  const {payoutDetails, isLoading} = useSelector((state) => state.advanceStatistics);
+  const {payoutDetails, totalPayments, isLoading} = useSelector((state) => state.advanceStatistics);
   const {idToken} = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const Payout = () => {
     }
 
     dispatch(fetchPayoutDetails({idToken, query}));
-    dispatch(fetchTotalPayments(idToken));
+    dispatch(fetchTotalPayments({idToken, query}));
   }, [dispatch, idToken, pageNo, pageSize, searchText]);
 
   const searchRef = useRef();
@@ -142,12 +142,12 @@ const Payout = () => {
       key: "login_id",
       render: (text) => text || "-",
     },
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (text) => text || "-",
-    },
+    // {
+    //   title: "Name",
+    //   dataIndex: "name",
+    //   key: "name",
+    //   render: (text) => text || "-",
+    // },
     {
       title: "Email",
       dataIndex: "email",
@@ -166,18 +166,18 @@ const Payout = () => {
       key: "starting_balance",
       render: (text) => text || "-",
     },
-    {
-      title: "Current Balance",
-      dataIndex: "current_balance",
-      key: "current_balance",
-      render: (text) => text || "-",
-    },
-    {
-      title: "Current Equity",
-      dataIndex: "current_equity",
-      key: "current_equity",
-      render: (text) => text || "-",
-    },
+    // {
+    //   title: "Current Balance",
+    //   dataIndex: "current_balance",
+    //   key: "current_balance",
+    //   render: (text) => text || "-",
+    // },
+    // {
+    //   title: "Current Equity",
+    //   dataIndex: "current_equity",
+    //   key: "current_equity",
+    //   render: (text) => text || "-",
+    // },
     {
       title: "Profit Share",
       dataIndex: "profit_share",
@@ -208,19 +208,21 @@ const Payout = () => {
       key: "verification_type",
       render: (text) => text || "-",
     },
-    {
-      title: "Start Date",
-      dataIndex: "start_date",
-      key: "start_date",
-      render: (text) => moment(text).format("DD MM YYYY") || "-",
-    },
-    {
-      title: "Next Payout Date",
-      dataIndex: "next_payout_date",
-      key: "next_payout_date",
-      render: (text) => moment(text).format("DD MM YYYY") || "-",
-    },
+    // {
+    //   title: "Start Date",
+    //   dataIndex: "start_date",
+    //   key: "start_date",
+    //   render: (text) => moment(text).format("DD MM YYYY") || "-",
+    // },
+    // {
+    //   title: "Next Payout Date",
+    //   dataIndex: "next_payout_date",
+    //   key: "next_payout_date",
+    //   render: (text) => moment(text).format("DD MM YYYY") || "-",
+    // },
   ];
+
+  console.log(totalPayments)
 
   return (
     <>
@@ -234,14 +236,14 @@ const Payout = () => {
               Total New Payment Request <span>(Today)</span>
             </h3>
             <div className="payout_lower_heading_inner">
-              <h2>25656</h2>
-              <button>
+              <h2>${totalPayments[0]?.total_approved_amount.toFixed(2)}</h2>
+              {/* <button>
                 <img
                   src={ArrowUpGreen}
                   alt="ArrowUpGreen"
                 />
                 <p>5%</p>
-              </button>
+              </button> */}
             </div>
           </div>
 
@@ -282,6 +284,11 @@ const Payout = () => {
               CurrentPageNo={pageNo}
               setPageSize={setPageSize}
               triggerChange={triggerChange}
+              isExpandable={true}
+              // expandedRowRender={expandedRowRender}
+              ExpandedComp={ExpandedRowRender}
+              rowId="login_id"
+              scrollY={420}
             />
           )}
         </div>
@@ -323,3 +330,17 @@ const Payout = () => {
 };
 
 export default Payout;
+
+
+
+const ExpandedRowRender = ({ record }) => {
+  return (
+    <div className="expanded-row-content">
+      <p><strong>Name:</strong> {record.name || '-'}</p>
+      <p><strong>Start Date:</strong> {moment(record.start_date).format("DD MMM YYYY") || '-'}</p>
+      <p><strong>Next Payout Date:</strong> {moment(record.next_payout_date).format("DD MMM YYYY") || '-'}</p>
+      <p><strong>Current Balance:</strong> {Number(record.current_balance).toFixed(2) || '-'}</p>
+      <p><strong>Current Equity:</strong> {Number(record.current_equity).toFixed(2) || '-'}</p>
+    </div>
+  );
+};

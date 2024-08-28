@@ -3,9 +3,9 @@ import {returnErrors} from "../reducers/error";
 import {getDailyStats, getPassRate, getPayoutDetails, getTotatPayments, getWithdrawalsDetails, getWithdrawalsStatus} from "../../utils/api/apis";
 
 // Thunk for fetching withdrawals status with pagination
-export const fetchWithdrawalsStatus = createAsyncThunk("advanceStats/fetchWithdrawalsStatus", async ({idToken, query}, {dispatch, rejectWithValue}) => {
+export const fetchWithdrawalsStatus = createAsyncThunk("advanceStats/fetchWithdrawalsStatus", async ({idToken, query , activeTab}, {dispatch, rejectWithValue}) => {
   try {
-    const response = await getWithdrawalsStatus(idToken, query);
+    const response = await getWithdrawalsStatus(idToken, query , activeTab);
     console.log(query);
     return response;
   } catch (error) {
@@ -56,9 +56,9 @@ export const fetchPayoutDetails = createAsyncThunk(
 
 export const fetchTotalPayments = createAsyncThunk(
   "advanceStats/fetchTotalPayments",
-  async ({ idToken }, { dispatch, rejectWithValue }) => {
+  async ({ idToken , query }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await getTotatPayments(idToken);
+      const response = await getTotatPayments(idToken , query );
       return response;
     } catch (error) {
       const msg = error.response?.data?.detail || "Error fetching total payments details";
@@ -86,8 +86,9 @@ const advanceStatisticsSlice = createSlice({
     withdrawalsStatus: null,
     withdrawalsDetails: null,
     passRate: null,
+    totalPayments: null,
     dailyStats: null,
-    payoutDetails: null, // Add this line
+    payoutDetails: null, 
     isLoading: false,
     error: null,
   },

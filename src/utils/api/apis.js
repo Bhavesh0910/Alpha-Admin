@@ -1176,13 +1176,18 @@ export const getPerformanceChart = async (login_id, idToken) => {
 
 //advance
 
-export const getWithdrawalsStatus = async (idToken, query) => {
-  console.log(query);
+export const getWithdrawalsStatus = async (idToken, query , activeTab) => {
+  const params = {};
+  if (activeTab) {
+    params.status = activeTab;
+  }
+
   try {
     const response = await axios.get(`${baseUrl}payout/Withdrawals-Status/${query}`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
+      params: params
     });
     return response.data;
   } catch (error) {
@@ -1193,7 +1198,7 @@ export const getWithdrawalsStatus = async (idToken, query) => {
 
 export const getWithdrawalsDetails = async (idToken, query) => {
   try {
-    const response = await axios.get(`${baseUrl}payout/Withdrawals-Details/${query}`, {
+    const response = await axios.get(`${baseUrl}payout/Withdrawals-Status/?status=Approved&${query}`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
@@ -1235,16 +1240,16 @@ export const getPayoutDetails = async (idToken, query) => {
 };
 
 
-export const getTotatPayments = async (idToken, query) => {
+export const getTotatPayments = async (idToken , query) => {
   try {
-    const response = await axios.get(`${baseUrl}TotalPaymentRequestAPI/`, {
+    const response = await axios.get(`${baseUrl}total/payment-request/`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching payment :", error);
+    console.error("Error fetching pass rate:", error);
     throw error;
   }
 };

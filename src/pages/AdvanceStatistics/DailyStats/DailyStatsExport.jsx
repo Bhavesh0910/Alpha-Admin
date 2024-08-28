@@ -26,7 +26,7 @@ const DailyStatsExportHistory = () => {
 
     // if (startDate && endDate) {
       // const query = `?start_date=${startDate}&end_date=${endDate}`;
-      const url = `daily-details-export/history/`;
+      const url = `v3/daily-details-export/history/`;
       dispatch(fetchExportHistoryReq({ idToken, url , dispatch }));
     // }
   }, [ dispatch, idToken]);
