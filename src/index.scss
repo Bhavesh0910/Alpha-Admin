@@ -337,8 +337,7 @@ input:-webkit-autofill:active {
   border: 1px solid var(--Stroke, #252a29);
   background: var(--Main-Background, #f6fefe);
   width: 100%;
-  min-width: 539px;
-  max-width: 539px;
+  max-width: 400px;
   max-height: 44px;
 
   @media only screen and (max-width: 1280px) {

@@ -80,6 +80,8 @@
 
     @media only screen and (max-width: 900px) {
       max-width: fit-content;
+      // flex-direction: column;
+      // align-items: flex-start;
     }
 
     @media only screen and (max-width: 570px) {

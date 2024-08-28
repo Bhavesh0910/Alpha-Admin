@@ -412,3 +412,19 @@
 // .ant-select-selection-item {
 //   display: none !important;
 // }
+.NestedTable{
+  display: flex;
+  justify-content: space-between;
+  // gap: 10%;
+  align-items: center;
+  padding: 1rem;
+  p{
+    color: var(--Brand-2, #12181f);
+    font-family: "Nunito Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-top: 10px;
+  }
+}

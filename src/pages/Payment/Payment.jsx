@@ -43,18 +43,18 @@ const Payment = () => {
 
   const columns = useMemo(
     () => [
-      {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        width: 150,
-        render: (text) => text,
-      },
+      // {
+      //   title: "Name",
+      //   dataIndex: "name",
+      //   key: "name",
+      //   width: 150,
+      //   render: (text) => text,
+      // },
       {
         title: "Email",
         dataIndex: "email",
         key: "email",
-        width: 200,
+        width: 150,
         render: (text) => {
           return (
             <div
@@ -72,7 +72,7 @@ const Payment = () => {
         title: "Payment ID",
         dataIndex: "payment_id",
         key: "payment_id",
-        width: 150,
+        width: 100,
         render: (text) => (
           <>
             {text ? (
@@ -100,43 +100,43 @@ const Payment = () => {
           </>
         ),
       },
-      {
-        title: "Transaction ID",
-        dataIndex: "transaction_id",
-        key: "transaction_id",
-        width: 200,
-        render: (text) => (
-          <>
-            {text ? (
-              <div className="copy_text_btn">
-                <a href={`mailto:${text}`}>{text}</a>
-                <Tooltip title="Copy Transaction ID">
-                  <Button
-                    icon={<CopyButton />}
-                    size="small"
-                    style={{marginLeft: 8}}
-                    onClick={() => {
-                      navigator.clipboard.writeText(text);
-                      notification.success({
-                        message: "Transaction ID copied to clipboard",
-                        placement: "topRight",
-                      });
-                    }}
-                    className="copy_btn"
-                  />
-                </Tooltip>
-              </div>
-            ) : (
-              "-"
-            )}
-          </>
-        ),
-      },
+      // {
+      //   title: "Transaction ID",
+      //   dataIndex: "transaction_id",
+      //   key: "transaction_id",
+      //   width: 200,
+      //   render: (text) => (
+      //     <>
+      //       {text ? (
+      //         <div className="copy_text_btn">
+      //           <a href={`mailto:${text}`}>{text}</a>
+      //           <Tooltip title="Copy Transaction ID">
+      //             <Button
+      //               icon={<CopyButton />}
+      //               size="small"
+      //               style={{marginLeft: 8}}
+      //               onClick={() => {
+      //                 navigator.clipboard.writeText(text);
+      //                 notification.success({
+      //                   message: "Transaction ID copied to clipboard",
+      //                   placement: "topRight",
+      //                 });
+      //               }}
+      //               className="copy_btn"
+      //             />
+      //           </Tooltip>
+      //         </div>
+      //       ) : (
+      //         "-"
+      //       )}
+      //     </>
+      //   ),
+      // },
       {
         title: "Payment Status",
         dataIndex: "payment_status",
         key: "payment_status",
-        width: 150,
+        width: 120,
       },
       {
         title: "Payment Platform Status",
@@ -144,64 +144,64 @@ const Payment = () => {
         key: "payment_platform_status",
         width: 180,
       },
-      {
-        title: "Promo",
-        dataIndex: "promo_code",
-        key: "promo_code",
-        width: 50,
-        render: (text) => (
-          <>
-            {text ? (
-              <div className="copy_text_btn">
-                <a href={`mailto:${text}`}>{text}</a>
-                <Tooltip title="Copy Promo">
-                  <Button
-                    icon={<CopyButton />}
-                    size="small"
-                    style={{marginLeft: 8}}
-                    onClick={() => {
-                      navigator.clipboard.writeText(text);
-                      notification.success({
-                        message: "Promo copied to clipboard",
-                        placement: "topRight",
-                      });
-                    }}
-                    className="copy_btn"
-                  />
-                </Tooltip>
-              </div>
-            ) : (
-              "-"
-            )}
-          </>
-        ),
-      },
+      // {
+      //   title: "Promo",
+      //   dataIndex: "promo_code",
+      //   key: "promo_code",
+      //   width: 50,
+      //   render: (text) => (
+      //     <>
+      //       {text ? (
+      //         <div className="copy_text_btn">
+      //           <a href={`mailto:${text}`}>{text}</a>
+      //           <Tooltip title="Copy Promo">
+      //             <Button
+      //               icon={<CopyButton />}
+      //               size="small"
+      //               style={{marginLeft: 8}}
+      //               onClick={() => {
+      //                 navigator.clipboard.writeText(text);
+      //                 notification.success({
+      //                   message: "Promo copied to clipboard",
+      //                   placement: "topRight",
+      //                 });
+      //               }}
+      //               className="copy_btn"
+      //             />
+      //           </Tooltip>
+      //         </div>
+      //       ) : (
+      //         "-"
+      //       )}
+      //     </>
+      //   ),
+      // },
       {
         title: "Amount",
         dataIndex: "amount",
         key: "amount",
         width: 150,
-        render: (amount) => <span>{amount}</span>,
+        render: (amount) => <span>{amount ? `$${amount}` : "-"}</span>,
       },
-      {
-        title: "Date",
-        dataIndex: "created_at",
-        key: "created_at",
-        width: 150,
-        render: (text) => moment(text).format("YYYY-MM-DD"),
-      },
+      // {
+      //   title: "Date",
+      //   dataIndex: "created_at",
+      //   key: "created_at",
+      //   width: 150,
+      //   render: (text) => moment(text).format("YYYY-MM-DD"),
+      // },
       {
         title: "Login ID",
         dataIndex: "account_login_id",
         key: "account_login_id",
         width: 150,
       },
-      {
-        title: "Challenge",
-        dataIndex: "challenge_name",
-        key: "challenge_name",
-        width: 150,
-      },
+      // {
+      //   title: "Challenge",
+      //   dataIndex: "challenge_name",
+      //   key: "challenge_name",
+      //   width: 150,
+      // },
       {
         title: "Status",
         dataIndex: "payment_status",
@@ -421,6 +421,9 @@ const Payment = () => {
             CurrentPageNo={pageNo}
             setPageSize={setPageSize}
             triggerChange={triggerChange}
+            isExpandable={true}
+            ExpandedComp={ExpandableRow}
+            rowId={"id"}
           />
         )}
       </Card>
@@ -527,6 +530,89 @@ const CalendarModal = ({idToken, status, handleCloseModal, setModalVisible}) => 
             <Button className="standard_button">Export</Button>
           )}
         </div>
+      </div>
+    </div>
+  );
+};
+
+export const ExpandableRow = ({record}) => {
+  return (
+    <div className="paymentNestedTable">
+      <div>
+        <div>Name</div>
+        <p>{record?.name || "-"}</p>
+      </div>
+      {/* 
+      <div>
+        <div>Amount</div>
+        <p>{record.amount || "-"}</p>
+      </div>
+      <div>
+        <div>Login id</div>
+        <p>{record.account_login_id || "-"}</p>
+      </div> */}
+      <div>
+        <div>Date</div>
+        <p>{record?.created_at ? moment(record.created_at).format("YYYY-MM-DD") : "-"}</p>
+      </div>
+      <div>
+        <div>Challenge</div>
+        <p>{record?.challenge_name || "-"}</p>
+      </div>
+      <div>
+        <div>Promo Code</div>
+        <p>
+          {record.promo_code ? (
+            <div className="copy_text_btn">
+              <a href={`mailto:${record.promo_code}`}>{record?.promo_code}</a>
+              <Tooltip title="Copy Promo">
+                <Button
+                  icon={<CopyButton />}
+                  size="small"
+                  style={{marginLeft: 8}}
+                  onClick={() => {
+                    navigator.clipboard.writeText(record?.promo_code);
+                    notification.success({
+                      message: "Promo copied to clipboard",
+                      placement: "topRight",
+                    });
+                  }}
+                  className="copy_btn"
+                />
+              </Tooltip>
+            </div>
+          ) : (
+            "-"
+          )}
+        </p>
+      </div>
+      <div>
+        <div>Transaction ID</div>
+        <p>
+          {" "}
+          {record.transaction_id ? (
+            <div className="copy_text_btn">
+              <a href={`mailto:${record.transaction_id}`}>{record?.transaction_id}</a>
+              <Tooltip title="Copy Transaction ID">
+                <Button
+                  icon={<CopyButton />}
+                  size="small"
+                  style={{marginLeft: 8}}
+                  onClick={() => {
+                    navigator.clipboard.writeText(record?.transaction_id);
+                    notification.success({
+                      message: "Transaction ID copied to clipboard",
+                      placement: "topRight",
+                    });
+                  }}
+                  className="copy_btn"
+                />
+              </Tooltip>
+            </div>
+          ) : (
+            "-"
+          )}
+        </p>
       </div>
     </div>
   );

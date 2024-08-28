@@ -8,6 +8,7 @@
 
 .ant-table-thead > tr > th {
   color: #1e1e1e !important;
+
 }
 
 // .ant-table-tbody > tr > td {
@@ -45,12 +46,13 @@
 .ant-table-thead > tr > th {
   background: #333;
   color: #1e1e1e;
+  // font-size: 13px;
   font-weight: 600;
   text-align: center;
   border-bottom: 1px solid #444;
-  white-space: normal;
+  // white-space: nowrap;
   width: 100px !important;
-  text-wrap: nowrap;
+  text-wrap: wrap;
   padding: 16px 8px !important;
 }
 
@@ -158,6 +160,7 @@ td {
   }
 
   .ant-table-cell {
+    padding: 16px 12px !important;
     a {
       color: #1e1e1e !important;
       cursor: pointer;

@@ -19,6 +19,7 @@ import {formatDate} from "fullcalendar/index.js";
 import ReactCountryFlag from "react-country-flag";
 import {changeAccountStatusApi} from "../../../utils/apis/accountsApi";
 import {fetchFundingDetails} from "../../../store/NewReducers/fundingSlice";
+import {data} from "./../../../components/AffiliateMarketing/UserDetails/UserDetails";
 const {Title} = Typography;
 const {Option} = Select;
 const {RangePicker} = DatePicker;
@@ -188,31 +189,35 @@ function TraderOverview() {
 
   const columns = useMemo(
     () => [
-      {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        width: 150,
-        render: (value, record) => {
-          return (
-            <p
-              style={{cursor: "pointer"}}
-              onClick={() => navigate(`/account-analysis/${record.login_id}/${platform}`)}
-            >
-              {value || "-"}
-            </p>
-          );
-        },
-      },
+      // {
+      //   title: "Name",
+      //   dataIndex: "name",
+      //   key: "name",
+      //   width: 150,
+      //   render: (value, record) => {
+      //     return (
+      //       <p
+      //         style={{cursor: "pointer"}}
+      //         onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}
+      //       >
+      //         {value || "-"}
+      //       </p>
+      //     );
+      //   },
+      // },
       {
         title: "Country",
         dataIndex: "country",
         key: "country",
-        render: (country) => {
-          const countryName = country || "-";
+        width: "15%",
+        render: (country, {record}) => {
+          const countryName = (country !== "undefined" ? country : null) || "-";
           const countryCode = lookup.byCountry(countryName);
           return countryCode ? (
-            <div className="country_name_wrapper">
+            <div
+              className="country_name_wrapper"
+              onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}
+            >
               <ReactCountryFlag
                 countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
                 svg={true}
@@ -229,7 +234,7 @@ function TraderOverview() {
         title: "Account Number",
         dataIndex: "login_id",
         key: "login_id",
-        width: 100,
+        width: "15%",
         render: (text) => text || "-",
       },
       {
@@ -237,55 +242,55 @@ function TraderOverview() {
         dataIndex: "balance",
         key: "balance",
         width: 150,
-        render: (startingBalance) => <span>${parseFloat(startingBalance || "0").toLocaleString()}</span>,
+        render: (startingBalance) => <span>{startingBalance ? "$" + parseFloat(startingBalance).toFixed(2).toLocaleString() : "-"}</span>,
       },
-      {
-        title: "Equity",
-        dataIndex: "equity",
-        key: "equity",
-        width: 150,
-        render: (equity) => <span>{equity}</span>,
-      },
+      // {
+      //   title: "Equity",
+      //   dataIndex: "equity",
+      //   key: "equity",
+      //   width: 150,
+      //   render: (equity) => <span>{equity}</span>,
+      // },
       {
         title: "Leverage",
         dataIndex: "leverage",
         key: "leverage",
-        width: 150,
+        width: "15%",
         render: (leverage) => <span>1:{leverage || "-"}</span>,
       },
-      {
-        title: "Start Date",
-        dataIndex: "start_date",
-        key: "start_date",
-        width: 150,
-        render: (startDate) => <span>{startDate ? formatDate(startDate) : "-"}</span>,
-      },
-      {
-        title: "End Date",
-        dataIndex: "expiry_date",
-        key: "expiry_date",
-        width: 150,
-        render: (expiryDate) => <span>{expiryDate ? formatDate(expiryDate) : "-"}</span>,
-      },
+      // {
+      //   title: "Start Date",
+      //   dataIndex: "start_date",
+      //   key: "start_date",
+      //   width: 150,
+      //   render: (startDate) => <span>{startDate ? formatDate(startDate) : "-"}</span>,
+      // },
+      // {
+      //   title: "End Date",
+      //   dataIndex: "expiry_date",
+      //   key: "expiry_date",
+      //   width: 150,
+      //   render: (expiryDate) => <span>{expiryDate ? formatDate(expiryDate) : "-"}</span>,
+      // },
       {
         title: "Trader Type",
         dataIndex: "status",
         key: "status",
-        width: 150,
+        width: "15%",
         render: (text) => <p className={`status_text ${text === "Evaluation" ? "evaluation" : "free_trial"}`}>{highlightText(text || "-", searchText)}</p>,
       },
       {
         title: "Status",
         dataIndex: "user_is_active",
         key: "user_is_active",
-        width: 150,
+        width: "15%",
         render: (text) => (text ? "Unblocked" : "Blocked") || "-",
       },
       {
         title: "Action",
         dataIndex: "action",
         key: "action",
-        width: 200,
+        width: "25%",
         render: (_, record) => (
           <div className="btn-wrapper">
             {record.user_is_active ? (
@@ -362,7 +367,7 @@ function TraderOverview() {
   //     </components.MultiValueLabel>
   //   );
   // };
-
+  console.log(`Trader Overview:`, data);
   return (
     <div className="trader-overview">
       <div className="mobile_headers">
@@ -473,6 +478,7 @@ function TraderOverview() {
           <Radio.Button value="Free Trail">Free Trial</Radio.Button>
         </Radio.Group>
       </div>
+
       <Card className="table-wrapper">
         {accountsLoading ? (
           <LoaderOverlay />
@@ -486,6 +492,9 @@ function TraderOverview() {
             CurrentPageNo={pageNo}
             setPageSize={setPageSize}
             triggerChange={triggerChange}
+            isExpandable={true}
+            ExpandedComp={ExpandableRow}
+            rowId={"id"}
           />
         )}
 
@@ -532,3 +541,36 @@ function TraderOverview() {
 }
 
 export default TraderOverview;
+
+const ExpandableRow = ({record}) => {
+  return (
+    <>
+      <div className="NestedTable">
+        <div>
+          <div>Name</div>
+          <p>{record?.name || "-"}</p>
+        </div>
+        <div>
+          <div>Start Date</div>
+          <p>{record?.start_date ? dayjs(record?.start_date).format("YYYY-MM-DD") : "-"}</p>
+        </div>
+        <div>
+          <div>End Date</div>
+          <p>{record?.expiry_date ? dayjs(record?.expiry_date).format("YYYY-MM-DD") : "-"}</p>
+        </div>
+        <div>
+          <div>Equity</div>
+          <p>{record?.equity || "-"}</p>
+        </div>
+        {/* <div>
+          <div>Balance</div>
+          <p>${record?.balance ? parseFloat(record?.balance || "0").toFixed(2) : "-"}</p>
+        </div> */}
+        {/* <div>
+          <div>Timestamp</div>
+          <p>{dayjs(record?.start_date).format('YYYY-MM-DD HH:mm:ss')}</p> 
+        </div> */}
+      </div>
+    </>
+  );
+};

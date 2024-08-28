@@ -7,12 +7,12 @@ import {toast} from "react-toastify";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import commentIcon from "../../assets/icons/comment.svg";
 import RightMark from "../../assets/icons/verified_green_circleIcon.svg";
-import createIcon from '../../assets/icons/createAcc.svg'
-import addIcon from '../../assets/icons/add-edit.svg'
-import acceptIcon from '../../assets/icons/accept.svg'
-import rejectIcon from '../../assets/icons/reject.svg'
-import toggleGreen from '../../assets/icons/toggle-green.svg'
-import toggleRed from '../../assets/icons/toggle-red.svg'
+import createIcon from "../../assets/icons/createAcc.svg";
+import addIcon from "../../assets/icons/add-edit.svg";
+import acceptIcon from "../../assets/icons/accept.svg";
+import rejectIcon from "../../assets/icons/reject.svg";
+import toggleGreen from "../../assets/icons/toggle-green.svg";
+import toggleRed from "../../assets/icons/toggle-red.svg";
 import CrossMark from "../../assets/icons/notverified_red_circleIcon.svg";
 
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
@@ -295,6 +295,7 @@ const StageManager = () => {
             title: "Account",
             dataIndex: "account_id",
             key: "account_id",
+            // width:'5%',
             render: (text, row) => (
               <Link
                 to="/trader-overview"
@@ -309,6 +310,7 @@ const StageManager = () => {
             title: "Email",
             dataIndex: "email",
             key: "email",
+   width:40,
             render: (text) => (
               <div className="column_one_wrapper">
                 {/* <div
@@ -349,16 +351,17 @@ const StageManager = () => {
             ),
           },
           // Table.SELECTION_COLUMN,
-          {
-            title: "Full Name",
-            dataIndex: "username",
-            key: "username",
-            render: (text) => (text ? text : "-"),
-          },
+          // {
+          //   title: "Full Name",
+          //   dataIndex: "username",
+          //   key: "username",
+          //   render: (text) => (text ? text : "-"),
+          // },
           {
             title: "Flag",
             dataIndex: "country",
             key: "country",
+            width: 60,
             render: (country) => {
               const countryName = country;
               const countryCode = lookup.byCountry(countryName);
@@ -377,23 +380,24 @@ const StageManager = () => {
               }
             },
           },
-          {
-            title: "Stage-2",
-            dataIndex: "stage2_account",
-            key: "stage2_account",
-            render: (text, row) => (
-              <Link
-                to="/traders-list-2"
-                // onClick={() => handleActiveAccount(row, "funded_account")}
-              >
-                {text ? text : "-"}
-              </Link>
-            ),
-          },
+          // {
+          //   title: "Stage-2",
+          //   dataIndex: "stage2_account",
+          //   key: "stage2_account",
+          //   render: (text, row) => (
+          //     <Link
+          //       to="/traders-list-2"
+          //       // onClick={() => handleActiveAccount(row, "funded_account")}
+          //     >
+          //       {text ? text : "-"}
+          //     </Link>
+          //   ),
+          // },
           {
             title: "Status",
             dataIndex: "status",
             key: "status",
+        
             render: (text, record, index) => (
               <Dropdown
                 overlay={() => statusMenu(text, record)}
@@ -421,61 +425,66 @@ const StageManager = () => {
               </Dropdown>
             ),
           },
-          {
-            title: "Email Generated",
-            dataIndex: "email_sent",
-            key: "email_sent",
-            render: (text, row) => (
-              <img
-                width={"25px"}
-                src={text || row.status === "approved" ? RightMark : CrossMark}
-                alt=""
-              />
-            ),
-          },
-          {
-            title: "Credential Generated",
-            dataIndex: "credential_generated",
-            key: "credential_generated",
-            render: (text, row) => (
-              <img
-                width={"25px"}
-                src={text || row.status === "approved" ? RightMark : CrossMark}
-                alt=""
-              />
-            ),
-          },
-          {
-            title: "Date (created at)",
-            dataIndex: "created_at",
-            key: "created_at",
-            render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
-          },
-          {
-            title: "Date (last updated)",
-            dataIndex: "updated_at",
-            key: "updated_at",
-            render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
-          },
-          {
-            title: "Comment",
-            dataIndex: "comment",
-            key: "comment",
-            render: (text, record, index) =>
-              text ? (
-                <div className="comment_box">
-                  <p>{text}</p>
-                  <img
-                    src={commentIcon}
-                    alt="comment"
-                    className="edit-icon"
-                    onClick={() => openEditModal(text, record)}
-                  />
-                </div>
-              ) : (
-                <div onClick={() => openEditModal(text, record)}><img src={addIcon} alt="" /></div>
-              ),
-          },
+          // {
+          //   title: "Email Generated",
+          //   dataIndex: "email_sent",
+          //   key: "email_sent",
+          //   render: (text, row) => (
+          //     <img
+          //       width={"25px"}
+          //       src={text || row.status === "approved" ? RightMark : CrossMark}
+          //       alt=""
+          //     />
+          //   ),
+          // },
+          // {
+          //   title: "Credential Generated",
+          //   dataIndex: "credential_generated",
+          //   key: "credential_generated",
+          //   render: (text, row) => (
+          //     <img
+          //       width={"25px"}
+          //       src={text || row.status === "approved" ? RightMark : CrossMark}
+          //       alt=""
+          //     />
+          //   ),
+          // },
+          // {
+          //   title: "Date (created at)",
+          //   dataIndex: "created_at",
+          //   key: "created_at",
+          //   render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
+          // },
+          // {
+          //   title: "Date (last updated)",
+          //   dataIndex: "updated_at",
+          //   key: "updated_at",
+          //   render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
+          // },
+          // {
+          //   title: "Comment",
+          //   dataIndex: "comment",
+          //   key: "comment",
+          //   render: (text, record, index) =>
+          //     text ? (
+          //       <div className="comment_box">
+          //         <p>{text}</p>
+          //         <img
+          //           src={commentIcon}
+          //           alt="comment"
+          //           className="edit-icon"
+          //           onClick={() => openEditModal(text, record)}
+          //         />
+          //       </div>
+          //     ) : (
+          //       <div onClick={() => openEditModal(text, record)}>
+          //         <img
+          //           src={addIcon}
+          //           alt=""
+          //         />
+          //       </div>
+          //     ),
+          // },
           {
             title: "Details",
             dataIndex: "details",
@@ -492,11 +501,13 @@ const StageManager = () => {
           {
             title: "Action",
             key: "action",
+            width:80,
             render: (text, row) => (
-              <div
-                onClick={() => openCreateAccountModel(row)}
-              >
-                <img src={createIcon} alt="" />
+              <div onClick={() => openCreateAccountModel(row)}>
+                <img
+                  src={createIcon}
+                  alt=""
+                />
               </div>
               // </Dropdown>
             ),
@@ -524,6 +535,7 @@ const StageManager = () => {
             title: "Account",
             dataIndex: "account_id",
             key: "account_id",
+
             render: (text, row) => (
               <Link
                 to="/trader-overview"
@@ -538,6 +550,7 @@ const StageManager = () => {
             title: "Email",
             dataIndex: "email",
             key: "email",
+            // width:3,
             render: (text) => (
               <div className="column_one_wrapper">
                 {/* <div
@@ -578,16 +591,17 @@ const StageManager = () => {
             ),
           },
           // Table.SELECTION_COLUMN,
-          {
-            title: "Full Name",
-            dataIndex: "username",
-            key: "username",
-            render: (text) => (text ? text : "-"),
-          },
+          // {
+          //   title: "Full Name",
+          //   dataIndex: "username",
+          //   key: "username",
+          //   render: (text) => (text ? text : "-"),
+          // },
           {
             title: "Flag",
             dataIndex: "country",
             key: "country",
+            width: 5,
             render: (country) => {
               const countryName = country;
               const countryCode = lookup.byCountry(countryName);
@@ -606,23 +620,24 @@ const StageManager = () => {
               }
             },
           },
-          {
-            title: "Funded",
-            dataIndex: "funded_account",
-            key: "funded_account",
-            render: (text, row) => (
-              <Link
-                to="/traders-list-2"
-                // onClick={() => handleActiveAccount(row, "funded_account")}
-              >
-                {text ? text : "-"}
-              </Link>
-            ),
-          },
+          // {
+          //   title: "Funded",
+          //   dataIndex: "funded_account",
+          //   key: "funded_account",
+          //   render: (text, row) => (
+          //     <Link
+          //       to="/traders-list-2"
+          //       // onClick={() => handleActiveAccount(row, "funded_account")}
+          //     >
+          //       {text ? text : "-"}
+          //     </Link>
+          //   ),
+          // },
           {
             title: "Status",
             dataIndex: "status",
             key: "status",
+            // width:10,
             render: (text, record, index) => (
               <Dropdown
                 overlay={() => statusMenu(text, record)}
@@ -635,8 +650,8 @@ const StageManager = () => {
                     minWidth: "120px",
                     display: "flex",
                     flexDirection: "row-reverse",
-                    justifyContent: "space-between",
-                    padding: "6px 10px",
+                    // justifyContent: "space-between",
+                    // padding: "6px 1px",
                   }}
                 >
                   <p
@@ -650,107 +665,113 @@ const StageManager = () => {
               </Dropdown>
             ),
           },
-          {
-            title: "Email Generated",
-            dataIndex: "email_sent",
-            key: "email_sent",
-            render: (text, row) => (
-              <img
-                width={"25px"}
-                src={text || row.status === "approved" ? RightMark : CrossMark}
-                alt=""
-              />
-            ),
-          },
-          {
-            title: "Credential Generated",
-            dataIndex: "credential_generated",
-            key: "credential_generated",
-            render: (text, row) => (
-              <img
-                width={"25px"}
-                src={text || row.status === "approved" ? RightMark : CrossMark}
-                alt=""
-              />
-            ),
-          },
-          {
-            title: "Contract Issued",
-            dataIndex: "issue_contract",
-            key: "issue_contract",
-            render: (text, row) => (
-              <img
-                width={"25px"}
-                src={text || row.status === "approved" ? RightMark : CrossMark}
-                alt=""
-              />
-            ),
-          },
-          {
-            title: "KYC Verified",
-            dataIndex: "is_kyc_verified",
-            key: "is_kyc_verified",
-            render: (text) => (
-              <img
-                width={"25px"}
-                src={text ? RightMark : CrossMark}
-                alt=""
-              />
-            ),
-          },
-          {
-            title: "Payment",
-            dataIndex: "is_payment_verified",
-            key: "is_payment_verified",
-            render: (text, row) => (
-              <img
-                width={"25px"}
-                src={text || row.status === "approved" ? RightMark : CrossMark}
-                alt=""
-              />
-            ),
-          },
-          {
-            title: "Date (created at)",
-            dataIndex: "created_at",
-            key: "created_at",
-            render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
-          },
-          {
-            title: "Date (last updated)",
-            dataIndex: "updated_at",
-            key: "updated_at",
-            render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
-          },
-          {
-            title: "Comment",
-            dataIndex: "comment",
-            key: "comment",
-            render: (text, record, index) =>
-              text ? (
-                <div className="comment_box">
-                  <p>{text}</p>
-                  <img
-                    src={commentIcon}
-                    alt="comment"
-                    className="edit-icon"
-                    onClick={() => openEditModal(text, record)}
-                  />
-                </div>
-              ) : (
-                <div onClick={() => openEditModal(text, record)}><img src={addIcon} alt="" /></div>
-              ),
-          },
-          {
-            title: "Phase 1 ID",
-            dataIndex: "subject",
-            key: "subject",
-            render: (text) => "-",
-            // text.split(" ")[0].split("(")[1].slice(0, -1)
-            // console.log("Text : ", text.split(" ")[0].split("(")[1].slice(0, -1))
-            // return text.split(" ").split("(");
-            // }
-          },
+          // {
+          //   title: "Email Generated",
+          //   dataIndex: "email_sent",
+          //   key: "email_sent",
+          //   render: (text, row) => (
+          //     <img
+          //       width={"25px"}
+          //       src={text || row.status === "approved" ? RightMark : CrossMark}
+          //       alt=""
+          //     />
+          //   ),
+          // },
+          // {
+          //   title: "Credential Generated",
+          //   dataIndex: "credential_generated",
+          //   key: "credential_generated",
+          //   render: (text, row) => (
+          //     <img
+          //       width={"25px"}
+          //       src={text || row?.status === "approved" ? RightMark : CrossMark}
+          //       alt=""
+          //     />
+          //   ),
+          // },
+          // {
+          //   title: "Contract Issued",
+          //   dataIndex: "issue_contract",
+          //   key: "issue_contract",
+          //   render: (text, row) => (
+          //     <img
+          //       width={"25px"}
+          //       src={text || row.status === "approved" ? RightMark : CrossMark}
+          //       alt=""
+          //     />
+          //   ),
+          // },
+          // {
+          //   title: "KYC Verified",
+          //   dataIndex: "is_kyc_verified",
+          //   key: "is_kyc_verified",
+          //   render: (text) => (
+          //     <img
+          //       width={"25px"}
+          //       src={text ? RightMark : CrossMark}
+          //       alt=""
+          //     />
+          //   ),
+          // },
+          // {
+          //   title: "Payment",
+          //   dataIndex: "is_payment_verified",
+          //   key: "is_payment_verified",
+          //   render: (text, row) => (
+          //     <img
+          //       width={"25px"}
+          //       src={text || row.status === "approved" ? RightMark : CrossMark}
+          //       alt=""
+          //     />
+          //   ),
+          // },
+          // {
+          //   title: "Date (created at)",
+          //   dataIndex: "created_at",
+          //   key: "created_at",
+          //   render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
+          // },
+          // {
+          //   title: "Date (last updated)",
+          //   dataIndex: "updated_at",
+          //   key: "updated_at",
+          //   render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
+          // },
+          // {
+          //   title: "Comment",
+          //   dataIndex: "comment",
+          //   key: "comment",
+          //   width: 80,
+          //   render: (text, record, index) =>
+          //     text ? (
+          //       <div className="comment_box">
+          //         <p>{text}</p>
+          //         <img
+          //           src={commentIcon}
+          //           alt="comment"
+          //           className="edit-icon"
+          //           onClick={() => openEditModal(text, record)}
+          //         />
+          //       </div>
+          //     ) : (
+          //       <div onClick={() => openEditModal(text, record)}>
+          //         <img
+          //           src={addIcon}
+          //           alt=""
+          //         />
+          //       </div>
+          //     ),
+          // },
+          // {
+          //   title: "Phase 1 ID",
+          //   dataIndex: "subject",
+          //   key: "subject",
+          //   render: (text) => "-",
+          //   // text.split(" ")[0].split("(")[1].slice(0, -1)
+          //   // console.log("Text : ", text.split(" ")[0].split("(")[1].slice(0, -1))
+          //   // return text.split(" ").split("(");
+          //   // }
+          // },
           {
             title: "Details",
             dataIndex: "details",
@@ -777,10 +798,11 @@ const StageManager = () => {
               //   }
               //   trigger={["click"]}
               // >
-              <div
-                onClick={() => openCreateAccountModel(row)}
-              >
-                <img src={createIcon} alt="" />
+              <div onClick={() => openCreateAccountModel(row)}>
+                <img
+                  src={createIcon}
+                  alt=""
+                />
               </div>
               // </Dropdown>
             ),
@@ -822,6 +844,7 @@ const StageManager = () => {
             title: "Flag",
             dataIndex: "user_id",
             key: "user_id",
+  
             render: (text, row) => (
               <div className="flagContainer">
                 <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
@@ -838,16 +861,19 @@ const StageManager = () => {
             title: "Email",
             dataIndex: "email",
             key: "email",
+
           },
           {
-            title: "Account Number",
+            title: "Account No.",
             dataIndex: "login_id",
             key: "accountNumber",
+
           },
           {
             title: "Max Loss",
             dataIndex: "stats",
             key: "stats",
+
             render: (text) => (text?.max_loss ? text?.max_loss.toFixed(2) : "-"),
           },
           {
@@ -866,33 +892,41 @@ const StageManager = () => {
             title: "Balance",
             dataIndex: "stats",
             key: "stats",
+
             render: (text) => {
               return text?.balance ? text?.balance : "-";
             },
           },
-          {
-            title: "Comment",
-            dataIndex: "comment",
-            key: "comment",
-            render: (text, record, index) =>
-              text ? (
-                <div className="comment_box">
-                  <p>{text}</p>
-                  <img
-                    src={commentIcon}
-                    alt="comment"
-                    className="edit-icon"
-                    onClick={() => openEditModal(text, record)}
-                  />
-                </div>
-              ) : (
-                <div onClick={() => openEditModal(text, record)}><img src={addIcon} alt="" /></div>
-              ),
-          },
+          // {
+          //   title: "Comment",
+          //   dataIndex: "comment",
+          //   key: "comment",
+          //   width: 80,
+          //   render: (text, record, index) =>
+          //     text ? (
+          //       <div className="comment_box">
+          //         <p>{text}</p>
+          //         <img
+          //           src={commentIcon}
+          //           alt="comment"
+          //           className="edit-icon"
+          //           onClick={() => openEditModal(text, record)}
+          //         />
+          //       </div>
+          //     ) : (
+          //       <div onClick={() => openEditModal(text, record)}>
+          //         <img
+          //           src={addIcon}
+          //           alt=""
+          //         />
+          //       </div>
+          //     ),
+          // },
           {
             title: "Status",
             dataIndex: "progress",
             key: "progress",
+
             render: (text, record, index) => (
               <Dropdown
                 overlay={() => statusMenu(text, record)}
@@ -920,22 +954,23 @@ const StageManager = () => {
               </Dropdown>
             ),
           },
-          {
-            title: "Phase 1 ID",
-            dataIndex: "phase1Id",
-            key: "phase1Id",
-            render: (text) => (text ? text : "-"),
-          },
-          {
-            title: "Funded ID",
-            dataIndex: "fundedId",
-            key: "fundedId",
-            render: (text) => (text ? text : "-"),
-          },
+          // {
+          //   title: "Phase 1 ID",
+          //   dataIndex: "phase1Id",
+          //   key: "phase1Id",
+          //   render: (text) => (text ? text : "-"),
+          // },
+          // {
+          //   title: "Funded ID",
+          //   dataIndex: "fundedId",
+          //   key: "fundedId",
+          //   render: (text) => (text ? text : "-"),
+          // },
           {
             title: "Details",
             dataIndex: "details",
             key: "details",
+
             render: (text, record, index) => (
               <Button
                 className="account_metrics_btn"
@@ -953,6 +988,7 @@ const StageManager = () => {
             title: "Flag",
             dataIndex: "user",
             key: "user",
+            width: 10,
             render: (text, row) => (
               <div className="flagContainer">
                 <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
@@ -975,18 +1011,20 @@ const StageManager = () => {
             title: "Login ID",
             dataIndex: "login_id",
             key: "login_id",
+
             render: (text) => <span>{text}</span>,
           },
-          {
-            title: "Username",
-            dataIndex: "user_name",
-            key: "user_name",
-            render: (text) => <span>{text}</span>,
-          },
+          // {
+          //   title: "Username",
+          //   dataIndex: "user_name",
+          //   key: "user_name",
+          //   render: (text) => <span>{text}</span>,
+          // },
           {
             title: "KYC",
             dataIndex: "kyc",
             key: "kyc",
+            width: 50,
             render: (text) => (
               <img
                 width={"25px"}
@@ -995,28 +1033,31 @@ const StageManager = () => {
               />
             ),
           },
-          {
-            title: "Date (created at)",
-            dataIndex: "created_at",
-            key: "created_at",
-            render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
-          },
+          // {
+          //   title: "Date (created at)",
+          //   dataIndex: "created_at",
+          //   key: "created_at",
+          //   render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
+          // },
           {
             title: "Payment Mode",
             dataIndex: "method",
             key: "method",
+            width: 85,
             render: (text) => <span>{text}</span>,
           },
           {
             title: "Profit Split",
             dataIndex: "profit_split",
             key: "profit_split",
+            width:60,
             render: (text) => <span>{text}%</span>,
           },
           {
             title: "Bonus",
             dataIndex: "bonus",
             key: "bonus",
+            width: 65,
             render: (text) => (text ? <span>{text}%</span> : "-"),
           },
           {
@@ -1025,30 +1066,37 @@ const StageManager = () => {
             key: "amount",
             render: (text) => <span>${text}</span>,
           },
-          {
-            title: "Comment",
-            dataIndex: "comment",
-            key: "comment",
-            render: (text, record, index) =>
-              text ? (
-                <div className="comment_box">
-                  <p>{text}</p>
-                  <img
-                    src={commentIcon}
-                    alt="comment"
-                    className="edit-icon"
-                    onClick={() => openEditModal(text, record)}
-                  />
-                </div>
-              ) : (
-                <div onClick={() => openEditModal(text, record)}><img src={addIcon} alt="" /></div>
-              ),
-          },
           ,
+          // {
+          //   title: "Comment",
+          //   dataIndex: "comment",
+          //   key: "comment",
+          //   width: 80,
+          //   render: (text, record, index) =>
+          //     text ? (
+          //       <div className="comment_box">
+          //         <p>{text}</p>
+          //         <img
+          //           src={commentIcon}
+          //           alt="comment"
+          //           className="edit-icon"
+          //           onClick={() => openEditModal(text, record)}
+          //         />
+          //       </div>
+          //     ) : (
+          //       <div onClick={() => openEditModal(text, record)}>
+          //         <img
+          //           src={addIcon}
+          //           alt=""
+          //         />
+          //       </div>
+          //     ),
+          // },
           {
             title: "Status",
             dataIndex: "status",
             key: "status",
+            // width:10,
             render: (text, record, index) => (
               <Dropdown
                 overlay={() => statusMenu(text, record)}
@@ -1084,15 +1132,17 @@ const StageManager = () => {
             render: (text, row, index) => (
               <>
                 <div className="action_button">
-                  <div
-                    onClick={() => openContractUpdateModal("Approved", row)}
-                  >
-                    <img src={acceptIcon} alt="" />
+                  <div onClick={() => openContractUpdateModal("Approved", row)}>
+                    <img
+                      src={acceptIcon}
+                      alt=""
+                    />
                   </div>
-                  <div
-                    onClick={() => openContractUpdateModal("Rejected", row)}
-                  >
-                    <img src={rejectIcon} alt="" />
+                  <div onClick={() => openContractUpdateModal("Rejected", row)}>
+                    <img
+                      src={rejectIcon}
+                      alt=""
+                    />
                   </div>
                 </div>
                 {/* <div className="action_button">
@@ -1274,8 +1324,16 @@ function ExpandedRowData({record}) {
   const [url, setUrl] = useState();
   const {idToken} = useSelector((state) => state.auth);
   const {nestedTableData, isLoading} = useSelector((state) => state.support);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalAction, setModalAction] = useState("");
+  const [userToUpdate, setuserToUpdate] = useState(null);
+  const [editCommentToUpdate, setEditCommentToUpdate] = useState(null);
+  const [updatedContract, setUpdatedContract] = useState(null);
+
   const dispatch = useDispatch();
 
+  console.log("record ,", record);
   useEffect(() => {
     switch (location.pathname) {
       case "/support/stage-1":
@@ -1300,6 +1358,21 @@ function ExpandedRowData({record}) {
 
   const martingleStatus = nestedTableData?.martingale?.status || nestedTableData?.martingale_status;
 
+  const openEditModal = (value, record) => {
+    setEditCommentToUpdate(value);
+    setuserToUpdate(record);
+    setIsModalVisible(true);
+    setModalAction("Edit");
+  };
+
+  const handleEditComment = () => {
+    const formData = new FormData();
+    formData.append("comment", editCommentToUpdate);
+    let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
+    dispatch(editCommentReq({idToken, body: formData, id: userId, dispatch}));
+    setIsModalVisible(false);
+  };
+
   return (
     <>
       {isLoading ? (
@@ -1310,6 +1383,18 @@ function ExpandedRowData({record}) {
             <div>Martingle</div>
             {/* <div>{nestedTableData?.contact}</div> */}
             <button className={`${martingleStatus === "Success" ? "status_success" : "notButton"}`}>Success</button>
+          </div>
+          <div>
+            <div>Name</div>
+            <p>{record?.username || "-"}</p>
+          </div>
+          <div className="date_time">
+            <div>Date (Created at)</div>
+            <p>{moment(record?.created_at).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
+          </div>
+          <div className="date_time">
+            <div>Date (last updated)</div>
+            <p>{moment(record?.updated_at).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
           </div>
           <div>
             <div>Max Loss</div>
@@ -1329,7 +1414,8 @@ function ExpandedRowData({record}) {
           </div>
           <div className="date_time">
             <div>Account Started</div>
-            <p>{formatDateTimeNew(nestedTableData?.start_date || "-")}</p>
+            {/* <p>{nestedTableData?.start_date?(formatDateTimeNew(nestedTableData?.start_date || "-")):'-'}</p> */}
+            <p>{formatDateTimeNew(nestedTableData?.start_date) || "-"}</p>
           </div>
           <div>
             <div>Risk Report</div>
@@ -1337,8 +1423,109 @@ function ExpandedRowData({record}) {
           </div>
           <div className="date_time">
             <div>Account Passed</div>
-            <p>{formatDateTimeNew(nestedTableData?.pass_date || "-")}</p>
+            {/* <p>{nestedTableData?.pass_date?(formatDateTimeNew(nestedTableData?.pass_date || "-")):'-'}</p> */}
+            <p>{formatDateTimeNew(nestedTableData?.pass_date) || "-"}</p>
           </div>
+          <div>
+            <div>Email Generated</div>
+            <p>
+              {/* {record?.email_sent || "-"} */}
+              <img
+                width={"25px"}
+                src={record?.email_sent ? RightMark : CrossMark}
+              />
+            </p>
+          </div>
+          <div>
+            <div>Credential Generated</div>
+            <p>
+              {/* {record?.credential_generated || "-"} */}
+              <img
+                width={"25px"}
+                src={record?.credential_generated?.status === "approved" ? RightMark : CrossMark}
+              />
+            </p>
+          </div>
+          {location.pathname === "/support/stage-2" && (
+            <>
+              <div>
+                <div>Contract Issued</div>
+                <p>
+                  <img
+                    width={"25px"}
+                    src={record.issue_contract ? RightMark : CrossMark}
+                  />
+                </p>
+              </div>
+              <div>
+                <div>KYC Verified</div>
+                <p>
+                  <img
+                    width={"25px"}
+                    src={record.is_kyc_verified ? RightMark : CrossMark}
+                  />
+                </p>
+              </div>
+              <div>
+                <div>Payment</div>
+                <p>
+                  <img
+                    width={"25px"}
+                    src={record.is_payment_verified ? RightMark : CrossMark}
+                  />
+                </p>
+              </div>
+            </>
+          )}
+          <div>
+            <div>
+              {" "}
+              Comment{" "}
+              <img
+              width={'15px'}
+                src={addIcon}
+                alt=""
+                style={{cursor:'pointer'}}
+                onClick={() => openEditModal(record?.comment, record)}
+              />
+            </div>
+            <p>{record?.comment || "-"}</p>
+          </div>
+          <Modal
+            title={modalAction}
+            open={isModalVisible}
+            onCancel={() => {
+              setIsModalVisible(false);
+              setEditCommentToUpdate(null);
+              setuserToUpdate(null);
+              setUpdatedContract(null);
+            }}
+            onOk={modalAction === "Edit" && handleEditComment}
+            className="supportModel"
+          >
+            {modalAction === "Edit" ? (
+              <Form.Item
+                className="lableWhite"
+                label="Edit Comment"
+              >
+                <Input.TextArea
+                  value={editCommentToUpdate}
+                  onChange={(e) => setEditCommentToUpdate(e.target.value)}
+                  placeholder="Write your comment here.."
+                />
+              </Form.Item>
+            ) : (
+              <Form.Item
+                className="lableWhite"
+                label="Comment"
+                value={editCommentToUpdate}
+                onChange={(e) => setEditCommentToUpdate(e.target.value)}
+                style={{color: "white"}}
+              >
+                <Input.TextArea placeholder="Write your comment here.." />
+              </Form.Item>
+            )}
+          </Modal>
         </div>
       )}
     </>

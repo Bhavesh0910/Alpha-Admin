@@ -224,3 +224,19 @@
 .status_button{
   width: fit-content;
 }
+
+.paymentNestedTable{
+  display: grid;
+  grid-template-columns: repeat(3,auto);
+  gap: 40px;
+  p {
+    color: var(--Brand-2, #12181f);
+    font-family: "Nunito Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-top: 10px;
+  }
+
+}
