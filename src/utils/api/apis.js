@@ -1160,9 +1160,11 @@ export const getObjectives = async (login_id, platform, idToken) => {
   }
 };
 
-export const getPerformanceChart = async (login_id, idToken) => {
+export const getPerformanceChart = async (login_id, platform, idToken) => {
+  let platformName = platform === "trader-accounts" ? "mt5" : platform === "ctrader-accounts" ? "ctrader" : "dxtrade";
+
   try {
-    const response = await axios.get(`${baseUrl}v2/account-metrics/performance-chart/${login_id}`, {
+    const response = await axios.get(`${baseUrl}v2/account-metrics/performance-chart/${login_id}/?platform=${platformName}`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
@@ -1224,7 +1226,6 @@ export const getPassRate = async (idToken, query) => {
   }
 };
 
-
 export const getPayoutDetails = async (idToken, query) => {
   try {
     const response = await axios.get(`${baseUrl}advance/payout-details/${query}`, {
@@ -1253,9 +1254,6 @@ export const getTotatPayments = async (idToken , query) => {
     throw error;
   }
 };
-
-
-
 
 export const getDailyStats = async (idToken, query) => {
   try {
