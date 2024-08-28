@@ -236,7 +236,7 @@ const Payout = () => {
               Total New Payment Request <span>(Today)</span>
             </h3>
             <div className="payout_lower_heading_inner">
-              <h2>${totalPayments[0]?.total_approved_amount?.toFixed(2)}</h2>
+              <h2>{totalPayments[0]?.new_request}</h2>
               {/* <button>
                 <img
                   src={ArrowUpGreen}

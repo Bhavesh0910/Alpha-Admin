@@ -1,0 +1,110 @@
+.affreflist_container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .header_wrapper {
+      button {
+        margin-left: auto;
+      }
+    }
+    .header_bottom{
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .table_header_filter {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+  
+      @media only screen and (max-width: 1400px) {
+        flex-wrap: wrap;
+      }
+  
+      .header_left {
+        display: flex;
+        align-items: center;
+        gap: 53px;
+        width: 100%;
+        justify-content: space-between;
+  
+        @media only screen and (max-width: 1290px) {
+          flex-wrap: wrap;
+          gap: 20px;
+        }
+      }
+  
+      .header_middle {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        @media only screen and (max-width: 650px) {
+          flex-wrap: wrap;
+        }
+      }
+  
+      .filter_buttons {
+        min-height: 44px;
+      }
+    }
+  
+    .export_btn {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
+  
+      @media only screen and (max-width: 1400px) {
+        margin-left: auto;
+      }
+  
+      button {
+        color: var(--Text-white, #1e1e1e);
+        font-family: "Nunito Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        min-height: 44px;
+        padding: 0px 15px;
+        border-radius: 10px;
+        background: #f6fefe;
+        &:hover {
+          border: 1px solid var(--Text-white, #f6fefe) !important;
+          color: var(--Text-white, #1e1e1e) !important;
+          background: var(--Stroke, #f6fefe) !important;
+        }
+      }
+  
+      a {
+        color: var(--Brand-1, #04d9ff) !important;
+        font-family: "Nunito Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        text-decoration-line: underline;
+        text-wrap: nowrap;
+      }
+    }
+
+    .chart_wrapper{
+        border-radius: var(--Corner-Radius, 10px);
+        background: #FFF;
+        display: flex;
+        padding: 20px;
+        flex-direction: column;
+        gap: 20px;  
+    }
+
+    .chart_title{
+        color: var(--Text, #1E1E1E);
+        font-family: "Nunito Sans";
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal; 
+    }
+}

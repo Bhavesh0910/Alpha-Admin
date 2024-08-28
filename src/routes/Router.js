@@ -59,6 +59,7 @@ import PassAndFailed from "../pages/PassedAndFailed/PassAndFailed";
 import DashStats from "../pages/DashStats/DashStats";
 import DashStatsExportHistory from "../pages/DashStats/DashStatsExportHistory";
 import DailyStatsExportHistory from "../pages/AdvanceStatistics/DailyStats/DailyStatsExport";
+import AffiliateRefList from "../pages/AffiliateMarketing/AffiliateRefList/AffiliateRefList";
 
 function Router() {
   return (
@@ -472,6 +473,15 @@ function Router() {
             element={
               <PageLayout headerName="Affiliate Marketing">
                 <AffiliateMarketingCode />
+              </PageLayout>
+            }
+          />
+             <Route
+            exact={true}
+            path="/affiliate-marketing/ref-list"
+            element={
+              <PageLayout headerName="Affiliate Marketing">
+                <AffiliateRefList />
               </PageLayout>
             }
           />
