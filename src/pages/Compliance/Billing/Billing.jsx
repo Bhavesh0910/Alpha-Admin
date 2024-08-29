@@ -221,7 +221,7 @@ function ExpandedRowRender({record}) {
           </div>
           <div className="description_box">
             <label className="label">Amount: </label>
-            <p className="value">{bilingDetailsData[0]?.amount || '-'}</p>
+            <p className="value">{`$${bilingDetailsData[0]?.amount}` || '-'}</p>
           </div>
           <div className="description_box">
             <label className="label">Account Type: </label>

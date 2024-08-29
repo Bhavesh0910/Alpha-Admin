@@ -27,6 +27,7 @@
 
     @media only screen and (max-width: 900px) {
       flex-direction: column;
+      align-items: flex-end;
     }
 
     .ant-picker {
@@ -79,8 +80,12 @@
     align-items: center;
 
     @media only screen and (max-width: 900px) {
+      display: none;
+    }
+
+    @media only screen and (max-width: 900px) {
       max-width: fit-content;
-      flex-wrap: wrap; 
+      flex-wrap: wrap;
       // flex-direction: column;
       // align-items: flex-start;
     }
@@ -110,6 +115,13 @@
     button:hover {
       color: #04d9ff !important;
       border: none !important;
+    }
+  }
+  .mobileSelector {
+    display: none;
+
+    @media only screen and (max-width: 900px) {
+      display: block;
     }
   }
 
