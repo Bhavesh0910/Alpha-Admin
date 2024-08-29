@@ -38,6 +38,12 @@ background: var(--Canvas-BG, #161D26) !important;
   }
   }
 
+  .daily_stats{
+    .ant-table-thead >tr>th{
+      text-wrap: nowrap !important;
+    } 
+  }
+
 .withdrawal_status_container {
     display: flex;
     flex-direction: column;

@@ -28,8 +28,8 @@ const Payout = () => {
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [dates, setDates] = useState();
-
+  const [dates, setDates] = useState(null); 
+  const [exportDates, setExportDates] = useState(null); 
   const {payoutDetails, totalPayments, isLoading} = useSelector((state) => state.advanceStatistics);
   const {idToken} = useSelector((state) => state.auth);
 
@@ -40,9 +40,15 @@ const Payout = () => {
       query = query + `&search=${searchText}`;
     }
 
+    if (dates && dates.length === 2) {
+      const [startDate, endDate] = dates;
+      query += `&start_date=${startDate}&end_date=${endDate}`;
+    }
+  
+
     dispatch(fetchPayoutDetails({idToken, query}));
     dispatch(fetchTotalPayments({idToken, query}));
-  }, [dispatch, idToken, pageNo, pageSize, searchText]);
+  }, [dispatch, idToken, pageNo, pageSize, searchText , dates]);
 
   const searchRef = useRef();
 
@@ -51,14 +57,7 @@ const Payout = () => {
     setPageSize(updatedPageSize);
   }
 
-  function updateDateRange(dates) {
-    setPageNo(1);
-    if (dates) {
-      setDates(dates.map((date) => date.format("DD MMM YYYY")));
-    } else {
-      setDates(null);
-    }
-  }
+
 
   const rangePresets = [
     { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
@@ -77,9 +76,9 @@ const Payout = () => {
   };
 
   const handleExport = () => {
-    if (dates.length === 2) {
-      const [startDate, endDate] = dates;
-      const url = `expoet/payout-details/?start_date=${startDate}&end_date=${endDate}`;
+    if (exportDates.length === 2) {
+      const [startDate, endDate] = exportDates;
+      const url = `/export/payouts/?start_date=${startDate}&end_date=${endDate}`;
       
       dispatch(exportDataReq({ idToken, url }))
         .unwrap()
@@ -160,12 +159,12 @@ const Payout = () => {
       key: "plan",
       render: (text) => text || "-",
     },
-    {
-      title: "Start Balance",
-      dataIndex: "starting_balance",
-      key: "starting_balance",
-      render: (text) => text || "-",
-    },
+    // {
+    //   title: "Start Balance",
+    //   dataIndex: "starting_balance",
+    //   key: "starting_balance",
+    //   render: (text) => text || "-",
+    // },
     // {
     //   title: "Current Balance",
     //   dataIndex: "current_balance",
@@ -208,12 +207,12 @@ const Payout = () => {
       key: "verification_type",
       render: (text) => text || "-",
     },
-    // {
-    //   title: "Start Date",
-    //   dataIndex: "start_date",
-    //   key: "start_date",
-    //   render: (text) => moment(text).format("DD MM YYYY") || "-",
-    // },
+    {
+      title: "Start Date",
+      dataIndex: "start_date",
+      key: "start_date",
+      render: (text) => moment(text).format("DD-MMM-YYYY") || "-",
+    },
     // {
     //   title: "Next Payout Date",
     //   dataIndex: "next_payout_date",
@@ -221,6 +220,25 @@ const Payout = () => {
     //   render: (text) => moment(text).format("DD MM YYYY") || "-",
     // },
   ];
+
+  const updateExportDateRange = (dates) => {
+    setPageNo(1);
+    if (dates) {
+      setExportDates(dates.map(date => date.format("DD/MMM/YYYY")));
+    } else {
+      setExportDates([]); 
+    }
+  };
+
+  const updateDateRange = (dates) => {
+    setPageNo(1);
+    if (dates) {
+      setDates(dates.map(date => date.format("DD/MMM/YYYY")));
+      console.log(dates)
+    } else {
+      setDates([])
+    }
+  };
 
   console.log(totalPayments)
 
@@ -246,7 +264,10 @@ const Payout = () => {
               </button> */}
             </div>
           </div>
-
+          <RangePicker
+          presets={rangePresets}
+          onChange={updateDateRange}
+        />
           <div className="export_btn">
           <Button onClick={handleOpenModal}>
             <img
@@ -303,7 +324,7 @@ const Payout = () => {
     >
       <div className="export_modal_wrapper">
         <RangePicker
-          onChange={updateDateRange}
+          onChange={updateExportDateRange}
           autoFocus
           presets={rangePresets}
           style={{ width: '100%' }} 
@@ -337,7 +358,7 @@ const ExpandedRowRender = ({ record }) => {
   return (
     <div className="expanded-row-content">
       <p><strong>Name:</strong> {record.name || '-'}</p>
-      <p><strong>Start Date:</strong> {moment(record.start_date).format("DD MMM YYYY") || '-'}</p>
+      <p><strong>Starting Balance:</strong> { record.starting_balance || '-'}</p>
       <p><strong>Next Payout Date:</strong> {moment(record.next_payout_date).format("DD MMM YYYY") || '-'}</p>
       <p><strong>Current Balance:</strong> {Number(record.current_balance).toFixed(2) || '-'}</p>
       <p><strong>Current Equity:</strong> {Number(record.current_equity).toFixed(2) || '-'}</p>

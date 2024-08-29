@@ -1,35 +1,37 @@
-import React, {useEffect, useMemo, useState} from "react";
-import {DatePicker, Button, Select, Tooltip, notification, Card, Dropdown, Menu, Modal, Form, Input} from "antd";
-import {Link, useNavigate} from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
+import { DatePicker, Button, Select, Tooltip, notification, Card, Dropdown, Menu, Modal, Form, Input } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import exportBtnIcon from "../../../assets/icons/export_btn_icon.svg";
-import {ReactComponent as CopyButton} from "../../../assets/icons/copyButtonGray.svg";
+import { ReactComponent as CopyButton } from "../../../assets/icons/copyButtonGray.svg";
 import dayjs from "dayjs";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import {CloseOutlined, DownOutlined} from "@ant-design/icons";
-import {useSelector, useDispatch} from "react-redux";
+import { CloseOutlined, DownOutlined } from "@ant-design/icons";
+import { useSelector, useDispatch } from "react-redux";
 import "./WithdrawalStatus.scss";
-import {fetchWithdrawalsStatus} from "../../../store/NewReducers/advanceStatistics";
+import { fetchWithdrawalsStatus } from "../../../store/NewReducers/advanceStatistics";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import {exportDataReq} from "../../../store/NewReducers/exportSlice";
-import {returnMessages} from "../../../store/reducers/message";
-import {returnErrors} from "../../../store/reducers/error";
+import { exportDataReq } from "../../../store/NewReducers/exportSlice";
+import { returnMessages } from "../../../store/reducers/message";
+import { returnErrors } from "../../../store/reducers/error";
 
-const {Option} = Select;
-const {RangePicker} = DatePicker;
+const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const WithdrawalStatus = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState("New");
+  const [activeTab, setActiveTab] = useState("All");
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
-  const [dates, setDates] = useState();
-  const defaultDates = [dayjs().subtract(7, "day"), dayjs()];
+  const [planSizes, setPlanSizes] = useState([])
+  const [planSize, setPlanSize] = useState('');
+  const [dates, setDates] = useState(null);
+  const [exportDates, setExportDates] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [statusModelVisible, setStatusModelVisible] = useState(false);
   const [modalAction, setModalAction] = useState("");
@@ -37,14 +39,14 @@ const WithdrawalStatus = () => {
   const [updatedStatus, setUpdatedStatus] = useState(null);
   const [editCommentToUpdate, setEditCommentToUpdate] = useState(null);
 
-  const {withdrawalsStatus, isLoading} = useSelector((state) => state.advanceStatistics);
-  const {idToken} = useSelector((state) => state.auth);
+  const { withdrawalsStatus, isLoading } = useSelector((state) => state.advanceStatistics);
+  const { idToken } = useSelector((state) => state.auth);
   const rangePresets = [
-    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
-    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
-    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
-    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
-    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]}, // Assuming "All time" covers a very long period
+    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
+    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
+    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
+    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
+    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] }, 
   ];
 
 
@@ -52,28 +54,37 @@ const WithdrawalStatus = () => {
 
   useEffect(() => {
 
-    let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
+    let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}&plan_size=${searchText}`;
     
     if (searchText) {
-      query = query + `&search=${searchText}`;
+      query += `&search=${searchText}`;
     }
- 
+
     if (dates && dates.length === 2) {
       const [startDate, endDate] = dates;
-      query = query + `&start_date=${startDate}&end_date=${endDate}`;
+      query += `&start_date=${startDate}&end_date=${endDate}`;
     }
-    else {
-      notification.warning({
-        message: "Invalid Dates",
-        description: "Please select a valid date range.",
-      })
-    }
-    dispatch(fetchWithdrawalsStatus({idToken, query , activeTab}));
-    console.log(query);
-  }, [dispatch, idToken, pageNo, pageSize, searchText , activeTab , dates ]);
+
+    dispatch(fetchWithdrawalsStatus({ idToken, query, activeTab }));
+  }, [dispatch, idToken, pageNo, pageSize, searchText, activeTab, dates, category, planSize]);
+
 
   console.log("withdrawalsStatus", withdrawalsStatus);
 
+  useEffect(() => {
+    if (withdrawalsStatus?.results) {
+      const sizes = withdrawalsStatus.results
+        .map(item => item.plan_size)
+        .filter((value, index, self) => value && self.indexOf(value) === index); // Unique sizes
+
+      setPlanSizes(sizes);
+    }
+  }, [withdrawalsStatus]);
+
+  const handlePlanSizeChange = (value) => {
+    setPageNo(1);
+    setPlanSize(value);
+  };
   const columns = [
     {
       title: 'ACG Share',
@@ -130,13 +141,16 @@ const WithdrawalStatus = () => {
       render: (text) => {
         let statusClass = "";
         switch (text) {
-          case "In Loss":
+          case "Rejected":
             statusClass = "status_red";
             break;
           case "Pending":
             statusClass = "status_yellow";
             break;
           case "New":
+            statusClass = "status_green";
+            break;
+          case "Approved":
             statusClass = "status_green";
             break;
           default:
@@ -197,14 +211,25 @@ const WithdrawalStatus = () => {
     setPageSize(updatedPageSize);
   }
 
-  function updateDateRange(dates) {
+
+  const updateExportDateRange = (dates) => {
     setPageNo(1);
     if (dates) {
-      setDates(dates.map((date) => date.format("DD MMM YYYY")));
+      setExportDates(dates.map(date => date.format("DD/MMM/YYYY")));
     } else {
-      setDates(null);
+      setExportDates([]);
     }
-  }
+  };
+
+  const updateDateRange = (dates) => {
+    setPageNo(1);
+    if (dates) {
+      setDates(dates.map(date => date.format("DD/MMM/YYYY")));
+      console.log(dates)
+    } else {
+      setDates([])
+    }
+  };
 
 
 
@@ -228,14 +253,14 @@ const WithdrawalStatus = () => {
     setPageSize(updatedPageSize);
   }
   const handleExport = () => {
-    if (dates.length === 2) {
-      const [startDate, endDate] = dates;
+    if (exportDates.length === 2) {
+      const [startDate, endDate] = exportDates;
       const url = `withdrawals/status/export/?start_date=${startDate}&end_date=${endDate}`;
 
-      dispatch(exportDataReq({idToken, url}))
+      dispatch(exportDataReq({ idToken, url }))
         .unwrap()
         .then((response) => {
-          const {s3_file_url, filename} = response;
+          const { s3_file_url, filename } = response;
 
           const link = document.createElement("a");
           link.href = s3_file_url;
@@ -273,7 +298,7 @@ const WithdrawalStatus = () => {
           
             </Select> */}
             <input
-              placeholder="Search..."
+              placeholder="Search by plan size..."
               className="search_input"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -294,25 +319,22 @@ const WithdrawalStatus = () => {
             </div>
           </div>
           <div className="header_middle">
-          <RangePicker
-          presets={rangePresets}
-          onChange={updateDateRange}
-        />
+
             <div className="filter_btns">
               <Button
-                className={activeTab === "Approved" ? "active" : ""}
+                className={activeTab === "Approved" ? "btn_active" : ""}
                 onClick={() => handleTabChange("Approved")}
               >
                 Approved
               </Button>
               <Button
-                className={activeTab === "Rejected" ? "active" : ""}
+                className={activeTab === "Rejected" ? "btn_active" : ""}
                 onClick={() => handleTabChange("Rejected")}
               >
                 Rejected
               </Button>
               <Button
-                className={activeTab === "New" ? "active" : ""}
+                className={activeTab === "New" ? "btn_active" : ""}
                 onClick={() => handleTabChange("New")}
               >
                 New
@@ -336,6 +358,24 @@ const WithdrawalStatus = () => {
           </Link>
         </div>
       </div>
+      <div className="header_bottom">
+        <RangePicker
+          presets={rangePresets}
+          onChange={updateDateRange}
+        />
+
+        {/* <Select
+        style={{maxWidth:'150px'}}
+          className="plan_size_dropdown"
+          value={planSize}
+          onChange={handlePlanSizeChange}
+          defaultValue={planSizes[0]}
+        >
+          {planSizes.map(size => (
+            <Option key={size} value={size}>{size}</Option>
+          ))}
+        </Select> */}
+      </div>
       {isLoading ? (
         <LoaderOverlay />
       ) : (
@@ -356,17 +396,17 @@ const WithdrawalStatus = () => {
         onCancel={handleCloseModal}
         footer={null}
         className="export_modal"
-        closeIcon={<CloseOutlined style={{color: "#fff"}} />}
+        closeIcon={<CloseOutlined style={{ color: "#fff" }} />}
       >
         <div className="export_modal_wrapper">
           <RangePicker
-            onChange={updateDateRange}
+            onChange={updateExportDateRange}
             autoFocus
             presets={rangePresets}
-            style={{width: "100%"}}
+            style={{ width: "100%" }}
           />
         </div>
-        <p style={{color: "#fff"}}>File will contain information of the date you’ve selected.</p>
+        <p style={{ color: "#fff" }}>File will contain information of the date you’ve selected.</p>
         <div className="btn_wrapper">
           <Button
             type="primary"

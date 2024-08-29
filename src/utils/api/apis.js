@@ -1180,7 +1180,7 @@ export const getPerformanceChart = async (login_id, platform, idToken) => {
 
 export const getWithdrawalsStatus = async (idToken, query , activeTab) => {
   const params = {};
-  if (activeTab) {
+  if (activeTab && activeTab !== "All") {
     params.status = activeTab;
   }
 

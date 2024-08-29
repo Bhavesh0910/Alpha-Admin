@@ -60,6 +60,7 @@
     }
   }
 
+
   .status_btn {
     border-radius: var(--Corner-Radius, 10px);
     display: flex;
@@ -68,6 +69,12 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
+    color: var(--Text, #1e1e1e);
+    font-family: "Nunito Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
   .table_header_filter {
     display: flex;
@@ -100,28 +107,29 @@
       }
     }
 
+
+
     .filter_btns {
       display: flex;
       gap: 20px;
       min-height: 46px;
-      .ant-btn{
+      .ant-btn {
         border-radius: 10px;
-        background: #F6FEFE;
+        background: #f6fefe;
         display: flex;
         height: 46px;
         padding: 0px 15px;
         justify-content: center;
         align-items: center;
         gap: 10px;
-        color: #12181F;
+        color: #12181f;
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
         font-weight: 400;
-        line-height: normal;   
+        line-height: normal;
       }
-    
-  }
+    }
   }
 
   .export_btn {
@@ -436,4 +444,10 @@
       }
     }
   }
+}
+
+
+.btn_active {
+  border-radius: var(--Corner-Radius, 10px);
+  background: #04d9ff !important;
 }

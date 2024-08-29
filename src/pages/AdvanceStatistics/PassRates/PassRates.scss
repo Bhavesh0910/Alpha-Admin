@@ -1,4 +1,27 @@
 .passRates_main {
+
+  .dropdown{
+    height: 46px;
+    text-transform: capitalize;
+  }
+  
+  .slider_container{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    border-radius: 10px;
+    background: var(--Box-1, #27313e);
+    max-width: 100%;
+    min-width: 405px;
+    position: absolute;
+    z-index: 1;
+    margin-top: 40px;
+    margin-left: 75px;
+    .ant-slider-rail{
+      background-color: #fff;
+    }
+  }
   .passRates_header {
     display: flex !important;
     justify-content: space-between;
@@ -88,6 +111,7 @@
       gap: 20px;
       align-self: stretch;
       flex-wrap: wrap;
+      margin-bottom: 20px;
 
       .chart_div {
         display: flex;
@@ -130,6 +154,7 @@
   .tabs_wrappers {
     display: flex;
     justify-content: space-between;
+    margin: 20px 0;
     .tabs_inner {
       display: flex;
       gap: 10px;
@@ -188,3 +213,5 @@
     }
   }
 }
+
+

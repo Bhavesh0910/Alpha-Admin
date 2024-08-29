@@ -1,4 +1,5 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useState } from "react";
+import { DatePicker, Button, Modal, notification, Menu, Dropdown, Slider, Tooltip } from "antd";
 import exportIcon from "../../../assets/icons/export_btn_icon.svg";
 import ArrowDown from "../../../assets/icons/ArrowDown.svg";
 import ArrowUp from "../../../assets/icons/ArrowUp.svg";
@@ -7,73 +8,127 @@ import "./PassRates.scss";
 import TotalPassedCharts from "./TotalPassedCharts";
 import TotalPassedChartTwo from "./TotalPassedChartTwo";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import {Link, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import {fetchPassRate} from "../../../store/NewReducers/advanceStatistics";
-import { fetchStageChart } from "../../../store/NewReducers/riskSlice";
+import { fetchPassRate } from "../../../store/NewReducers/advanceStatistics";
+import { exportDataReq } from "../../../store/NewReducers/exportSlice";
+import { returnMessages } from "../../../store/reducers/message";
+import { returnErrors } from "../../../store/reducers/error";
+import dayjs from "dayjs";
+import { DownOutlined } from "@ant-design/icons";
+
+const { RangePicker } = DatePicker;
 
 const PassRates = () => {
   const [showChart, setShowChart] = useState(false);
-
   const [searchText, setSearchText] = useState("");
-  const [activeTab, setActiveTab] = useState("all");
-  const [category, setCategory] = useState("all");
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [filterData, setFilterData] = useState([]);
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
+  const [isExportModalVisible, setExportModalVisible] = useState(false);
+  const [dates, setDates] = useState(null); 
+  const [exportDates, setExportDates] = useState([]);
+  const [selectedStage, setSelectedStage] = useState("All");
+  const [accountSizeRange, setAccountSizeRange] = useState([10000, 50000]);
+  const [sliderVisible, setSliderVisible] = useState(false); 
 
-  const {passRate, isLoading} = useSelector((state) => state.advanceStatistics);
-  const {idToken} = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { passRate, isLoading } = useSelector((state) => state.advanceStatistics);
+  const { idToken } = useSelector((state) => state.auth);
 
-  // Fetch PassRates Data
   useEffect(() => {
     let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
 
-    if (searchText) {
-      query = query + `&search=${searchText}`;
+    if (selectedStage && selectedStage !== "All") {
+      query += `&stage=${selectedStage}`;
     }
 
-    dispatch(fetchPassRate({idToken, query}));
-  }, [dispatch, idToken, pageNo, pageSize, searchText]);
+    if (searchText) {
+      query += `&search=${searchText}`;
+    }
 
-  console.log("passData", passRate);
+    if (dates && dates.length === 2) {
+      const [startDate, endDate] = dates;
+      query += `&start_date=${startDate}&end_date=${endDate}`;
+    }
 
-  const searchRef = useRef();
+    const [minAccountSize, maxAccountSize] = accountSizeRange;
+    if (minAccountSize !== null && maxAccountSize !== null) {
+      query += `&min_account_size=${minAccountSize}&max_account_size=${maxAccountSize}`;
+    }
 
-  function triggerChange(page, updatedPageSize) {
-    setPageNo(page);
-    setPageSize(updatedPageSize);
-  }
+    dispatch(fetchPassRate({ idToken, query }));
+  }, [dispatch, idToken, pageNo, pageSize, searchText, dates, selectedStage, accountSizeRange]);
 
-  const highlightText = (text, search) => {
-    if (!search) return text;
-    const regex = new RegExp(`(${search})`, "gi");
-    const parts = String(text)?.split(regex);
-    return (
-      <>
-        {parts.map((part, index) =>
-          regex.test(part) ? (
-            <span
-              key={index}
-              className="highlight"
-            >
-              {part}
-            </span>
-          ) : (
-            part
-          ),
-        )}
-      </>
-    );
+  const handleOpenExportModal = () => {
+    setExportModalVisible(true);
   };
 
-  const handleRowClick = (affiliateId, email) => {
-    const url = `/affiliate-marketing/code?email=${email}`;
-    navigate(url);
+  const handleCloseExportModal = () => {
+    setExportModalVisible(false);
   };
+
+  const handleExport = () => {
+    if (exportDates.length === 2) {
+      const [startDate, endDate] = exportDates;
+      const url = `pass-rates/export/?start_date=${startDate}&end_date=${endDate}`;
+
+      dispatch(exportDataReq({ idToken, url }))
+        .unwrap()
+        .then((response) => {
+          const { s3_file_url, filename } = response;
+
+          const link = document.createElement("a");
+          link.href = s3_file_url;
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          dispatch(returnMessages("Export Successful", 200));
+          handleCloseExportModal();
+        })
+        .catch((error) => {
+          dispatch(returnErrors("Export failed", 400));
+        });
+    } else {
+      notification.warning({
+        message: "Invalid Dates",
+        description: "Please select a valid date range.",
+      });
+    }
+  };
+
+  const updateExportDateRange = (dates) => {
+    setPageNo(1);
+    if (dates) {
+      setExportDates(dates.map(date => date.format("DD/MMM/YYYY")));
+    } else {
+      setExportDates([]); 
+    }
+  };
+
+  const updateDateRange = (dates) => {
+    setPageNo(1);
+    if (dates) {
+      setDates(dates.map(date => date.format("DD MMM YYYY")));
+    } else {
+      setDates([]);
+    }
+  };
+
+  const handleMenuClick = (e) => {
+    setSelectedStage(e.key);
+  };
+
+  const menu = (
+    <Menu onClick={handleMenuClick} className="custom-dropdown-menu">
+      <Menu.Item key="All">All</Menu.Item>
+      <Menu.Item key="stage 1">Stage 1</Menu.Item>
+      <Menu.Item key="stage 2">Stage 2</Menu.Item>
+    </Menu>
+  );
 
   const columns = [
     {
@@ -82,16 +137,10 @@ const PassRates = () => {
       key: 'plan_type',
       render: text => text || '-',
     },
-    // {
-    //   title: 'Created Date',
-    //   dataIndex: 'created_date',
-    //   key: 'created_date',
-    //   render: text => text || '-',
-    // },
     {
-      title: 'Account Balance',
-      dataIndex: 'account_balance',
-      key: 'account_balance',
+      title: 'Created Date',
+      dataIndex: 'created_date',
+      key: 'created_date',
       render: text => text || '-',
     },
     {
@@ -118,12 +167,6 @@ const PassRates = () => {
       key: 'pass_ratio',
       render: text => text !== undefined ? text : '-',
     },
-    // {
-    //   title: 'Breached',
-    //   dataIndex: 'breached',
-    //   key: 'breached',
-    //   render: text => text !== undefined ? text : '-',
-    // },
     {
       title: 'Fail Rate (%)',
       dataIndex: 'fail_rate',
@@ -142,43 +185,30 @@ const PassRates = () => {
       key: 'total_accounts',
       render: text => text !== undefined ? text : '-',
     },
-    // {
-    //   title: 'Repeated',
-    //   dataIndex: 'repeated',
-    //   key: 'repeated',
-    //   render: text => text !== undefined ? text : '-',
-    // },
-    // {
-    //   title: 'New',
-    //   dataIndex: 'new',
-    //   key: 'new',
-    //   render: text => text !== undefined ? text : '-',
-    // }
+  ];
+
+  const rangePresets = [
+    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
+    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
+    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
+    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
+    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]}, // Assuming "All time" covers a very long period
   ];
 
   const handleSearch = (e) => {
-    console.log("search1", e.target.value);
     if (e.key === "Enter") {
-      console.log(searchText, e.key);
       setSearchText(e.target.value);
     }
   };
 
-  const handleClick = () => {
-    setSearchText(searchRef.current.value);
+  const triggerChange = (page, updatedPageSize) => {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
   };
 
-  const handleTabChange = (key) => {
-    setActiveTab(key);
-  };
-
-  const handleCategoryChange = (value) => {
-    setCategory(value);
-  };
   return (
     <>
       <div className="passRates_main">
-        {/* Header */}
         <div className="passRates_header">
           <div className="heading">
             <h2>Pass Rates</h2>
@@ -189,7 +219,7 @@ const PassRates = () => {
                 src={exportIcon}
                 alt="exportIcon"
               />
-              <button>Export</button>
+              <Button onClick={handleOpenExportModal}>Export</Button>
             </div>
             <Link to="/advance-statistics/export-history">
               <p>View Export History</p>
@@ -197,62 +227,84 @@ const PassRates = () => {
           </div>
         </div>
 
-        {/* Main Page */}
         <div className="passRates_section">
           <div className="show_hide_btn_wrapper">
             {showChart ? (
-              <button
+              <Button
                 className="show_hide_btn"
                 onClick={() => setShowChart(!showChart)}
               >
-                <img
-                  src={ArrowUp}
-                  alt="ArrowUp"
-                />
+                <img src={ArrowUp} alt="ArrowUp" />
                 <p>Hide Graph</p>
-              </button>
+              </Button>
             ) : (
-              <button
+              <Button
                 className="show_hide_btn"
                 onClick={() => setShowChart(!showChart)}
               >
-                <img
-                  src={ArrowDown}
-                  alt="ArrowDown"
-                />
+                <img src={ArrowDown} alt="ArrowDown" />
                 <p>Show Graph</p>
-              </button>
+              </Button>
             )}
           </div>
-          {showChart ? (
-            <div className="chart_container">
-              <div className="chart_div">
-                {/* <TotalPassedCharts data={accountOverviewData?.stage1} /> */}
+
+<div className="chart_container">
+          {showChart && (
+            <>
+
+            <div className="chart_div">
+            
+              <TotalPassedCharts />
               </div>
               <div className="chart_div">
-                {/* <TotalPassedChartTwo data={accountOverviewData?.stage1} /> */}
+              <TotalPassedChartTwo />
               </div>
-            </div>
-          ) : (
-            <></>
+            </>
           )}
+        </div>
+        </div>
+
+        <div className="passRates_filters">
+          <div className="date_picker">
+            <RangePicker
+              ranges={rangePresets.reduce((acc, curr) => {
+                acc[curr.label] = curr.value;
+                return acc;
+              }, {})}
+              onChange={updateDateRange}
+              format="DD MMM YYYY"
+            />
+          </div>
 
           <div className="tabs_wrappers">
             <div className="tabs_inner">
-              <button className="tabs">
-                <img
-                  src={ArrowUpBlack}
-                  alt="ArrowUpBlack"
-                />
-                <p>Stage</p>
-              </button>
-              <button className="tabs">
+              <Dropdown overlay={menu} trigger={['click']} className="dropdown">
+                <Button className="custom-dropdown-button">
+                  {selectedStage} <DownOutlined />
+                </Button>
+              </Dropdown>
+              <button className="tabs" onClick={() => setSliderVisible(!sliderVisible)}>
                 <img
                   src={ArrowUpBlack}
                   alt="ArrowUpBlack"
                 />
                 <p>Account Size</p>
               </button>
+              {sliderVisible && (
+                <div className="slider_container">
+                  <Tooltip title={`Account Size`}>
+                    <Slider
+                      className="slider"
+                      range
+                      defaultValue={[10000, 50000]}
+                      value={accountSizeRange}
+                      min={10000}
+                      max={50000}
+                      onChange={(value) => setAccountSizeRange(value)}
+                    />
+                  </Tooltip>
+                </div>
+              )}
               <button className="tabs">
                 <img
                   src={ArrowUpBlack}
@@ -273,45 +325,72 @@ const PassRates = () => {
               </button>
             </div>
           </div>
+        </div>
 
-          <div>
-            {isLoading ? (
-              <LoaderOverlay />
-            ) : (
-              <AntTable
-                data={passRate?.results || []}
-                columns={columns}
-                totalPages={Math.ceil(passRate?.count / pageSize)}
-                totalItems={passRate?.count}
-                pageSize={pageSize}
-                CurrentPageNo={pageNo}
-                setPageSize={setPageSize}
-                triggerChange={triggerChange}
-                isExpandable={true}
-                // expandedRowRender={expandedRowRender}
-                ExpandedComp={ExpandedRowRender}
-                rowId="login_id"
-                scrollY={420}
-              />
-            )}
-          </div>
-
+        <div>
+          {isLoading ? (
+            <LoaderOverlay />
+          ) : (
+            <AntTable
+              data={passRate?.results || []}
+              columns={columns}
+              totalPages={Math.ceil(passRate?.count / pageSize)}
+              totalItems={passRate?.count}
+              pageSize={pageSize}
+              CurrentPageNo={pageNo}
+              setPageSize={setPageSize}
+              triggerChange={triggerChange}
+              isExpandable={true}
+              ExpandedComp={ExpandedRowRender}
+              rowId="login_id"
+              scrollY={420}
+            />
+          )}
         </div>
       </div>
+
+      <Modal
+        title="Export"
+        visible={isExportModalVisible}
+        onCancel={handleCloseExportModal}
+        footer={null}
+        className="export_modal"
+      >
+        <div className="export_modal_wrapper">
+          <RangePicker
+            onChange={updateExportDateRange}
+            style={{ width: "100%" }}
+          />
+        </div>
+        <p>File will contain information of the date you’ve selected.</p>
+        <div className="btn_wrapper">
+          <Button
+            type="primary"
+            onClick={handleExport}
+            style={{
+              backgroundColor: "#1890ff",
+              borderColor: "#1890ff",
+              color: "#fff",
+            }}
+          >
+            Export
+          </Button>
+        </div>
+      </Modal>
     </>
   );
 };
 
-export default PassRates;
-
-
 const ExpandedRowRender = ({ record }) => {
   return (
     <div className="expanded-row-content">
-      <p><strong>Created Date:</strong> {record.created_date || '-'}</p>
+      <p><strong>Account Balance:</strong> {record.account_balance || '-'}</p>
       <p><strong>Breached:</strong> {record.breached !== undefined ? record.breached : '-'}</p>
       <p><strong>New:</strong> {record.new !== undefined ? record.new : '-'}</p>
-      <p><strong>Repeated:</strong> {record.repeated !== undefined ? record.repeated : '-'}</p>
+      {/* <p><strong>Inactive:</strong> {record.inactive !== undefined ? record.inactive : '-'}</p>
+      <p><strong>Locked:</strong> {record.locked !== undefined ? record.locked : '-'}</p> */}
     </div>
   );
 };
+
+export default PassRates;

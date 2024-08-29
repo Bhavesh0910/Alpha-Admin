@@ -26,6 +26,10 @@ import { ReactComponent as GeneralLogIcon } from "../assets/icons/generalLogIcon
 import { ReactComponent as CouponIcon } from "../assets/icons/couponIcon.svg";
 import { ReactComponent as ListIcon } from "../assets/icons/listIcon.svg";
 import { ReactComponent as ComplianceIcon } from "../assets/icons/complianceIcon.svg";
+import { ReactComponent as AdvanceIcon } from "../assets/icons/advance.svg";
+import { ReactComponent as MoreIcon } from "../assets/icons/more-adv.svg";
+import { ReactComponent as PassAndFailedIcon } from "../assets/icons/passandfail.svg";
+import { ReactComponent as DashIcon } from "../assets/icons/dash.svg";
 
 const { Header, Sider, Content } = Layout;
 
@@ -173,7 +177,7 @@ const items = [
   },
   {
     key: "18",
-    icon: <ComplianceIcon />,
+    icon: <AdvanceIcon />,
     label: "Advance Statistics",
     link: "/advance-statistics/withdrawal-status",
     children: [
@@ -206,19 +210,19 @@ const items = [
   },
   {
     key: "19",
-    icon: <ComplianceIcon />,
+    icon: <MoreIcon />,
     label: "More Advance Statistics",
     link: "/advance-statistics/trading-pairs",
   },
   {
     key: "20",
-    icon: <ComplianceIcon />,
+    icon: <PassAndFailedIcon />,
     label: "Passed And Failed",
     link: "/advance-statistics/passed-and-failed",
   },
   {
     key: "21",
-    icon: <ComplianceIcon />,
+    icon: <DashIcon />,
     label: "Dash Stats",
     link: "/advance-statistics/dash-stats",
   },

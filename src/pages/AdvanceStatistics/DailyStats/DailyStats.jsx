@@ -28,7 +28,8 @@ const DailyStats = () => {
   const [category, setCategory] = useState("all");
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
-  const [dates, setDates] = useState();
+  const [dates, setDates] = useState(null);
+  const [exportDates, setExportDates] = useState(null);
   const defaultDates = [dayjs().subtract(7, "day"), dayjs()];
   const [isModalVisible, setModalVisible] = useState(false);
   const [statusModelVisible, setStatusModelVisible] = useState(false);
@@ -46,15 +47,19 @@ const DailyStats = () => {
     let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
 
     if (searchText) {
-      query = query + `&search=${searchText}`;
+      query = query + `&plan_type=${searchText}`;
+    }
+
+    if (dates && dates.length === 2) {
+      const [startDate, endDate] = dates;
+      query += `&start_date=${startDate}&end_date=${endDate}`;
     }
 
     dispatch(fetchDailyStats({ idToken, query, dispatch }));
     console.log(query)
-  }, [dispatch, idToken, pageNo, pageSize, searchText]);
+  }, [dispatch, idToken, pageNo, pageSize, searchText , dates]);
 
 
-  console.log(dailyStats)
   const columns = [
     
     {
@@ -334,14 +339,27 @@ const DailyStats = () => {
     setPageSize(updatedPageSize);
   }
 
-  function updateDateRange(dates) {
+
+
+  const updateExportDateRange = (dates) => {
     setPageNo(1);
     if (dates) {
-      setDates(dates.map((date) => date.format("DD MMM YYYY")));
+      setExportDates(dates.map(date => date.format("DD/MMM/YYYY")));
     } else {
-      setDates(null);
+      setExportDates([]);
     }
-  }
+  };
+
+  const updateDateRange = (dates) => {
+    setPageNo(1);
+    if (dates) {
+      setDates(dates.map(date => date.format("DD/MMM/YYYY")));
+      console.log(dates)
+    } else {
+      setDates([])
+    }
+  };
+
 
   const rangePresets = [
     { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
@@ -360,8 +378,8 @@ const DailyStats = () => {
   };
 
   const handleExport = () => {
-    if (dates.length === 2) {
-      const [startDate, endDate] = dates;
+    if (exportDates.length === 2) {
+      const [startDate, endDate] = exportDates;
       const url = `daily-details/export/?start_date=${startDate}&end_date=${endDate}`;
       
       dispatch(exportDataReq({ idToken, url }))
@@ -425,7 +443,7 @@ const DailyStats = () => {
           <div className="search_box_wrapper">
       
             <input
-              placeholder="Search..."
+              placeholder="Search by Plan Type..."
               className="search_input"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -468,7 +486,10 @@ const DailyStats = () => {
             </div>
           </div>
         </div>
-
+        <RangePicker
+          presets={rangePresets}
+          onChange={updateDateRange}
+        />
       </div>
       {isLoading ? (
         <LoaderOverlay />
@@ -498,7 +519,7 @@ const DailyStats = () => {
       >
         <div className="export_modal_wrapper">
           <RangePicker
-            onChange={updateDateRange}
+            onChange={updateExportDateRange}
             autoFocus
             presets={rangePresets}
           />
