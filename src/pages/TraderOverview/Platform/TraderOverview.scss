@@ -144,7 +144,7 @@
   .trader_overview_header_row2 {
     display: flex;
     gap: 20px;
-
+    justify-content: space-between;
     @media only screen and (max-width: 1080px) {
       flex-direction: column;
     }
@@ -159,13 +159,19 @@
         max-width: 100%;
       }
     }
-
+    .trader_overview_row2_groupB{
+      display: flex;
+      gap: 20px;
+      @media only screen and (max-width: 810px) {
+        flex-direction: column;
+      }
+    }
     .ant-picker {
       border-radius: var(--Corner-Radius, 10px);
       border: 1px solid var(--Stroke, #252a29);
       background: var(--Main-Background, #f6fefe);
       width: 100%;
-      max-width: 364px;
+      max-width: 282px;
 
       @media only screen and (max-width: 900px) {
         min-height: 44px;
@@ -208,6 +214,11 @@
 }
 
 .ant-picker-panels {
+  @media only screen and (max-width: 810px) {
+    flex-direction: column;
+    gap: 20px;
+    // max-width: 100%;
+  }
   .ant-picker-panel {
     border-bottom: 1px solid var(--Stroke, #252a29) !important;
     background: var(--Main-Background, #f6fefe) !important;

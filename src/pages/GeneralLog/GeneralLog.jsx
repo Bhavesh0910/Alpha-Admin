@@ -51,24 +51,28 @@ const GeneralLog = () => {
       title: "Category",
       dataIndex: "category",
       key: "category",
+      width:70,
       render: (text) => text || "-",
     },
     {
       title: "Event",
       dataIndex: "event",
       key: "event",
+      width:70,
       render: (text) => text || "-",
     },
     {
       title: "Reference",
       dataIndex: "reference",
       key: "reference",
+      width:70,
       render: (text) => text || "-",
     },
     {
       title: "Description",
       dataIndex: "description",
       key: "description",
+      width:100,
     },
   
   ];

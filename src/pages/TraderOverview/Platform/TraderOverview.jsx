@@ -214,10 +214,7 @@ function TraderOverview() {
           const countryName = (country !== "undefined" ? country : null) || "-";
           const countryCode = lookup.byCountry(countryName);
           return countryCode ? (
-            <div
-              className="country_name_wrapper"
-              onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}
-            >
+            <div className="country_name_wrapper">
               <ReactCountryFlag
                 countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
                 svg={true}
@@ -235,7 +232,7 @@ function TraderOverview() {
         dataIndex: "login_id",
         key: "login_id",
         width: "15%",
-        render: (text) => text || "-",
+        render: (text, record) => (text ? <div onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}>{text}</div> : "-"),
       },
       {
         title: "Balance",
@@ -418,13 +415,26 @@ function TraderOverview() {
             </Title>
             <Select
               mode="multiple"
-              // value={"Select Challenge"}
+              value={Challenges}
               // defaultValue={ChallengesOptions[0]}
               placeholder="Select Challenge"
               className="header-select widthFitContent"
               onChange={(value) => setChallenges(value)}
               options={ChallengesOptions || []}
-              tagRender={(item) => null}
+              // tagRender={(item) => {
+              //   console.log("item , ", item);
+              //   return <p>{item?.label}</p>;
+              // }}
+              tagRender={(item) => {
+                console.log("item , ", item?.label);
+                // return <p>{item?.label}</p>;
+
+                item.length > 1 && (
+                  <p>
+                    {item[0].label}+ {item?.label}more
+                  </p>
+                );
+              }}
             />
           </div>
         </div>
@@ -463,20 +473,26 @@ function TraderOverview() {
               />
             </div>
           </div>
-          <RangePicker
-            // placeholder={['Start Date', 'End Date']}
-            // defaultValue={defaultDates}
-            onChange={updateDateRange}
-          />
         </div>
-        <Radio.Group
-          value={phase}
-          onChange={onChangePhase}
-        >
-          <Radio.Button value="">All</Radio.Button>
-          <Radio.Button value="Evalution/Funded">Evalution/Funded</Radio.Button>
-          <Radio.Button value="Free Trail">Free Trial</Radio.Button>
-        </Radio.Group>
+        <div className="trader_overview_row2_groupB">
+          <div>
+            <RangePicker
+              // placeholder={['Start Date', 'End Date']}
+              // defaultValue={defaultDates}
+              onChange={updateDateRange}
+            />
+          </div>
+          <div>
+            <Radio.Group
+              value={phase}
+              onChange={onChangePhase}
+            >
+              <Radio.Button value="">All</Radio.Button>
+              <Radio.Button value="Evalution/Funded">Evalution/Funded</Radio.Button>
+              <Radio.Button value="Free Trail">Free Trial</Radio.Button>
+            </Radio.Group>
+          </div>
+        </div>
       </div>
 
       <Card className="table-wrapper">

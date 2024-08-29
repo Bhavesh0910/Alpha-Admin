@@ -86,12 +86,14 @@ const Coupon = () => {
       title: "Coupon Code",
       dataIndex: "coupon_name",
       key: "code",
+      width:120,
       render: text => text || "-",
     },
     {
       title: "Coupon Amount",
       dataIndex: "coupon_amount",
       key: "amount",
+      width:100,
       render: text => text !== null ? text : "-",
     },
     {
@@ -104,6 +106,7 @@ const Coupon = () => {
       title: "Coupon Percentage",
       dataIndex: "coupon_percent",
       key: "percent",
+      width:100,
       render: text => text || "-",
     },
     // {
@@ -116,12 +119,14 @@ const Coupon = () => {
       title: "Single Use",
       dataIndex: "multi_use",
       key: "single_use",
+      width:100,
       render: text => <div className="coupon_status_container">{text === true ? "No" : "Yes"}</div>,
     },
     {
       title: "Status",
       dataIndex: "is_active",
       key: "is_active",
+      width:100,
       render: text => (
         <div className="coupon_status_container">
           <p className={`${text === true ? "active" : "inactive"}`}>{text === true ? "Active" : "Inactive"}</p>

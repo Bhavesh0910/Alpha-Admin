@@ -94,6 +94,7 @@ const AffiliateMarketing = ({userData}) => {
     {
       title: "Name",
       dataIndex: "name",
+      width:150,
       render: (text, record) => (
         <div onClick={() => handleRowClick(record.id, record.email)}>
           {category === "name" || category === "all"
@@ -114,6 +115,7 @@ const AffiliateMarketing = ({userData}) => {
     {
       title: "Email",
       dataIndex: "email",
+      width:70,
       render: (text, record) => (
         <div
           onClick={() => handleRowClick(record.id, record.email)}
@@ -138,6 +140,7 @@ const AffiliateMarketing = ({userData}) => {
       title: "Referred Count",
       dataIndex: "referred_count",
       key: "referred_count",
+      width:150,
       render: (text) => text || "-",
     },
     {

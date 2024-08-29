@@ -76,21 +76,25 @@ const KYC = () => {
       title: "Email ID",
       dataIndex: "email",
       key: "email",
+      width:50,
     },
     {
       title: "Account Number",
       dataIndex: "user",
       key: "user",
+      width:100,
     },
     {
       title: "Date",
       dataIndex: "created_at",
       key: "created_at",
+      width:100,
     },
     {
       title: "Veriff",
       dataIndex: "admin_status",
       key: "admin_status",
+      width:100,
       render: (text) => (
         <div
           className={`sumsubStatus_indicator ${text === "Approved" ? "approved" : text === "Pending" ? "pending" : text === "in_progress" ? "in_progress" : text === "in_review" ? "in_review" : ""}`}
@@ -103,6 +107,7 @@ const KYC = () => {
       title: "Admin Review",
       dataIndex: "admin_review",
       key: "admin_review",
+      width:100,
       render: (text) =>
         text !== null ? (
           <div
@@ -118,6 +123,7 @@ const KYC = () => {
       title: "Country",
       dataIndex: "country",
       key: "country",
+      width:100,
       render: (country) => {
         console.log(country, "country");
         const countryName = country;
@@ -142,6 +148,7 @@ const KYC = () => {
       title: "Contract",
       dataIndex: "contract",
       key: "contract",
+      width:100,
       render: (text) =>
         text !== null ? (
           <span style={{cursor: "pointer"}}>
