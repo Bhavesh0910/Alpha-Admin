@@ -43,6 +43,8 @@ function TraderOverview() {
   const {idToken, searchDates} = useSelector((state) => state.auth);
   const {data, isLoading: accountsLoading, totalItems, refresh} = useSelector((state) => state.accountList);
   const [Challenges, setChallenges] = useState(null);
+  const [labels, setLabels] = useState([]);
+  const [deal, setDeal] = useState(false);
   const [ChallengesOptions, setChallengesOptions] = useState([]);
   const {fundingData} = useSelector((state) => state.funding);
 
@@ -214,10 +216,7 @@ function TraderOverview() {
           const countryName = (country !== "undefined" ? country : null) || "-";
           const countryCode = lookup.byCountry(countryName);
           return countryCode ? (
-            <div
-              className="country_name_wrapper"
-              onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}
-            >
+            <div className="country_name_wrapper">
               <ReactCountryFlag
                 countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
                 svg={true}
@@ -235,7 +234,7 @@ function TraderOverview() {
         dataIndex: "login_id",
         key: "login_id",
         width: "15%",
-        render: (text) => text || "-",
+        render: (text, record) => (text ? <div onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}>{text}</div> : "-"),
       },
       {
         title: "Balance",
@@ -418,13 +417,33 @@ function TraderOverview() {
             </Title>
             <Select
               mode="multiple"
-              // value={"Select Challenge"}
+              // value={Challenges}
               // defaultValue={ChallengesOptions[0]}
               placeholder="Select Challenge"
               className="header-select widthFitContent"
-              onChange={(value) => setChallenges(value)}
+              onChange={(value, c) => {
+                setChallenges(value);
+                const labels = c.map((item) => item.label);
+                setLabels(labels);
+              }}
               options={ChallengesOptions || []}
-              tagRender={(item) => null}
+              // tagRender={(item) => {
+              //   console.log("item , ", item);
+              //   return <p>{item?.label}</p>;
+              // }}
+              tagRender={(item) => {
+                console.log("item , ", item);
+                // return <p>{item?.label}</p>;
+                console.log(labels, "labels");
+
+                //   if (labels.length > 1) {
+                //     if (deal) {
+                //       return <p>{`${labels[0]}` + `${labels[1]}`}...</p>;
+                //     }
+                //   } else {
+                //     return <p>{labels[0]}</p>;
+                //   }
+              }}
             />
           </div>
         </div>
@@ -463,20 +482,26 @@ function TraderOverview() {
               />
             </div>
           </div>
-          <RangePicker
-            // placeholder={['Start Date', 'End Date']}
-            // defaultValue={defaultDates}
-            onChange={updateDateRange}
-          />
         </div>
-        <Radio.Group
-          value={phase}
-          onChange={onChangePhase}
-        >
-          <Radio.Button value="">All</Radio.Button>
-          <Radio.Button value="Evalution/Funded">Evalution/Funded</Radio.Button>
-          <Radio.Button value="Free Trail">Free Trial</Radio.Button>
-        </Radio.Group>
+        <div className="trader_overview_row2_groupB">
+          <div>
+            <RangePicker
+              // placeholder={['Start Date', 'End Date']}
+              // defaultValue={defaultDates}
+              onChange={updateDateRange}
+            />
+          </div>
+          <div>
+            <Radio.Group
+              value={phase}
+              onChange={onChangePhase}
+            >
+              <Radio.Button value="">All</Radio.Button>
+              <Radio.Button value="Evalution/Funded">Evalution/Funded</Radio.Button>
+              <Radio.Button value="Free Trail">Free Trial</Radio.Button>
+            </Radio.Group>
+          </div>
+        </div>
       </div>
 
       <Card className="table-wrapper">
@@ -560,7 +585,7 @@ const ExpandableRow = ({record}) => {
         </div>
         <div>
           <div>Equity</div>
-          <p>{record?.equity || "-"}</p>
+          <p>{record?.equity ? `$${record?.equity}` : "-"}</p>
         </div>
         {/* <div>
           <div>Balance</div>

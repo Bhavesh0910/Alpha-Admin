@@ -62,7 +62,7 @@ const StageManager = () => {
     stageStatusOptions || location.pathname === "/support/funded"
       ? ["New", "In Progress", "Flagged", "Dissmissed", "Rejected", "Approved"]
       : ["New", "In Progress", "Flagged", "Dissmissed", "Rejected", "Approved"];
-
+  console.log("options: ", options);
   useEffect(() => {
     // console.log("Fetching UseEffect");
     fetchStageList(idToken, pageNo, pageSize, searchText, status, dates);
@@ -311,7 +311,7 @@ const StageManager = () => {
             title: "Email",
             dataIndex: "email",
             key: "email",
-   width:40,
+            width: 40,
             render: (text) => (
               <div className="column_one_wrapper">
                 {/* <div
@@ -398,7 +398,7 @@ const StageManager = () => {
             title: "Status",
             dataIndex: "status",
             key: "status",
-        
+
             render: (text, record, index) => (
               <Dropdown
                 overlay={() => statusMenu(text, record)}
@@ -504,7 +504,7 @@ const StageManager = () => {
           {
             title: "Action",
             key: "action",
-            width:80,
+            width: 80,
             render: (text, row) => (
               <div  style={{cursor:'pointer'}} title="Create Account" onClick={() => openCreateAccountModel(row)}>
                 <img
@@ -850,7 +850,7 @@ const StageManager = () => {
             title: "Flag",
             dataIndex: "user_id",
             key: "user_id",
-  
+
             render: (text, row) => (
               <div className="flagContainer">
                 <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
@@ -867,13 +867,11 @@ const StageManager = () => {
             title: "Email",
             dataIndex: "email",
             key: "email",
-
           },
           {
             title: "Account No.",
             dataIndex: "login_id",
             key: "accountNumber",
-
           },
           {
             title: "Max Loss",
@@ -1059,7 +1057,7 @@ const StageManager = () => {
             title: "Profit Split",
             dataIndex: "profit_split",
             key: "profit_split",
-            width:60,
+            width: 60,
             render: (text) => <span>{text}%</span>,
           },
           {
@@ -1186,6 +1184,7 @@ const StageManager = () => {
     <div className="stageManager_container">
       <div className="header_wrapper">
         <h2>{location.pathname.split("/")[2].charAt(0).toUpperCase() + location.pathname.split("/")[2].slice(1)}</h2>
+
         <div className="supportFilterParent">
           <RangePicker
             value={dates ? [dayjs(dates[0], "YYYY-MM-DD"), dayjs(dates[0], "YYYY-MM-DD")] : null}
@@ -1250,6 +1249,27 @@ const StageManager = () => {
               {item === "New" ? "Action Required" : item === "Dissmissed" ? "Subject to interview" : item === "Failed" ? "Rejected" : item}
             </Button>
           ))}
+        </div>
+        <div className="mobileSelector">
+          <Select
+            placeholder="Select a filter"
+            onChange={handleTabChange}
+          >
+            <Option
+              key={"all"}
+              value={"all"}
+            >
+              All
+            </Option>
+            {options?.map((item) => (
+              <Option
+                key={item}
+                value={item}
+              >
+                {item === "New" ? "Action Required" : item === "Dissmissed" ? "Subject to interview" : item === "Failed" ? "Rejected" : item}
+              </Option>
+            ))}
+          </Select>
         </div>
       </div>
       {isLoading && <LoaderOverlay />}
@@ -1491,10 +1511,10 @@ function ExpandedRowData({record}) {
               {" "}
               Comment{" "}
               <img
-              width={'15px'}
+                width={"15px"}
                 src={addIcon}
                 alt=""
-                style={{cursor:'pointer'}}
+                style={{cursor: "pointer"}}
                 onClick={() => openEditModal(record?.comment, record)}
               />
             </div>

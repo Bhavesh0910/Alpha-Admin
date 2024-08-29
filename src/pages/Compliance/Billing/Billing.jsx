@@ -66,24 +66,28 @@ const Billing = () => {
       title: "Email ID",
       dataIndex: "email",
       key: "email",
+      width:30,
       render: (text) => text || '-',
     },
     {
       title: "Account Number",
       dataIndex: "account_number",
       key: "account_number",
+      width:100,
       render: (text) => text || '-',
     },
     {
       title: "Date",
       dataIndex: "date",
       key: "date",
+      width:100,
       render: (text) => text || '-',
     },
     {
       title: "Verified",
       dataIndex: "verified",
       key: "verified",
+      width:100,
       render: (text) => (
         <span>
           <img
@@ -98,12 +102,14 @@ const Billing = () => {
       title: "Billing Method",
       dataIndex: "verification_type",
       key: "verification_type",
+      width:100,
       render: (text) => text || '-',
     },
     {
       title: "Billing Type",
       dataIndex: "billing_type",
       key: "billing_type",
+      width:100,
       render: (text) => <Button className="standard_button profit_share_btn">{text || '-'}</Button>,
     },
   ];
@@ -215,7 +221,7 @@ function ExpandedRowRender({record}) {
           </div>
           <div className="description_box">
             <label className="label">Amount: </label>
-            <p className="value">{bilingDetailsData[0]?.amount || '-'}</p>
+            <p className="value">{`$${bilingDetailsData[0]?.amount}` || '-'}</p>
           </div>
           <div className="description_box">
             <label className="label">Account Type: </label>

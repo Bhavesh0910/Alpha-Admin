@@ -113,7 +113,7 @@ code {
 }
 
 .ant-select {
-  width: 100%;
+  width: 300px;
   min-height: 44px;
 
   .ant-select-selector {
@@ -336,8 +336,8 @@ input:-webkit-autofill:active {
   border-radius: var(--Corner-Radius, 10px);
   border: 1px solid var(--Stroke, #252a29);
   background: var(--Main-Background, #f6fefe);
-  width: 100%;
-  max-width: 400px;
+  width: 400px;
+  // max-width: 400px;
   max-height: 44px;
 
   @media only screen and (max-width: 1280px) {

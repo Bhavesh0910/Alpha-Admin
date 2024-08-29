@@ -90,6 +90,7 @@ const UserIPList = () => {
       title: "User",
       dataIndex: "user",
       key: "user",
+      width:100,
       render: (text) => (
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {text || '-'}
@@ -106,29 +107,34 @@ const UserIPList = () => {
       title: "Date Created",
       dataIndex: "created",
       key: "created",
+      width:100,
       render: (text) => text || '-',
     },
     {
       title: "IP",
       dataIndex: "ip",
       key: "ip",
+      width:100,
       render: (text) => text || '-',
     },
     {
       title: "Region",
       dataIndex: "region",
       key: "region",
+      width:100,
       render: (text) => text || '-',
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      width:100,
       render: (text) => (text ? "Blocked" : 'Allowed') || '-',
     },
     {
       title: "Action",
       dataIndex: "actions",
+      width:100,
       render: (_, record) => (
         <div className="action_wrapper">
           {record.blocked ? (
