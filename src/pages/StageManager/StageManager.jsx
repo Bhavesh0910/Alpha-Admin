@@ -8,6 +8,7 @@ import searchIcon from "../../assets/icons/searchIcon.svg";
 import commentIcon from "../../assets/icons/comment.svg";
 import RightMark from "../../assets/icons/verified_green_circleIcon.svg";
 import createIcon from "../../assets/icons/createAcc.svg";
+import AccIcon from "../../assets/icons/acc-metrics.svg";
 import addIcon from "../../assets/icons/add-edit.svg";
 import acceptIcon from "../../assets/icons/accept.svg";
 import rejectIcon from "../../assets/icons/reject.svg";
@@ -491,10 +492,12 @@ const StageManager = () => {
             key: "details",
             render: (text, record) => (
               <Button
+                style={{background:'#c5ffff'}}
                 onClick={() => navigate(`/account-analysis/${record.account_id}`)}
                 className="account_metrics_btn"
+                title="Account Metrics"
               >
-                Account Metrics
+                <img style={{height:'16px'}} src={AccIcon} alt="" />
               </Button>
             ),
           },
@@ -503,7 +506,7 @@ const StageManager = () => {
             key: "action",
             width:80,
             render: (text, row) => (
-              <div onClick={() => openCreateAccountModel(row)}>
+              <div  style={{cursor:'pointer'}} title="Create Account" onClick={() => openCreateAccountModel(row)}>
                 <img
                   src={createIcon}
                   alt=""
@@ -777,11 +780,14 @@ const StageManager = () => {
             dataIndex: "details",
             key: "details",
             render: (text, record) => (
-              <Button
+          
+                <Button
+                style={{background:'#c5ffff'}}
                 onClick={() => navigate(`/account-analysis/${record.account_id}`)}
                 className="account_metrics_btn"
+                title="Account Metrics"
               >
-                Account Metrics
+                <img style={{height:'16px'}} src={AccIcon} alt="" />
               </Button>
             ),
           },
@@ -798,7 +804,7 @@ const StageManager = () => {
               //   }
               //   trigger={["click"]}
               // >
-              <div onClick={() => openCreateAccountModel(row)}>
+              <div  style={{cursor:'pointer'}} title="Create Account" onClick={() => openCreateAccountModel(row)}>
                 <img
                   src={createIcon}
                   alt=""
@@ -972,11 +978,14 @@ const StageManager = () => {
             key: "details",
 
             render: (text, record, index) => (
-              <Button
+            
+                <Button
+                style={{background:'#c5ffff'}}
+                onClick={() => navigate(`/account-analysis/${record.account_id}`)}
                 className="account_metrics_btn"
-                onClick={() => navigate(`/account-analysis/${record.login_id}`)}
+                title="Account Metrics"
               >
-                Account Metrics
+                <img style={{height:'16px'}} src={AccIcon} alt="" />
               </Button>
             ),
           },

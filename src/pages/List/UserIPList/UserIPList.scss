@@ -8,6 +8,12 @@
         gap: 10px;
     }
 
+    .action_wrapper{
+        div{
+            cursor: pointer;
+        }
+    }
+
     .status_wrapper.active {
         border-radius: var(--Corner-Radius, 10px);
         border: 1px solid var(--Green, #A3EA93);

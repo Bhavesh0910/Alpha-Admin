@@ -269,15 +269,15 @@ const UserListTable = () => {
       dataIndex: "actions",
       render: (_, record) => (
         <div className="action_wrapper">
-          <div
+          <div title={`${record.is_active ? "Block" : "Unblock"}`}
             onClick={() => handleStatusChange(record)}
             disabled={record.is_active === undefined}
           >
             {record.is_active !== undefined ? (record.is_active ?
-              <img src={blockIcon} alt="" />
-              : <img src={unblockIcon} alt="" />) : "-"}
+              <img  src={blockIcon} alt="" />
+              : <img title="Unblock" src={unblockIcon} alt="" />) : "-"}
           </div>
-          <div onClick={() => handleEditClick(record)}><img src={editIcon} alt="" /></div>
+          <div title="Edit" onClick={() => handleEditClick(record)}><img src={editIcon} alt="" /></div>
         </div>
       ),
     },

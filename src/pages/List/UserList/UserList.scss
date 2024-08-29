@@ -9,6 +9,9 @@
   }
 
   .action_wrapper {
+    div{
+      cursor: pointer;
+    }
     button {
       display: flex;
       padding: 6px 10px;

@@ -55,7 +55,7 @@ const WithdrawalDetails = () => {
     let query = `&page=${pageNo || 1}&page_size=${pageSize || 20}`;
     
     if (searchText) {
-      query = query + `&search=${searchText}`;
+      query = query + `&plan_size=${searchText}`;
     }
  
     if (dates && dates.length === 2) {
@@ -267,7 +267,7 @@ const WithdrawalDetails = () => {
           
             </Select> */}
             <input
-              placeholder="Search..."
+              placeholder="Search by Plan Size..."
               className="search_input"
               value={search}
               onChange={(e) => setSearch(e.target.value)}

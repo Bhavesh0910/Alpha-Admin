@@ -133,6 +133,7 @@ const UserIPList = () => {
         <div className="action_wrapper">
           {record.blocked ? (
             <div
+            title="Unblock"
               className=""
               onClick={() => handleAction("Unblock", record)}
             >
@@ -140,6 +141,7 @@ const UserIPList = () => {
             </div>
           ) : (
             <div
+            title="Block"
               className=""
               onClick={() => handleAction("Block", record)}
             >

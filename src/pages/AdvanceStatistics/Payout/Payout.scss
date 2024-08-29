@@ -59,6 +59,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
     .payout_lower_heading_left {
       display: flex;
       width: 563px;
@@ -73,6 +74,11 @@
       border-radius: var(--table-box, 20px);
       background: #fff;
 
+      @media only screen and (max-width: 1400px) {
+        max-width: 563px;
+        width: fit-content;
+      }
+
       h3 {
         color: var(--Text, #1e1e1e);
         font-family: "Nunito Sans";
@@ -81,6 +87,10 @@
         font-weight: 700;
         line-height: normal;
 
+        @media only screen and (max-width: 768px) {
+         font-size: 16px;
+        }
+
         span {
           color: var(--Text-2, #686868);
           font-family: "Nunito Sans";
@@ -88,6 +98,9 @@
           font-style: normal;
           font-weight: 400;
           line-height: normal;
+          @media only screen and (max-width: 768px) {
+             font-size: 12px;
+          }
         }
       }
 
@@ -173,7 +186,13 @@
       padding: 13px 35px;
       align-items: flex-start;
       gap: 10px;
+      @media only screen and (max-width: 1400px) {
+        padding: 13px 20px;
+      }
 
+      @media only screen and (max-width: 768px) {
+       font-size: 12px;
+      }
       border-radius: 10px;
       background: #04d9ff;
 

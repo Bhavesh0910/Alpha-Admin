@@ -264,10 +264,7 @@ const Payout = () => {
               </button> */}
             </div>
           </div>
-          <RangePicker
-          presets={rangePresets}
-          onChange={updateDateRange}
-        />
+    
           <div className="export_btn">
           <Button onClick={handleOpenModal}>
             <img
@@ -283,8 +280,14 @@ const Payout = () => {
             View Export History
           </Link>
         </div>
+
+        
         </div>
 
+        <RangePicker
+          presets={rangePresets}
+          onChange={updateDateRange}
+        />
         <div className="payout_lower_heading_two">
           <div className="left">
             <h3>Eligible Payment List</h3>

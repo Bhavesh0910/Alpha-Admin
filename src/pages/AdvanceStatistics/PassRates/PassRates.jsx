@@ -26,11 +26,11 @@ const PassRates = () => {
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
   const [isExportModalVisible, setExportModalVisible] = useState(false);
-  const [dates, setDates] = useState(null); 
+  const [dates, setDates] = useState(null);
   const [exportDates, setExportDates] = useState([]);
   const [selectedStage, setSelectedStage] = useState("All");
   const [accountSizeRange, setAccountSizeRange] = useState([10000, 50000]);
-  const [sliderVisible, setSliderVisible] = useState(false); 
+  const [sliderVisible, setSliderVisible] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -105,7 +105,7 @@ const PassRates = () => {
     if (dates) {
       setExportDates(dates.map(date => date.format("DD/MMM/YYYY")));
     } else {
-      setExportDates([]); 
+      setExportDates([]);
     }
   };
 
@@ -188,11 +188,11 @@ const PassRates = () => {
   ];
 
   const rangePresets = [
-    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
-    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
-    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
-    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
-    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]}, // Assuming "All time" covers a very long period
+    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
+    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
+    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
+    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
+    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] }, // Assuming "All time" covers a very long period
   ];
 
   const handleSearch = (e) => {
@@ -248,20 +248,20 @@ const PassRates = () => {
             )}
           </div>
 
-<div className="chart_container">
-          {showChart && (
-            <>
+          <div className="chart_container">
+            {showChart && (
+              <>
 
-            <div className="chart_div">
-            
-              <TotalPassedCharts />
-              </div>
-              <div className="chart_div">
-              <TotalPassedChartTwo />
-              </div>
-            </>
-          )}
-        </div>
+                <div className="chart_div">
+
+                  <TotalPassedCharts />
+                </div>
+                <div className="chart_div">
+                  <TotalPassedChartTwo />
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         <div className="passRates_filters">
@@ -280,11 +280,16 @@ const PassRates = () => {
             <div className="tabs_inner">
               <Dropdown overlay={menu} trigger={['click']} className="dropdown">
                 <Button className="custom-dropdown-button">
-                  {selectedStage} <DownOutlined />
+                  {selectedStage}   <img
+                  src={ArrowUpBlack}
+                  alt="ArrowUpBlack"
+                />
                 </Button>
               </Dropdown>
               <button className="tabs" onClick={() => setSliderVisible(!sliderVisible)}>
+                
                 <img
+                  className={`${sliderVisible ? "arrow_up" : ''}`}
                   src={ArrowUpBlack}
                   alt="ArrowUpBlack"
                 />
@@ -292,6 +297,10 @@ const PassRates = () => {
               </button>
               {sliderVisible && (
                 <div className="slider_container">
+                  <div className="slider_labels">
+                    <span className="min_value">Min: 10,000</span>
+                    <span className="max_value">Max: 50,000</span>
+                  </div>
                   <Tooltip title={`Account Size`}>
                     <Slider
                       className="slider"
@@ -342,7 +351,7 @@ const PassRates = () => {
               triggerChange={triggerChange}
               isExpandable={true}
               ExpandedComp={ExpandedRowRender}
-              rowId="login_id"
+              rowId="pass_ratio"
               scrollY={420}
             />
           )}

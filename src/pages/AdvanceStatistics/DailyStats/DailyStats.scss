@@ -92,6 +92,7 @@ background: var(--Canvas-BG, #161D26) !important;
         display: flex;
         gap: 20px;
         min-height: 46px;
+        flex-wrap: wrap;
         .ant-btn{
           border-radius: 10px;
           background: #F6FEFE;

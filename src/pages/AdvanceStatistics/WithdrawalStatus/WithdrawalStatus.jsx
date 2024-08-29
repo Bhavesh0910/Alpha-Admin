@@ -321,6 +321,12 @@ const WithdrawalStatus = () => {
           <div className="header_middle">
 
             <div className="filter_btns">
+            <Button
+                className={activeTab === "All" ? "btn_active" : ""}
+                onClick={() => handleTabChange("All")}
+              >
+                All
+              </Button>
               <Button
                 className={activeTab === "Approved" ? "btn_active" : ""}
                 onClick={() => handleTabChange("Approved")}

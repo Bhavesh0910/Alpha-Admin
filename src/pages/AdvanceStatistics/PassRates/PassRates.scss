@@ -21,6 +21,12 @@
     .ant-slider-rail{
       background-color: #fff;
     }
+    .slider_labels{
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: #fff;
+    }
   }
   .passRates_header {
     display: flex !important;
@@ -155,6 +161,14 @@
     display: flex;
     justify-content: space-between;
     margin: 20px 0;
+    
+    img{
+      transition: 0.2s ease;
+    }
+  .arrow_up{
+    rotate: 180deg;
+    transition: 0.2s ease;
+  }
     .tabs_inner {
       display: flex;
       gap: 10px;
@@ -212,6 +226,7 @@
       line-height: normal;
     }
   }
+
 }
 
 
