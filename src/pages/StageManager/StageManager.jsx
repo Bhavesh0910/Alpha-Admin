@@ -604,7 +604,7 @@ const StageManager = () => {
             title: "Flag",
             dataIndex: "country",
             key: "country",
-            width: 5,
+            width: 60,
             render: (country) => {
               const countryName = country;
               const countryCode = lookup.byCountry(countryName);
@@ -850,7 +850,6 @@ const StageManager = () => {
             title: "Flag",
             dataIndex: "user_id",
             key: "user_id",
-
             render: (text, row) => (
               <div className="flagContainer">
                 <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
