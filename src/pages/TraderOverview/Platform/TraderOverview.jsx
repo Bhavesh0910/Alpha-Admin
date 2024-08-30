@@ -83,7 +83,7 @@ function TraderOverview() {
         query = query + `&start_date=${dates[0]}&end_date=${dates[1]}`;
       }
       if (phase !== "") {
-        let phaseQuery = phase === "Free Trail" ? "&free_trial=1" : "&status=Funded&status=Evalution";
+        let phaseQuery = phase === "Free Trail" ? "&free_trial=1" : `&trading_type=${phase}`;
         query = query + phaseQuery;
       }
       if (Challenges) {
@@ -499,7 +499,10 @@ function TraderOverview() {
               onChange={onChangePhase}
             >
               <Radio.Button value="">All</Radio.Button>
-              <Radio.Button value="Evalution/Funded">Evalution/Funded</Radio.Button>
+              {/* <Radio.Button value="Evalution/Funded">Evalution/Funded</Radio.Button> */}
+              <Radio.Button value="Funded">Funded</Radio.Button>
+              <Radio.Button value="Verification">Verification</Radio.Button>
+              <Radio.Button value="Evalution">Evalution</Radio.Button>
               <Radio.Button value="Free Trail">Free Trial</Radio.Button>
             </Radio.Group>
           </div>
