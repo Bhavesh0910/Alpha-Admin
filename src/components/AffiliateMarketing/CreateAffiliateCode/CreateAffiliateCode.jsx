@@ -1,23 +1,24 @@
-import React, { useState } from "react";
-import { Breadcrumb, Button, Input, Select, Spin } from "antd";
-import { ReactComponent as PercentageIcon } from "../../../assets/icons/precentage_icon_white.svg";
+import React, {useState} from "react";
+import {Breadcrumb, Button, Input, Select, Spin} from "antd";
+import {ReactComponent as PercentageIcon} from "../../../assets/icons/precentage_icon_white.svg";
 import "./CreateAffiliateCode.scss";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { createAffiliateCode, fetchCodeList } from "../../../store/NewReducers/affiliateSlice";
-import { UserSearchReq, baseUrl } from "../../../utils/api/apis";
-import { returnErrors } from "../../../store/reducers/error";
+import {Link, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {createAffiliateCode, fetchCodeList} from "../../../store/NewReducers/affiliateSlice";
+import {UserSearchReq, baseUrl} from "../../../utils/api/apis";
+import {returnErrors} from "../../../store/reducers/error";
+import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 
-const { Option } = Select;
+const {Option} = Select;
 
 const CreateAffiliateCode = () => {
   const [isSpinner, setIsSpinner] = useState(false);
   const [couponData, setCouponData] = useState({
-    email: '',
-    code: '',
+    email: "",
+    code: "",
     aff_percentage: 0,
     repeat_percent: 0,
-    coupon_percent: 0
+    coupon_percent: 0,
   });
 
   const [emailOpts, setEmailOpts] = useState([{label: "", value: ""}]);
@@ -65,6 +66,7 @@ const CreateAffiliateCode = () => {
   };
 
   const handleSubmit = async () => {
+    setIsSpinner(true);
     if (couponData.code === "" || couponData.email === "") {
       alert("Please enter a Coupon Code and Email");
       return;
@@ -72,15 +74,14 @@ const CreateAffiliateCode = () => {
 
     // Create a new FormData object
     const formData = new FormData();
-    formData.append('email', couponData.email);
-    formData.append('code', couponData.code);
-    formData.append('aff_percentage', couponData.aff_percentage);
-    formData.append('repeat_percent', couponData.repeat_percent);
-    formData.append('coupon_percent', couponData.coupon_percent);
+    formData.append("email", couponData.email);
+    formData.append("code", couponData.code);
+    formData.append("aff_percentage", couponData.aff_percentage);
+    formData.append("repeat_percent", couponData.repeat_percent);
+    formData.append("coupon_percent", couponData.coupon_percent);
 
-    setIsSpinner(true);
     try {
-      await dispatch(createAffiliateCode({ idToken, couponData: formData }));
+      await dispatch(createAffiliateCode({idToken, couponData: formData}));
       setIsSpinner(false);
     } catch (error) {
       setIsSpinner(false);
@@ -90,10 +91,11 @@ const CreateAffiliateCode = () => {
 
   return (
     <div className="create_affiliate_code_wrapper">
+      {isSpinner && <LoaderOverlay />}
       <div className="header_wrapper">
         <Breadcrumb separator=">">
           <Breadcrumb.Item>
-            <a href="/affiliate-marketing">Affiliate List</a>
+            <Link to="/affiliate-marketing">Affiliate List</Link>
           </Breadcrumb.Item>
           <Breadcrumb.Item>Create Affiliate Code</Breadcrumb.Item>
         </Breadcrumb>
@@ -171,13 +173,13 @@ const CreateAffiliateCode = () => {
           </div>
         </div>
         <div className="form_input">
-            <label htmlFor="coupon_percent">Discount (%)</label>
-            <Input
-              type="number"
-              value={couponData.coupon_percent}
-              onChange={(e) => setCouponData((prev) => ({ ...prev, coupon_percent: e.target.value }))}
-            />
-          </div>
+          <label htmlFor="coupon_percent">Discount (%)</label>
+          <Input
+            type="number"
+            value={couponData.coupon_percent}
+            onChange={(e) => setCouponData((prev) => ({...prev, coupon_percent: e.target.value}))}
+          />
+        </div>
         <div className="create_button_wrapper">
           <Button
             className="standard_button"

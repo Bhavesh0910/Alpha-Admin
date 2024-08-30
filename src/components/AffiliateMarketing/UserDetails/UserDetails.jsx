@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import { returnErrors } from "../../../store/reducers/error";
 import { fetchAffExportData } from "../../../store/NewReducers/affiliateSlice";
+import { Link } from "react-router-dom";
 
 const UserDetails = ({ isUserDetailOpened, setIsUserDetailOpened, id }) => {
   const [status, setStatus] = useState("success");
@@ -123,9 +124,9 @@ const UserDetails = ({ isUserDetailOpened, setIsUserDetailOpened, id }) => {
                 Export
               </Button>
             </div>
-            <a href="/affiliate-marketing/affiliateMarketing-exportHistory">
+            <Link to="/affiliate-marketing/affiliateMarketing-exportHistory">
               <p>View Export History</p>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

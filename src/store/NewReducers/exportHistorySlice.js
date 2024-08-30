@@ -3,14 +3,14 @@ import {baseUrl} from "../../utils/api/apis";
 import axios from "axios";
 import {returnErrors} from "../reducers/error";
 
-export const fetchExportHistoryApi = async (idToken, url) => {
+export const fetchExportHistoryApi = async (idToken, url, query) => {
   try {
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get(`${baseUrl}${url}`, config);
+    const response = await axios.get(`${baseUrl}${url}${query}`, config);
     return response.data;
   } catch (error) {
     console.error("Error during fetchExportHistoryApi request:", error);
@@ -18,9 +18,9 @@ export const fetchExportHistoryApi = async (idToken, url) => {
   }
 };
 
-export const fetchExportHistoryReq = createAsyncThunk("exportHistory/fetchExportHistory", async ({idToken, url, dispatch}, {rejectWithValue}) => {
+export const fetchExportHistoryReq = createAsyncThunk("exportHistory/fetchExportHistory", async ({idToken, url, query, dispatch}, {rejectWithValue}) => {
   try {
-    const response = await fetchExportHistoryApi(idToken, url);
+    const response = await fetchExportHistoryApi(idToken, url, query);
     return response;
   } catch (error) {
     dispatch(returnErrors(error?.response?.data?.detail || "Error while fetching export history", 400));
