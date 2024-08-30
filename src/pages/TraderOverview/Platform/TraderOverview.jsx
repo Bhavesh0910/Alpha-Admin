@@ -236,7 +236,7 @@ function TraderOverview() {
         dataIndex: "login_id",
         key: "login_id",
         width: "15%",
-        render: (text, record) => (text ? <div onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}>{text}</div> : "-"),
+        render: (text, record) => (text ? <div style={{cursor:'pointer'}} onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}>{text}</div> : "-"),
       },
       {
         title: "Balance",

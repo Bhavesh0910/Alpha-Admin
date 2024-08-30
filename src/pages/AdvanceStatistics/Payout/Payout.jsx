@@ -29,6 +29,7 @@ const Payout = () => {
   const [exportDates, setExportDates] = useState(null); 
   const { payoutDetails, totalPayments, isLoading } = useSelector((state) => state.advanceStatistics);
   const { idToken } = useSelector((state) => state.auth);
+  const { isLoading: isExportLoading } = useSelector((state) => state.export);
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -222,6 +223,7 @@ const Payout = () => {
 
   return (
     <>
+      {isExportLoading && <LoaderOverlay />}
       <div className="payout_main">
         <div className="payout_header">
           <h2>Payout</h2>
@@ -261,7 +263,7 @@ const Payout = () => {
           <div className="left">
             <h3>Eligible Payment List</h3>
           </div>
-          <button className="right" onClick={handleExpectedTomorrowClick}>
+          <button style={{cursor:'pointer'}} className="right" onClick={handleExpectedTomorrowClick}>
             Expected Tomorrow
           </button>
         </div>

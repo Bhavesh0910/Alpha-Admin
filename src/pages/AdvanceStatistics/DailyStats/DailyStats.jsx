@@ -41,6 +41,7 @@ const DailyStats = () => {
 
 
   const { dailyStats, isLoading } = useSelector((state) => state.advanceStatistics);
+  const { isLoading: isExportLoading } = useSelector((state) => state.export);
   const { idToken } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -424,6 +425,7 @@ const DailyStats = () => {
   }
   return (
     <div className="withdrawal_status_container  daily_stats">
+      {isExportLoading && <LoaderOverlay />}
       <div className="export_btn">
         <Button onClick={handleOpenModal}>
           <img

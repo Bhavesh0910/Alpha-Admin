@@ -38,6 +38,7 @@ const WithdrawalDetails = () => {
   const [editCommentToUpdate, setEditCommentToUpdate] = useState(null);
 
   const {withdrawalsDetails, isLoading} = useSelector((state) => state.advanceStatistics);
+  const { isLoading: isExportLoading } = useSelector((state) => state.export);
   const {idToken} = useSelector((state) => state.auth);
   const rangePresets = [
     {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
@@ -220,30 +221,30 @@ const WithdrawalDetails = () => {
     setPageNo(page);
     setPageSize(updatedPageSize);
   }
+
   const handleExport = () => {
-    if (dates.length === 2) {
-      const [startDate, endDate] = dates;
+    if (exportDates?.length === 2) {
+      const [startDate, endDate] = exportDates;
       const url = `withdrawals/details/export/?start_date=${startDate}&end_date=${endDate}`;
-      
+
       dispatch(exportDataReq({ idToken, url }))
         .unwrap()
         .then((response) => {
           const { s3_file_url, filename } = response;
-  
-          const link = document.createElement('a');
+
+          const link = document.createElement("a");
           link.href = s3_file_url;
-          link.download = filename; 
+          link.download = filename;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
-  
-         dispatch(returnMessages("Export Successful" , 200))
-  
+
+          dispatch(returnMessages("Export Successful", 200));
+
           handleCloseModal();
         })
         .catch((error) => {
-          dispatch(returnErrors("Export failed" , 400))
-
+          dispatch(returnErrors("Export failed", 400));
         });
     } else {
       notification.warning({
@@ -252,8 +253,9 @@ const WithdrawalDetails = () => {
       });
     }
   };
-
   return (
+    <>
+    {isExportLoading && <LoaderOverlay />}
     <div className="withdrawal_status_container">
       <div className="table_header_filter">
         <div className="header_left">
@@ -357,6 +359,7 @@ const WithdrawalDetails = () => {
         </div>
       </Modal>
     </div>
+    </>
   );
 };
 

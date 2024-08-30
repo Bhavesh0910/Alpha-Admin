@@ -36,6 +36,7 @@ const PassRates = () => {
   const { passRate, isLoading } = useSelector((state) => state.advanceStatistics);
   const { idToken } = useSelector((state) => state.auth);
   const { stage1ChartData, stage2ChartData } = useSelector((state) => state.risk);
+  const { isLoading: isExportLoading } = useSelector((state) => state.export);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -200,6 +201,7 @@ const PassRates = () => {
 
   return (
     <>
+    {isExportLoading && <LoaderOverlay />}
       <div className="passRates_main">
         <div className="passRates_header">
           <div className="heading">

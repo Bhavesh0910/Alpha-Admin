@@ -40,6 +40,8 @@ const WithdrawalStatus = () => {
   const [editCommentToUpdate, setEditCommentToUpdate] = useState(null);
 
   const { withdrawalsStatus, isLoading } = useSelector((state) => state.advanceStatistics);
+  const { isLoading: isExportLoading } = useSelector((state) => state.export);
+
   const { idToken } = useSelector((state) => state.auth);
   const rangePresets = [
     { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
@@ -286,6 +288,8 @@ const WithdrawalStatus = () => {
 
   return (
     <div className="withdrawal_status_container">
+            {isExportLoading && <LoaderOverlay />}
+
       <div className="table_header_filter">
         <div className="header_left">
           <div className="search_box_wrapper">

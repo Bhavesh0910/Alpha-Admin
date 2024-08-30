@@ -170,7 +170,7 @@ const Coupon = () => {
               <Option value="all">All Categories</Option>
             </Select> */}
             <input
-              placeholder="Search by Email..."
+              placeholder="Search by Coupon code..."
               className="search_input"
               onKeyDown={(e) => handleSearch(e)}
             />
