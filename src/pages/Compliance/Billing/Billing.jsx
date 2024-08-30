@@ -146,7 +146,7 @@ const Billing = () => {
           <div className="search_box_wrapper search_box_wrapper">
        
             <input
-              placeholder="Search..."
+              placeholder="Search by Email..."
               className="search_input"
               value={search}
               onChange={(e) => setSearch(e.target.value)}

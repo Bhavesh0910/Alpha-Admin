@@ -1,67 +1,64 @@
+import React, { useEffect, useState } from "react";
 import { Breadcrumb, Card } from "antd";
-import React, { useState } from "react";
-import invoiceIcon from "../../../assets/icons/payoutInvoiceIcon.svg";
+import { useDispatch, useSelector } from "react-redux";
+import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
+import moment from "moment";
+import { logsListReq } from "../../../store/NewReducers/logsSlice";
 
 const RequestPayout = () => {
-  const [size, setSize] = useState("small");
-  const onChange = (e) => {
-    setSize(e.target.value);
-  };
+  const { idToken } = useSelector((state) => state.auth);
+  const { reqPayoutLogData , count, isLoading, isError } = useSelector((state) => state.logs);
+
+  const [pageNo, setPageNo] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const baseUrl = "payout-request-log/list/";
+    const query = `?page=${pageNo}&page_size=${pageSize}`;
+    const url = baseUrl + query;
+    if (idToken) {
+      dispatch(logsListReq({ idToken, url, key: "reqPayoutLogData", dispatch }));
+    }
+  }, [pageNo, pageSize, idToken, dispatch]);
 
   const columns = [
     {
       title: "Admin Email ID",
-      dataIndex: "adminEmailId",
-      key: "adminEmailId",
+      dataIndex: "admin_email",
+      key: "admin_email",
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Date and Time",
-      dataIndex: "dateTime",
-      key: "dateTime",
-    },
-    {
-      title: "Login ID",
-      dataIndex: "loginId",
-      key: "loginId",
-    },
-    {
-      title: "Amount",
-      dataIndex: "amount",
-      key: "amount",
-    },
-    {
-      title: "Reason",
-      dataIndex: "reason",
-      key: "reason",
-    },
-    {
-      title: "Invoice",
-      dataIndex: "invoice",
-      key: "invoice",
+      dataIndex: "date_time",
+      key: "date_time",
       render: (text) => (
-        <span>
-          <img
-            src={invoiceIcon}
-            alt="invoice"
-            style={{ width: 20, height: 20 }}
-          />
-        </span>
+        <div className="date_format">
+          <div>{moment(text).format("DD/MM/YYYY")}</div>
+          <div>{moment(text).format("HH:mm:ss")}</div>
+        </div>
       ),
+    },
+    {
+      title: "Current Email",
+      dataIndex: "user_email",
+      key: "user_email",
+      render: (text) => (text ? text : "-"),
+    },
+    {
+      title: "New Email",
+      dataIndex: "new_email",
+      key: "new_email",
+      render: (text) => (text ? text : "-"),
     },
   ];
 
-  const dummyData = [
-    {
-      key: "1",
-      adminEmailId: "tanya.hill@example.com",
-      dateTime: "02/07/2024 04:07:43",
-      loginId: "65563",
-      amount: "$630.44",
-      reason: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      invoice: "icon", // This should be replaced with the actual path or identifier for the invoice icon
-    },
-  ];
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
 
   return (
     <Card className="table-wrapper viewLogs_table">
@@ -70,15 +67,28 @@ const RequestPayout = () => {
           separator=">"
           items={[
             {
-              title: <a href="/user-support">Request Payout</a>,
+              title: <a href="/user-support">Change Email</a>,
             },
             {
-              title: <a href="">Log</a>,
+              title: <a href="#">Log</a>,
             },
           ]}
         />
       </div>
-      <AntTable columns={columns} data={dummyData} />
+      {isLoading ? (
+        <LoaderOverlay />
+      ) : (
+        <AntTable
+          columns={columns}
+          data={reqPayoutLogData || []}
+          totalPages={Math.ceil(count / pageSize)}
+          totalItems={count}
+          pageSize={pageSize}
+          CurrentPageNo={pageNo}
+          setPageSize={setPageSize}
+          triggerChange={triggerChange}
+        />
+      )}
     </Card>
   );
 };

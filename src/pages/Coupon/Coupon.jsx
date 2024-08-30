@@ -139,9 +139,9 @@ const Coupon = () => {
       dataIndex: "public",
       key: "action",
       render: (text, record) => (
-        <div className="actn_btn_container">
+        <div title={`${text ? "Public" : "Private"}`} className="actn_btn_container">
           {text ? <img src={publicIcon} alt="" /> : <img src={privateIcon} alt="" /> }
-          <div onClick={() => {
+          <div title="Edit" onClick={() => {
             setEditCouponData(record);
             editButtonClick();
           }}>
@@ -170,7 +170,7 @@ const Coupon = () => {
               <Option value="all">All Categories</Option>
             </Select> */}
             <input
-              placeholder="Search..."
+              placeholder="Search by Email..."
               className="search_input"
               onKeyDown={(e) => handleSearch(e)}
             />

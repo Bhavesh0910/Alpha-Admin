@@ -1,13 +1,13 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Payout.scss";
 import ArrowUpGreen from "../../../assets/icons/upArrowGreen.svg";
 import exportIcon from "../../../assets/icons/export_btn_icon.svg";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchPayout, fetchPayoutDetails, fetchpayoutDetails, fetchTotalPayments} from "../../../store/NewReducers/advanceStatistics";
-import moment from "moment/moment";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPayoutDetails, fetchTotalPayments } from "../../../store/NewReducers/advanceStatistics";
+import moment from "moment";
 import { Button, DatePicker, Modal, notification } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { returnMessages } from "../../../store/reducers/message";
@@ -15,23 +15,23 @@ import { exportDataReq } from "../../../store/NewReducers/exportSlice";
 import { returnErrors } from "../../../store/reducers/error";
 import dayjs from "dayjs";
 
-const {RangePicker} = DatePicker;
-
+const { RangePicker } = DatePicker;
 
 const Payout = () => {
   const [searchText, setSearchText] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [category, setCategory] = useState("all");
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [filterData, setFilterData] = useState([]);
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
   const [isModalVisible, setModalVisible] = useState(false);
   const [dates, setDates] = useState(null); 
   const [exportDates, setExportDates] = useState(null); 
-  const {payoutDetails, totalPayments, isLoading} = useSelector((state) => state.advanceStatistics);
-  const {idToken} = useSelector((state) => state.auth);
+  const { payoutDetails, totalPayments, isLoading } = useSelector((state) => state.advanceStatistics);
+  const { idToken } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
@@ -45,10 +45,9 @@ const Payout = () => {
       query += `&start_date=${startDate}&end_date=${endDate}`;
     }
   
-
-    dispatch(fetchPayoutDetails({idToken, query}));
-    dispatch(fetchTotalPayments({idToken, query}));
-  }, [dispatch, idToken, pageNo, pageSize, searchText , dates]);
+    dispatch(fetchPayoutDetails({ idToken, query }));
+    dispatch(fetchTotalPayments({ idToken, query }));
+  }, [dispatch, idToken, pageNo, pageSize, searchText, dates]);
 
   const searchRef = useRef();
 
@@ -56,8 +55,6 @@ const Payout = () => {
     setPageNo(page);
     setPageSize(updatedPageSize);
   }
-
-
 
   const rangePresets = [
     { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
@@ -76,9 +73,9 @@ const Payout = () => {
   };
 
   const handleExport = () => {
-    if (exportDates.length === 2) {
+    if (exportDates && exportDates.length === 2) {
       const [startDate, endDate] = exportDates;
-      const url = `/export/payouts/?start_date=${startDate}&end_date=${endDate}`;
+      const url = `export/payout-details/?start_date=${startDate}&end_date=${endDate}`;
       
       dispatch(exportDataReq({ idToken, url }))
         .unwrap()
@@ -92,13 +89,11 @@ const Payout = () => {
           link.click();
           document.body.removeChild(link);
   
-         dispatch(returnMessages("Export Successful" , 200))
-  
+          dispatch(returnMessages("Export Successful", 200));
           handleCloseModal();
         })
         .catch((error) => {
-          dispatch(returnErrors("Export failed" , 400))
-
+          dispatch(returnErrors("Export failed", 400));
         });
     } else {
       notification.warning({
@@ -107,6 +102,7 @@ const Payout = () => {
       });
     }
   };
+
   const highlightText = (text, search) => {
     if (!search) return text;
     const regex = new RegExp(`(${search})`, "gi");
@@ -141,12 +137,6 @@ const Payout = () => {
       key: "login_id",
       render: (text) => text || "-",
     },
-    // {
-    //   title: "Name",
-    //   dataIndex: "name",
-    //   key: "name",
-    //   render: (text) => text || "-",
-    // },
     {
       title: "Email",
       dataIndex: "email",
@@ -159,40 +149,25 @@ const Payout = () => {
       key: "plan",
       render: (text) => text || "-",
     },
-    // {
-    //   title: "Start Balance",
-    //   dataIndex: "starting_balance",
-    //   key: "starting_balance",
-    //   render: (text) => text || "-",
-    // },
-    // {
-    //   title: "Current Balance",
-    //   dataIndex: "current_balance",
-    //   key: "current_balance",
-    //   render: (text) => text || "-",
-    // },
-    // {
-    //   title: "Current Equity",
-    //   dataIndex: "current_equity",
-    //   key: "current_equity",
-    //   render: (text) => text || "-",
-    // },
     {
       title: "Profit Share",
       dataIndex: "profit_share",
       key: "profit_share",
+      width: 70,
       render: (text) => text || "-",
     },
     {
       title: "Profit",
       dataIndex: "profit",
       key: "profit",
+      width: 70,
       render: (text) => Number(text).toFixed(2) || "-",
     },
     {
       title: "Bonus",
       dataIndex: "bonus",
       key: "bonus",
+      width: 70,
       render: (text) => text || "-",
     },
     {
@@ -213,12 +188,12 @@ const Payout = () => {
       key: "start_date",
       render: (text) => moment(text).format("DD-MMM-YYYY") || "-",
     },
-    // {
-    //   title: "Next Payout Date",
-    //   dataIndex: "next_payout_date",
-    //   key: "next_payout_date",
-    //   render: (text) => moment(text).format("DD MM YYYY") || "-",
-    // },
+    {
+      title: "Next Payout Date",
+      dataIndex: "next_payout_date",
+      key: "next_payout_date",
+      render: (text) => moment(text).format("DD-MMM-YYYY") || "-",
+    },
   ];
 
   const updateExportDateRange = (dates) => {
@@ -234,13 +209,16 @@ const Payout = () => {
     setPageNo(1);
     if (dates) {
       setDates(dates.map(date => date.format("DD/MMM/YYYY")));
-      console.log(dates)
     } else {
-      setDates([])
+      setDates([]);
     }
   };
 
-  console.log(totalPayments)
+  const handleExpectedTomorrowClick = () => {
+    const today = dayjs();
+    const tomorrow = dayjs().add(1, 'day');
+    updateDateRange([today, tomorrow]);
+  };
 
   return (
     <>
@@ -255,33 +233,24 @@ const Payout = () => {
             </h3>
             <div className="payout_lower_heading_inner">
               <h2>{totalPayments[0]?.new_request}</h2>
-              {/* <button>
-                <img
-                  src={ArrowUpGreen}
-                  alt="ArrowUpGreen"
-                />
-                <p>5%</p>
-              </button> */}
             </div>
           </div>
     
           <div className="export_btn">
-          <Button onClick={handleOpenModal}>
-            <img
-              src={exportIcon}
-              alt="export_btn_icon"
-            />
-            Export
-          </Button>
-          <Link
-            className="link"
-            to={"/advance-statistics/payout-export-history"}
-          >
-            View Export History
-          </Link>
-        </div>
-
-        
+            <Button onClick={handleOpenModal}>
+              <img
+                src={exportIcon}
+                alt="export_btn_icon"
+              />
+              Export
+            </Button>
+            <Link
+              className="link"
+              to={"/advance-statistics/payout-export-history"}
+            >
+              View Export History
+            </Link>
+          </div>
         </div>
 
         <RangePicker
@@ -292,7 +261,9 @@ const Payout = () => {
           <div className="left">
             <h3>Eligible Payment List</h3>
           </div>
-          <button className="right">Expected Tomorrow</button>
+          <button className="right" onClick={handleExpectedTomorrowClick}>
+            Expected Tomorrow
+          </button>
         </div>
 
         <div>
@@ -309,7 +280,6 @@ const Payout = () => {
               setPageSize={setPageSize}
               triggerChange={triggerChange}
               isExpandable={true}
-              // expandedRowRender={expandedRowRender}
               ExpandedComp={ExpandedRowRender}
               rowId="login_id"
               scrollY={420}
@@ -318,36 +288,36 @@ const Payout = () => {
         </div>
 
         <Modal
-      title="Export"
-      visible={isModalVisible}
-      onCancel={handleCloseModal} 
-      footer={null} 
-      className="export_modal" 
-      closeIcon={<CloseOutlined style={{ color: '#fff' }} />} 
-    >
-      <div className="export_modal_wrapper">
-        <RangePicker
-          onChange={updateExportDateRange}
-          autoFocus
-          presets={rangePresets}
-          style={{ width: '100%' }} 
-        />
-      </div>
-      <p style={{ color: '#fff' }}>File will contain information of the date you’ve selected.</p>
-      <div className="btn_wrapper">
-        <Button
-          type="primary"
-          onClick={handleExport}
-          style={{
-            backgroundColor: '#1890ff', 
-            borderColor: '#1890ff',
-            color: '#fff',
-          }}
+          title="Export"
+          visible={isModalVisible}
+          onCancel={handleCloseModal} 
+          footer={null} 
+          className="export_modal" 
+          closeIcon={<CloseOutlined style={{ color: '#fff' }} />} 
         >
-          Export
-        </Button>
-      </div>
-    </Modal>
+          <div className="export_modal_wrapper">
+            <RangePicker
+              onChange={updateExportDateRange}
+              autoFocus
+              presets={rangePresets}
+              style={{ width: '100%' }} 
+            />
+          </div>
+          <p style={{ color: '#fff' }}>File will contain information of the date you’ve selected.</p>
+          <div className="btn_wrapper">
+            <Button
+              type="primary"
+              onClick={handleExport}
+              style={{
+                backgroundColor: '#1890ff', 
+                borderColor: '#1890ff',
+                color: '#fff',
+              }}
+            >
+              Export
+            </Button>
+          </div>
+        </Modal>
       </div>
     </>
   );
@@ -355,14 +325,12 @@ const Payout = () => {
 
 export default Payout;
 
-
-
 const ExpandedRowRender = ({ record }) => {
   return (
     <div className="expanded-row-content">
       <p><strong>Name:</strong> {record.name || '-'}</p>
-      <p><strong>Starting Balance:</strong> { record.starting_balance || '-'}</p>
-      <p><strong>Next Payout Date:</strong> {moment(record.next_payout_date).format("DD MMM YYYY") || '-'}</p>
+      <p><strong>Starting Balance:</strong> {record.starting_balance || '-'}</p>
+      {/* <p><strong>Next Payout Date:</strong> {moment(record.next_payout_date).format("DD MMM YYYY") || '-'}</p> */}
       <p><strong>Current Balance:</strong> {Number(record.current_balance).toFixed(2) || '-'}</p>
       <p><strong>Current Equity:</strong> {Number(record.current_equity).toFixed(2) || '-'}</p>
     </div>

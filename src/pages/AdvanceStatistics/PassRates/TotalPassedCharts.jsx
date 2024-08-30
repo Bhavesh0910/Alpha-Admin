@@ -5,14 +5,14 @@ import Chart from "react-apexcharts";
 const TotalPassesCharts = ({data}) => {
   const [charts, setCharts] = useState("D");
 
-  const totalPassed = data?.results.map((item) => item.total_passed);
+  const dates = Object.keys(data);
+  const totalPassed = dates.map(date => data[date].passed);
 
   const onChangeActive = (e) => {
     setCharts(e.target.value);
   };
 
-  const chartData = Array.isArray(totalPassed) ? totalPassed : [400, 600, 550, 500, 700, 800, 1100, 1050];
-
+  
   const options = {
     chart: {
       type: "line",
@@ -36,14 +36,16 @@ const TotalPassesCharts = ({data}) => {
       },
     },
     xaxis: {
-      // categories: ["Aug 1", "Aug 2", "Aug 3", "Aug 4", "Aug 5", "Aug 6", "Aug 7", "Aug 8"],
+      categories: dates, 
       labels: {
         style: {
           colors: "#000",
         },
-        rotate: 0,
+        rotate: -45,
         trim: true,
       },
+      tickAmount: Math.min(dates.length, 7), 
+
     },
     yaxis: {
       min: 0,
@@ -71,7 +73,7 @@ const TotalPassesCharts = ({data}) => {
   const series = [
     {
       name: "Total Passed",
-      data: chartData,
+      data: totalPassed,
     },
   ];
 

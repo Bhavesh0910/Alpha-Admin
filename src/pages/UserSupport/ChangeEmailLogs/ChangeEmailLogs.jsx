@@ -77,11 +77,8 @@ const ChangeEmailLogs = () => {
       </div>
       {isLoading ? (
         <LoaderOverlay />
-      ) : isError ? (
-        <div className="error-message">
-          <p>Error loading logs. Please try again later.</p>
-        </div>
-      ) : (
+      )
+       : (
         <AntTable
           columns={columns}
           data={changeEmailLogData || []}

@@ -83,7 +83,7 @@ const GeneralLog = () => {
         <h3> General Log</h3>
         <div className="search_box_wrapper">
           <input
-            placeholder="Search..."
+            placeholder="Search by category or email..."
             className="search_input"
             onKeyDown={(e) => handleSearch(e)}
           />

@@ -51,8 +51,8 @@ const AffiliateMarketing = ({userData}) => {
   }, [newCodeData]);
 
   const handleRowClick = (affiliateId, email) => {
-    const url = `/affiliate-marketing/code?email=${email}`;
-    navigate(url);
+    // const url = `/affiliate-marketing/code?email=${email}`;
+    // navigate(url);
   };
 
   const [isUserDetailOpened, setIsUserDetailOpened] = useState(false);
@@ -94,7 +94,6 @@ const AffiliateMarketing = ({userData}) => {
     {
       title: "Name",
       dataIndex: "name",
-      width:150,
       render: (text, record) => (
         <div onClick={() => handleRowClick(record.id, record.email)}>
           {category === "name" || category === "all"
@@ -115,7 +114,6 @@ const AffiliateMarketing = ({userData}) => {
     {
       title: "Email",
       dataIndex: "email",
-      width:70,
       render: (text, record) => (
         <div
           onClick={() => handleRowClick(record.id, record.email)}
@@ -147,6 +145,7 @@ const AffiliateMarketing = ({userData}) => {
       title: "Coupon Discount",
       dataIndex: "coupon_discount",
       key: "coupon_discount",
+      width:150,
       render: (text) => text || "-",
     },
     {
@@ -226,7 +225,7 @@ const AffiliateMarketing = ({userData}) => {
             <Option value="email">Email</Option>
           </Select> */}
           <input
-            placeholder="Search..."
+            placeholder="Search by Email..."
             className="search_input"
             onKeyDown={(e) => handleSearch(e)}
             ref={searchRef}

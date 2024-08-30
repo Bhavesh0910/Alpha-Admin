@@ -2,17 +2,15 @@ import React, {useState} from "react";
 import {Button, Radio, Space} from "antd";
 import Chart from "react-apexcharts";
 
-const TotalPassesCharts = ({data}) => {
+const TotalFailedCharts = ({data}) => {
   const [charts, setCharts] = useState("D");
 
   const onChangeActive = (e) => {
     setCharts(e.target.value);
   };
 
-  const totalFailed = data?.results.map((item) => item.total_failed);
-
-  const chartData = Array.isArray(totalFailed) ? totalFailed : [400, 600, 550, 500, 700, 800, 1100, 1050];
-
+   const dates = Object.keys(data);
+   const totalFailed = dates.map(date => data[date].failed);
   const options = {
     chart: {
       type: "line",
@@ -36,14 +34,16 @@ const TotalPassesCharts = ({data}) => {
       },
     },
     xaxis: {
-      // categories: ["Aug 1", "Aug 2", "Aug 3", "Aug 4", "Aug 5", "Aug 6", "Aug 7", "Aug 8"],
+      categories: dates, 
       labels: {
         style: {
           colors: "#000",
         },
-        rotate: 0,
+        rotate: -45,
         trim: true,
       },
+      tickAmount: Math.min(dates.length, 7), 
+
     },
     yaxis: {
       min: 0,
@@ -71,7 +71,7 @@ const TotalPassesCharts = ({data}) => {
   const series = [
     {
       name: "Total Failed",
-      data: chartData,
+      data: totalFailed,
     },
   ];
 
@@ -103,4 +103,4 @@ const TotalPassesCharts = ({data}) => {
   );
 };
 
-export default TotalPassesCharts;
+export default TotalFailedCharts;
