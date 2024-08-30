@@ -28,6 +28,9 @@ const StageStatisticsChart = () => {
       color: "#54e346",
     },
     showSymbol: false,
+    itemStyle: {
+      color: "#54e346",
+    },
   };
 
   const seriesDataFailed = {
@@ -38,6 +41,9 @@ const StageStatisticsChart = () => {
       color: "#e35446",
     },
     showSymbol: false,
+    itemStyle: {
+      color: "#e35446",
+    },
   };
 
   const option = {

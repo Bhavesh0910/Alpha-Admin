@@ -1,11 +1,19 @@
 import React, {useRef, useState} from "react";
 import ApexCharts from "react-apexcharts";
 import "./PieChart.scss";
+import {useSelector} from "react-redux";
 const PieChart = ({data}) => {
   const chartRef = useRef(null);
 
+  const {accountOverviewData} = useSelector((state) => state.risk);
+
+  const passPercent = data?.pass_percent || 0;
+  const failPercent = data?.fail_percent || 0;
+  const inProgressPercent = data?.in_progress_percent || 0;
+  const othersPercent = 100 - (passPercent + failPercent + inProgressPercent);
+
   const options = {
-    series: [data?.pass_count || [], data?.fail_count || [], data?.in_progress_count || []],
+    series: [passPercent, failPercent, inProgressPercent],
     labels: ["Total Pass", "Total Fail", "Total In progress"],
     colors: ["#A3EA93", "#F97F7F", "#efef35"],
     chart: {
@@ -54,6 +62,11 @@ const PieChart = ({data}) => {
       width: 2,
       dashArray: 0,
     },
+    tooltip: {
+      y: {
+        formatter: (value) => `${value}%`,
+      },
+    },
   };
 
   return (
@@ -70,13 +83,13 @@ const PieChart = ({data}) => {
             className="stage1Chart"
           />
         </div>
-        <div className="labels_container">
-          {options.labels.map((label, index) => (
+        <div className={`labels_container`}>
+          {[accountOverviewData?.stage1?.pass_count || 0, accountOverviewData?.stage1?.fail_count || 0, accountOverviewData?.stage1?.in_progress_count || 0]?.map((item, index) => (
             <div
               key={index}
               className="label_with_value"
             >
-              <span className="value">{options.series[index]}</span>
+              <span className="value">{item}</span>
             </div>
           ))}
         </div>

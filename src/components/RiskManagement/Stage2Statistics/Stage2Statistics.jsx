@@ -26,6 +26,9 @@ const StageStatisticsChart = () => {
     lineStyle: {
       color: "#54e346",
     },
+    itemStyle: {
+      color: "#54e346",
+    },
     showSymbol: false,
   };
 
@@ -34,6 +37,9 @@ const StageStatisticsChart = () => {
     type: "line",
     data: data?.failed,
     lineStyle: {
+      color: "#e35446",
+    },
+    itemStyle: {
       color: "#e35446",
     },
     showSymbol: false,

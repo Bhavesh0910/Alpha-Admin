@@ -32,6 +32,9 @@ const AccountProfitChart = () => {
       color: "#54e346",
     },
     showSymbol: false,
+    itemStyle: {
+      color: "#54e346",
+    },
   };
 
   const seriesData2 = {
@@ -42,6 +45,9 @@ const AccountProfitChart = () => {
       color: "#e35446",
     },
     showSymbol: false,
+    itemStyle: {
+      color: "#e35446",
+    },
   };
 
   const option = {
@@ -53,6 +59,11 @@ const AccountProfitChart = () => {
     },
     tooltip: {
       trigger: "axis",
+      formatter: (params) => {
+        const date = params[0]?.axisValue || "";
+        const content = params.map((param) => `${param.marker} ${param.seriesName}: $${param.value.toFixed(2)}`).join("<br/>");
+        return `<strong>${date}</strong><br/>${content}`;
+      },
     },
     xAxis: {
       type: "category",

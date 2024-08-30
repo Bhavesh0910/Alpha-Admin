@@ -52,12 +52,24 @@ const PayoutChart = ({chartData}) => {
       <div className="header_wrapper">
         <h2>Payouts</h2>
       </div>
-      <Chart
-        options={options}
-        series={series}
-        type="pie"
-        id="custom_pie_chart"
-      />
+      <div id="payoutChart">
+        <Chart
+          options={options}
+          series={series}
+          type="pie"
+          id="custom_pie_chart"
+        />
+        <span className="labels_container">
+          {chartData?.amounts?.map((amount, index) => (
+            <div
+              key={index}
+              className="label_with_value m2"
+            >
+              <span className="value piechartamount">${amount}</span>
+            </div>
+          ))}
+        </span>
+      </div>
     </div>
   );
 };

@@ -5,36 +5,27 @@ import "./PaymentChart.scss";
 const PaymentChart = ({chartData}) => {
   const options = {
     chart: {
-      type: "pie",
+      type: "donut",
     },
-    // labels: ["Japan", "Iceland", "India", "Guinea", "Poland", "Brazil", "Bahrain", "Monaco"],
     labels: chartData?.labels || [],
-    colors: ["#9A60B4", "#315CDE", "#FAC858", "#B2DC9F", "#6B54C6", "#EE6666", "#73C0DE", "#3BA272", "#FC8452","#FC8452"],
-
-    plotOptions: {
-      pie: {
-        dataLabels: {
-          offset: -5,
-        },
-      },
-    },
-
-    dataLabels: {
-      formatter(val, opts) {
-        const name = opts?.w?.globals.labels[opts?.seriesIndex];
-        // return [name, val.toFixed(1) + "%"];
-        return [ val.toFixed(1) + "%"];
-      },
-    },
-    legend: {
-      show: true,
-    },
+    colors: ["#9A60B4", "#315CDE", "#FAC858", "#B2DC9F", "#6B54C6", "#EE6666", "#73C0DE", "#3BA272", "#FC8452", "#FC8452"],
     plotOptions: {
       pie: {
         donut: {
           size: "25%",
         },
+        dataLabels: {
+          offset: -5,
+        },
       },
+    },
+    dataLabels: {
+      formatter(val, opts) {
+        return [val.toFixed(1) + "%"];
+      },
+    },
+    legend: {
+      show: true,
     },
     stroke: {
       show: true,
@@ -46,20 +37,31 @@ const PaymentChart = ({chartData}) => {
     },
   };
 
-  // const series = [20, 18, 15, 14, 12, 10, 8, 3]; // Dummy data similar to the data in the image
-  const series = chartData?.series || []; // Dummy data similar to the data in the image
+  const series = chartData?.series || [];
 
   return (
-    <div className="paymentChart_wrapper">
+    <div className="payoutChart_wrapper">
       <div className="header_wrapper">
         <h2>Payments</h2>
       </div>
-      <Chart
-        options={options}
-        series={series}
-        type="donut"
-        id="custom_pie_chart"
-      />
+      <div id="payoutChart">
+        <Chart
+          options={options}
+          series={series}
+          type="donut"
+          id="custom_pie_chart"
+        />
+        <div className="labels_container">
+          {chartData?.amounts?.map((amount, index) => (
+            <div
+              key={index}
+              className="label_with_value m2"
+            >
+              <span className="value piechartamount">${amount}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

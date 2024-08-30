@@ -44,7 +44,9 @@ function TraderOverview() {
   const {data, isLoading: accountsLoading, totalItems, refresh} = useSelector((state) => state.accountList);
   const [Challenges, setChallenges] = useState(null);
   const [labels, setLabels] = useState([]);
-  const [deal, setDeal] = useState(false);
+  const [count, setCount] = useState(0);
+  const [msg, setMsg] = useState(null);
+
   const [ChallengesOptions, setChallengesOptions] = useState([]);
   const {fundingData} = useSelector((state) => state.funding);
 
@@ -421,28 +423,28 @@ function TraderOverview() {
               // defaultValue={ChallengesOptions[0]}
               placeholder="Select Challenge"
               className="header-select widthFitContent"
-              onChange={(value, c) => {
+              onChange={(value, c, ind) => {
                 setChallenges(value);
                 const labels = c.map((item) => item.label);
                 setLabels(labels);
+                if (c.length === 2) {
+                  setMsg(<p>{`${labels[0]}` + `${labels[1]}`}...</p>);
+                }
               }}
               options={ChallengesOptions || []}
-              // tagRender={(item) => {
-              //   console.log("item , ", item);
-              //   return <p>{item?.label}</p>;
-              // }}
               tagRender={(item) => {
-                console.log("item , ", item);
-                // return <p>{item?.label}</p>;
-                console.log(labels, "labels");
-
-                //   if (labels.length > 1) {
-                //     if (deal) {
-                //       return <p>{`${labels[0]}` + `${labels[1]}`}...</p>;
-                //     }
+                // if (msg) {
+                //   if (count > 1) {
+                //     console.log("Hereee");
+                //     return;
                 //   } else {
-                //     return <p>{labels[0]}</p>;
+                //     setCount((prev) => prev + 1);
+                //     console.log("Heree");
+                //     return msg;
                 //   }
+                // } else {
+                //   return <p>{labels[0]}</p>;
+                // }
               }}
             />
           </div>

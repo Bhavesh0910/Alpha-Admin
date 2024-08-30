@@ -1,22 +1,28 @@
-import React, {useRef, useState} from "react";
+import React from "react";
 import ApexCharts from "react-apexcharts";
 import "./Stage2Chart.scss";
+import {useSelector} from "react-redux";
+
 const Stage2Chart = ({data}) => {
-  const chartRef = useRef(null);
+  const {accountOverviewData} = useSelector((state) => state.risk);
+
+  const passPercent = data?.pass_percent || 0;
+  const failPercent = data?.fail_percent || 0;
+  const inProgressPercent = data?.in_progress_percent || 0;
+  const othersPercent = 100 - (passPercent + failPercent + inProgressPercent);
 
   const options = {
-    series: [data?.pass_count || [], data?.fail_count || [], data?.in_progress_count || []],
+    // series: [passPercent, failPercent, inProgressPercent, othersPercent],
+    series: [passPercent, failPercent, inProgressPercent],
+    // labels: ["Total Pass", "Total Fail", "Total In progress", "Others"],
     labels: ["Total Pass", "Total Fail", "Total In progress"],
-    colors: ["#A3EA93", "#F97F7F", "#efef35"],
+    // colors: ["#A3EA93", "#F97F7F", "#efef35", "#efef35"],
+    colors: ["#A3EA93", "#F97F7F", "#efef35", "#efef35"],
     chart: {
       width: 380,
       type: "donut",
       offsetY: 0,
       offsetX: 0,
-      labels: {
-        show: true,
-        name: "test",
-      },
     },
     dataLabels: {
       enabled: false,
@@ -54,6 +60,11 @@ const Stage2Chart = ({data}) => {
       width: 2,
       dashArray: 0,
     },
+    tooltip: {
+      y: {
+        formatter: (value) => `${value}%`,
+      },
+    },
   };
 
   return (
@@ -70,12 +81,12 @@ const Stage2Chart = ({data}) => {
           />
         </div>
         <div className="labels_container">
-          {options.labels.map((label, index) => (
+          {[accountOverviewData?.stage2?.pass_count || 0, accountOverviewData?.stage2?.fail_count || 0, accountOverviewData?.stage2?.in_progress_count || 0]?.map((label, index) => (
             <div
               key={index}
               className="label_with_value"
             >
-              <span className="value">{options.series[index]}</span>
+              <span className="value">{label}</span>
             </div>
           ))}
         </div>

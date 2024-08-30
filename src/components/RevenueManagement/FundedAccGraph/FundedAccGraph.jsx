@@ -2,41 +2,29 @@ import React, {useEffect, useState} from "react";
 import "./FundedAccGraph.scss";
 import ReactApexChart from "react-apexcharts";
 import {useSelector} from "react-redux";
-import {color} from "echarts";
 import {DatePicker} from "antd";
 const {RangePicker} = DatePicker;
 
 const FundedAccGraph = ({setDates, rangePresets}) => {
   const {barData} = useSelector((state) => state.revenue);
-  const [data, setData] = useState(new Array(12).fill(0));
+  const [mainData, setMainData] = useState({dates: [], fundedCount: []});
 
   useEffect(() => {
     if (barData?.data && barData?.data.length > 0) {
-      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-      const newData = new Array(12).fill(0);
-
+      const monthNames = [];
+      const data = [];
       barData?.data.forEach((item) => {
         if (item && item.month_year) {
-          console.log(item.month_year, "Processing month");
-
-          const [monthName, year] = item.month_year.split(" ");
-          console.log("Month name : ",monthName)
-          const monthIndex = monthNames.indexOf(monthName);
-
-          if (monthIndex !== -1 && typeof item.total_funded_accounts === "number") {
-            newData[monthIndex] = item.total_funded_accounts;
-          } else {
-            console.warn(`Invalid month or count: ${monthName}, ${item.total_funded_accounts}`);
-          }
+          const trimmedMonthYear = item.month_year.trim();
+          const [monthName, year] = trimmedMonthYear.split(/\s+/);
+          monthNames.unshift(`${monthName?.slice(0, 3)} ${year}`);
+          data.unshift(item.total_funded_accounts);
         } else {
           console.warn("Invalid item or month:", item);
         }
       });
 
-      console.log("New data : ",newData)
-
-      setData(newData);
+      setMainData({dates: monthNames, fundedCount: data});
     }
   }, [barData?.data]);
 
@@ -45,6 +33,18 @@ const FundedAccGraph = ({setDates, rangePresets}) => {
       type: "bar",
       height: 350,
       background: "#fff",
+      toolbar: {
+        show: true,
+        tools: {
+          download: false,
+          // selection: true,
+          // zoom: true,
+          // zoomin: true,
+          // zoomout: true,
+          // pan: false,
+          // reset: true,
+        },
+      },
     },
     plotOptions: {
       bar: {
@@ -62,7 +62,7 @@ const FundedAccGraph = ({setDates, rangePresets}) => {
       colors: ["transparent"],
     },
     xaxis: {
-      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      categories: mainData?.dates || [],
       labels: {
         style: {
           colors: "#1E1E1E",
@@ -85,7 +85,7 @@ const FundedAccGraph = ({setDates, rangePresets}) => {
     },
     fill: {
       opacity: 1,
-      colors: ["#04D9FF"], // matching the bar color
+      colors: ["#04D9FF"],
     },
     tooltip: {
       y: {
@@ -94,21 +94,16 @@ const FundedAccGraph = ({setDates, rangePresets}) => {
         },
       },
     },
-    theme: {
-      mode: "dark",
-      palette: "palette1",
-    },
     grid: {
       show: true,
       borderColor: "#252A29",
     },
-    backgroundColor: "#fff",
   };
 
   const series = [
     {
       name: "No. of Funded Accounts",
-      data: data || [],
+      data: mainData?.fundedCount || [],
     },
   ];
 

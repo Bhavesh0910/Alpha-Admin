@@ -2,6 +2,8 @@
   padding: 20px;
   border-radius: var(--Corner-Radius, 10px);
   background: var(--white, #fff);
+  display: grid;
+  grid-template-rows: 10% 90%;
   .header_wrapper {
     h2 {
       color: var(--Text-white, #1e1e1e);
@@ -15,12 +17,12 @@
   .apexcharts-legend {
     height: 100% !important;
     position: absolute;
-    left: auto;
-    top: 0px !important;
-    right: 0px !important;
-    padding: 0 !important;
-    justify-content: center !important;
-    gap: 8px;
+    // left: auto;
+    // top: 0px !important;
+    // right: 0px !important;
+    // padding: 0 !important;
+    // justify-content: center !important;
+    // gap: 8px;
     .apexcharts-legend-series {
       display: flex;
       align-items: center;
@@ -39,5 +41,36 @@
         line-height: normal !important;
       }
     }
+  }
+}
+
+#payoutChart {
+  display: grid;
+  grid-template-columns: 80% 20%;
+  #custom_pie_chart {
+    min-height: 100% !important;
+  }
+  .apexcharts-canvas {
+    height: 100% !important;
+  }
+  .apexcharts-svg {
+    height: 100% !important;
+    foreignObject {
+      height: 100% !important;
+      .apexcharts-legend {
+        top: 0px !important;
+      }
+    }
+  }
+  .m2 {
+    margin-bottom: 1px;
+  }
+
+  .mml {
+    margin-left: -3rem;
+  }
+  .piechartamount {
+    font-family: "Nunito Sans";
+    font-size: 11px;
   }
 }

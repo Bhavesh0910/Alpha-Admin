@@ -22,7 +22,7 @@ const AccountMetrics = () => {
   };
   const { login_id ,  platform } = useParams();
 
-  console.log(login_id , platform) 
+  console.log("platformmmmmmm : ",platform) 
   const idToken = useSelector((state) => state.auth.idToken);
   const dispatch = useDispatch();
   const { tradingAccountOverview, accountDetails, accountAnalysis , objectives, performanceChart ,  accountInsights , isLoading, error } = useSelector(state => state.accountMetrics);

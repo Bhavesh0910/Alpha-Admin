@@ -173,9 +173,10 @@ export const statusUpdateReq = createAsyncThunk("support/updateStatus", async ({
   }
 });
 
-export const editCommentReq = createAsyncThunk("support/editComment", async ({idToken, body, id, dispatch}, {rejectWithValue}) => {
+export const editCommentReq = createAsyncThunk("support/editComment", async ({idToken, body, id, stage, dispatch}, {rejectWithValue}) => {
   try {
-    const response = await editCommentApi(idToken, body, id);
+    const response = await editCommentApi(idToken, body, id, stage);
+    console.log(stage, " stage");
     return response;
   } catch (error) {
     dispatch(returnErrors("Error Fetching List...", 400));
@@ -224,14 +225,26 @@ async function statusUpdateApi(idToken, body, id, isPayoutUpdate, updatedStatus)
   }
 }
 
-async function editCommentApi(idToken, body, id) {
+async function editCommentApi(idToken, body, id, stage) {
   try {
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    let response = await axios.patch(`${baseUrl}v2/get/funded/details/${id}/`, body, config);
+    let response;
+    console.log("id", stage, body, id);
+
+    if (stage === "stage") {
+      console.log("I am hereeeee");
+      response = await axios.post(`${baseUrl}support/admin/get//details/${id}/`, body, config);
+    }
+    if (stage === "funded") {
+      response = await axios.patch(`${baseUrl}v2/get/funded/details/${id}/`, body, config);
+    }
+    if (stage === "payout") {
+      response = await axios.patch(`${baseUrl}v2/get/funded/details/${id}/`, body, config);
+    }
     return response;
   } catch (error) {
     console.log("error :", error);
@@ -261,7 +274,7 @@ async function createAccountApi(idToken, body) {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    console.log("body : ",body)
+    console.log("body : ", body);
     let response = await axios.post(`${baseUrl}support/admin/create/account/`, body, config);
     return response;
   } catch (error) {

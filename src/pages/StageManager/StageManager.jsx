@@ -62,9 +62,7 @@ const StageManager = () => {
     stageStatusOptions || location.pathname === "/support/funded"
       ? ["New", "In Progress", "Flagged", "Dissmissed", "Rejected", "Approved"]
       : ["New", "In Progress", "Flagged", "Dissmissed", "Rejected", "Approved"];
-  console.log("options: ", options);
   useEffect(() => {
-    // console.log("Fetching UseEffect");
     fetchStageList(idToken, pageNo, pageSize, searchText, status, dates);
   }, [searchText, pageNo, pageSize, status, idToken, dates, fetchUpdate, refetch]);
 
@@ -199,8 +197,13 @@ const StageManager = () => {
   const handleEditComment = () => {
     const formData = new FormData();
     formData.append("comment", editCommentToUpdate);
+
     let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
-    dispatch(editCommentReq({idToken, body: formData, id: userId, dispatch}));
+
+    console.log(" I am editing comment");
+    console.log("======================================");
+
+    dispatch(editCommentReq({idToken, body: formData, id: userId, stage: location.pathname, dispatch}));
     setIsModalVisible(false);
   };
 
@@ -490,23 +493,34 @@ const StageManager = () => {
             title: "Details",
             dataIndex: "details",
             key: "details",
-            render: (text, record) => (
-              <Button
-                style={{background:'#c5ffff'}}
-                onClick={() => navigate(`/account-analysis/${record.account_id}`)}
-                className="account_metrics_btn"
-                title="Account Metrics"
-              >
-                <img style={{height:'16px'}} src={AccIcon} alt="" />
-              </Button>
-            ),
+            render: (text, record) => {
+              const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
+              return (
+                <Button
+                  style={{background: "#c5ffff"}}
+                  onClick={() => navigate(`/account-analysis/${record.account_id}/${platform}`)}
+                  className="account_metrics_btn"
+                  title="Account Metrics"
+                >
+                  <img
+                    style={{height: "16px"}}
+                    src={AccIcon}
+                    alt=""
+                  />
+                </Button>
+              );
+            },
           },
           {
             title: "Action",
             key: "action",
             width: 80,
             render: (text, row) => (
-              <div  style={{cursor:'pointer'}} title="Create Account" onClick={() => openCreateAccountModel(row)}>
+              <div
+                style={{cursor: "pointer"}}
+                title="Create Account"
+                onClick={() => openCreateAccountModel(row)}
+              >
                 <img
                   src={createIcon}
                   alt=""
@@ -779,17 +793,23 @@ const StageManager = () => {
             title: "Details",
             dataIndex: "details",
             key: "details",
-            render: (text, record) => (
-          
+            render: (text, record) => {
+              const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
+              return (
                 <Button
-                style={{background:'#c5ffff'}}
-                onClick={() => navigate(`/account-analysis/${record.account_id}`)}
-                className="account_metrics_btn"
-                title="Account Metrics"
-              >
-                <img style={{height:'16px'}} src={AccIcon} alt="" />
-              </Button>
-            ),
+                  style={{background: "#c5ffff"}}
+                  onClick={() => navigate(`/account-analysis/${record.account_id}/${platform}`)}
+                  className="account_metrics_btn"
+                  title="Account Metrics"
+                >
+                  <img
+                    style={{height: "16px"}}
+                    src={AccIcon}
+                    alt=""
+                  />
+                </Button>
+              );
+            },
           },
           {
             title: "Action",
@@ -804,7 +824,11 @@ const StageManager = () => {
               //   }
               //   trigger={["click"]}
               // >
-              <div  style={{cursor:'pointer'}} title="Create Account" onClick={() => openCreateAccountModel(row)}>
+              <div
+                style={{cursor: "pointer"}}
+                title="Create Account"
+                onClick={() => openCreateAccountModel(row)}
+              >
                 <img
                   src={createIcon}
                   alt=""
@@ -973,18 +997,23 @@ const StageManager = () => {
             title: "Details",
             dataIndex: "details",
             key: "details",
-
-            render: (text, record, index) => (
-            
+            render: (text, record, index) => {
+              const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
+              return (
                 <Button
-                style={{background:'#c5ffff'}}
-                onClick={() => navigate(`/account-analysis/${record.account_id}`)}
-                className="account_metrics_btn"
-                title="Account Metrics"
-              >
-                <img style={{height:'16px'}} src={AccIcon} alt="" />
-              </Button>
-            ),
+                  style={{background: "#c5ffff"}}
+                  onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}
+                  className="account_metrics_btn"
+                  title="Account Metrics"
+                >
+                  <img
+                    style={{height: "16px"}}
+                    src={AccIcon}
+                    alt=""
+                  />
+                </Button>
+              );
+            },
           },
         ];
         break;
@@ -1360,8 +1389,6 @@ function ExpandedRowData({record}) {
   const [updatedContract, setUpdatedContract] = useState(null);
 
   const dispatch = useDispatch();
-
-  console.log("record ,", record);
   useEffect(() => {
     switch (location.pathname) {
       case "/support/stage-1":
@@ -1396,8 +1423,12 @@ function ExpandedRowData({record}) {
   const handleEditComment = () => {
     const formData = new FormData();
     formData.append("comment", editCommentToUpdate);
+
     let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
-    dispatch(editCommentReq({idToken, body: formData, id: userId, dispatch}));
+
+    let stage = location.pathname === "/support/funded" ? "funded" : location.pathname === "/support/payout" ? "payout" : "stage";
+
+    dispatch(editCommentReq({idToken, body: formData, id: userId, stage: stage, dispatch}));
     setIsModalVisible(false);
   };
 
