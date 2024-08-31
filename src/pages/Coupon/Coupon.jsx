@@ -81,7 +81,7 @@ const Coupon = () => {
       title: "Coupon Amount",
       dataIndex: "coupon_amount",
       key: "amount",
-      width: 100,
+      width: 150,
       render: (text) => (text !== null ? `$${text}` : "-"),
     },
     {
@@ -94,7 +94,7 @@ const Coupon = () => {
       title: "Coupon Percentage",
       dataIndex: "coupon_percent",
       key: "percent",
-      width: 100,
+      width: 120,
       render: (text) => text || "-",
     },
     // {
@@ -107,6 +107,13 @@ const Coupon = () => {
       title: "Single Use",
       dataIndex: "multi_use",
       key: "single_use",
+      width: 100,
+      render: (text) => <div className="coupon_status_container">{text === true ? "No" : "Yes"}</div>,
+    },
+    {
+      title: "Multi Use",
+      dataIndex: "multi_use",
+      key: "multi_use",
       width: 100,
       render: (text) => <div className="coupon_status_container">{text === true ? "No" : "Yes"}</div>,
     },
