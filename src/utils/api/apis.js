@@ -414,15 +414,15 @@ const getSearchTradersRequest = async (idToken, competition, search) => {
 };
 
 //affiliate
-const traderAffiliateRefList = async (idToken, id) => {
+const traderAffiliateRefList = async (idToken, id , status = 'success') => {
   try {
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
-      // params: {
-      //   affiliate_code_id: id,
-      // },
+      params: {
+        status: status,
+      },
     };
     const response = await axios.get(`${baseUrl}v2/get/referred-users/list/?affiliate_id=${id}`, config);
     return response.data;
@@ -439,7 +439,7 @@ export async function fetchAffiliateExport(idToken, affiliateId) {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get(`${baseUrl}v3/export/affiliate-referred/?affiliate_id=${affiliateId}`, config);
+    const response = await axios.get(`${baseUrl}v3/export/affiliate-reffered/?affiliate_id=${affiliateId}`, config);
     return response;
   } catch (error) {
     throw error; // Handle the error as needed
@@ -892,6 +892,27 @@ const changeUserStatus = async (idToken, note = "", id) => {
 
   return output;
 };
+
+//soft block
+export const softBlockUserApi = async (idToken, userId, note) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  };
+
+  const payload = new FormData();
+  payload.append("id", userId);
+  payload.append("note", note); 
+
+  try {
+    const response = await axios.post(`${baseUrl}soft-block/user/`, payload, config);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // for reset password
 const resetPassword = async (idToken, data) => {
   let config = {

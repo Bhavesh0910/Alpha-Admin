@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {baseUrl, changeUserStatus, getUserList, ipLogsReq} from "../../utils/api/apis";
+import {baseUrl, changeUserStatus, getUserList, ipLogsReq, softBlockUserApi} from "../../utils/api/apis";
 import {returnErrors} from "../reducers/error";
 import {returnMessages} from "../reducers/message";
 import axios from "axios";
@@ -70,6 +70,27 @@ export const toggleActiveUser = createAsyncThunk("list/toggleActiveUser", async 
     return rejectWithValue(error.response?.data || "Error changing user status");
   }
 });
+
+export const softBlockUser = createAsyncThunk(
+  "list/softBlockUser",
+  async ({ id, note = " ", idToken }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await softBlockUserApi(idToken, id, note);
+      if (response?.status < 399) {
+        dispatch(returnMessages(note === 'Soft blocking user' ? "User Soft Blocked Successfully" : "User Unblocked Successfully"));
+        return { id, note }; 
+      } else {
+        return rejectWithValue("Error from server");
+      }
+    } catch (error) {
+      const msg = "Error soft blocking/unblocking user";
+      dispatch(returnErrors(error?.response?.data?.detail || msg, 400));
+      return rejectWithValue(msg);
+    }
+  }
+);
+
+
 
 const listSlice = createSlice({
   name: "list",

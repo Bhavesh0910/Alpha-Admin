@@ -5,16 +5,16 @@ import moment from "moment";
 import { CopyOutlined, DownOutlined, ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { fetchUserList, toggleActiveUser, updateFlagReq, updateUser } from "../../../store/NewReducers/listSlice";
+import { fetchUserList, softBlockUser, toggleActiveUser, updateFlagReq, updateUser } from "../../../store/NewReducers/listSlice";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import { returnMessages } from "../../../store/reducers/message";
 import ReactCountryFlag from "react-country-flag";
 import { useNavigate } from "react-router-dom";
-import blockIcon from '../../../assets/icons/block.svg'
-import unblockIcon from '../../../assets/icons/unblock.svg'
-import editIcon from '../../../assets/icons/edit.svg'
+import blockIcon from '../../../assets/icons/block.svg';
+import unblockIcon from '../../../assets/icons/unblock.svg';
+import editIcon from '../../../assets/icons/edit.svg';
 
 const { confirm } = Modal;
 const { Option } = Select;
@@ -34,7 +34,8 @@ const UserListTable = () => {
   const [category, setCategory] = useState("all");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-
+  const [blockModalVisible, setBlockModalVisible] = useState(false);
+  const [blockType, setBlockType] = useState('hard');
   const [flagUser, setFlagUser] = useState(null);
   const [flagModal, setFlagModel] = useState(false);
   const [flagUpdatedValue, setFlagUpdatedValue] = useState(null);
@@ -72,25 +73,46 @@ const UserListTable = () => {
     setCategory(value);
   };
 
-  const handleStatusChange = async (user) => {
-    confirm({
-      title: `Are you sure you want to ${user.is_active ? "block" : "activate"} this user?`,
-      icon: <ExclamationCircleOutlined />,
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "No",
-      onOk: async () => {
-        const id = user.id;
-        const note = user.is_active ? "Deactivating user" : "Activating user";
-        try {
-          await dispatch(toggleActiveUser({ id, note, idToken })).unwrap();
-          dispatch(returnMessages(`User ${user.is_active ? "blocked" : "activated"} successfully.`, "success"));
-          dispatch(fetchUserList({ idToken, searchText, pageNo, pageSize, authType, active }));
-        } catch (error) {
-          dispatch(returnMessages("Error changing user status.", "error"));
-        }
-      },
-    });
+  const handleBlockUser = async () => {
+    if (blockType === 'hard') {
+      await dispatch(toggleActiveUser({ id: selectedUser.id, note: 'Hard blocking user', idToken })).unwrap();
+      await dispatch(returnMessages("User blocked successfully.", "success"));
+    } else if (blockType === 'soft') {
+      await dispatch(softBlockUser({ id: selectedUser.id, note: 'Soft blocking user', idToken })).unwrap();
+      await dispatch(returnMessages("User blocked successfully.", "success"));
+    }
+
+    setBlockModalVisible(false);
+    dispatch(fetchUserList({ idToken, searchText, pageNo, pageSize, authType, active }));
+  };
+
+  const handleStatusChange = (user) => {
+    if (user.is_active && !user?.soft_blocked) {
+      setSelectedUser(user);
+      setBlockModalVisible(true);
+    } else {
+      confirm({
+        className: 'confirm_modal',
+        title: `Are you sure you want to unblock this user?`,
+        icon: <ExclamationCircleOutlined />,
+        okText: "Yes",
+        okType: "danger",
+        cancelText: "No",
+        onOk: async () => {
+          try {
+            if (user?.soft_blocked) {
+              await dispatch(softBlockUser({ id: user.id, note: 'Unblocking user', idToken })).unwrap();
+            } else {
+              await dispatch(toggleActiveUser({ id: user.id, note: 'Unblocking user', idToken })).unwrap();
+            }
+            dispatch(returnMessages("User unblocked successfully.", "success"));
+            dispatch(fetchUserList({ idToken, searchText, pageNo, pageSize, authType, active }));
+          } catch (error) {
+            dispatch(returnMessages("Error unblocking user.", "error"));
+          }
+        },
+      });
+    }
   };
 
   const handleResetPassword = async (email) => {
@@ -156,9 +178,10 @@ const UserListTable = () => {
       };
 
       dispatch(updateUser({ payload, idToken, dispatch }));
+      dispatch(fetchUserList({ idToken, searchText: '', pageNo: 1, pageSize, authType, active }));
+      setSearchText('')
 
       setIsModalVisible(false);
-      dispatch(fetchUserList({ idToken, searchText, pageNo, pageSize, authType, active }));
     } catch (error) {
       message.error(error.message || "Error updating user");
     }
@@ -262,44 +285,64 @@ const UserListTable = () => {
     {
       title: "Active",
       dataIndex: "is_active",
-      render: (text, record) => <span className={`status_wrapper ${record.is_active ? "active" : "blocked"}`}>{record.is_active !== undefined ? (record.is_active ? "Active" : "Blocked") : "-"}</span>,
+      render: (text) => <span className={`status_wrapper ${text ? "active" : "blocked"}`}>{text !== undefined ? (text ? "Active" : "Blocked") : "-"}</span>,
+    },
+    {
+      title: "Block Type",
+      dataIndex: "soft_blocked",
+      width: 120,
+      render: (_, record) => {
+        if (!record.is_active) {
+          return <span>Hard Blocked</span>;
+        }
+        return record.soft_blocked ? <span>Soft Blocked</span> : <span>Unblocked</span>;
+      },
     },
     {
       title: "Action",
       dataIndex: "actions",
       render: (_, record) => (
         <div className="action_wrapper">
-          <div title={`${record.is_active ? "Block" : "Unblock"}`}
+          <div
+            title={`${record.is_active && !record.soft_blocked ? "Block" : "Unblock"}`}
             onClick={() => handleStatusChange(record)}
             disabled={record.is_active === undefined}
           >
-            {record.is_active !== undefined ? (record.is_active ?
-              <img  src={blockIcon} alt="" />
-              : <img title="Unblock" src={unblockIcon} alt="" />) : "-"}
+            {record.is_active && !record.soft_blocked ? 
+              <img src={blockIcon} alt="Block" /> 
+              : !record.is_active || record?.soft_blocked ? 
+              <img src={unblockIcon} alt="Unblock" /> 
+              : "-"}
           </div>
-          <div title="Edit" onClick={() => handleEditClick(record)}><img src={editIcon} alt="" /></div>
+          <div
+            title="Edit"
+            onClick={() => handleEditClick(record)}
+            style={{ cursor: 'pointer' }}
+          >
+            <img src={editIcon} alt="Edit" />
+          </div>
         </div>
       ),
     },
   ];
+  
 
   const handleExpand = (record) => {
   };
 
-  console.log(tableData)
-  const ExpandedRowRender = ({record}) => {
-
+  console.log(tableData);
+  const ExpandedRowRender = ({ record }) => {
     return (
-    <div className="expanded-row-content">
-      <div>
-      <p><strong>Name: </strong> {record.full_name || "-"}</p>
+      <div className="expanded-row-content">
+        <div>
+          <p><strong>Name: </strong> {record.full_name || "-"}</p>
+        </div>
+        <div>
+          <p><strong>Date Joined: </strong> {record.date_joined ? moment(record.date_joined).format("ll") : "-"}</p>
+        </div>
       </div>
-      <div>
-      <p><strong>Date Joined: </strong> {record.date_joined ? moment(record.date_joined).format("ll") : "-"}</p>
-      </div>
-    </div>
-  );
-}
+    );
+  };
 
   const navigate = useNavigate();
 
@@ -317,17 +360,8 @@ const UserListTable = () => {
         </div>
         <div className="table_header_filter">
           <div className="search_box_wrapper">
-            <Select
-              className="category_dropdown"
-              defaultValue="all"
-              onChange={handleCategoryChange}
-            >
-              <Option value="all">All Categories</Option>
-              <Option value="swift">Swift</Option>
-              <Option value="wire">Wire</Option>
-            </Select>
             <input
-              placeholder="Search..."
+              placeholder="Search by email..."
               className="search_input"
               onKeyDown={(e) => handleSearch(e)}
             />
@@ -360,7 +394,6 @@ const UserListTable = () => {
         setPageSize={setPageSize}
         triggerChange={triggerChange}
         isExpandable={true}
-        // expandedRowRender={expandedRowRender}
         ExpandedComp={ExpandedRowRender}
         rowId="id"
         scrollY={420}
@@ -435,6 +468,24 @@ const UserListTable = () => {
           <Input.TextArea placeholder="Write your comment here.." />
         </Form.Item>
       </Modal>
+
+      <Modal
+        title={"Block User"}
+        visible={blockModalVisible}
+        onCancel={() => setBlockModalVisible(false)}
+        onOk={handleBlockUser}
+      >
+        <Form.Item label="Select Block Type">
+          <Select
+            defaultValue="hard"
+            onChange={(value) => setBlockType(value)}
+          >
+            <Option value="hard">Hard Block</Option>
+            <Option value="soft">Soft Block</Option>
+          </Select>
+        </Form.Item>
+      </Modal>
+
     </div>
   );
 };
