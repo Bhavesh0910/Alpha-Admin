@@ -3,6 +3,7 @@ import {baseUrl} from "../../utils/api/apis";
 import axios from "axios";
 import {PURGE} from "redux-persist";
 import {returnErrors} from "../reducers/error";
+import { returnMessages } from "../reducers/message";
 
 // Define the async thunk for account list
 export const createCoupon = createAsyncThunk("coupon/create", async ({idToken, couponData, dispatch}, {rejectWithValue}) => {
@@ -23,6 +24,7 @@ export const editCoupon = createAsyncThunk("couponsList/edit", async ({idToken, 
     const response = await patchCouponReq(idToken, id, body);
 
     console.log(response);
+    dispatch(returnMessages("Coupon Updated Successfully", 200));
     return response?.data;
   } catch (error) {
     const errorMessage = error.response?.data?.detail || "An error occurred";

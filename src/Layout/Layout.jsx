@@ -371,7 +371,7 @@ const PageLayout = ({ headerName, children }) => {
           position: "fixed",
           left: 0,
           top: 0,
-          zIndex: 1000,
+          zIndex: 11111,
         }}
       >
         <div className="logo-container">

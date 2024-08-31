@@ -316,8 +316,13 @@
   }
 
   .form_group {
+    display: flex;
+    flex-direction: column;
     .ant-picker {
       max-width: 100% !important;
+    }
+    .ant-select{
+      width: 100%;
     }
   }
 }

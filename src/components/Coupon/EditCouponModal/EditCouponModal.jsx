@@ -92,13 +92,13 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
 
     console.log(updatedFields )
 
-    // try {
-    //   dispatch(editCoupon({idToken, id, body: updatedFields, dispatch}));
-    //   handleCloseButton();
-    // } catch (error) {
-    //   console.log(error);
-    //   dispatch(returnErrors(error?.response?.data?.detail || "Action Failed! Try Again.", error?.response?.status || 400));
-    // }
+    try {
+      dispatch(editCoupon({idToken, id, body: updatedFields, dispatch}));
+      handleCloseButton();
+    } catch (error) {
+      console.log(error);
+      dispatch(returnErrors(error?.response?.data?.detail || "Action Failed! Try Again.", error?.response?.status || 400));
+    }
   };
 
   return (

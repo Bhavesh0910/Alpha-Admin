@@ -15,6 +15,8 @@ import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 import {DownOutlined} from "@ant-design/icons";
+import { returnErrors } from "../../store/reducers/error";
+import { returnMessages } from "../../store/reducers/message";
 const {Option} = Select;
 const {RangePicker} = DatePicker;
 
@@ -319,6 +321,8 @@ const Payment = () => {
   const handleCloseModal = () => {
     setModalVisible(true);
   };
+  const { exportLink } = useSelector((state) => state.payment);
+
   return (
     <div className="payment_container">
       <div className="header_wrapper">
@@ -341,7 +345,7 @@ const Payment = () => {
          
             </Select> */}
             <input
-              placeholder="Search..."
+              placeholder="Search by Email , Payment Id..."
               className="search_input"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -407,7 +411,7 @@ const Payment = () => {
           </Link>
         </div>
       </div>
-      <Card className="table-wrapper">
+      <div className="table-wrapper">
         {isLoading ? (
           <LoaderOverlay />
         ) : (
@@ -426,7 +430,7 @@ const Payment = () => {
             rowId={"id"}
           />
         )}
-      </Card>
+      </div>
 
       {isModalVisible === true ? (
         <CalendarModal
@@ -434,6 +438,7 @@ const Payment = () => {
           status={activeTab}
           setModalVisible={setModalVisible}
           handleCloseModal={handleCloseModal}
+          exportLink={exportLink}
         />
       ) : (
         ""
@@ -462,21 +467,70 @@ const Payment = () => {
 
 export default Payment;
 
-const CalendarModal = ({idToken, status, handleCloseModal, setModalVisible}) => {
-  const {exportLink} = useSelector((state) => state.payment);
-  const {searchDates} = useSelector((state) => state.auth);
-  const [dates, setdates] = useState(null);
-  const onRangeChange = (selectedDates) => {
-    setdates(selectedDates.map((value) => value.format("DD/MMM/YYYY")));
-  };
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    let query = `?start_date=${dates && dates[0]}&end_date=${dates && dates[1]}&status=${status === "all" ? "" : status === "paid" ? 1 : 0}`;
+
+const CalendarModal = ({ idToken, exportLink , status, handleCloseModal, setModalVisible }) => {
+  const dispatch = useDispatch();
+  
+  const [dates, setDates] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const rangePresets = [
+    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
+    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
+    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
+    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
+    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] },
+  ];
+
+  const onRangeChange = (dates) => {
+    // setPageNo(1);
     if (dates) {
-      dispatch(paymentExportsReq({idToken, query, dispatch}));
+      setDates(dates.map(date => date.format("DD/MMM/YYYY")));
+      console.log(dates)
+    } else {
+      setDates([])
     }
-  }, [dates]);
+  };
+  
+
+  
+
+
+  const handleExport = () => {
+    if (dates && dates?.length === 2) {
+      const [startDate, endDate] = dates;
+      let query = `?start_date=${startDate}&end_date=${endDate}&status=${status === "all" ? "" : status === "paid" ? 1 : 0}`;
+
+      dispatch(paymentExportsReq({ idToken, query, dispatch }))
+        .unwrap()
+        .then((response) => {
+          const { s3_file_url, filename } = response;
+
+          const link = document.createElement("a");
+          link.href = s3_file_url;
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          setModalVisible(false)
+          dispatch(returnMessages("Export Successful", 200));
+    
+          setModalVisible(false);
+
+        })
+        .catch((error) => {
+          dispatch(returnErrors("Export failed", 400));
+        });
+    } else {
+      notification.warning({
+        message: "Invalid Dates",
+        description: "Please select a valid date range.",
+      });
+    }
+  };
+
+ 
 
   useEffect(() => {
     if (exportLink) {
@@ -484,56 +538,32 @@ const CalendarModal = ({idToken, status, handleCloseModal, setModalVisible}) => 
     }
   }, [exportLink]);
 
-  const rangePresets = [
-    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
-    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
-    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
-    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
-    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]},
-  ];
-
-  const [placement, SetPlacement] = useState("bottomLeft");
-  const placementChange = (e) => {
-    SetPlacement(e.target.value);
-  };
-
   return (
-    <div
-      className="calendarModal_container"
-      onClick={() => setModalVisible(false)}
-    >
-      <div
-        className="calendarModal_wrapper"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
+    <div className="calendarModal_container" onClick={() => setModalVisible(false)}>
+      <div className="calendarModal_wrapper" onClick={(e) => e.stopPropagation()}>
         <h4>Export</h4>
         <div className="calendar_wrapper">
           <RangePicker
-            // open={true}
             presets={rangePresets}
             onChange={onRangeChange}
-            placement={placement}
           />
         </div>
-        <p>File will contain information of the date you’ve selected.</p>
+        <p>File will contain information for the dates you’ve selected.</p>
         <div className="calandarModal_export_btn">
-          {exportLink != "" ? (
-            <a
-              href={`${exportLink?.s3_file_url}`}
-              target="_blank"
-            >
-              <Button className="standard_button">Export</Button>
-            </a>
-          ) : (
-            <Button className="standard_button">Export</Button>
-          )}
+          <Button 
+            className="standard_button" 
+            onClick={handleExport} 
+            loading={isLoading}
+          >
+            Export
+          </Button>
         </div>
       </div>
     </div>
   );
 };
+
+
 
 export const ExpandableRow = ({record}) => {
   return (

@@ -1,4 +1,4 @@
-import { Button, Pagination, Modal, Input, DatePicker, message, Dropdown, Menu } from "antd";
+import { Button, Pagination, Modal, Input, DatePicker, message, Dropdown, Menu, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import threeDotsIcon from "../../assets/icons/menu_3dots_icon.svg";
 import "./Competition.scss";
@@ -8,10 +8,13 @@ import moment from "moment";
 import { deleteCompetition, fetchCompDetails, updateCompetition } from "../../store/NewReducers/competitionSlice";
 import TextArea from "antd/es/input/TextArea";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import { deleteCompDetails } from "../../utils/api/apis";
+import { deleteCompDetails, getChallenges } from "../../utils/api/apis";
 import { returnMessages } from "../../store/reducers/message";
 import { returnErrors } from "../../store/reducers/error";
 import dayjs from "dayjs";
+
+const { Option } = Select;
+
 
 const Competition = () => {
   const [activeTab, setActiveTab] = useState("upcoming");
@@ -263,6 +266,21 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
   const dispatch = useDispatch();
   const idToken = useSelector((state) => state.auth.idToken);
 
+  const [challenges, setChallenges] = useState([]);
+
+  useEffect(() => {
+    fetchChallenges();
+  }, [idToken]);
+
+  const fetchChallenges = async () => {
+    try {
+      const res = await getChallenges(idToken);
+      setChallenges(res?.data);
+    } catch (error) {
+      console.log("Error fetching challenges:", error);
+    }
+  };
+
   useEffect(() => {
     setFormValues(initialValues);
   }, [initialValues]);
@@ -302,6 +320,12 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
       });
   };
 
+  
+  const handleChallengeSelect = (value) => {
+    setFormValues({ ...formValues, challenge: value });
+  };
+
+
   return (
     <form className="edit_competition_form" onSubmit={handleSubmit}>
       <div className="form_group">
@@ -314,14 +338,25 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
         />
       </div>
       <div className="form_group">
-        <label htmlFor="challenge">Challenge Name</label>
-        <Input
-          id="challenge"
-          value={formValues.challenge}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
+              <label htmlFor="challenge_id">Challenge</label>
+              <Select
+                id="challenge_id"
+                placeholder="Select Challenge"
+                value={formValues?.challenge || undefined}
+                onChange={handleChallengeSelect}
+              >
+                {Object.keys(challenges).map((category) => (
+                  
+                  <React.Fragment key={category}>
+                      {challenges[category].map((challenge) => (
+                        <Option key={challenge.id} value={challenge.id}>
+                          {challenge.name}
+                        </Option>
+                      ))}
+                  </React.Fragment>
+                ))}
+              </Select>
+            </div>
       <div className="form_group">
         <label htmlFor="schedule_competition">Schedule Competition</label>
         <DatePicker

@@ -73,6 +73,8 @@ const Payout = () => {
   const handleCloseModal = () => {
     setModalVisible(false);
   };
+  console.log("isExportLoading:", isExportLoading);
+
 
   const handleExport = () => {
     if (exportDates && exportDates.length === 2) {
@@ -224,7 +226,7 @@ const Payout = () => {
 
   return (
     <>
-      {/* {isExportLoading && <LoaderOverlay />} */}
+    {/* {isExportLoading && <LoaderOverlay />} */}
       <div className="payout_main">
         <div className="payout_header">
           <h2>Payout</h2>
@@ -298,6 +300,7 @@ const Payout = () => {
           className="export_modal" 
           closeIcon={<CloseOutlined style={{ color: '#fff' }} />} 
         >
+
           <div className="export_modal_wrapper">
             <RangePicker
               onChange={updateExportDateRange}
@@ -316,6 +319,8 @@ const Payout = () => {
                 borderColor: '#1890ff',
                 color: '#fff',
               }}
+              loading={isExportLoading}
+
             >
               Export
             </Button>

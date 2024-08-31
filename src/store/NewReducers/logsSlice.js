@@ -21,13 +21,14 @@ const logsListApi = async (idToken, url) => {
 // Define the async thunk for fetching logs
 export const logsListReq = createAsyncThunk(
   "logs/fetchLogsList",
-  async ({ idToken, url, key, dispatch }, { rejectWithValue }) => {
+  async ({ idToken, url, key }, { dispatch ,rejectWithValue }) => {
     try {
       const response = await logsListApi(idToken, url);
       return { response, key };
     } catch (error) {
-      dispatch(returnErrors(error?.response?.data?.detail, 400));
-      return rejectWithValue(error.response.data);
+      const msg = "Error fetching logs"
+      dispatch(returnErrors(error?.response?.data?.detail || msg, 400));
+      return rejectWithValue(msg);
     }
   }
 );
@@ -47,6 +48,7 @@ const logSlice = createSlice({
     userSupportLogData: [],
     userIpLogData: [],
     changeEmailLogData: [],
+    reqPayoutLogData: [],
     userLogData: [],
     couponLogData: [],
     payoutLogData: [],

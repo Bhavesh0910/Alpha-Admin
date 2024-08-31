@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { DatePicker, Button, Select, Tooltip, notification, Card, Dropdown, Menu, Modal, Form, Input } from "antd";
+import { DatePicker, Button, Select, Tooltip, notification, Card, Dropdown, Menu, Modal, Form, Input, Spin } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import exportBtnIcon from "../../../assets/icons/export_btn_icon.svg";
@@ -289,7 +289,6 @@ const WithdrawalStatus = () => {
 
   return (
     <div className="withdrawal_status_container">
-
       <div className="table_header_filter">
         <div className="header_left">
           <div className="search_box_wrapper">
@@ -427,6 +426,7 @@ const WithdrawalStatus = () => {
               borderColor: "#1890ff",
               color: "#fff",
             }}
+            loading={isExportLoading}
           >
             Export
           </Button>

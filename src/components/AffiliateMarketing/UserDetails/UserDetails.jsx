@@ -23,7 +23,7 @@ const UserDetails = ({ isUserDetailOpened, setIsUserDetailOpened, id }) => {
     if (isUserDetailOpened) {
       setIsLoading(true);
       try {
-        const data = await traderAffiliateRefList(idToken, id);
+        const data = await traderAffiliateRefList(idToken, id , status);
         setReferredList(data);
       } catch (error) {
         dispatch(returnErrors("Error fetching referred list", 400));
@@ -36,14 +36,14 @@ const UserDetails = ({ isUserDetailOpened, setIsUserDetailOpened, id }) => {
 
   useEffect(() => {
     fetchData();
-  }, [isUserDetailOpened]);
+  }, [isUserDetailOpened , status]);
 
   const handleExport = async () => {
     try {
       const response = await dispatch(fetchAffExportData({ idToken, affiliateId: id }));
       if (fetchAffExportData.fulfilled.match(response)) {
         const { s3_file_url } = response.payload;
-        window.open(s3_file_url, "_blank");
+        window.location.href = s3_file_url;
       } else {
         console.error("Failed to fetch export data:", response.error.message);
       }

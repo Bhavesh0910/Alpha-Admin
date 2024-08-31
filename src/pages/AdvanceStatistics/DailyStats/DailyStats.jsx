@@ -6,7 +6,7 @@ import exportBtnIcon from "../../../assets/icons/export_btn_icon.svg";
 import { ReactComponent as CopyButton } from "../../../assets/icons/copyButtonGray.svg";
 import dayjs from "dayjs";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import { DownOutlined } from "@ant-design/icons";
+import { CloseOutlined, DownOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import "./DailyStats.scss";
 import { fetchDailyStats, fetchWithdrawalsStatus } from "../../../store/NewReducers/advanceStatistics";
@@ -488,11 +488,12 @@ const DailyStats = () => {
             </div>
           </div>
         </div>
-        <RangePicker
+  
+      </div>
+      <RangePicker
           presets={rangePresets}
           onChange={updateDateRange}
         />
-      </div>
       {isLoading ? (
         <LoaderOverlay />
       ) : (
@@ -508,26 +509,40 @@ const DailyStats = () => {
 
         />
       )}
-      <Modal
-        title="Export"
-        visible={isModalVisible}
-        onOk={handleExport}
-        onCancel={handleCloseModal}
-        okText="Export"
-        style={{
-          backgroundColor: '#161D26'
-        }}
-        className="export_modal"
-      >
-        <div className="export_modal_wrapper">
-          <RangePicker
-            onChange={updateExportDateRange}
-            autoFocus
-            presets={rangePresets}
-          />
-        </div>
-        File will contain information of the date you’ve selected.
-      </Modal>
+           <Modal
+          title="Export"
+          visible={isModalVisible}
+          onCancel={handleCloseModal} 
+          footer={null} 
+          className="export_modal" 
+          closeIcon={<CloseOutlined style={{ color: '#fff' }} />} 
+        >
+
+          <div className="export_modal_wrapper">
+            <RangePicker
+              onChange={updateExportDateRange}
+              autoFocus
+              presets={rangePresets}
+              style={{ width: '100%' }} 
+            />
+          </div>
+          <p style={{ color: '#fff' }}>File will contain information of the date you’ve selected.</p>
+          <div className="btn_wrapper">
+            <Button
+              type="primary"
+              onClick={handleExport}
+              style={{
+                backgroundColor: '#1890ff', 
+                borderColor: '#1890ff',
+                color: '#fff',
+              }}
+              loading={isExportLoading}
+
+            >
+              Export
+            </Button>
+          </div>
+        </Modal>
     </div>
   );
 };

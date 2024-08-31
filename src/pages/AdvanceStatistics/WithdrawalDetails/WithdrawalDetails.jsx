@@ -353,6 +353,7 @@ const WithdrawalDetails = () => {
               borderColor: "#1890ff",
               color: "#fff",
             }}
+            loading={isExportLoading}
           >
             Export
           </Button>

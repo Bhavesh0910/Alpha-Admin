@@ -25,10 +25,11 @@ export const exportDataReq = createAsyncThunk(
       const response = await exportDataApi(idToken, url);
       return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
+
 
 const exportSlice = createSlice({
   name: "export",
@@ -54,5 +55,6 @@ const exportSlice = createSlice({
       });
   },
 });
+
 
 export default exportSlice.reducer;
