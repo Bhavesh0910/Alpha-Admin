@@ -25,14 +25,15 @@ const Payout = () => {
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [dates, setDates] = useState(null); 
-  const [exportDates, setExportDates] = useState(null); 
+  const [dates, setDates] = useState(null);
+  const [exportDates, setExportDates] = useState(null);
+
   const { payoutDetails, totalPayments, isLoading } = useSelector((state) => state.advanceStatistics);
   const { idToken } = useSelector((state) => state.auth);
   const { isLoading: isExportLoading } = useSelector((state) => state.export);
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
@@ -45,7 +46,7 @@ const Payout = () => {
       const [startDate, endDate] = dates;
       query += `&start_date=${startDate}&end_date=${endDate}`;
     }
-  
+
     dispatch(fetchPayoutDetails({ idToken, query }));
     dispatch(fetchTotalPayments({ idToken, query }));
   }, [dispatch, idToken, pageNo, pageSize, searchText, dates]);
@@ -77,19 +78,19 @@ const Payout = () => {
     if (exportDates && exportDates.length === 2) {
       const [startDate, endDate] = exportDates;
       const url = `export/payout-details/?start_date=${startDate}&end_date=${endDate}`;
-      
+
       dispatch(exportDataReq({ idToken, url }))
         .unwrap()
         .then((response) => {
           const { s3_file_url, filename } = response;
-  
+
           const link = document.createElement('a');
           link.href = s3_file_url;
-          link.download = filename; 
+          link.download = filename;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
-  
+
           dispatch(returnMessages("Export Successful", 200));
           handleCloseModal();
         })
@@ -202,7 +203,7 @@ const Payout = () => {
     if (dates) {
       setExportDates(dates.map(date => date.format("DD/MMM/YYYY")));
     } else {
-      setExportDates([]); 
+      setExportDates([]);
     }
   };
 
@@ -223,7 +224,7 @@ const Payout = () => {
 
   return (
     <>
-      {isExportLoading && <LoaderOverlay />}
+      {/* {isExportLoading && <LoaderOverlay />} */}
       <div className="payout_main">
         <div className="payout_header">
           <h2>Payout</h2>
@@ -332,7 +333,6 @@ const ExpandedRowRender = ({ record }) => {
     <div className="expanded-row-content">
       <p><strong>Name:</strong> {record.name || '-'}</p>
       <p><strong>Starting Balance:</strong> {record.starting_balance || '-'}</p>
-      {/* <p><strong>Next Payout Date:</strong> {moment(record.next_payout_date).format("DD MMM YYYY") || '-'}</p> */}
       <p><strong>Current Balance:</strong> {Number(record.current_balance).toFixed(2) || '-'}</p>
       <p><strong>Current Equity:</strong> {Number(record.current_equity).toFixed(2) || '-'}</p>
     </div>

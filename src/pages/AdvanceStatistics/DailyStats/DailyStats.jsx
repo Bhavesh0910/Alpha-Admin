@@ -379,7 +379,7 @@ const DailyStats = () => {
   };
 
   const handleExport = () => {
-    if (exportDates.length === 2) {
+    if (exportDates && exportDates?.length === 2) {
       const [startDate, endDate] = exportDates;
       const url = `daily-details/export/?start_date=${startDate}&end_date=${endDate}`;
       
@@ -425,7 +425,7 @@ const DailyStats = () => {
   }
   return (
     <div className="withdrawal_status_container  daily_stats">
-      {isExportLoading && <LoaderOverlay />}
+      {/* {isExportLoading && <LoaderOverlay />} */}
       <div className="export_btn">
         <Button onClick={handleOpenModal}>
           <img

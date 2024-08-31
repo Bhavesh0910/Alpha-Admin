@@ -78,7 +78,7 @@ const PassRates = () => {
   const handleCloseExportModal = () => setExportModalVisible(false);
 
   const handleExport = useCallback(() => {
-    if (exportDates.length === 2) {
+    if (exportDates && exportDates?.length === 2) {
       const [startDate, endDate] = exportDates;
       const url = `pass-rates/export/?start_date=${startDate}&end_date=${endDate}`;
 
@@ -201,7 +201,7 @@ const PassRates = () => {
 
   return (
     <>
-    {isExportLoading && <LoaderOverlay />}
+    {/* {isExportLoading && <LoaderOverlay />} */}
       <div className="passRates_main">
         <div className="passRates_header">
           <div className="heading">

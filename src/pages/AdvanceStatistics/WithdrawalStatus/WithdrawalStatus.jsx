@@ -255,7 +255,7 @@ const WithdrawalStatus = () => {
     setPageSize(updatedPageSize);
   }
   const handleExport = () => {
-    if (exportDates.length === 2) {
+    if (exportDates && exportDates?.length === 2) {
       const [startDate, endDate] = exportDates;
       const url = `withdrawals/status/export/?start_date=${startDate}&end_date=${endDate}`;
 
@@ -270,10 +270,11 @@ const WithdrawalStatus = () => {
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
-
+          setModalVisible(false)
           dispatch(returnMessages("Export Successful", 200));
-
+    
           handleCloseModal();
+
         })
         .catch((error) => {
           dispatch(returnErrors("Export failed", 400));
@@ -288,7 +289,6 @@ const WithdrawalStatus = () => {
 
   return (
     <div className="withdrawal_status_container">
-            {isExportLoading && <LoaderOverlay />}
 
       <div className="table_header_filter">
         <div className="header_left">
@@ -408,6 +408,7 @@ const WithdrawalStatus = () => {
         className="export_modal"
         closeIcon={<CloseOutlined style={{ color: "#fff" }} />}
       >
+
         <div className="export_modal_wrapper">
           <RangePicker
             onChange={updateExportDateRange}

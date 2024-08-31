@@ -223,7 +223,7 @@ const WithdrawalDetails = () => {
   }
 
   const handleExport = () => {
-    if (exportDates?.length === 2) {
+    if (exportDates && exportDates?.length === 2) {
       const [startDate, endDate] = exportDates;
       const url = `withdrawals/details/export/?start_date=${startDate}&end_date=${endDate}`;
 
@@ -255,7 +255,7 @@ const WithdrawalDetails = () => {
   };
   return (
     <>
-    {isExportLoading && <LoaderOverlay />}
+    {/* {isExportLoading && <LoaderOverlay />} */}
     <div className="withdrawal_status_container">
       <div className="table_header_filter">
         <div className="header_left">
