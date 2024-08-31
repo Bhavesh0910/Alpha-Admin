@@ -236,14 +236,13 @@ async function editCommentApi(idToken, body, id, stage) {
     console.log("id", stage, body, id);
 
     if (stage === "stage") {
-      console.log("I am hereeeee");
       response = await axios.post(`${baseUrl}support/admin/get//details/${id}/`, body, config);
     }
     if (stage === "funded") {
       response = await axios.patch(`${baseUrl}v2/get/funded/details/${id}/`, body, config);
     }
     if (stage === "payout") {
-      response = await axios.patch(`${baseUrl}v2/get/funded/details/${id}/`, body, config);
+      response = await axios.post(`${baseUrl}v2/update-payout-status/`, body, config);
     }
     return response;
   } catch (error) {

@@ -429,30 +429,30 @@ const StageManager = () => {
               </Dropdown>
             ),
           },
-          // {
-          //   title: "Email Generated",
-          //   dataIndex: "email_sent",
-          //   key: "email_sent",
-          //   render: (text, row) => (
-          //     <img
-          //       width={"25px"}
-          //       src={text || row.status === "approved" ? RightMark : CrossMark}
-          //       alt=""
-          //     />
-          //   ),
-          // },
-          // {
-          //   title: "Credential Generated",
-          //   dataIndex: "credential_generated",
-          //   key: "credential_generated",
-          //   render: (text, row) => (
-          //     <img
-          //       width={"25px"}
-          //       src={text || row.status === "approved" ? RightMark : CrossMark}
-          //       alt=""
-          //     />
-          //   ),
-          // },
+          {
+            title: "Email Generated",
+            dataIndex: "email_sent",
+            key: "email_sent",
+            render: (text, row) => (
+              <img
+                width={"25px"}
+                src={text || row.status === "approved" ? RightMark : CrossMark}
+                alt=""
+              />
+            ),
+          },
+          {
+            title: "Credential Generated",
+            dataIndex: "credential_generated",
+            key: "credential_generated",
+            render: (text, row) => (
+              <img
+                width={"25px"}
+                src={text || row.status === "approved" ? RightMark : CrossMark}
+                alt=""
+              />
+            ),
+          },
           // {
           //   title: "Date (created at)",
           //   dataIndex: "created_at",
@@ -682,66 +682,66 @@ const StageManager = () => {
               </Dropdown>
             ),
           },
-          // {
-          //   title: "Email Generated",
-          //   dataIndex: "email_sent",
-          //   key: "email_sent",
-          //   render: (text, row) => (
-          //     <img
-          //       width={"25px"}
-          //       src={text || row.status === "approved" ? RightMark : CrossMark}
-          //       alt=""
-          //     />
-          //   ),
-          // },
-          // {
-          //   title: "Credential Generated",
-          //   dataIndex: "credential_generated",
-          //   key: "credential_generated",
-          //   render: (text, row) => (
-          //     <img
-          //       width={"25px"}
-          //       src={text || row?.status === "approved" ? RightMark : CrossMark}
-          //       alt=""
-          //     />
-          //   ),
-          // },
-          // {
-          //   title: "Contract Issued",
-          //   dataIndex: "issue_contract",
-          //   key: "issue_contract",
-          //   render: (text, row) => (
-          //     <img
-          //       width={"25px"}
-          //       src={text || row.status === "approved" ? RightMark : CrossMark}
-          //       alt=""
-          //     />
-          //   ),
-          // },
-          // {
-          //   title: "KYC Verified",
-          //   dataIndex: "is_kyc_verified",
-          //   key: "is_kyc_verified",
-          //   render: (text) => (
-          //     <img
-          //       width={"25px"}
-          //       src={text ? RightMark : CrossMark}
-          //       alt=""
-          //     />
-          //   ),
-          // },
-          // {
-          //   title: "Payment",
-          //   dataIndex: "is_payment_verified",
-          //   key: "is_payment_verified",
-          //   render: (text, row) => (
-          //     <img
-          //       width={"25px"}
-          //       src={text || row.status === "approved" ? RightMark : CrossMark}
-          //       alt=""
-          //     />
-          //   ),
-          // },
+          {
+            title: "Email Generated",
+            dataIndex: "email_sent",
+            key: "email_sent",
+            render: (text, row) => (
+              <img
+                width={"25px"}
+                src={text || row.status === "approved" ? RightMark : CrossMark}
+                alt=""
+              />
+            ),
+          },
+          {
+            title: "Credential Generated",
+            dataIndex: "credential_generated",
+            key: "credential_generated",
+            render: (text, row) => (
+              <img
+                width={"25px"}
+                src={text || row?.status === "approved" ? RightMark : CrossMark}
+                alt=""
+              />
+            ),
+          },
+          {
+            title: "Contract Issued",
+            dataIndex: "issue_contract",
+            key: "issue_contract",
+            render: (text, row) => (
+              <img
+                width={"25px"}
+                src={text || row.status === "approved" ? RightMark : CrossMark}
+                alt=""
+              />
+            ),
+          },
+          {
+            title: "KYC Verified",
+            dataIndex: "is_kyc_verified",
+            key: "is_kyc_verified",
+            render: (text) => (
+              <img
+                width={"25px"}
+                src={text ? RightMark : CrossMark}
+                alt=""
+              />
+            ),
+          },
+          {
+            title: "Payment",
+            dataIndex: "is_payment_verified",
+            key: "is_payment_verified",
+            render: (text, row) => (
+              <img
+                width={"25px"}
+                src={text || row.status === "approved" ? RightMark : CrossMark}
+                alt=""
+              />
+            ),
+          },
           // {
           //   title: "Date (created at)",
           //   dataIndex: "created_at",
@@ -1422,7 +1422,13 @@ function ExpandedRowData({record}) {
 
   const handleEditComment = () => {
     const formData = new FormData();
-    formData.append("comment", editCommentToUpdate);
+
+    if (location.pathname === "/support/payout") {
+      formData.append("comment", editCommentToUpdate);
+      formData.append("id", userToUpdate?.id);
+    } else {
+      formData.append("comment", editCommentToUpdate);
+    }
 
     let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
 
@@ -1485,29 +1491,30 @@ function ExpandedRowData({record}) {
             {/* <p>{nestedTableData?.pass_date?(formatDateTimeNew(nestedTableData?.pass_date || "-")):'-'}</p> */}
             <p>{formatDateTimeNew(nestedTableData?.pass_date) || "-"}</p>
           </div>
-          <div>
+          {/* <div>
             <div>Email Generated</div>
             <p>
-              {/* {record?.email_sent || "-"} */}
+               {record?.email_sent || "-"}
               <img
                 width={"25px"}
                 src={record?.email_sent ? RightMark : CrossMark}
               />
             </p>
           </div>
-          <div>
+          <div> 
             <div>Credential Generated</div>
             <p>
-              {/* {record?.credential_generated || "-"} */}
+              {/* {record?.credential_generated || "-"} 
               <img
                 width={"25px"}
                 src={record?.credential_generated?.status === "approved" ? RightMark : CrossMark}
               />
             </p>
           </div>
+              */}
           {location.pathname === "/support/stage-2" && (
             <>
-              <div>
+              {/* <div>
                 <div>Contract Issued</div>
                 <p>
                   <img
@@ -1524,8 +1531,8 @@ function ExpandedRowData({record}) {
                     src={record.is_kyc_verified ? RightMark : CrossMark}
                   />
                 </p>
-              </div>
-              <div>
+              </div> */}
+              {/* <div>
                 <div>Payment</div>
                 <p>
                   <img
@@ -1533,7 +1540,7 @@ function ExpandedRowData({record}) {
                     src={record.is_payment_verified ? RightMark : CrossMark}
                   />
                 </p>
-              </div>
+              </div> */}
             </>
           )}
           <div>
