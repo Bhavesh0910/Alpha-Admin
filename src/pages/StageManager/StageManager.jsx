@@ -283,6 +283,7 @@ const StageManager = () => {
             title: "Flag",
             dataIndex: "User_id",
             key: "User_id",
+            width:60,
             render: (text, row) => (
               <div className="flagContainer">
                 <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>

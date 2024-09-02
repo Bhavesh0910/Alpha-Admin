@@ -82,6 +82,8 @@ const PassRates = () => {
 
   } , [dispatch ,dates , passFilter  , selectedStage])
 
+
+  
   useEffect(() => {
     const [startDate, endDate] = dates || [];
  
@@ -90,7 +92,7 @@ const PassRates = () => {
       stage: selectedStage === "All" ? 1 : selectedStage === 'stage 1' ? 1 : 2,
       startDate: startDate || null,
       endDate: endDate || null,
-      filter_type: passFilter || null
+      filter_type: failFilter || null
     }));
 
   } , [dispatch ,dates  , failFilter , selectedStage])
