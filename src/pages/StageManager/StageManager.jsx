@@ -1,9 +1,9 @@
-import {Button, DatePicker, Dropdown, Menu, Select, Modal, Form, Input, Table} from "antd";
+import { Button, DatePicker, Dropdown, Menu, Select, Modal, Form, Input, Table } from "antd";
 import moment from "moment";
-import React, {useEffect, useMemo, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {Link, useLocation, useNavigate} from "react-router-dom";
-import {toast} from "react-toastify";
+import React, { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import commentIcon from "../../assets/icons/comment.svg";
 import RightMark from "../../assets/icons/verified_green_circleIcon.svg";
@@ -18,16 +18,16 @@ import CrossMark from "../../assets/icons/notverified_red_circleIcon.svg";
 
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import {DownOutlined} from "@ant-design/icons";
+import { DownOutlined } from "@ant-design/icons";
 import "./StageManager.scss";
-import {supportListReq, nestedTableDataReq, statusUpdateReq, editCommentReq, updateContactReq, createAccountReq} from "../../store/NewReducers/Support";
+import { supportListReq, nestedTableDataReq, statusUpdateReq, editCommentReq, updateContactReq, createAccountReq } from "../../store/NewReducers/Support";
 import ReactCountryFlag from "react-country-flag";
 import dayjs from "dayjs";
-import {formatDate, formatDateTime, formatDateTimeNew, FormatUSD} from "../../utils/helpers/string";
-import {updateFlagReq} from "../../store/NewReducers/listSlice";
-const {RangePicker} = DatePicker;
+import { formatDate, formatDateTime, formatDateTimeNew, FormatUSD } from "../../utils/helpers/string";
+import { updateFlagReq } from "../../store/NewReducers/listSlice";
+const { RangePicker } = DatePicker;
 
-const {Option} = Select;
+const { Option } = Select;
 
 const StageManager = () => {
   const lookup = require("country-code-lookup");
@@ -53,8 +53,8 @@ const StageManager = () => {
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
   const [dates, setDates] = useState(null);
-  const {idToken} = useSelector((state) => state.auth);
-  const {count, data, isLoading, stageStatusOptions, refetch} = useSelector((state) => state.support);
+  const { idToken } = useSelector((state) => state.auth);
+  const { count, data, isLoading, stageStatusOptions, refetch } = useSelector((state) => state.support);
   const [fetchUpdate, setFetchUpdate] = useState(true);
   const location = useLocation();
   const dispatch = useDispatch();
@@ -100,7 +100,7 @@ const StageManager = () => {
     if (dates) {
       query += `&start_date=${dates[0].format("DD MMM YYYY")}&end_date=${dates[1].format("DD MMM YYYY")}`;
     }
-    dispatch(supportListReq({idToken, query, url, dispatch}));
+    dispatch(supportListReq({ idToken, query, url, dispatch }));
   }
 
   function updateDateRange(dates) {
@@ -157,7 +157,7 @@ const StageManager = () => {
     console.log(value, record, " value, record");
     setuserToUpdate(record);
     setUpdatedStatus(value);
-    setUpdatedContract({value: value, isRisk: isRisk});
+    setUpdatedContract({ value: value, isRisk: isRisk });
     setIsModalVisible(true);
     setModalAction("Contract");
   };
@@ -171,9 +171,9 @@ const StageManager = () => {
   };
 
   const statusMenu = (key, record) => (
-    <Menu 
-    className="menuCard"
-    onClick={(e) => openStatusUpdateModal(key, e.key, record)}>
+    <Menu
+      className="menuCard"
+      onClick={(e) => openStatusUpdateModal(key, e.key, record)}>
       <Menu.Item key="New">Action Required</Menu.Item>
       <Menu.Item key="In Progress">In Progress</Menu.Item>
       <Menu.Item key="Flagged">In Review</Menu.Item>
@@ -192,7 +192,7 @@ const StageManager = () => {
     // console.log("updatedStatus : ", updatedStatus);
     // console.log("formData : ", formData);
     // console.log("isPayoutUpdate : ", isPayoutUpdate);
-    dispatch(statusUpdateReq({idToken, body: formData, id: userId, isPayoutUpdate, updatedStatus, dispatch}));
+    dispatch(statusUpdateReq({ idToken, body: formData, id: userId, isPayoutUpdate, updatedStatus, dispatch }));
     setIsModalVisible(false);
   };
 
@@ -205,7 +205,7 @@ const StageManager = () => {
     console.log(" I am editing comment");
     console.log("======================================");
 
-    dispatch(editCommentReq({idToken, body: formData, id: userId, stage: location.pathname, dispatch}));
+    dispatch(editCommentReq({ idToken, body: formData, id: userId, stage: location.pathname, dispatch }));
     setIsModalVisible(false);
   };
 
@@ -219,15 +219,15 @@ const StageManager = () => {
     }
     let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
     console.log("userId : ", userId);
-    dispatch(updateContactReq({idToken, body: formData, id: userId, dispatch}));
+    dispatch(updateContactReq({ idToken, body: formData, id: userId, dispatch }));
     setIsModalVisible(false);
   };
 
   const handleCreateAccount = () => {
-    const body = {id: userToUpdate?.id};
+    const body = { id: userToUpdate?.id };
     console.log("userToUpdate?.id", userToUpdate?.id);
     console.log(body, "body");
-    dispatch(createAccountReq({idToken, body, dispatch}));
+    dispatch(createAccountReq({ idToken, body, dispatch }));
     setIsModalVisible(false);
   };
 
@@ -272,7 +272,7 @@ const StageManager = () => {
     formData.append("status", flagUpdatedValue);
     formData.append("notes", comment);
 
-    dispatch(updateFlagReq({idToken, body: formData, id: flagUser?.id}));
+    dispatch(updateFlagReq({ idToken, body: formData, id: flagUser?.id }));
     setFlagModel(false);
     reset();
   }
@@ -306,7 +306,7 @@ const StageManager = () => {
             render: (text, row) => (
               <Link
                 to="/trader-overview"
-                // onClick={() => handleActiveAccount(row, "account")}
+              // onClick={() => handleActiveAccount(row, "account")}
               >
                 {text ? text : "-"}
               </Link>
@@ -503,13 +503,13 @@ const StageManager = () => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
                 <Button
-                  style={{background: "#c5ffff"}}
+                  style={{ background: "#c5ffff" }}
                   onClick={() => navigate(`/account-analysis/${record.account_id}/${platform}`)}
                   className="account_metrics_btn"
                   title="Account Metrics"
                 >
                   <img
-                    style={{height: "16px"}}
+                    style={{ height: "16px" }}
                     src={AccIcon}
                     alt=""
                   />
@@ -523,7 +523,7 @@ const StageManager = () => {
             width: 80,
             render: (text, row) => (
               <div
-                style={{cursor: "pointer"}}
+                style={{ cursor: "pointer" }}
                 title="Create Account"
                 onClick={() => openCreateAccountModel(row)}
               >
@@ -562,7 +562,7 @@ const StageManager = () => {
             render: (text, row) => (
               <Link
                 to="/trader-overview"
-                // onClick={() => handleActiveAccount(row, "account")}
+              // onClick={() => handleActiveAccount(row, "account")}
               >
                 {text ? text : "-"}
               </Link>
@@ -807,13 +807,13 @@ const StageManager = () => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
                 <Button
-                  style={{background: "#c5ffff"}}
+                  style={{ background: "#c5ffff" }}
                   onClick={() => navigate(`/account-analysis/${record.account_id}/${platform}`)}
                   className="account_metrics_btn"
                   title="Account Metrics"
                 >
                   <img
-                    style={{height: "16px"}}
+                    style={{ height: "16px" }}
                     src={AccIcon}
                     alt=""
                   />
@@ -836,7 +836,7 @@ const StageManager = () => {
               //   trigger={["click"]}
               // >
               <div
-                style={{cursor: "pointer"}}
+                style={{ cursor: "pointer" }}
                 title="Create Account"
                 onClick={() => openCreateAccountModel(row)}
               >
@@ -857,7 +857,7 @@ const StageManager = () => {
                 <Dropdown
                   className="action_btn standard_button"
                   overlay={
-                    <Menu>
+                    <Menu className="menuCard">
                       <Menu.Item onClick={() => openContractUpdateModal(!text, row, false)}>{row?.issue_contract ? "Revoke" : "Generate"} Contract</Menu.Item>
                       <Menu.Item onClick={() => openContractUpdateModal(!text, row, true)}>
                         {row?.meta_data ? (Object.keys(JSON.parse(row?.meta_data)).length > 0 ? "Revoke" : "Generate") : "Generate"} Risk Contract
@@ -1042,13 +1042,13 @@ const StageManager = () => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
                 <Button
-                  style={{background: "#c5ffff"}}
+                  style={{ background: "#c5ffff" }}
                   onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}
                   className="account_metrics_btn"
                   title="Account Metrics"
                 >
                   <img
-                    style={{height: "16px"}}
+                    style={{ height: "16px" }}
                     src={AccIcon}
                     alt=""
                   />
@@ -1287,7 +1287,7 @@ const StageManager = () => {
             value={dates ? [dayjs(dates[0], "YYYY-MM-DD"), dayjs(dates[0], "YYYY-MM-DD")] : null}
             onChange={updateDateRange}
             autoFocus
-            // presets={rangePresets}
+          // presets={rangePresets}
           />
           <Button
             onClick={() => navigate(viewLogsLink)}
@@ -1414,7 +1414,7 @@ const StageManager = () => {
             label="Comment"
             value={editCommentToUpdate}
             onChange={(e) => setEditCommentToUpdate(e.target.value)}
-            style={{color: "white"}}
+            style={{ color: "white" }}
           >
             <Input.TextArea placeholder="Write your comment here.." />
           </Form.Item>
@@ -1445,11 +1445,11 @@ const StageManager = () => {
 
 export default StageManager;
 
-function ExpandedRowData({record}) {
+function ExpandedRowData({ record }) {
   const location = useLocation();
   const [url, setUrl] = useState();
-  const {idToken} = useSelector((state) => state.auth);
-  const {nestedTableData, isLoading} = useSelector((state) => state.support);
+  const { idToken } = useSelector((state) => state.auth);
+  const { nestedTableData, isLoading } = useSelector((state) => state.support);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalAction, setModalAction] = useState("");
@@ -1477,7 +1477,7 @@ function ExpandedRowData({record}) {
 
   useEffect(() => {
     let flag = location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2" ? true : false;
-    dispatch(nestedTableDataReq({idToken, url, flag, dispatch}));
+    dispatch(nestedTableDataReq({ idToken, url, flag, dispatch }));
   }, [url]);
 
   const martingleStatus = nestedTableData?.martingale?.status || nestedTableData?.martingale_status;
@@ -1503,114 +1503,75 @@ function ExpandedRowData({record}) {
 
     let stage = location.pathname === "/support/funded" ? "funded" : location.pathname === "/support/payout" ? "payout" : "stage";
 
-    dispatch(editCommentReq({idToken, body: formData, id: userId, stage: stage, dispatch}));
+    dispatch(editCommentReq({ idToken, body: formData, id: userId, stage: stage, dispatch }));
     setIsModalVisible(false);
   };
 
+  console.log(record)
   return (
     <>
       {isLoading ? (
         "Loading..."
       ) : (
+
         <div className="nestedTable">
-          <div>
-            <div>Martingle</div>
-            {/* <div>{nestedTableData?.contact}</div> */}
-            <button className={`${martingleStatus === "Success" ? "status_success" : "notButton"}`}>Success</button>
-          </div>
-          <div>
-            <div>Name</div>
-            <p>{record?.username || "-"}</p>
-          </div>
-          <div className="date_time">
-            <div>Date (Created at)</div>
-            <p>{moment(record?.created_at).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
-          </div>
-          <div className="date_time">
-            <div>Date (last updated)</div>
-            <p>{moment(record?.updated_at).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
-          </div>
-          <div>
-            <div>Max Loss</div>
-            <p>{FormatUSD(nestedTableData?.drawdown_result?.max_loss?.result || nestedTableData?.max_loss || 0)}</p>
-          </div>
-          <div>
-            <div>Max Daily Loss</div>
-            <p>{FormatUSD(nestedTableData?.drawdown_result?.max_daily_loss?.result || nestedTableData?.max_daily_loss || 0)}</p>
-          </div>
-          <div>
-            <div>Min Trading Day</div>
-            <p>{nestedTableData?.trading_days?.result || "-"}</p>
-          </div>
-          <div>
-            <div>Purchased date</div>
-            <p>{nestedTableData?.purchase_date || "-"}</p>
-          </div>
-          <div className="date_time">
-            <div>Account Started</div>
-            {/* <p>{nestedTableData?.start_date?(formatDateTimeNew(nestedTableData?.start_date || "-")):'-'}</p> */}
-            <p>{formatDateTimeNew(nestedTableData?.start_date) || "-"}</p>
-          </div>
-          <div>
-            <div>Risk Report</div>
-            <p>{nestedTableData?.risk_reports || "-"}</p>
-          </div>
-          <div className="date_time">
-            <div>Account Passed</div>
-            {/* <p>{nestedTableData?.pass_date?(formatDateTimeNew(nestedTableData?.pass_date || "-")):'-'}</p> */}
-            <p>{formatDateTimeNew(nestedTableData?.pass_date) || "-"}</p>
-          </div>
-          {/* <div>
-            <div>Email Generated</div>
-            <p>
-              <img
-                width={"25px"}
-                src={record?.email_sent ? RightMark : CrossMark}
-              />
-            </p>
-          </div> */}
-          {/* <div>
-            <div>Credential Generated</div>
-            <p>
-              <img
-                width={"25px"}
-                src={record?.credential_generated?.status === "approved" ? RightMark : CrossMark}
-              />
-            </p>
-          </div>
-              */}
-          {location.pathname === "/support/stage-2" && (
+          {location.pathname !== "/support/payout" &&
             <>
-              {/* <div>
-                <div>Contract Issued</div>
-                <p>
-                  <img
-                    width={"25px"}
-                    src={record.issue_contract ? RightMark : CrossMark}
-                  />
-                </p>
+              <div>
+                <div>Martingle</div>
+                {/* <div>{nestedTableData?.contact}</div> */}
+                <button className={`${martingleStatus === "Success" ? "status_success" : "notButton"}`}>Success</button>
               </div>
               <div>
-                <div>KYC Verified</div>
-                <p>
-                  <img
-                    width={"25px"}
-                    src={record.is_kyc_verified ? RightMark : CrossMark}
-                  />
-                </p>
-              </div> */}
-              {/* <div>
-                <div>Payment</div>
-                <p>
-                  <img
-                    width={"25px"}
-                    src={record.is_payment_verified ? RightMark : CrossMark}
-                  />
-                </p>
-              </div> */}
-            </>
-          )}
-          <div>
+                <div>Name</div>
+                <p>{nestedTableData?.user_id && nestedTableData?.user_id?.name || nestedTableData?.User_id && nestedTableData?.User_id?.name || record?.name ||  "-"}</p>
+              </div>
+              <div className="date_time">
+                <div>Date (Created at)</div>
+                <p>{moment(record?.created_at).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
+              </div>
+              <div className="date_time">
+                <div>Date (last updated)</div>
+                <p>{moment(record?.updated_at).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
+              </div>
+              <div>
+                <div>Max Loss</div>
+                <p>{FormatUSD( nestedTableData && nestedTableData?.drawdown_result?.max_loss?.result || nestedTableData && nestedTableData?.stats?.max_loss || 0)}</p>
+              </div>
+              <div>
+                <div>Profit</div>
+                <p>{FormatUSD(nestedTableData && nestedTableData?.drawdown_result?.max_loss?.result || nestedTableData && nestedTableData?.stats?.profit || 0)}</p>
+              </div>
+              <div>
+                <div>Max Daily Loss</div>
+                <p>{FormatUSD(nestedTableData &&  nestedTableData?.drawdown_result?.max_daily_loss?.result || nestedTableData &&  nestedTableData?.stats?.max_daily_loss || 0)}</p>
+              </div>
+              <div>
+                <div>Min Trading Day</div>
+                <p>{nestedTableData && nestedTableData?.trading_days?.result || "-"}</p>
+              </div>
+              <div>
+                <div>Purchased date</div>
+                <p>{nestedTableData && nestedTableData?.purchase_date || "-"}</p>
+              </div>
+              <div className="date_time">
+                <div>Account Started</div>
+                {/* <p>{nestedTableData?.start_date?(formatDateTimeNew(nestedTableData?.start_date || "-")):'-'}</p> */}
+                <p>{formatDateTimeNew(nestedTableData && nestedTableData?.start_date) || "-"}</p>
+              </div>
+              <div>
+                <div>Risk Report</div>
+                <p>{nestedTableData && nestedTableData?.risk_reports || "-"}</p>
+              </div>
+              <div className="date_time">
+                <div>Account Passed</div>
+                {/* <p>{nestedTableData?.pass_date?(formatDateTimeNew(nestedTableData?.pass_date || "-")):'-'}</p> */}
+                <p>{formatDateTimeNew( nestedTableData && nestedTableData?.pass_date) || "-"}</p>
+              </div>
+           
+
+           
+                 <div>
             <div>
               {" "}
               Comment{" "}
@@ -1618,12 +1579,67 @@ function ExpandedRowData({record}) {
                 width={"15px"}
                 src={addIcon}
                 alt=""
-                style={{cursor: "pointer"}}
+                style={{ cursor: "pointer" }}
                 onClick={() => openEditModal(record?.comment, record)}
               />
             </div>
             <p>{record?.comment || "-"}</p>
           </div>
+            </>
+          }
+             {location.pathname === "/support/funded" && (
+               <>
+                </>
+              )}
+          {location.pathname === "/support/payout" && (
+            <>
+              <div className="nestedTable">
+              <div>
+                <div>
+              {" "}
+              Comment{" "}
+              <img
+                width={"15px"}
+                src={addIcon}
+                alt=""
+                style={{ cursor: "pointer" }}
+                onClick={() => openEditModal(record?.comment, record)}
+              />
+            </div>
+            <p>{record?.comment || "-"}</p>
+          </div>
+                <div>
+                  <strong>Reason</strong>
+                  <p>{ nestedTableData && nestedTableData?.reason || "-"}</p>
+                </div>
+                <div>
+                  <strong>Signature Request ID</strong>
+                  <p>{nestedTableData &&  nestedTableData?.signature_request_id || "-"}</p>
+                </div>
+                <div>
+                  <strong>Country</strong>
+                  <p>{nestedTableData &&  nestedTableData?.country || "-"}</p>
+                </div>
+                <div>
+                  <strong>Contact</strong>
+                  <p>{nestedTableData &&  nestedTableData?.contact || "-"}</p>
+                </div>
+                <div>
+                  <strong>Type</strong>
+                  <p>{nestedTableData &&  nestedTableData?.type || "-"}</p>
+                </div>
+                <div>
+                  <strong>Wise Email</strong>
+                  <p>{nestedTableData?.wise_email || "-"}</p>
+                </div>
+                <div>
+                  <strong>Is Wise Verified</strong>
+                  <p>{nestedTableData &&  nestedTableData?.is_wise_verified ? "Yes" : "No"}</p>
+                </div>
+              </div>
+            </>
+          )}
+       
           <Modal
             title={modalAction}
             open={isModalVisible}
@@ -1653,7 +1669,7 @@ function ExpandedRowData({record}) {
                 label="Comment"
                 value={editCommentToUpdate}
                 onChange={(e) => setEditCommentToUpdate(e.target.value)}
-                style={{color: "white"}}
+                style={{ color: "white" }}
               >
                 <Input.TextArea placeholder="Write your comment here.." />
               </Form.Item>
@@ -1661,6 +1677,8 @@ function ExpandedRowData({record}) {
           </Modal>
         </div>
       )}
+
+
     </>
   );
 }
