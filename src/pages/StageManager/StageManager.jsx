@@ -573,7 +573,7 @@ const StageManager = () => {
             title: "Email",
             dataIndex: "email",
             key: "email",
-            // width:3,
+            width:10,
             render: (text) => (
               <div className="column_one_wrapper">
                 {/* <div
@@ -939,28 +939,28 @@ const StageManager = () => {
             title: "Max Loss",
             dataIndex: "stats",
             key: "stats",
-            width: 50,
+            width: 80,
             render: (text) => (text?.max_loss ? text?.max_loss.toFixed(2) : "-"),
           },
           {
             title: "Daily Loss",
             dataIndex: "stats",
             key: "stats",
-            width: 50,
+            width: 80,
             render: (text) => (text?.max_daily_loss ? text?.max_daily_loss?.toFixed(2) : "-"),
           },
           {
             title: "Profit",
             dataIndex: "stats",
             key: "stats",
-            width: 50,
+            width: 60,
             render: (text) => (text?.profit ? text?.profit?.toFixed(2) : "-"),
           },
           {
             title: "Balance",
             dataIndex: "stats",
             key: "stats",
-            width: 50,
+            width: 75,
             render: (text) => {
               return text?.balance ? text?.balance : "-";
             },
@@ -1167,7 +1167,7 @@ const StageManager = () => {
             title: "Amount",
             dataIndex: "amount",
             key: "amount",
-            width: 50,
+            width: 60,
             render: (text) => <span>${text}</span>,
           },
           ,
@@ -1233,6 +1233,7 @@ const StageManager = () => {
             title: "Action",
             dataIndex: "action",
             key: "action",
+            width:90,
             render: (text, row, index) => (
               <>
                 <div className="action_button">

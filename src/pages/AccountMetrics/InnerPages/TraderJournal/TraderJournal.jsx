@@ -99,7 +99,7 @@ const TraderJournal = ({ login_id, platform }) => {
       title: "Average Sell Price",
       dataIndex: "priceAvgSell",
       key: "priceAvgSell",
-      width:60,
+      width:80,
       render: (text) => `$${text.toFixed(2)}`, // Format price with dollar sign
     },
     {

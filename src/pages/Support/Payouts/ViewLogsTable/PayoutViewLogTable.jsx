@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AntTable from "../../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../../ReusableComponents/LoaderOverlay";
 import { logsListReq } from "../../../../store/NewReducers/logsSlice";
+import { Link } from "react-router-dom";
 
 const PayoutViewLogTable = () => {
   const { idToken } = useSelector((state) => state.auth);
@@ -25,24 +26,28 @@ const PayoutViewLogTable = () => {
       title: "Admin Email ID",
       dataIndex: "admin_email",
       key: "admin_email",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Date and Time",
       dataIndex: "date_time",
       key: "date_time",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "User ID",
       dataIndex: "user_id",
       key: "user_id",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Comment",
       dataIndex: "comment",
       key: "comment",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
   ];
@@ -59,10 +64,10 @@ const PayoutViewLogTable = () => {
           separator=">"
           items={[
             {
-              title: <a href="/support/payout/">Payout</a>,
+              title: <Link to="/support/payout/">Payout</Link>,
             },
             {
-              title: <a href="#">Log</a>,
+              title: <Link to="#">Log</Link>,
             },
           ]}
         />
