@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import "./FundingTotalProgress.scss";
 import {useSelector} from "react-redux";
+import { formatCurrency } from "../../../utils/helpers/string";
+
 const FundingTotalProgress = ({data}) => {
   const {fundingChartData} = useSelector((state) => state.risk);
   const [fundingStats, setFundingStats] = useState({totalProfit: 0, totalLoss: 0, totalInvestment: 0});
@@ -25,7 +27,7 @@ const FundingTotalProgress = ({data}) => {
     <div className="fundingTotalProgress_wrapper">
       <h2>Funding total</h2>
       <div className="total_value">
-        <p>${fundingStats?.totalInvestment?.toFixed(2)}</p>
+        <p>{formatCurrency(fundingStats?.totalInvestment)}</p>
       </div>
       <div className="progress-bar-container">
         <div className="progress-bar">
@@ -38,7 +40,7 @@ const FundingTotalProgress = ({data}) => {
               className="value"
               style={{color: "#5F9D51"}}
             >
-              ${fundingStats?.totalProfit?.toFixed(2)}
+              {formatCurrency(fundingStats?.totalProfit)}
             </p>
             <p
               className="label"
@@ -48,7 +50,7 @@ const FundingTotalProgress = ({data}) => {
             </p>
           </div>
           <div className="loss_value">
-            <p className="value" style={{color: "#E92B37"}}>-${fundingStats?.totalLoss?.toFixed(2)}</p>
+            <p className="value" style={{color: "#E92B37"}}>-{formatCurrency(fundingStats?.totalLoss)}</p>
             <p
               className="label"
               style={{color: "#E92B37"}}
