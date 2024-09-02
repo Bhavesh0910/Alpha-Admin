@@ -30,7 +30,7 @@ jobs:
       - name: Building project
         run: CI=false npm run build
 
-      - name: Deploy to Ubuntu Server
+      - name: Deploy to Dev Ubuntu Server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.DEV_SERVER_IP }}
@@ -38,6 +38,15 @@ jobs:
           key: ${{ secrets.DEV_SSH_PRIVATE_KEY }}
           source: "build/"
           target: "/home/deploy/user"
+
+      - name: Deploy to UAT Ubuntu Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.UAT_SERVER_IP }}
+          username: ${{ secrets.UAT_SERVER_USER}}
+          key: ${{ secrets.UAT_SSH_PRIVATE_KEY }}
+          source: "build/"
+          target: "/home/deploy/user/Alpha-admin-2024-frontend"
 
       - name: Checking Server Status
         run: |
@@ -60,3 +69,10 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DEV_DISCORD_WEBHOOK_URL }}
         with:
           args: ${{ env.DISCORD_MESSAGE }}
+
+      - name: Send Discord Notification
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DEV_DISCORD_WEBHOOK_URL}}
+        with:
+          args: "New build is live on UAT server (Alpha-admin-2024-frontend-UAT):- 18.175.252.237:3001"
