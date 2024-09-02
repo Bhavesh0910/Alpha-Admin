@@ -53,7 +53,7 @@ const PayoutViewLogTable = () => {
   }
 
   return (
-    <Card className="table-wrapper viewLogs_table">
+    <div className="table-wrapper viewLogs_table">
       <div className="header_wrapper">
         <Breadcrumb
           separator=">"
@@ -81,7 +81,7 @@ const PayoutViewLogTable = () => {
           triggerChange={triggerChange}
         />
       )}
-    </Card>
+    </div>
   );
 };
 

@@ -88,13 +88,13 @@ const FundedLogs = () => {
   }
 
   return (
-    <Card className="table-wrapper viewLogs_table">
+    <div className="table-wrapper viewLogs_table">
       <div className="header_wrapper">
         <Breadcrumb
           separator=">"
           items={[
             {
-              title: <a href="/funding-evaluation">Funding Evaluation</a>,
+              title: <a href="/support/funded">Funded</a>,
             },
             {
               title: <a href="#">Log</a>,
@@ -116,7 +116,7 @@ const FundedLogs = () => {
           triggerChange={triggerChange}
         />
       )}
-    </Card>
+    </div>
   );
 };
 

@@ -20,6 +20,8 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
 
   console.log(objectives, "objectives");
 
+  console.log(accountDetails)
+
   return (
     <div className="accountMetrics_wrapper">
       {/* 1st */}
