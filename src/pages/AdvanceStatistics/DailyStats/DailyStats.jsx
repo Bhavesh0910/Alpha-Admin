@@ -62,238 +62,269 @@ const DailyStats = () => {
 
 
   const columns = [
-    
     {
       title: "",
       key: "",
       children: [
-    {
-        title: "Plan Type",
-        dataIndex: "plan_type",
-        key: "plan_type",
-        render: text => text || "-",
+        {
+          title: "Plan Type",
+          dataIndex: "plan_type",
+          key: "plan_type",
+          width: 120,
+          render: text => text || "-",
+        },
+        {
+          title: "Created Date",
+          dataIndex: "created_date",
+          key: "created_date",
+          width: 120,
+          render: text => text || "-",
+        },
+        {
+          title: "Passed",
+          dataIndex: "passed",
+          key: "passed",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "Breached",
+          dataIndex: "breached",
+          key: "breached",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "Total Accounts",
+          dataIndex: "total_accounts",
+          key: "total_accounts",
+          width: 120,
+          render: text => text || "-",
+        },
+        {
+          title: "Repeated",
+          dataIndex: "repeated",
+          key: "repeated",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "New",
+          dataIndex: "new",
+          key: "new",
+          width: 60,
+          render: text => text || "-",
+        },
+      ]
     },
     {
-        title: "Created Date",
-        dataIndex: "created_date",
-        key: "created_date",
-        render: text => text || "-",
+      title: "Alpha Pro",
+      key: "alpha_pro",
+      children: [
+        {
+          title: "Passed",
+          dataIndex: ['Alpha pro', 'passed'],
+          key: "alpha_pro_passed",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "Breached",
+          dataIndex: ['Alpha pro', 'breached'],
+          key: "alpha_pro_breached",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "Total Accounts",
+          dataIndex: ['Alpha pro', 'total_accounts'],
+          key: "alpha_pro_total_accounts",
+          width: 120,
+          render: text => text || "-",
+        },
+        {
+          title: "Repeated",
+          dataIndex: ['Alpha pro', 'repeated'],
+          key: "alpha_pro_repeated",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "New",
+          dataIndex: ['Alpha pro', 'new'],
+          key: "alpha_pro_new",
+          width: 60,
+          render: text => text || "-",
+        },
+      ],
     },
     {
-        title: "Passed",
-        dataIndex: "passed",
-        key: "passed",
-             render: text => text || "-",
+      title: "Free Trial",
+      key: "free_trial",
+      children: [
+        {
+          title: "Passed",
+          dataIndex: ['Free Trial', 'passed'],
+          key: "free_trial_passed",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "Breached",
+          dataIndex: ['Free Trial', 'breached'],
+          key: "free_trial_breached",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "Total Accounts",
+          dataIndex: ['Free Trial', 'total_accounts'],
+          key: "free_trial_total_accounts",
+          width: 120,
+          render: text => text || "-",
+        },
+        {
+          title: "Repeated",
+          dataIndex: ['Free Trial', 'repeated'],
+          key: "free_trial_repeated",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "New",
+          dataIndex: ['Free Trial', 'new'],
+          key: "free_trial_new",
+          width: 60,
+          render: text => text || "-",
+        },
+      ],
     },
     {
-        title: "Breached",
-        dataIndex: "breached",
-        key: "breached",
-             render: text => text || "-",
+      title: "Scaling",
+      key: "scaling",
+      children: [
+        {
+          title: "Passed",
+          dataIndex: ['Scaling', 'passed'],
+          key: "scaling_passed",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "Breached",
+          dataIndex: ['Scaling', 'breached'],
+          key: "scaling_breached",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "Total Accounts",
+          dataIndex: ['Scaling', 'total_accounts'],
+          key: "scaling_total_accounts",
+          width: 120,
+          render: text => text || "-",
+        },
+        {
+          title: "Repeated",
+          dataIndex: ['Scaling', 'repeated'],
+          key: "scaling_repeated",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "New",
+          dataIndex: ['Scaling', 'new'],
+          key: "scaling_new",
+          width: 60,
+          render: text => text || "-",
+        },
+      ],
     },
     {
-        title: "Total Accounts",
-        dataIndex: "total_accounts",
-        key: "total_accounts",
-             render: text => text || "-",
+      title: "Swing",
+      key: "swing",
+      children: [
+        {
+          title: "Passed",
+          dataIndex: ['Swing', 'passed'],
+          key: "swing_passed",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "Breached",
+          dataIndex: ['Swing', 'breached'],
+          key: "swing_breached",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "Total Accounts",
+          dataIndex: ['Swing', 'total_accounts'],
+          key: "swing_total_accounts",
+          width: 120,
+          render: text => text || "-",
+        },
+        {
+          title: "Repeated",
+          dataIndex: ['Swing', 'repeated'],
+          key: "swing_repeated",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "New",
+          dataIndex: ['Swing', 'new'],
+          key: "swing_new",
+          width: 60,
+          render: text => text || "-",
+        },
+      ],
     },
     {
-        title: "Repeated",
-        dataIndex: "repeated",
-        key: "repeated",
-             render: text => text || "-",
+      title: "Alpha Pro Plus",
+      key: "alpha_pro_plus",
+      children: [
+        {
+          title: "Passed",
+          dataIndex: ['Alpha Pro Plus', 'passed'],
+          key: "alpha_pro_plus_passed",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "Breached",
+          dataIndex: ['Alpha Pro Plus', 'breached'],
+          key: "alpha_pro_plus_breached",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "Total Accounts",
+          dataIndex: ['Alpha Pro Plus', 'total_accounts'],
+          key: "alpha_pro_plus_total_accounts",
+          width: 120,
+          render: text => text || "-",
+        },
+        {
+          title: "Repeated",
+          dataIndex: ['Alpha Pro Plus', 'repeated'],
+          key: "alpha_pro_plus_repeated",
+          width: 80,
+          render: text => text || "-",
+        },
+        {
+          title: "New",
+          dataIndex: ['Alpha Pro Plus', 'new'],
+          key: "alpha_pro_plus_new",
+          width: 60,
+          render: text => text || "-",
+        },
+      ],
     },
-    {
-        title: "New",
-        dataIndex: "new",
-        key: "new",
-             render: text => text || "-",
-    },
-  ]
-},
- 
-            {
-                title: "Alpha Pro",
-                key: "alpha_pro",
-                children: [
-                    {
-                        title: "Passed",
-                        dataIndex: ['Alpha pro', 'passed'],
-                        key: "alpha_pro_passed",
-                        render: text => text || "-",
-                      },
-                    {
-                        title: "Breached",
-                        dataIndex: ['Alpha pro', 'breached'],
-                        key: "alpha_pro_breached",
-                        render: text => text || "-",
-                      },
-                    {
-                        title: "Total Accounts",
-                        dataIndex: ['Alpha pro', 'total_accounts'],
-                        key: "alpha_pro_total_accounts",
-                        render: text => text || "-",
-                      },
-                    {
-                        title: "Repeated",
-                        dataIndex: ['Alpha pro', 'repeated'],
-                        key: "alpha_pro_repeated",
-                        render: text => text || "-",
-                      },
-                    {
-                        title: "New",
-                        dataIndex: ['Alpha pro', 'new'],
-                        key: "alpha_pro_new",
-                        render: text => text || "-",
-                      },
-                ],
-            },
-            {
-                title: "Free Trial",
-                key: "free_trial",
-                children: [
-                    {
-                        title: "Passed",
-                        dataIndex: ['Free Trial', 'passed'],
-                        key: "free_trial_passed",
-                        render: text => text || "-",
-                      },
-                    {
-                        title: "Breached",
-                        dataIndex: ['Free Trial', 'breached'],
-                        key: "free_trial_breached",
-                        render: text => text || "-",
-                      },
-                    {
-                        title: "Total Accounts",
-                        dataIndex: ['Free Trial', 'total_accounts'],
-                        key: "free_trial_total_accounts",
-                             render: text => text || "-",
-
-                    },
-                    {
-                        title: "Repeated",
-                        dataIndex: ['Free Trial', 'repeated'],
-                        key: "free_trial_repeated",
-                             render: text => text || "-",
-                    },
-                    {
-                        title: "New",
-                        dataIndex: ['Free Trial', 'new'],
-                        key: "free_trial_new",
-                             render: text => text || "-",
-                    },
-                ],
-            },
-            {
-                title: "Scaling",
-                key: "scaling",
-                children: [
-                    {
-                        title: "Passed",
-                        dataIndex: ['Scaling', 'passed'],
-                        key: "scaling_passed",
-                             render: text => text || "-",
-                    },
-                    {
-                        title: "Breached",
-                        dataIndex: ['Scaling', 'breached'],
-                        key: "scaling_breached",
-                             render: text => text || "-",
-                    },
-                    {
-                        title: "Total Accounts",
-                        dataIndex: ['Scaling', 'total_accounts'],
-                        key: "scaling_total_accounts",
-                             render: text => text || "-",
-                    },
-                    {
-                        title: "Repeated",
-                        dataIndex: ['Scaling', 'repeated'],
-                        key: "scaling_repeated",
-                             render: text => text || "-",
-                    },
-                    {
-                        title: "New",
-                        dataIndex: ['Scaling', 'new'],
-                        key: "scaling_new",
-                             render: text => text || "-",
-                    },
-                ],
-            },
-            {
-                title: "Swing",
-                key: "swing",
-                children: [
-                    {
-                        title: "Passed",
-                        dataIndex: ['Swing', 'passed'],
-                        key: "swing_passed",
-                             render: text => text || "-",
-                    },
-                    {
-                        title: "Breached",
-                        dataIndex: ['Swing', 'breached'],
-                        key: "swing_breached",
-                             render: text => text || "-",
-                    },
-                    {
-                        title: "Total Accounts",
-                        dataIndex: ['Swing', 'total_accounts'],
-                        key: "swing_total_accounts",
-                             render: text => text || "-",
-                    },
-                    {
-                        title: "Repeated",
-                        dataIndex: ['Swing', 'repeated'],
-                        key: "swing_repeated",
-                             render: text => text || "-",
-                    },
-                    {
-                        title: "New",
-                        dataIndex: ['Swing', 'new'],
-                        key: "swing_new",
-                             render: text => text || "-",
-                    },
-                ],
-            },
-            {
-                title: "Alpha Pro Plus",
-                key: "alpha_pro_plus",
-                children: [
-                    {
-                        title: "Passed",
-                        dataIndex: ['Alpha Pro Plus', 'passed'],
-                        key: "alpha_pro_plus_passed",
-                             render: text => text || "-",
-                    },
-                    {
-                        title: "Breached",
-                        dataIndex: ['Alpha Pro Plus', 'breached'],
-                        key: "alpha_pro_plus_breached",
-                             render: text => text || "-",
-                    },
-                    {
-                        title: "Total Accounts",
-                        dataIndex: ['Alpha Pro Plus', 'total_accounts'],
-                        key: "alpha_pro_plus_total_accounts",
-                             render: text => text || "-",
-                    },
-                    {
-                        title: "Repeated",
-                        dataIndex: ['Alpha Pro Plus', 'repeated'],
-                        key: "alpha_pro_plus_repeated",
-                             render: text => text || "-",
-                    },
-                    {
-                        title: "New",
-                        dataIndex: ['Alpha Pro Plus', 'new'],
-                        key: "alpha_pro_plus_new",
-                             render: text => text || "-",
-                    },
-        ],
-    },
-];
+  ];
+  
+  
 
 
   const statusMenu = (key, record) => (
