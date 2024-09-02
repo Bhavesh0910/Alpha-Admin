@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {accountListReq} from "../../utils/apis/accountsApi";
+import {Req} from "../../utils/apis/accountsApi";
 import {returnErrors} from "../reducers/error";
 import {returnMessages} from "../reducers/message";
 import {PURGE} from "redux-persist";

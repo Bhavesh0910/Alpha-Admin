@@ -6,6 +6,9 @@
   }
 }
 
+html,body{
+  overflow-x: hidden;
+}
 *,
 *:before,
 *:after {
@@ -250,6 +253,8 @@ input:-webkit-autofill:active {
     .ant-picker-datetime-panel {
       .ant-picker-date-panel {
         color: #1e1e1e !important;
+
+        
         .ant-picker-header {
           color: #1e1e1e !important;
 
@@ -349,7 +354,10 @@ input:-webkit-autofill:active {
     max-width: 100% !important;
     min-height: 40px;
   }
-
+  @media only screen and (max-width: 440px) {
+    width:300px;
+    margin-right: auto;
+  }
   .left_side_box {
     display: flex;
     width: 100%;

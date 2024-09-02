@@ -1,0 +1,16 @@
+.TradingStats_wrapper {
+  .header_box_Trading_stats {
+    .header_box_row2 {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      align-self: stretch;
+      padding-block: 25px;
+    }
+  }
+}
+
+.selected {
+  background-color: blue;
+  color: #fff; /* optional: set text color to white */
+}

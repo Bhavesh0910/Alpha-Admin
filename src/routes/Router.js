@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
 import RiskManagement from "../pages/RiskManagement";
 
@@ -60,6 +60,10 @@ import DashStats from "../pages/DashStats/DashStats";
 import DashStatsExportHistory from "../pages/DashStats/DashStatsExportHistory";
 import DailyStatsExportHistory from "../pages/AdvanceStatistics/DailyStats/DailyStatsExport";
 import AffiliateRefList from "../pages/AffiliateMarketing/AffiliateRefList/AffiliateRefList";
+import OverView from "../pages/RiskManagement/NewPages/Overview/Overview";
+import TradingStats from "../pages/RiskManagement/NewPages/Trading stats/index";
+import TradingTagList from "../pages/RiskManagement/NewPages/TradingTagList";
+import NewRiskManagement from "../pages/RiskManagement/NewPages";
 
 function Router() {
   return (
@@ -94,7 +98,42 @@ function Router() {
               </PageLayout>
             }
           />
-
+          {/* <Route
+            exact={true}
+            path="/risk-management/overview"
+            element={
+              <PageLayout headerName="Risk Mangement">
+                <OverView />
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/risk-management/trading_stats"
+            element={
+              <PageLayout headerName="Risk Mangement">
+                <TradingStats />
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/risk-management/trading_tag_list"
+            element={
+              <PageLayout headerName="Risk Mangement">
+                <TradingTagList />
+              </PageLayout>
+            }
+          /> */}
+          <Route
+            exact={true}
+            path="/risk-management/newpages"
+            element={
+              <PageLayout headerName="Risk Mangement">
+                <NewRiskManagement />
+              </PageLayout>
+            }
+          />
           <Route
             exact={true}
             path="/trader-overview"
@@ -326,7 +365,6 @@ function Router() {
             }
           />
 
-
           <Route
             exact={true}
             path="/advance-statistics/trading-pairs"
@@ -476,7 +514,7 @@ function Router() {
               </PageLayout>
             }
           />
-             <Route
+          <Route
             exact={true}
             path="/affiliate-marketing/ref-list"
             element={

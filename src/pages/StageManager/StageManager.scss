@@ -354,6 +354,14 @@
   > .ant-picker {
     margin-right: 20px;
   }
+
+  @media (max-width: 748px) {
+    margin-left: auto;
+  }
+  @media (max-width: 440px) {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 }
 
 .stageSearchBox {

@@ -1,0 +1,21 @@
+.payout_wrapper{
+    padding-block: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: var(--table-box, 20px);
+    background: #fff;
+  
+    .payout_header_wrapper {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px;
+      h3 {
+        color: var(--Text-white, #1e1e1e);
+        font-family: "Nunito Sans";
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+      }
+}}
