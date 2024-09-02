@@ -1,0 +1,106 @@
+.Overview_wrapper {
+  .header_box_row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    align-self: stretch;
+    padding-block: 20px;
+    .dropdown_filter {
+      display: flex;
+      height: 46px;
+      padding: 0px 15px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      border-radius: 10px;
+      background: #f6fefe;
+
+      img {
+        width: 17px;
+        height: 17px;
+      }
+      p {
+        color: #1e1e1e;
+        font-family: "Nunito Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+      }
+    }
+  }
+}
+
+.Overview_body {
+  // padding: 10px;
+  .Overview_body_row1 {
+    // display: flex;
+    // justify-content: space-between;
+    // gap: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(336px, 1fr));
+    gap: 20px;
+    .PassRateChart {
+      width: 100%;
+      // max-width: 100%;
+      padding-block: 20px;
+      border-radius: 2cap;
+      @media(max-width:320px){
+        width: 83%;
+      }
+
+    }
+    .TotalPayout {
+      width: 100%;
+      // max-width: 100%;
+      padding-block: 20px;
+      border-radius: 20px;
+      @media(max-width:320px){
+        width: 83%;
+      }
+    }
+  }
+  .Overview_body_row2 {
+    .payouts {
+      padding-block: 20px;
+    }
+  }
+}
+
+.overview_filters {
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--Corner-1, 5px);
+  position: absolute !important ;
+  right: -20px !important;
+  top: 10px;
+  border-radius: var(--Corner-Radius, 10px);
+  border: 1px solid var(--Brand-1, #04d9ff);
+  background: var(--Brand-2, #12181f) !important;
+}
+// .ant-dropdown-menu {
+//   background-color: #1e1e1e !important;
+//   border-radius: 10px;
+//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+// }
+
+.ant-dropdown-menu-item {
+  color: var(--white, #fff) !important;
+  font-family: "Nunito Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.ant-dropdown-menu-item:hover {
+  border-radius: var(--Corner-Radius, 10px);
+  border: 1px solid var(--Brand-1, #04d9ff);
+  background: var(--Brand-2, #04d9ff) !important;
+}
+.ant-dropdown-menu-title-content {
+  white-space: nowrap;
+}

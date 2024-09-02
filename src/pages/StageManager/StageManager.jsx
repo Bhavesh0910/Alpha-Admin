@@ -299,7 +299,7 @@ const StageManager = () => {
             title: "Account",
             dataIndex: "account_id",
             key: "account_id",
-            // width:'5%',
+            width: 50,
             render: (text, row) => (
               <Link
                 to="/trader-overview"
@@ -401,7 +401,7 @@ const StageManager = () => {
             title: "Status",
             dataIndex: "status",
             key: "status",
-
+            width: 60,
             render: (text, record, index) => (
               <Dropdown
                 overlay={() => statusMenu(text, record)}
@@ -433,6 +433,7 @@ const StageManager = () => {
             title: "Email Generated",
             dataIndex: "email_sent",
             key: "email_sent",
+            width: 100,
             render: (text, row) => (
               <img
                 width={"25px"}
@@ -445,6 +446,7 @@ const StageManager = () => {
             title: "Credential Generated",
             dataIndex: "credential_generated",
             key: "credential_generated",
+            width: 100,
             render: (text, row) => (
               <img
                 width={"25px"}
@@ -493,6 +495,7 @@ const StageManager = () => {
             title: "Details",
             dataIndex: "details",
             key: "details",
+            width: 80,
             render: (text, record) => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
@@ -552,7 +555,7 @@ const StageManager = () => {
             title: "Account",
             dataIndex: "account_id",
             key: "account_id",
-
+            width: 80,
             render: (text, row) => (
               <Link
                 to="/trader-overview"
@@ -686,6 +689,7 @@ const StageManager = () => {
             title: "Email Generated",
             dataIndex: "email_sent",
             key: "email_sent",
+            width: 100,
             render: (text, row) => (
               <img
                 width={"25px"}
@@ -698,6 +702,7 @@ const StageManager = () => {
             title: "Credential Generated",
             dataIndex: "credential_generated",
             key: "credential_generated",
+            width: 100,
             render: (text, row) => (
               <img
                 width={"25px"}
@@ -710,6 +715,7 @@ const StageManager = () => {
             title: "Contract Issued",
             dataIndex: "issue_contract",
             key: "issue_contract",
+            width: 100,
             render: (text, row) => (
               <img
                 width={"25px"}
@@ -722,6 +728,7 @@ const StageManager = () => {
             title: "KYC Verified",
             dataIndex: "is_kyc_verified",
             key: "is_kyc_verified",
+            width: 100,
             render: (text) => (
               <img
                 width={"25px"}
@@ -730,18 +737,18 @@ const StageManager = () => {
               />
             ),
           },
-          {
-            title: "Payment",
-            dataIndex: "is_payment_verified",
-            key: "is_payment_verified",
-            render: (text, row) => (
-              <img
-                width={"25px"}
-                src={text || row.status === "approved" ? RightMark : CrossMark}
-                alt=""
-              />
-            ),
-          },
+          // {
+          //   title: "Payment",
+          //   dataIndex: "is_payment_verified",
+          //   key: "is_payment_verified",
+          //   render: (text, row) => (
+          //     <img
+          //       width={"25px"}
+          //       src={text || row.status === "approved" ? RightMark : CrossMark}
+          //       alt=""
+          //     />
+          //   ),
+          // },
           // {
           //   title: "Date (created at)",
           //   dataIndex: "created_at",
@@ -814,6 +821,7 @@ const StageManager = () => {
           {
             title: "Action",
             key: "action",
+            width: 67,
             render: (text, row) => (
               // <Dropdown
               //   overlay={
@@ -890,36 +898,66 @@ const StageManager = () => {
             title: "Email",
             dataIndex: "email",
             key: "email",
+            width: 80,
           },
           {
             title: "Account No.",
             dataIndex: "login_id",
             key: "accountNumber",
+            width: 100,
+          },
+          {
+            title: "Email Generated",
+            dataIndex: "email_sent",
+            key: "email_sent",
+            width: 100,
+            render: (text, row) => (
+              <img
+                width={"25px"}
+                src={text || row.status === "approved" ? RightMark : CrossMark}
+                alt=""
+              />
+            ),
+          },
+          {
+            title: "Credential Generated",
+            dataIndex: "credential_generated",
+            key: "credential_generated",
+            width: 100,
+            render: (text, row) => (
+              <img
+                width={"25px"}
+                src={text || row.status === "approved" ? RightMark : CrossMark}
+                alt=""
+              />
+            ),
           },
           {
             title: "Max Loss",
             dataIndex: "stats",
             key: "stats",
-
+            width: 50,
             render: (text) => (text?.max_loss ? text?.max_loss.toFixed(2) : "-"),
           },
           {
             title: "Daily Loss",
             dataIndex: "stats",
             key: "stats",
+            width: 50,
             render: (text) => (text?.max_daily_loss ? text?.max_daily_loss?.toFixed(2) : "-"),
           },
           {
             title: "Profit",
             dataIndex: "stats",
             key: "stats",
+            width: 50,
             render: (text) => (text?.profit ? text?.profit?.toFixed(2) : "-"),
           },
           {
             title: "Balance",
             dataIndex: "stats",
             key: "stats",
-
+            width: 50,
             render: (text) => {
               return text?.balance ? text?.balance : "-";
             },
@@ -953,7 +991,7 @@ const StageManager = () => {
             title: "Status",
             dataIndex: "progress",
             key: "progress",
-
+            width: 70,
             render: (text, record, index) => (
               <Dropdown
                 overlay={() => statusMenu(text, record)}
@@ -1040,13 +1078,14 @@ const StageManager = () => {
             title: "Email",
             dataIndex: "user_email",
             key: "user_email",
+            width: 100,
             render: (text) => <span>{text}</span>,
           },
           {
             title: "Login ID",
             dataIndex: "login_id",
             key: "login_id",
-
+            width: 100,
             render: (text) => <span>{text}</span>,
           },
           // {
@@ -1055,6 +1094,32 @@ const StageManager = () => {
           //   key: "user_name",
           //   render: (text) => <span>{text}</span>,
           // },
+          {
+            title: "Email Generated",
+            dataIndex: "email_sent",
+            key: "email_sent",
+            width: 100,
+            render: (text, row) => (
+              <img
+                width={"25px"}
+                src={text || row.status === "approved" ? RightMark : CrossMark}
+                alt=""
+              />
+            ),
+          },
+          {
+            title: "Credential Generated",
+            dataIndex: "credential_generated",
+            key: "credential_generated",
+            width: 100,
+            render: (text, row) => (
+              <img
+                width={"25px"}
+                src={text || row.status === "approved" ? RightMark : CrossMark}
+                alt=""
+              />
+            ),
+          },
           {
             title: "KYC",
             dataIndex: "kyc",
@@ -1099,6 +1164,7 @@ const StageManager = () => {
             title: "Amount",
             dataIndex: "amount",
             key: "amount",
+            width: 50,
             render: (text) => <span>${text}</span>,
           },
           ,
@@ -1494,17 +1560,15 @@ function ExpandedRowData({record}) {
           {/* <div>
             <div>Email Generated</div>
             <p>
-               {record?.email_sent || "-"}
               <img
                 width={"25px"}
                 src={record?.email_sent ? RightMark : CrossMark}
               />
             </p>
-          </div>
-          <div> 
+          </div> */}
+          {/* <div>
             <div>Credential Generated</div>
             <p>
-              {/* {record?.credential_generated || "-"} 
               <img
                 width={"25px"}
                 src={record?.credential_generated?.status === "approved" ? RightMark : CrossMark}

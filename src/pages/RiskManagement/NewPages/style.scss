@@ -1,0 +1,24 @@
+.risk_management_wrapper {
+  .header_box_row1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+    @media only screen and (max-width: 650px) {
+      flex-direction: column;
+      gap: 20px;
+      align-items: flex-start;
+    }
+  }
+}
+
+.ant-radio-group .ant-radio-button-wrapper{
+
+   @media only screen and (max-width: 320px) {
+     text-wrap: wrap;
+    }
+  }
+.ant-picker-date-panel{
+  @media  only screen and (max-width:320px){
+    width: 230px !important;
+  }}
