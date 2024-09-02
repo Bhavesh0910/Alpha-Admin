@@ -283,7 +283,7 @@ const StageManager = () => {
             title: "Flag",
             dataIndex: "User_id",
             key: "User_id",
-            width:60,
+            width: 60,
             render: (text, row) => (
               <div className="flagContainer">
                 <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
@@ -297,7 +297,7 @@ const StageManager = () => {
             ),
           },
           {
-            title: "Account",
+            title: "Account No.",
             dataIndex: "account_id",
             key: "account_id",
             width: 50,
@@ -553,7 +553,7 @@ const StageManager = () => {
             ),
           },
           {
-            title: "Account",
+            title: "Account No.",
             dataIndex: "account_id",
             key: "account_id",
             width: 80,
@@ -896,16 +896,16 @@ const StageManager = () => {
             ),
           },
           {
-            title: "Email",
-            dataIndex: "email",
-            key: "email",
-            width: 80,
-          },
-          {
             title: "Account No.",
             dataIndex: "login_id",
             key: "accountNumber",
             width: 100,
+          },
+          {
+            title: "Email",
+            dataIndex: "email",
+            key: "email",
+            width: 80,
           },
           {
             title: "Email Generated",
@@ -1076,16 +1076,16 @@ const StageManager = () => {
             ),
           },
           {
-            title: "Email",
-            dataIndex: "user_email",
-            key: "user_email",
+            title: "Account No.",
+            dataIndex: "login_id",
+            key: "login_id",
             width: 100,
             render: (text) => <span>{text}</span>,
           },
           {
-            title: "Login ID",
-            dataIndex: "login_id",
-            key: "login_id",
+            title: "Email",
+            dataIndex: "user_email",
+            key: "user_email",
             width: 100,
             render: (text) => <span>{text}</span>,
           },
