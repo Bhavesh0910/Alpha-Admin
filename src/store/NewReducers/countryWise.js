@@ -28,7 +28,7 @@ export const countryWiseListReq = createAsyncThunk("countryWise/countryWiseList"
     const response = await countryWiseList(idToken, query);
     return response;
   } catch (error) {
-    dispatch(returnErrors("Error Fetching List...", 400));
+    dispatch(returnErrors(error.response?.data?.detail || "Error Fetching List...", 400));
     return rejectWithValue(error.response.data);
   }
 });

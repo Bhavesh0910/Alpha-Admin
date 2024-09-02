@@ -27,7 +27,7 @@ export const editCoupon = createAsyncThunk("couponsList/edit", async ({idToken, 
     dispatch(returnMessages("Coupon Updated Successfully", 200));
     return response?.data;
   } catch (error) {
-    const errorMessage = error.response?.data?.detail || "An error occurred";
+    const errorMessage = error.response?.data?.detail || "An error occurred while editing coupon";
     const statusCode = error.response?.status || 400;
     console.error("API Error:", errorMessage);
 

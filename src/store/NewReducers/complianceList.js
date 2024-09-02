@@ -22,7 +22,7 @@ export const getBillingDetailsReq = createAsyncThunk("compliance/fetchgetBilling
     const response = await getBillingDetailsApi(idToken, email);
     return response;
   } catch (error) {
-    dispatch(returnErrors("Error while fetching BillingDetails!", 400));
+    dispatch(returnErrors(error.response?.data?.detail || "Error while fetching BillingDetails!", 400));
     return rejectWithValue(error.response.data);
   }
 });
@@ -46,7 +46,7 @@ export const getKycList = createAsyncThunk("compliance/fetchKycList", async ({id
     const response = await getKycListApi(idToken, query);
     return response;
   } catch (error) {
-    dispatch(returnErrors("Error while fetching KYC List!", 400));
+    dispatch(returnErrors(error.response?.data?.detail || "Error while fetching KYC List!", 400));
     return rejectWithValue(error.response.data);
   }
 });
@@ -70,7 +70,7 @@ export const getBillingList = createAsyncThunk("compliance/fetchBillingList", as
     const response = await getBillingListApi(idToken, query);
     return response;
   } catch (error) {
-    dispatch(returnErrors("Error while fetching Billing List!", 400));
+    dispatch(returnErrors(error.response?.data?.detail || "Error while fetching Billing List!", 400));
     return rejectWithValue(error.response.data);
   }
 });

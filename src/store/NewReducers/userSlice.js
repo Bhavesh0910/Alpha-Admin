@@ -12,7 +12,7 @@ export const fetchUserDetails = createAsyncThunk(
       const response = await getUserDetailsReq(idToken); // Assuming this function makes the GET request
       return response;
     } catch (error) {
-      dispatch(returnErrors("Error Fetching User Details...", 400)); // Dispatch error action if request fails
+      dispatch(returnErrors(error.response?.data?.detail || "Error Fetching User Details...", 400)); // Dispatch error action if request fails
       return rejectWithValue(error.response.data); // Return error payload to be handled
     }
   }
@@ -27,7 +27,7 @@ export const updateUserDetails = createAsyncThunk(
       const response = await updateUserDetailsRequest({ formData, idToken }); // Assuming this function makes the PATCH request
       return response;
     } catch (error) {
-      dispatch(returnErrors("Error Updating User Details...", 400)); // Dispatch error action if request fails
+      dispatch(returnErrors(error.response?.data?.detail || "Error Updating User Details...", 400)); // Dispatch error action if request fails
       return rejectWithValue(error.response.data); // Return error payload to be handled
     }
   }
