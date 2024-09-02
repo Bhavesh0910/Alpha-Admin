@@ -317,9 +317,9 @@ const WithdrawalDetails = () => {
         <LoaderOverlay />
       ) : (
         <AntTable
-          data={withdrawalsDetails?.results}
+          data={withdrawalsDetails?.results || []}
           columns={columns}
-          totalPages={Math.ceil(withdrawalsDetails?.count / pageSize)}
+          totalPages={Math.ceil((withdrawalsDetails?.count) / pageSize)}
           totalItems={withdrawalsDetails?.count}
           pageSize={pageSize}
           CurrentPageNo={pageNo}

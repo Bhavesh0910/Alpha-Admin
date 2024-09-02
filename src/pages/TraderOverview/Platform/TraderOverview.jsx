@@ -295,21 +295,21 @@ function TraderOverview() {
         render: (_, record) => (
           <div className="btn-wrapper">
             {record.user_is_active ? (
-              <div onClick={() => handleAction("Block", record)}>
+              <div style={{cursor:'pointer'}} title="Block" onClick={() => handleAction("Block", record)}>
                 <img
                   src={blockIcon}
                   alt=""
                 />
               </div>
             ) : (
-              <div onClick={() => handleAction("UnBlock", record)}>
+              <div style={{cursor:'pointer'}} title="Unblock" onClick={() => handleAction("UnBlock", record)}>
                 <img
                   src={unblockIcon}
                   alt=""
                 />
               </div>
             )}
-            <div
+            <div style={{cursor:'pointer'}} title="Delete"
               onClick={() => handleAction("Delete", record)}
               danger
             >

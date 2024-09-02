@@ -237,7 +237,7 @@ const Payout = () => {
               Total New Payment Request <span>(Today)</span>
             </h3>
             <div className="payout_lower_heading_inner">
-              <h2>{totalPayments[0]?.new_request}</h2>
+              <h2>{totalPayments && totalPayments[0]?.new_request}</h2>
             </div>
           </div>
     

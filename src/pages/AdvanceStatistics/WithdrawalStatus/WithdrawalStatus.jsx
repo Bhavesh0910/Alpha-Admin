@@ -73,15 +73,7 @@ const WithdrawalStatus = () => {
 
   console.log("withdrawalsStatus", withdrawalsStatus);
 
-  useEffect(() => {
-    if (withdrawalsStatus?.results) {
-      const sizes = withdrawalsStatus.results
-        .map(item => item.plan_size)
-        .filter((value, index, self) => value && self.indexOf(value) === index); // Unique sizes
 
-      setPlanSizes(sizes);
-    }
-  }, [withdrawalsStatus]);
 
   const handlePlanSizeChange = (value) => {
     setPageNo(1);
@@ -389,7 +381,7 @@ const WithdrawalStatus = () => {
         <LoaderOverlay />
       ) : (
         <AntTable
-          data={withdrawalsStatus?.results}
+          data={withdrawalsStatus?.results || []}
           columns={columns}
           totalPages={Math.ceil(withdrawalsStatus?.count / pageSize)}
           totalItems={withdrawalsStatus?.count}

@@ -498,7 +498,7 @@ const DailyStats = () => {
         <LoaderOverlay />
       ) : (
         <AntTable
-          data={dailyStats?.results}
+          data={dailyStats?.results || []}
           columns={columns}
           totalPages={Math.ceil(dailyStats?.count / pageSize)}
           totalItems={dailyStats?.count}
