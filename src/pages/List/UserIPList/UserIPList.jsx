@@ -10,6 +10,7 @@ import { CopyOutlined } from "@ant-design/icons";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import blockIcon from '../../../assets/icons/block.svg'
 import unblockIcon from '../../../assets/icons/unblock.svg'
+import { returnMessages } from "../../../store/reducers/message";
 
 const { Option } = Select;
 
@@ -26,7 +27,7 @@ const UserIPList = () => {
   const [reason, setReason] = useState("");
   const [selectedRecord, setSelectedRecord] = useState(null);
 
-  const { ipLogsData, isLoading, error } = useSelector((state) => state.list);
+  const { ipLogsData, isLoading , isBlockLoading , error } = useSelector((state) => state.list);
 
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -65,14 +66,15 @@ const UserIPList = () => {
   const handleBlock = async () => {
     if (selectedRecord && reason) {
       try {
-        await dispatch(blockOrUnblockIp({
+         dispatch(blockOrUnblockIp({
           user_email: selectedRecord.user,
           reason,
           idToken,
           block: action === "Block"
-        })).unwrap();
+        })).unwrap()
+        dispatch(returnMessages(`${action ? "Blocked" : "Unblocked"} Successfully` , 200))
         setIsModalVisible(false);
-        fetch();
+        dispatch(fetchIpLogs({ idToken, search: '', blocked: activeTab === "blocked" ? 'True' : 'False', currentPage }));
       } catch (error) {
       }
     } else {
@@ -80,6 +82,10 @@ const UserIPList = () => {
     }
     setIsModalVisible(false)
   };
+
+
+
+  console.log(isBlockLoading)
 
   const handleCancel = () => {
     setIsModalVisible(false);

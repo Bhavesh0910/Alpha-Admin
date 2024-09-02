@@ -236,7 +236,7 @@ const Payment = () => {
   );
 
   const statusMenu = (key, record) => (
-    <Menu onClick={(e) => openStatusUpdateModal(e.key, record)}>
+    <Menu className="menuCard" onClick={(e) => openStatusUpdateModal(e.key, record)}>
       <Menu.Item key="New">New</Menu.Item>
       <Menu.Item key="Approved">Approved</Menu.Item>
       <Menu.Item key="In Progress">In Progress</Menu.Item>

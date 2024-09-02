@@ -239,6 +239,13 @@ function TraderOverview() {
         render: (text, record) => (text ? <div style={{cursor:'pointer'}} onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}>{text}</div> : "-"),
       },
       {
+        title: "Email",
+        dataIndex: "email",
+        key: "email",
+        width: "15%",
+        render: (text, record) => (text ? <div style={{cursor:'pointer'}} onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}>{text}</div> : "-"),
+      },
+      {
         title: "Balance",
         dataIndex: "balance",
         key: "balance",
