@@ -79,7 +79,7 @@ const AccountMetrics = () => {
           >
             <Radio.Button value="">Account Overview</Radio.Button>
             <Radio.Button value="Insights">Insights</Radio.Button>
-            <Radio.Button value="Trader_Journal">Trader Journal</Radio.Button>
+            <Radio.Button value="Trader_Journal">Trade History</Radio.Button>
             <Radio.Button value="Analysis">Analysis</Radio.Button>
           </Radio.Group>
 
