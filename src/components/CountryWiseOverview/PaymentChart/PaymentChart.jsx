@@ -1,6 +1,7 @@
 import React from "react";
 import Chart from "react-apexcharts";
 import "./PaymentChart.scss";
+import {formatCurrency} from "../../../utils/helpers/string";
 
 const PaymentChart = ({chartData}) => {
   const options = {
@@ -57,7 +58,7 @@ const PaymentChart = ({chartData}) => {
               key={index}
               className="label_with_value m2"
             >
-              <span className="value piechartamount">${amount}</span>
+              <span className="value piechartamount">{formatCurrency(amount)}</span>
             </div>
           ))}
         </div>
