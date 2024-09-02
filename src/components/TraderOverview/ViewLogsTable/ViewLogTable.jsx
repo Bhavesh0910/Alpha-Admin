@@ -5,7 +5,7 @@ import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import "./ViewLogTable.scss";
 import { logsListReq } from "../../../store/NewReducers/logsSlice";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const ViewLogTable = () => {
   const location = useLocation();
@@ -86,10 +86,10 @@ const ViewLogTable = () => {
           separator=">"
           items={[
             {
-              title: <a href="/trader-overview">Trader Overview</a>,
+              title: <Link to="/trader-overview">Trader Overview</Link>,
             },
             {
-              title: <a href="#">Log</a>,
+              title: <Link to="#">Log</Link>,
             },
           ]}
         />

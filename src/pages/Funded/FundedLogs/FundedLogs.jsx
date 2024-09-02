@@ -5,6 +5,7 @@ import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import "./FundedLogs.scss";
 import { logsListReq } from "../../../store/NewReducers/logsSlice";
+import { Link } from "react-router-dom";
 
 const FundedLogs = () => {
   const { idToken } = useSelector((state) => state.auth);
@@ -26,54 +27,63 @@ const FundedLogs = () => {
       title: "Admin Email ID",
       dataIndex: "admin_email",
       key: "admin_email",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Date and Time",
       dataIndex: "date_time",
       key: "date_time",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Account No.",
       dataIndex: "account_no",
       key: "account_no",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Password",
       dataIndex: "password",
       key: "password",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Raw Spread",
       dataIndex: "raw_spread",
       key: "raw_spread",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Funding Evaluation",
       dataIndex: "funding_evaluation",
       key: "funding_evaluation",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Account Balance",
       dataIndex: "account_balance",
       key: "account_balance",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Stage",
       dataIndex: "stage",
       key: "stage",
+      width:100,
       render: (text) => (
         <div className="stage_status_wrapper">
           <p className={text === "funded" ? "funded" : ""}>{text}</p>
@@ -97,7 +107,7 @@ const FundedLogs = () => {
               title: <a href="/support/funded">Funded</a>,
             },
             {
-              title: <a href="#">Log</a>,
+              title: <Link to="#">Log</Link>,
             },
           ]}
         />

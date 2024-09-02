@@ -5,6 +5,7 @@ import "../Funded/FundedLogs/FundedLogs.scss";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import { logsListReq } from "../../store/NewReducers/logsSlice";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
+import { Link } from "react-router-dom";
 
 const Stage2Logs = () => {
   const { idToken } = useSelector((state) => state.auth);
@@ -26,54 +27,63 @@ const Stage2Logs = () => {
       title: "Admin Email ID",
       dataIndex: "admin_email",
       key: "admin_email",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Date and Time",
       dataIndex: "date_time",
       key: "date_time",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Account No.",
       dataIndex: "account_no",
       key: "account_no",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Password",
       dataIndex: "password",
       key: "password",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Raw Spread",
       dataIndex: "raw_spread",
       key: "raw_spread",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Funding Evaluation",
       dataIndex: "funding_evaluation",
       key: "funding_evaluation",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Account Balance",
       dataIndex: "account_balance",
       key: "account_balance",
+      width:100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Stage",
       dataIndex: "stage",
       key: "stage",
+      width:100,
       render: (text) => (
         <div className="stage_status_wrapper">
           <p className={text === "funded" ? "funded" : ""}>{text}</p>
@@ -97,7 +107,7 @@ const Stage2Logs = () => {
               title: <a href="/support/stage-2">Stage 2</a>,
             },
             {
-              title: <a href="#">Log</a>,
+              title: <Link to="#">Log</Link>,
             },
           ]}
         />
