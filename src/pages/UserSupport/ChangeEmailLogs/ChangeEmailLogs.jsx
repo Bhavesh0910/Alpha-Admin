@@ -61,7 +61,7 @@ const ChangeEmailLogs = () => {
   }
 
   return (
-    <Card className="table-wrapper viewLogs_table">
+    <div className="table-wrapper viewLogs_table">
       <div className="header_wrapper">
         <Breadcrumb
           separator=">"
@@ -78,19 +78,19 @@ const ChangeEmailLogs = () => {
       {isLoading ? (
         <LoaderOverlay />
       )
-       : (
-        <AntTable
-          columns={columns}
-          data={changeEmailLogData || []}
-          totalPages={Math.ceil(count / pageSize)}
-          totalItems={count}
-          pageSize={pageSize}
-          CurrentPageNo={pageNo}
-          setPageSize={setPageSize}
-          triggerChange={triggerChange}
-        />
-      )}
-    </Card>
+        : (
+          <AntTable
+            columns={columns}
+            data={changeEmailLogData || []}
+            totalPages={Math.ceil(count / pageSize)}
+            totalItems={count}
+            pageSize={pageSize}
+            CurrentPageNo={pageNo}
+            setPageSize={setPageSize}
+            triggerChange={triggerChange}
+          />
+        )}
+    </div>
   );
 };
 

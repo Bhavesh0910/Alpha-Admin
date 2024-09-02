@@ -53,13 +53,13 @@ const UserIPLogs = () => {
   }
 
   return (
-    <Card className="table-wrapper viewLogs_table">
+    <div className="table-wrapper viewLogs_table">
       <div className="header_wrapper">
         <Breadcrumb
           separator=">"
           items={[
             {
-              title: <a href="/support/payout/">Payout</a>,
+              title: <a href="/list/user-ip-list/">IP List</a>,
             },
             {
               title: <a href="#">Log</a>,
@@ -81,7 +81,7 @@ const UserIPLogs = () => {
           triggerChange={triggerChange}
         />
       )}
-    </Card>
+    </div>
   );
 };
 

@@ -15,7 +15,7 @@ const RequestPayout = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const baseUrl = "payout-request-log/list/";
+    const baseUrl = "v3/payout-request-log/list/";
     const query = `?page=${pageNo}&page_size=${pageSize}`;
     const url = baseUrl + query;
     if (idToken) {
@@ -61,13 +61,13 @@ const RequestPayout = () => {
   }
 
   return (
-    <Card className="table-wrapper viewLogs_table">
+    <div className="table-wrapper viewLogs_table">
       <div className="header_wrapper">
         <Breadcrumb
           separator=">"
           items={[
             {
-              title: <a href="/user-support">Change Email</a>,
+              title: <a href="/user-support">Request Payout</a>,
             },
             {
               title: <a href="#">Log</a>,
@@ -89,7 +89,7 @@ const RequestPayout = () => {
           triggerChange={triggerChange}
         />
       )}
-    </Card>
+    </div>
   );
 };
 

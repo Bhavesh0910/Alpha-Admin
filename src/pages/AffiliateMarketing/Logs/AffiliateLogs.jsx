@@ -78,7 +78,7 @@ const AffiliateLogs = () => {
   }
 
   return (
-    <Card className="table-wrapper viewLogs_table">
+    <div className="table-wrapper viewLogs_table">
       <div className="header_wrapper">
         <Breadcrumb separator=">">
           <Breadcrumb.Item>
@@ -101,7 +101,7 @@ const AffiliateLogs = () => {
           triggerChange={triggerChange}
         />
       )}
-    </Card>
+    </div>
   );
 };
 

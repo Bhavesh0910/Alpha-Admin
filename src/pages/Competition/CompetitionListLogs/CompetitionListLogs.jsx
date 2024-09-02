@@ -101,13 +101,13 @@ const CompetitionListLogs = () => {
   }
 
   return (
-    <Card className="table-wrapper viewLogs_table">
+    <div className="table-wrapper viewLogs_table">
       <div className="header_wrapper">
         <Breadcrumb
           separator=">"
           items={[
             {
-              title: <a href="#">Competition List</a>,
+              title: <a href="/competitions">Competition List</a>,
             },
             {
               title: <a href="#">Log</a>,
@@ -129,7 +129,7 @@ const CompetitionListLogs = () => {
           triggerChange={triggerChange}
         />
       )}
-    </Card>
+    </div>
   );
 };
 
