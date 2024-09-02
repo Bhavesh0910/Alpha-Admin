@@ -25,80 +25,95 @@ const TraderJournal = ({ login_id, platform }) => {
       title: "Login",
       dataIndex: "login",
       key: "login",
+      width:50,
     },
     {
       title: "Position",
       dataIndex: "position",
       key: "position",
+      width:70,
     },
     {
       title: "Symbol",
       dataIndex: "symbol",
       key: "symbol",
+      width:70,
     },
     {
       title: "Date Opened",
       dataIndex: "dateOpen",
       key: "dateOpen",
+      width:70,
     },
     {
       title: "Date Closed",
       dataIndex: "dateClose",
       key: "dateClose",
+      width:70,
     },
     {
       title: "Action",
       dataIndex: "action",
       key: "action",
+      width:70,
     },
     {
       title: "Profit",
       dataIndex: "profitSum",
       key: "profitSum",
+      width:70,
       render: (text) => `$${text.toFixed(2)}`, // Format profit with dollar sign
     },
     {
       title: "Commission",
       dataIndex: "commissionSum",
       key: "commissionSum",
+      width:105,
     },
     {
       title: "Swap",
       dataIndex: "swapSum",
       key: "swapSum",
+      width:65,
     },
     {
       title: "Volume Buy",
       dataIndex: "volumeSumBuy",
       key: "volumeSumBuy",
+      width:80,
     },
     {
       title: "Volume Sell",
       dataIndex: "volumeSumSell",
       key: "volumeSumSell",
+      width:80,
     },
     {
       title: "Average Buy Price",
       dataIndex: "priceAvgBuy",
       key: "priceAvgBuy",
+      width:80,
       render: (text) => `$${text.toFixed(2)}`, // Format price with dollar sign
     },
     {
       title: "Average Sell Price",
       dataIndex: "priceAvgSell",
       key: "priceAvgSell",
+      width:60,
       render: (text) => `$${text.toFixed(2)}`, // Format price with dollar sign
     },
     {
       title: "Stop Loss",
       dataIndex: "stopLoss",
       key: "stopLoss",
+      width:60,
       render: (text) => (text !== null ? `$${text.toFixed(2)}` : '-'),
     },
     {
       title: "Take Profit",
       dataIndex: "takeProfit",
       key: "takeProfit",
+      width:60,
       render: (text) => (text !== null ? `$${text.toFixed(2)}` : '-'),
     },
  

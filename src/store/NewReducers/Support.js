@@ -179,7 +179,7 @@ export const editCommentReq = createAsyncThunk("support/editComment", async ({id
     console.log(stage, " stage");
     return response;
   } catch (error) {
-    dispatch(returnErrors("Error Fetching List...", 400));
+    dispatch(returnErrors(error.response?.data?.detail || "Error editing comment.", 400));
     return rejectWithValue(error.response.data);
   }
 });

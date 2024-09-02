@@ -16,7 +16,7 @@ export const getUserProfileData = createAsyncThunk(
       const response = await axios(`${baseUrl}v3/user/profile/get/`, config);
       return response.data;
     } catch (error) {
-      dispatch(returnErrors('Error while fetching User Data!', 400));
+      dispatch(returnErrors(error.response?.data?.detail || 'Error while fetching User Data!', 400));
       return rejectWithValue(error.response.data);
     }
   }
@@ -30,7 +30,7 @@ export const requestPasswordReset = createAsyncThunk(
       dispatch(returnMessages("Reset password link sent to your email", 200));
       return data;
     } catch (error) {
-      dispatch(returnErrors('Error while requesting password reset!', 400));
+      dispatch(returnErrors(error.response?.data?.detail || 'Error while requesting password reset!', 400));
       return rejectWithValue(error.response.data);
     }
   }
