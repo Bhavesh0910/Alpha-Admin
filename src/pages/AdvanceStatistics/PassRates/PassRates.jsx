@@ -150,7 +150,9 @@ const PassRates = () => {
   const handleMenuClick = (e) => setSelectedStage(e.key);
 
   const menu = (
-    <Menu onClick={handleMenuClick} className="custom-dropdown-menu">
+    <Menu
+    className="stage_menu"
+    onClick={handleMenuClick} className="custom-dropdown-menu">
       <Menu.Item key="All">All</Menu.Item>
       <Menu.Item key="stage 1">Stage 1</Menu.Item>
       <Menu.Item key="stage 2">Stage 2</Menu.Item>

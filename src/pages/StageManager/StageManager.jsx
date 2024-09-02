@@ -171,7 +171,9 @@ const StageManager = () => {
   };
 
   const statusMenu = (key, record) => (
-    <Menu onClick={(e) => openStatusUpdateModal(key, e.key, record)}>
+    <Menu 
+    className="menuCard"
+    onClick={(e) => openStatusUpdateModal(key, e.key, record)}>
       <Menu.Item key="New">Action Required</Menu.Item>
       <Menu.Item key="In Progress">In Progress</Menu.Item>
       <Menu.Item key="Flagged">In Review</Menu.Item>
