@@ -10,7 +10,7 @@ export const fetchExportHistoryApi = async (idToken, url, query) => {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get(`${baseUrl}${url}${query}`, config);
+    const response = await axios.get(`${baseUrl}${url}`, config);
     return response.data;
   } catch (error) {
     console.error("Error during fetchExportHistoryApi request:", error);
