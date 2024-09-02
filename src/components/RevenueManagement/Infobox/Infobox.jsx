@@ -7,6 +7,7 @@ import alphaProfitIcon from "../../../assets/icons/alphaProfitIcon.svg";
 import netProfitIcon from "../../../assets/icons/netProfitIcon.svg";
 import netRevenueIcon from "../../../assets/icons/netRevenueIcon.svg";
 import {useSelector} from "react-redux";
+import {formatCurrency} from "../../../utils/helpers/string";
 
 const Infobox = () => {
   const {statsData, isLoading} = useSelector((state) => state.revenue);
@@ -49,7 +50,7 @@ const InfoBox = ({item}) => {
           alt="revenueAccIcon"
         />
         <p className="infobox_label">Revenue from Account Payments</p>
-        <p className="infobox_value">${item.revenue_from_payments?.toFixed(2)}</p>
+        <p className="infobox_value">{formatCurrency(item.revenue_from_payments)}</p>
       </div>
       <div className="infobox_content">
         <img
@@ -58,7 +59,7 @@ const InfoBox = ({item}) => {
           alt="payoutReqIcon"
         />
         <p className="infobox_label">Payouts Requested</p>
-        <p className="infobox_value">${item.payouts_requested?.toFixed(2)}</p>
+        <p className="infobox_value">{formatCurrency(item.payouts_requested)}</p>
       </div>
       <div className="infobox_content">
         <img
@@ -67,7 +68,7 @@ const InfoBox = ({item}) => {
           alt="alphaProfitIcon"
         />
         <p className="infobox_label">Alpha Profit Share</p>
-        <p className="infobox_value">${item.alpha_profit_share?.toFixed(2)}</p>
+        <p className="infobox_value">{formatCurrency(item.alpha_profit_share)}</p>
       </div>
       <div className="infobox_content">
         <img
@@ -76,7 +77,7 @@ const InfoBox = ({item}) => {
           alt="netRevenueIcon"
         />
         <p className="infobox_label">Net Revenue</p>
-        <p className="infobox_value">${item.net_revenue?.toFixed(2)}</p>
+        <p className="infobox_value">{formatCurrency(item.net_revenue)}</p>
       </div>
       <div className="infobox_content">
         <img
@@ -85,7 +86,7 @@ const InfoBox = ({item}) => {
           alt="alphaProfitIcon"
         />
         <p className="infobox_label">Net Profit</p>
-        <p className="infobox_value">${item.net_profit?.toFixed(2)}</p>
+        <p className="infobox_value">{formatCurrency(item.net_profit)}</p>
       </div>
     </div>
   );
