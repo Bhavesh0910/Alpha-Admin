@@ -1,16 +1,12 @@
-import React, {useState} from "react";
-import {Button, Radio, Space} from "antd";
+import React from "react";
+import { Radio } from "antd";
 import Chart from "react-apexcharts";
 
-const TotalFailedCharts = ({data}) => {
-  const [charts, setCharts] = useState("D");
+const TotalFailedCharts = ({ data, failFilter, onChangeFailFilter }) => {
 
-  const onChangeActive = (e) => {
-    setCharts(e.target.value);
-  };
+  const dates = data ? data.map(item => item.period_date) : [];
+  const totalFailed = data ? data.map(item => item.failed_count) : [];
 
-   const dates = Object.keys(data);
-   const totalFailed = dates.map(date => data[date].failed);
   const options = {
     chart: {
       type: "line",
@@ -19,22 +15,22 @@ const TotalFailedCharts = ({data}) => {
         show: false,
       },
     },
-    colors: ["#F20000"], // Green color for the line
+    colors: ["#F20000"], 
     stroke: {
       curve: "smooth",
       width: 2,
     },
-    markers: {
-      size: 4,
-      colors: ["#F20000"],
-      strokeColors: "#fff",
-      strokeWidth: 2,
-      hover: {
-        size: 6,
-      },
-    },
+    // markers: {
+    //   size: 4,
+    //   colors: ["#F20000"],
+    //   strokeColors: "#fff",
+    //   strokeWidth: 2,
+    //   hover: {
+    //     size: 6,
+    //   },
+    // },
     xaxis: {
-      categories: dates, 
+      categories: dates,
       labels: {
         style: {
           colors: "#000",
@@ -42,12 +38,10 @@ const TotalFailedCharts = ({data}) => {
         rotate: -45,
         trim: true,
       },
-      tickAmount: Math.min(dates.length, 7), 
-
+      tickAmount: Math.min(dates.length, 7),
     },
     yaxis: {
       min: 0,
-      // max: 1200,
       labels: {
         style: {
           colors: "#000",
@@ -68,6 +62,7 @@ const TotalFailedCharts = ({data}) => {
     },
   };
 
+  // Data series for the chart
   const series = [
     {
       name: "Total Failed",
@@ -78,16 +73,16 @@ const TotalFailedCharts = ({data}) => {
   return (
     <div className="chart">
       <div className="chart_header">
-        <h3 style={{marginBottom: "10px"}}>Total Failed</h3>
+        <h3 style={{ marginBottom: "10px" }}>Total Failed</h3>
         <div className="trader-overview-header-right tabs_wrapper">
           <Radio.Group
-            value={charts}
-            onChange={onChangeActive}
+            value={failFilter}
+            onChange={onChangeFailFilter}
           >
-            <Radio.Button value="D">D</Radio.Button>
-            <Radio.Button value="W">W</Radio.Button>
-            <Radio.Button value="M">M</Radio.Button>
-            <Radio.Button value="Y">Y</Radio.Button>
+            <Radio.Button value="day">D</Radio.Button>
+            <Radio.Button value="week">W</Radio.Button>
+            <Radio.Button value="month">M</Radio.Button>
+            <Radio.Button value="year">Y</Radio.Button>
           </Radio.Group>
         </div>
       </div>

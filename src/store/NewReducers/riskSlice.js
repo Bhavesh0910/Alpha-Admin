@@ -14,9 +14,9 @@ export const fetchAccountOverviewStats = createAsyncThunk("risk/fetchAccountOver
   }
 });
 
-export const fetchStageChart = createAsyncThunk("risk/fetchStageChart", async ({idToken, stage, startDate, endDate}, {dispatch, rejectWithValue}) => {
+export const fetchStageChart = createAsyncThunk("risk/fetchStageChart", async ({idToken, stage, startDate, endDate , filter_type}, {dispatch, rejectWithValue}) => {
   try {
-    const response = await getStageChart(idToken, stage, startDate, endDate);
+    const response = await getStageChart(idToken, stage, startDate, endDate , filter_type);
     return response.data;
   } catch (error) {
     const msg = error.response?.data?.detail || "Error fetching stage chart data";

@@ -1,18 +1,11 @@
-import React, {useState} from "react";
-import {Button, Radio, Space} from "antd";
+import React from "react";
+import { Radio } from "antd";
 import Chart from "react-apexcharts";
 
-const TotalPassesCharts = ({data}) => {
-  const [charts, setCharts] = useState("D");
+const TotalPassesCharts = ({ data, passFilter, onChangePassFilter }) => {
+  const dates = data ? data.map(item => item.period_date) : [];
+  const totalPassed = data ? data.map(item => item.passed_count) : [];
 
-  const dates = Object.keys(data);
-  const totalPassed = dates.map(date => data[date].passed);
-
-  const onChangeActive = (e) => {
-    setCharts(e.target.value);
-  };
-
-  
   const options = {
     chart: {
       type: "line",
@@ -21,22 +14,22 @@ const TotalPassesCharts = ({data}) => {
         show: false,
       },
     },
-    colors: ["#008000"], // Green color for the line
+    colors: ["#008000"],
     stroke: {
       curve: "smooth",
       width: 2,
     },
-    markers: {
-      size: 4,
-      colors: ["#008000"],
-      strokeColors: "#fff",
-      strokeWidth: 2,
-      hover: {
-        size: 6,
-      },
-    },
+    // markers: {
+    //   size: 4,
+    //   colors: ["#008000"],
+    //   strokeColors: "#fff",
+    //   strokeWidth: 2,
+    //   hover: {
+    //     size: 6,
+    //   },
+    // },
     xaxis: {
-      categories: dates, 
+      categories: dates,
       labels: {
         style: {
           colors: "#000",
@@ -44,12 +37,10 @@ const TotalPassesCharts = ({data}) => {
         rotate: -45,
         trim: true,
       },
-      tickAmount: Math.min(dates.length, 7), 
-
+      tickAmount: Math.min(dates.length, 7),
     },
     yaxis: {
       min: 0,
-      // max: 1200,
       labels: {
         style: {
           colors: "#000",
@@ -70,6 +61,7 @@ const TotalPassesCharts = ({data}) => {
     },
   };
 
+  // Series data for the chart
   const series = [
     {
       name: "Total Passed",
@@ -80,16 +72,13 @@ const TotalPassesCharts = ({data}) => {
   return (
     <div className="chart">
       <div className="chart_header">
-        <h3 style={{marginBottom: "10px"}}>Total Passed</h3>
+        <h3 style={{ marginBottom: "10px" }}>Total Passed</h3>
         <div className="trader-overview-header-right tabs_wrapper">
-          <Radio.Group
-            value={charts}
-            onChange={onChangeActive}
-          >
-            <Radio.Button value="D">D</Radio.Button>
-            <Radio.Button value="W">W</Radio.Button>
-            <Radio.Button value="M">M</Radio.Button>
-            <Radio.Button value="Y">Y</Radio.Button>
+          <Radio.Group value={passFilter} onChange={onChangePassFilter}>
+            <Radio.Button value="day">D</Radio.Button>
+            <Radio.Button value="week">W</Radio.Button>
+            <Radio.Button value="month">M</Radio.Button>
+            <Radio.Button value="year">Y</Radio.Button>
           </Radio.Group>
         </div>
       </div>

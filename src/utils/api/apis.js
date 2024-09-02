@@ -981,16 +981,46 @@ export const getAccountOverviewStats = async (idToken, startDate, endDate) => {
 export const getStageChart = async (idToken, stage, startDate, endDate) => {
   try {
     // const response = await axios.get(`${baseUrl}v2/account-overview/stage-${stage}-chart/?start_date=${startDate}&end_date=${endDate}`, {
+
     let response;
     let config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
     };
+
     if (startDate && endDate) {
       response = await axios.get(`${baseUrl}v2/account-overview/stage-${stage}-chart/?start_date=${startDate}&end_date=${endDate}`, config);
     } else {
       response = await axios.get(`${baseUrl}v2/account-overview/stage-${stage}-chart/`, config);
+    }
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+
+export const getPassStageChart = async (idToken, stage, startDate, endDate , filter_type) => {
+  try {
+    // const response = await axios.get(`${baseUrl}v2/account-overview/stage-${stage}-chart/?start_date=${startDate}&end_date=${endDate}`, {
+      const params = {};
+  if (filter_type) {
+    params.filter_type = filter_type;
+  }
+
+    let response;
+    let config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+      params: params
+    };
+
+    if (startDate && endDate) {
+      response = await axios.get(`${baseUrl}advance/stage${stage}-pass/?start_date=${startDate}&end_date=${endDate}`, config);
+    } else {
+      response = await axios.get(`${baseUrl}advance/stage${stage}-pass/`, config);
     }
     return response;
   } catch (error) {

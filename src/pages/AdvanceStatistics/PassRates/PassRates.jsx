@@ -2,8 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { DatePicker, Button, Modal, notification, Menu, Dropdown, Slider, Tooltip } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
-import { fetchStageChart } from "../../../store/NewReducers/riskSlice";
-import { fetchPassRate } from "../../../store/NewReducers/advanceStatistics";
+import { fetchFailData, fetchPassRate, fetchStageChart } from "../../../store/NewReducers/advanceStatistics";
 import TotalPassedCharts from "./TotalPassedCharts";
 import TotalFailedCharts from "./TotalFailedCharts";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
@@ -32,10 +31,13 @@ const PassRates = () => {
   const [accountSizeRange, setAccountSizeRange] = useState([10000, 50000]);
   const [sliderVisible, setSliderVisible] = useState(false);
 
+  const [passFilter, setPassFilter] = useState("day");
+  const [failFilter, setFailFilter] = useState("day");
+
   const dispatch = useDispatch();
   const { passRate, isLoading } = useSelector((state) => state.advanceStatistics);
   const { idToken } = useSelector((state) => state.auth);
-  const { stage1ChartData, stage2ChartData } = useSelector((state) => state.risk);
+  const { stage1ChartData, stage2ChartData , stage1FailData , stage2FailData , isLoadingStage1: isChartsLoading } = useSelector((state) => state.advanceStatistics);
   const { isLoading: isExportLoading } = useSelector((state) => state.export);
 
   useEffect(() => {
@@ -62,17 +64,46 @@ const PassRates = () => {
 
       dispatch(fetchPassRate({ idToken, query }));
 
-      const [startDate, endDate] = dates || [];
-      dispatch(fetchStageChart({
-        idToken,
-        stage: selectedStage === "All" ? 1 : selectedStage === 'stage 1' ? 1 : 2,
-        startDate: startDate || null,
-        endDate: endDate || null
-      }));
-    };
+    }
 
     fetchData();
-  }, [dispatch, idToken, pageNo, pageSize, searchText, dates, selectedStage, accountSizeRange]);
+  }, [dispatch, idToken, pageNo, pageSize, searchText, dates, selectedStage, accountSizeRange ]);
+
+
+  useEffect(() => {
+    const [startDate, endDate] = dates || [];
+    dispatch(fetchStageChart({
+      idToken,
+      stage: selectedStage === "All" ? 1 : selectedStage === 'stage 1' ? 1 : 2,
+      startDate: startDate || null,
+      endDate: endDate || null,
+      filter_type: passFilter || null
+    }));
+
+  } , [dispatch ,dates , passFilter  , selectedStage])
+
+  useEffect(() => {
+    const [startDate, endDate] = dates || [];
+ 
+    dispatch(fetchFailData({
+      idToken,
+      stage: selectedStage === "All" ? 1 : selectedStage === 'stage 1' ? 1 : 2,
+      startDate: startDate || null,
+      endDate: endDate || null,
+      filter_type: passFilter || null
+    }));
+
+  } , [dispatch ,dates  , failFilter , selectedStage])
+
+
+
+  const onChangePassFilter = (e) => {
+    setPassFilter(e.target.value);
+  };
+
+  const onChangeFailFilter = (e) => {
+    setFailFilter(e.target.value);
+  };
 
   const handleOpenExportModal = () => setExportModalVisible(true);
   const handleCloseExportModal = () => setExportModalVisible(false);
@@ -230,14 +261,20 @@ const PassRates = () => {
           </div>
 
           <div className="chart_container">
+            
             {showChart && (
               <>
+              {isChartsLoading ? <LoaderOverlay /> :
+              <>
                 <div className="chart_div">
-                  <TotalPassedCharts data={selectedStage === 'stage 1' ? stage1ChartData.result : stage2ChartData?.result || stage1ChartData?.result} />
+                  
+                  <TotalPassedCharts passFilter={passFilter} onChangePassFilter={onChangePassFilter} data={selectedStage === 'stage 1' ? stage1ChartData : stage2ChartData || stage1ChartData} />
                 </div>
                 <div className="chart_div">
-                  <TotalFailedCharts data={selectedStage === 'stage 1' ? stage1ChartData.result : stage2ChartData?.result || stage1ChartData?.result} />
+                  <TotalFailedCharts failFilter={failFilter} onChangeFailFilter={onChangeFailFilter} data={selectedStage === 'stage 1' ? stage1FailData : stage2FailData || stage1FailData} />
                 </div>
+                </> 
+                }
               </>
             )}
           </div>

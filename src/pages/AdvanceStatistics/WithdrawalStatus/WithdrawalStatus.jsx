@@ -157,7 +157,7 @@ const WithdrawalStatus = () => {
       title: 'Withdrawal Amt',
       dataIndex: 'withdrawl_amount',
       key: 'withdrawal_amount',
-      render: text => text ? text : '-',
+      render: text => text ? text.toFixed(2) : '-',
     }
   ];
 
