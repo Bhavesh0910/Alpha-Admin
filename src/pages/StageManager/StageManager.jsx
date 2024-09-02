@@ -1236,13 +1236,13 @@ const StageManager = () => {
             render: (text, row, index) => (
               <>
                 <div className="action_button">
-                  <div onClick={() => openContractUpdateModal("Approved", row)}>
+                  <div style={{cursor:'pointer'}} title="Accept" onClick={() => openContractUpdateModal("Approved", row)}>
                     <img
                       src={acceptIcon}
                       alt=""
                     />
                   </div>
-                  <div onClick={() => openContractUpdateModal("Rejected", row)}>
+                  <div style={{cursor: 'pointer'}} title="Reject" onClick={() => openContractUpdateModal("Rejected", row)}>
                     <img
                       src={rejectIcon}
                       alt=""
