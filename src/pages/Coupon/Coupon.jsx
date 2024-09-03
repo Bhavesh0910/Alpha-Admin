@@ -82,7 +82,7 @@ const Coupon = () => {
       dataIndex: "coupon_amount",
       key: "amount",
       width: 150,
-      render: (text) => (text !== null ? `$${text}` : "-"),
+      render: (text) => (text === null || text === "" ? "-" : `$${text}`),
     },
     {
       title: "Coupon Expiry",

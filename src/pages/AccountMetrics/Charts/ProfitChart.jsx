@@ -95,6 +95,7 @@ const ProfitChart = ({ ProfitData }) => {
           fontSize: "12px",
         },
       },
+      min: 0 
     },
     tooltip: {
       style: {

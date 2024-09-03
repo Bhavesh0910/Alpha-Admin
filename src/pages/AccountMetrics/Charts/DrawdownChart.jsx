@@ -79,6 +79,7 @@ const DrawdownChart = ({ drawdownData }) => {
           fontSize: "12px",
         },
       },
+      min: 0 
     },
     tooltip: {
       style: {

@@ -1,5 +1,5 @@
 import {Breadcrumb, Radio, Tabs} from "antd";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./AccountOverview.scss";
 import {Link} from "react-router-dom";
 import profileIcon from "../../../../assets/icons/profileIcon.svg";
@@ -21,6 +21,13 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
   console.log(objectives, "objectives");
 
   console.log(accountDetails)
+
+  const [currentTime, setCurrentTime] = useState("");
+
+  useEffect(() => {
+    const now = new Date();
+    setCurrentTime(now.toString()); 
+  }, []);
 
   return (
     <div className="accountMetrics_wrapper">
@@ -181,7 +188,7 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
             </div>
             <div className="bottom_main_left_satistic_lower">
               <h3>Last Updated:</h3>
-              <p>Thu Jul 18 GMT+0530 (India Standard Time)</p>
+              <p>{currentTime}</p>
             </div>
           </div>
         </div>
@@ -221,9 +228,9 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
             <div className="bottom_main_right_inner_div">
               <div>
                 <h4>
-                  Max Loss {FormatUSD(objectives?.drawdown_result?.max_loss?.target || 0)} <span>{">"}</span>
+                  Max Loss {FormatUSD(objectives?.drawdown_result?.max_loss?.target ?? 0)} <span>{">"}</span>
                 </h4>
-                <p>Results : {FormatUSD(objectives?.drawdown_result?.max_loss?.result || 0)}</p>
+                <p>Results : {FormatUSD(objectives?.drawdown_result?.max_loss?.result ?? 0)}</p>
               </div>
               <button
                 className={`${
@@ -241,9 +248,9 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
             <div className="bottom_main_right_inner_div">
               <div>
                 <h4>
-                  Max Daily Loss {FormatUSD(objectives?.drawdown_result?.max_daily_loss?.target || 0)} <span>{">"}</span>
+                  Max Daily Loss {FormatUSD(objectives?.drawdown_result?.max_daily_loss?.target ?? 0)} <span>{">"}</span>
                 </h4>
-                <p>Remaining : {FormatUSD(objectives?.drawdown_result?.max_daily_loss?.remaining || 0)}</p>
+                <p>Remaining : {FormatUSD(objectives?.drawdown_result?.max_daily_loss?.remaining ?? 0)}</p>
               </div>
               <button
                 className={`${
@@ -254,7 +261,7 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
                     : "status_failed"
                 }`}
               >
-                {objectives?.drawdown_result?.max_daily_loss?.status}
+                { objectives && objectives?.drawdown_result?.max_daily_loss?.status}
               </button>
             </div>
           </div>
