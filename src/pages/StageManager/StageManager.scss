@@ -383,7 +383,7 @@
     align-items: flex-start;
   }
 }
- .text{
+.text {
   color: var(--Brand-2, #12181f);
   font-family: "Nunito Sans";
   font-size: 18px;
@@ -391,6 +391,14 @@
   font-weight: 700;
   line-height: normal;
   margin-top: 10px;
+
   // width: max-content;
   // white-space: pre-wrap
+}
+
+.downlaodIconClass {
+  display: flex;
+  justify-content: center;
+  margin-top: -5px;
+  cursor: pointer;
 }

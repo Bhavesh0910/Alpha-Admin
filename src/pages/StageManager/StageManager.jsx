@@ -25,6 +25,11 @@ import ReactCountryFlag from "react-country-flag";
 import dayjs from "dayjs";
 import {formatDate, formatDateTime, formatDateTimeNew, FormatUSD} from "../../utils/helpers/string";
 import {updateFlagReq} from "../../store/NewReducers/listSlice";
+import axios from "axios";
+import {baseUrl} from "../../utils/api/apis";
+import {returnErrors} from "../../store/reducers/error";
+import downloadIcon from "../../assets/icons/download_to_pc.svg";
+import {copyToClipboard} from "../../utils/utilityFunctions";
 const {RangePicker} = DatePicker;
 
 const {Option} = Select;
@@ -1460,6 +1465,8 @@ function ExpandedRowData({record}) {
   const [url, setUrl] = useState();
   const {idToken} = useSelector((state) => state.auth);
   const {nestedTableData, isLoading} = useSelector((state) => state.support);
+  const [contract, setContract] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalAction, setModalAction] = useState("");
@@ -1469,6 +1476,9 @@ function ExpandedRowData({record}) {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    if (record.id === null || record.id === undefined) {
+      return;
+    }
     switch (location.pathname) {
       case "/support/stage-1":
       case "/support/stage-2":
@@ -1517,9 +1527,29 @@ function ExpandedRowData({record}) {
     setIsModalVisible(false);
   };
 
-  console.log(record);
+  async function handleDownloadContract(id) {
+    setLoading(true);
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+        responseType: "blob",
+      };
+      const response = await axios.get(`${baseUrl}dg/get_document/${id}/`, config);
+      setLoading(false);
+      return response.data;
+    } catch (error) {
+      dispatch(returnErrors(error?.response?.data?.detail || "Something went wrong!"), 400);
+      console.error("Failed to download the contract:", error);
+      setLoading(false);
+    }
+    setLoading(false);
+  }
+
   return (
     <>
+      {loading && <LoaderOverlay />}
       {isLoading ? (
         "Loading..."
       ) : (
@@ -1600,90 +1630,120 @@ function ExpandedRowData({record}) {
               <div className="expanded_detail_box">
                 <div className="payoutNestedTable">
                   <div>
-                    <strong>Signature Request ID</strong>
-                    <p>{(nestedTableData && nestedTableData?.signature_request_id) || "-"}</p>
+                    <strong>Contract</strong>
+                    {nestedTableData?.signature_request_id ? (
+                      <div
+                        onClick={async () => {
+                          try {
+                            const response = await handleDownloadContract(nestedTableData?.signature_request_id);
+                            const blob = new Blob([response], {type: "application/pdf"});
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement("a");
+                            a.href = url;
+                            a.download = `contract_${nestedTableData?.signature_request_id}.pdf`; // Customize the filename as needed
+                            document.body.appendChild(a);
+                            a.click();
+
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                          } catch (error) {
+                            console.error("Download failed:", error);
+                            throw error;
+                          }
+                        }}
+                      >
+                        <div className="downloadIconClass">
+                          <img
+                            src={downloadIcon}
+                            alt="downloadSvg"
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <p>-</p>
+                    )}
                   </div>
                   <div>
                     <strong>Country</strong>
-                    <p>{(nestedTableData && nestedTableData?.country) || "-"}</p>
+                    <p onClick={() => copyToClipboard(nestedTableData?.country)}>{(nestedTableData && nestedTableData?.country) || "-"}</p>
                   </div>
                   <div>
                     <strong>Contact</strong>
-                    <p>{(nestedTableData && nestedTableData?.contact) || "-"}</p>
+                    <p onClick={() => copyToClipboard(nestedTableData?.country)}>{(nestedTableData && nestedTableData?.contact) || "-"}</p>
                   </div>
 
                   <div>
                     <strong>Type</strong>
-                    <p>{(nestedTableData && nestedTableData?.type) || "-"}</p>
+                    <p onClick={() => copyToClipboard(nestedTableData?.country)}>{(nestedTableData && nestedTableData?.type) || "-"}</p>
                   </div>
 
                   {nestedTableData && nestedTableData?.type === "RISE" ? (
                     <>
                       <div>
                         <strong>Rise Email</strong>
-                        <p>{nestedTableData?.rise_email || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.rise_email || "-"}</p>
                       </div>
                       <div>
                         <strong>Is Rise Verified</strong>
-                        <p>{nestedTableData && nestedTableData?.is_rise_verified ? "Yes" : "No"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData && nestedTableData?.is_rise_verified ? "Yes" : "No"}</p>
                       </div>
                     </>
                   ) : nestedTableData && nestedTableData?.type === "WISE" ? (
                     <>
                       <div>
                         <strong>Wise Email</strong>
-                        <p>{nestedTableData?.wise_email || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.wise_email || "-"}</p>
                       </div>
                       <div>
                         <strong>Is Wise Verified</strong>
-                        <p>{nestedTableData && nestedTableData?.is_wise_verified ? "Yes" : "No"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData && nestedTableData?.is_wise_verified ? "Yes" : "No"}</p>
                       </div>
                     </>
                   ) : (
                     <>
                       <div>
                         <strong>Verification Type</strong>
-                        <p>{(nestedTableData && nestedTableData?.verification_type) || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{(nestedTableData && nestedTableData?.verification_type) || "-"}</p>
                       </div>
                       <div>
                         <strong>Account Name</strong>
-                        <p>{nestedTableData?.account_name || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.account_name || "-"}</p>
                       </div>
                       <div>
                         <strong>Account Number</strong>
-                        <p>{nestedTableData?.account_number || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.account_number || "-"}</p>
                       </div>
                       <div>
                         <strong>Account Type</strong>
-                        <p>{nestedTableData?.account_type || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.account_type || "-"}</p>
                       </div>
                       <div>
                         <strong>City</strong>
-                        <p>{nestedTableData?.city || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.city || "-"}</p>
                       </div>
                       <div>
                         <strong>Country</strong>
-                        <p>{nestedTableData?.country || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.country || "-"}</p>
                       </div>
                       <div>
                         <strong>Address</strong>
-                        <p>{nestedTableData?.address || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.address || "-"}</p>
                       </div>
                       <div>
                         <strong>Postal Code</strong>
-                        <p>{nestedTableData?.postal_code || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.postal_code || "-"}</p>
                       </div>
                       <div>
                         <strong>Contact</strong>
-                        <p>{nestedTableData?.contact || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.contact || "-"}</p>
                       </div>
                       <div>
                         <strong>Swift Bic Code</strong>
-                        <p>{nestedTableData?.swift_bic_code || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.swift_bic_code || "-"}</p>
                       </div>
                       <div>
                         <strong>Payment Verification Status</strong>
-                        <p>{nestedTableData?.payment_verification_status || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.payment_verification_status || "-"}</p>
                       </div>
                     </>
                   )}
@@ -1700,11 +1760,21 @@ function ExpandedRowData({record}) {
                         onClick={() => openEditModal(record?.comment, record)}
                       />
                     </div>
-                    <div className="text">{record?.comment || "-"}</div>
+                    <div
+                      className="text"
+                      onClick={() => copyToClipboard(nestedTableData?.country)}
+                    >
+                      {record?.comment || "-"}
+                    </div>
                   </div>
                   <div className="reason_container">
                     <strong>Reason</strong>
-                    <div className="text">{(nestedTableData && nestedTableData?.reason) || "-"}</div>
+                    <div
+                      className="text"
+                      onClick={() => copyToClipboard(nestedTableData?.country)}
+                    >
+                      {(nestedTableData && nestedTableData?.reason) || "-"}
+                    </div>
                   </div>
                 </div>
               </div>

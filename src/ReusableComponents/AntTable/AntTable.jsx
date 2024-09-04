@@ -3,7 +3,7 @@ import {Table} from "antd";
 import "./AntTable.scss";
 import {useLocation} from "react-router-dom";
 
-const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460  , columns, totalItems, pageSize, setPageSize, CurrentPageNo, isExpandable, ExpandedComp, rowId, customRowClass = false}) => {
+const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460, columns, totalItems, pageSize, setPageSize, CurrentPageNo, isExpandable, ExpandedComp, rowId, customRowClass = false}) => {
   const [pagination, setPagination] = useState(() => {
     if (serverSide) {
       return {current: CurrentPageNo, pageSize, total: totalItems};
@@ -76,7 +76,7 @@ const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460  , colu
         }}
         scroll={{
           y: scrollY,
-          x: 'max-content'
+          x: "max-content",
         }}
         rowKey={rowId}
         size={"large"}
