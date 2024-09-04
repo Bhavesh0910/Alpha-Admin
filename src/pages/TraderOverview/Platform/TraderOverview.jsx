@@ -1,28 +1,29 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./TraderOverview.scss";
-import {Table, DatePicker, Button, Card, Radio, Select, Typography, Modal} from "antd";
+import { Table, DatePicker, Button, Card, Radio, Select, Typography, Modal, Cascader, Tag } from "antd";
 
-import {Link, useNavigate} from "react-router-dom";
-import {useSelector, useDispatch} from "react-redux";
-import {getAllTradersRequest} from "../../../utils/api/apis";
-import {getAccountList, getAccountListSuccess} from "../../../store/reducers/accountSlice";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getAllTradersRequest } from "../../../utils/api/apis";
+import { getAccountList, getAccountListSuccess } from "../../../store/reducers/accountSlice";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import {setDefaultLoginId, accountList, changeAccountStatus, deleteAcount} from "../../../store/NewReducers/accountList";
-import {clearPersistedData} from "../../../store/configureStore";
+import { setDefaultLoginId, accountList, changeAccountStatus, deleteAcount } from "../../../store/NewReducers/accountList";
+import { clearPersistedData } from "../../../store/configureStore";
 import dayjs from "dayjs";
 import blockIcon from "../../../assets/icons/block.svg";
 import unblockIcon from "../../../assets/icons/unblock.svg";
 import deleteIcon from "../../../assets/icons/delete.svg";
-import {formatDate} from "fullcalendar/index.js";
+import { formatDate } from "fullcalendar/index.js";
 import ReactCountryFlag from "react-country-flag";
-import {changeAccountStatusApi} from "../../../utils/apis/accountsApi";
-import {fetchFundingDetails} from "../../../store/NewReducers/fundingSlice";
-import {data} from "./../../../components/AffiliateMarketing/UserDetails/UserDetails";
-const {Title} = Typography;
-const {Option} = Select;
-const {RangePicker} = DatePicker;
+import { changeAccountStatusApi } from "../../../utils/apis/accountsApi";
+import { fetchFundingDetails } from "../../../store/NewReducers/fundingSlice";
+import { data } from "./../../../components/AffiliateMarketing/UserDetails/UserDetails";
+import { DownOutlined, UpOutlined } from "@ant-design/icons";
+const { Title } = Typography;
+const { Option, OptGroup } = Select;
+const { RangePicker } = DatePicker;
 
 function TraderOverview() {
   const lookup = require("country-code-lookup");
@@ -40,18 +41,22 @@ function TraderOverview() {
   const [reason, setReason] = useState("");
 
   const [phase, setPhase] = useState("");
-  const {idToken, searchDates} = useSelector((state) => state.auth);
-  const {data, isLoading: accountsLoading, totalItems, refresh} = useSelector((state) => state.accountList);
+  const { idToken, searchDates } = useSelector((state) => state.auth);
+  const { data, isLoading: accountsLoading, totalItems, refresh } = useSelector((state) => state.accountList);
   const [Challenges, setChallenges] = useState(null);
   const [labels, setLabels] = useState([]);
   const [count, setCount] = useState(0);
   const [msg, setMsg] = useState(null);
 
+  const [expandedGroup, setExpandedGroup] = useState(null);
   const [ChallengesOptions, setChallengesOptions] = useState([]);
-  const {fundingData} = useSelector((state) => state.funding);
+  const { fundingData } = useSelector((state) => state.funding);
 
   const [dates, setDates] = useState(null);
   const defaultDates = [dayjs().subtract(7, "day"), dayjs()];
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedChallenges, setSelectedChallenges] = useState([]);
+  const [showChallenges, setShowChallenges] = useState(false);
 
   useEffect(() => {
     dispatch(fetchFundingDetails(idToken));
@@ -60,16 +65,18 @@ function TraderOverview() {
     fetchTradersData(dates, pageNo, pageSize, searchText, status, phase, platform, Challenges);
   }, [idToken, dates, pageNo, pageSize, searchText, status, phase, platform, refresh, Challenges]);
 
-  useEffect(() => {
-    if (fundingData) {
-      const fundingEvu = Object.values(fundingData)
-        .map((item, index) => item.map((item) => item.name))
-        .flat()
-        .map((item) => ({label: item, value: item}));
-      console.log("fundingEvu ", fundingEvu);
-      setChallengesOptions(fundingEvu);
-    }
-  }, [fundingData]);
+  // useEffect(() => {
+  //   if (fundingData) {
+  //     const fundingEvu = Object.values(fundingData)
+  //       .map((item, index) => item.map((item) => item.name))
+  //       .flat()
+  //       .map((item) => ({label: item, value: item}));
+  //     console.log("fundingEvu ", fundingEvu);
+  //     setChallengesOptions(fundingEvu);
+  //   }
+  // }, [fundingData]);
+
+  console.log(ChallengesOptions)
 
   const fetchTradersData = async (dates, pageNo, pageSize, searchText, status, phase, platform, Challenges) => {
     setIsLoading(true);
@@ -134,6 +141,36 @@ function TraderOverview() {
     setPageNo(1);
     setPhase(e.target.value);
   };
+
+ 
+  useEffect(() => {
+    const data = fundingData && typeof fundingData === 'object' ? fundingData : {};
+
+    const formattedOptions = Object.keys(data).map(key => ({
+      label: key,
+      value: key,
+      children: (data[key] || []).map(item => ({
+        label: item.name || '',
+        value: item.name || '',
+      })),
+    }));
+
+    setChallengesOptions(formattedOptions);
+  }, [fundingData]);
+
+  const handleChallengeChange = (value) => {
+    setSelectedChallenges(value);
+
+  };
+
+
+  const handleCategoryChange = (value) => {
+    setSelectedCategory(value);
+    setShowChallenges(true);
+  };
+
+
+
 
   const handlePlatformChange = (value) => {
     setPageNo(1);
@@ -214,7 +251,7 @@ function TraderOverview() {
         dataIndex: "country",
         key: "country",
         width: "15%",
-        render: (country, {record}) => {
+        render: (country, { record }) => {
           const countryName = (country !== "undefined" ? country : null) || "-";
           const countryCode = lookup.byCountry(countryName);
           return countryCode ? (
@@ -236,14 +273,14 @@ function TraderOverview() {
         dataIndex: "login_id",
         key: "login_id",
         width: "15%",
-        render: (text, record) => (text ? <div style={{cursor:'pointer'}} onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}>{text}</div> : "-"),
+        render: (text, record) => (text ? <div style={{ cursor: 'pointer' }} onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}>{text}</div> : "-"),
       },
       {
         title: "Email",
         dataIndex: "email",
         key: "email",
         width: "15%",
-        render: (text, record) => (text ? <div style={{cursor:'pointer'}} onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}>{text}</div> : "-"),
+        render: (text, record) => (text ? <div style={{ cursor: 'pointer' }} onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}>{text}</div> : "-"),
       },
       {
         title: "Balance",
@@ -302,21 +339,21 @@ function TraderOverview() {
         render: (_, record) => (
           <div className="btn-wrapper">
             {record.user_is_active ? (
-              <div style={{cursor:'pointer'}} title="Block" onClick={() => handleAction("Block", record)}>
+              <div style={{ cursor: 'pointer' }} title="Block" onClick={() => handleAction("Block", record)}>
                 <img
                   src={blockIcon}
                   alt=""
                 />
               </div>
             ) : (
-              <div style={{cursor:'pointer'}} title="Unblock" onClick={() => handleAction("UnBlock", record)}>
+              <div style={{ cursor: 'pointer' }} title="Unblock" onClick={() => handleAction("UnBlock", record)}>
                 <img
                   src={unblockIcon}
                   alt=""
                 />
               </div>
             )}
-            <div style={{cursor:'pointer'}} title="Delete"
+            <div style={{ cursor: 'pointer' }} title="Delete"
               onClick={() => handleAction("Delete", record)}
               danger
             >
@@ -340,19 +377,19 @@ function TraderOverview() {
   }
 
   const handleBlock = () => {
-    dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.user_id, note: reason}, dispatch}));
+    dispatch(changeAccountStatus({ idToken, body: { id: selectedTrader?.user_id, note: reason }, dispatch }));
     setIsModalVisible(false);
   };
 
   const handleUnBlock = () => {
-    dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.user_id, note: reason}, dispatch}));
+    dispatch(changeAccountStatus({ idToken, body: { id: selectedTrader?.user_id, note: reason }, dispatch }));
     setIsModalVisible(false);
   };
 
   const handleDelete = () => {
     console.log("handleDelete");
     console.log(platform, "plaform");
-    dispatch(deleteAcount({idToken, body: {login_id: selectedTrader?.login_id}, platform, dispatch}));
+    dispatch(deleteAcount({ idToken, body: { login_id: selectedTrader?.login_id }, platform, dispatch }));
     setIsModalVisible(false);
   };
 
@@ -360,6 +397,20 @@ function TraderOverview() {
     setIsModalVisible(false);
   };
 
+
+  const handleChange = (value, options) => {
+    setSelectedChallenges(value);
+    const labels = options.map(option => option.label);
+    console.log('Selected values:', value);
+    console.log('Selected labels:', labels);
+  };
+
+  const handleGroupClick = (groupValue) => {
+    setExpandedGroup(prev => (prev === groupValue ? null : groupValue));
+  };
+
+
+  console.log(ChallengesOptions)
   // const CustomOption = (props) => {
   //   return (
   //     <components.Option {...props} className="custom-option">
@@ -402,7 +453,7 @@ function TraderOverview() {
           <div className="trader-overview-header-left_inner">
             <Title
               className="title"
-              style={{fontstatus: "14px"}}
+              style={{ fontstatus: "14px" }}
               level={5}
             >
               Platform
@@ -416,15 +467,67 @@ function TraderOverview() {
             />
           </div>
 
+
+
           <div className="trader-overview-header-left_inner">
             <Title
               className="title"
-              style={{fontSize: "14px"}}
+              style={{ fontSize: "14px" }}
               level={5}
             >
               Challenges
             </Title>
+
             <Select
+              mode="multiple"
+              tagRender={(props) => {
+                const { label, value, closable, onClose } = props;
+                return (
+                  <Tag
+                    closable={closable}
+                    onClose={onClose}
+                    style={{
+                      maxWidth: '150px', 
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis'
+                    }}
+                  >
+                    {label}
+                  </Tag>
+                );
+              }}
+              placeholder="Select Challenge"
+              // value={selectedChallenges}
+              onChange={(value, c, ind) => {
+                setChallenges(value);
+                const labels = c.map((item) => item.label);
+                setLabels(labels);
+                if (c.length === 2) {
+                  setMsg(<p>{`${labels[0]}` + `${labels[1]}`}...</p>);
+                }
+              }} className="header-select widthFitContent"
+              style={{ width: 300 }}
+            >
+              {ChallengesOptions.map(option => (
+                <OptGroup
+                  label={
+                    <div className="label" onClick={() => handleGroupClick(option.value)}>
+                      {option.label} {expandedGroup !== option.value ? <DownOutlined style={{ fontSize: '14px' }} />
+                        : <UpOutlined style={{ fontSize: "14px" }} />}
+                    </div>
+                  }
+                  key={option.value}
+                >
+                  {expandedGroup === option.value &&
+                    option.children.map(child => (
+                      <Option className='value' value={child.value} key={child.value}>
+                        {child.label}
+                      </Option>
+                    ))}
+                </OptGroup>
+              ))}
+            </Select>
+            {/* <Select
               mode="multiple"
               // value={Challenges}
               // defaultValue={ChallengesOptions[0]}
@@ -438,7 +541,8 @@ function TraderOverview() {
                   setMsg(<p>{`${labels[0]}` + `${labels[1]}`}...</p>);
                 }
               }}
-              options={ChallengesOptions || []}
+
+              // options={ChallengesOptions || []}
               tagRender={(item) => {
                 // if (msg) {
                 //   if (count > 1) {
@@ -453,7 +557,18 @@ function TraderOverview() {
                 //   return <p>{labels[0]}</p>;
                 // }
               }}
-            />
+            >
+              {ChallengesOptions.map((option) => (
+                <OptGroup label={option.label} key={option.value}>
+                  {option.children.map((child) => (
+                    <Option value={child.value} key={child.value}>
+                      {child.label}
+                    </Option>
+                  ))}
+                </OptGroup>
+              ))}
+
+            </Select> */}
           </div>
         </div>
         {/* <div className="trader-overview-header-left"></div> */}
@@ -492,6 +607,8 @@ function TraderOverview() {
             </div>
           </div>
         </div>
+
+
         <div className="trader_overview_row2_groupB">
           <div>
             <RangePicker
@@ -515,6 +632,47 @@ function TraderOverview() {
           </div>
         </div>
       </div>
+
+{/* 
+      <Title level={5}>Challenges</Title>
+      <Cascader
+        options={ChallengesOptions}
+        onChange={(value, c, ind) => {
+          setChallenges(value[1]);
+          const labels = c.map((item) => item.label);
+          setLabels(labels);
+          console.log(Challenges, c, ind)
+          if (c.length === 2) {
+            setMsg(<p>{`${labels[0]}` + `${labels[1]}`}...</p>);
+          }
+        }}
+        placeholder="Select Challenge"
+        className="header-select widthFitContent"
+      /> */}
+
+      {/* <Select
+        mode="multiple"
+        placeholder="Select Challenges"
+        value={selectedChallenges}
+        onChange={(value, c, ind) => {
+          setChallenges(value);
+          const labels = c.map((item) => item.label);
+          setLabels(labels);
+          if (c.length === 2) {
+            setMsg(<p>{`${labels[0]}` + `${labels[1]}`}...</p>);
+          }
+        }} style={{ width: 300 }}
+      >
+        {ChallengesOptions.map((option) => (
+          <OptGroup label={option.label} key={option.value}>
+            {option.children.map((child) => (
+              <Option value={child.value} key={child.value}>
+                {child.label}
+              </Option>
+            ))}
+          </OptGroup>
+        ))}
+      </Select> */}
 
       <Card className="table-wrapper">
         {accountsLoading ? (
@@ -579,7 +737,7 @@ function TraderOverview() {
 
 export default TraderOverview;
 
-const ExpandableRow = ({record}) => {
+const ExpandableRow = ({ record }) => {
   return (
     <>
       <div className="NestedTable">

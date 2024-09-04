@@ -14,6 +14,7 @@
     @media (max-width: 720px) {
       width: 100%;
     }
+
   }
 
   /* CSS to style custom scrollbar for Ant Design table */
@@ -133,6 +134,7 @@
         font-weight: 600;
         line-height: normal;
         outline: none;
+        overflow: auto;
       }
       .ant-select-arrow {
         color: #a6a6a6;
@@ -439,4 +441,10 @@
     line-height: normal;
     margin-top: 10px;
   }
+}
+
+
+.label{
+  font-size: 16px;
+  color: #000;
 }
