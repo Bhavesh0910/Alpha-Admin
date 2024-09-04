@@ -46,8 +46,8 @@ const DrawdownChart = ({ drawdownData }) => {
       strokeDashArray: 8,
     },
     xaxis: {
-      categories: (drawdownData && drawdownData?.date && drawdownData?.date?.map(date_str => date_str.split('T')[0])) || [], // Format dates as YYYY-MM-DD
-      tickAmount: 15, // Limit number of ticks to 15
+      categories: [], // Will be set dynamically
+      tickAmount: 6, // Limit number of ticks to 15
       tooltip: {
         enabled: false,
       },
@@ -58,7 +58,7 @@ const DrawdownChart = ({ drawdownData }) => {
         show: false,
       },
       labels: {
-        formatter: (value) => value, // Directly use formatted date string
+        formatter: (value) => value,
         style: {
           colors: "#8B8E93",
           fontSize: "12px",
@@ -79,21 +79,24 @@ const DrawdownChart = ({ drawdownData }) => {
           fontSize: "12px",
         },
       },
-      min: 0 
+      min: undefined, 
+      max: undefined, 
     },
     tooltip: {
       style: {
         fontSize: "14px",
         fontWeight: "700",
       },
- 
     },
   });
 
   useEffect(() => {
     if (drawdownData) {
       const drawdowns = drawdownData?.draw_down || [];
-      const dates = (drawdownData?.date || []).map(date_str => date_str?.split('T')[0]); // Extract YYYY-MM-DD
+      const dates = (drawdownData?.date || []).map(date_str => date_str.split('T')[0]); 
+
+      const minDrawdown = Math.min(...drawdowns);
+      const maxDrawdown = Math.max(...drawdowns);
 
       setSeries([
         {
@@ -108,7 +111,12 @@ const DrawdownChart = ({ drawdownData }) => {
         xaxis: {
           ...prevOptions.xaxis,
           categories: dates,
-          tickAmount: 15, // Ensure x-axis shows a maximum of 15 ticks
+          tickAmount: 6,
+        },
+        yaxis: {
+          ...prevOptions.yaxis,
+          min: minDrawdown - 100, 
+          max: maxDrawdown + 100,
         }
       }));
     }

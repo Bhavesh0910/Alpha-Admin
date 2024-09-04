@@ -25,7 +25,7 @@ const AccountMetrics = () => {
   console.log("platformmmmmmm : ",platform) 
   const idToken = useSelector((state) => state.auth.idToken);
   const dispatch = useDispatch();
-  const { tradingAccountOverview, accountDetails, accountAnalysis , objectives, performanceChart ,  accountInsights , isLoading, error } = useSelector(state => state.accountMetrics);
+  const { tradingAccountOverview , accountDetails, accountAnalysis , objectives, performanceChart ,  accountInsights , isLoading, error } = useSelector(state => state.accountMetrics);
 
   console.log(performanceChart)
   useEffect(() => {
@@ -35,6 +35,7 @@ const AccountMetrics = () => {
     dispatch(fetchPerformanceChart({ login_id ,platform, idToken }));
     
     dispatch(fetchAccountAnalysis({ login_id, platform, idToken }));
+    dispatch(fetchAccountInsights({ login_id, platform, idToken }));
 
     // dispatch(fetchAccountInsights({ login_id , platform ,idToken }));
     // dispatch(fetchTradeJournal({ login_id , platform , idToken  }));
@@ -92,8 +93,8 @@ const AccountMetrics = () => {
         </div>
         {isLoading && <LoaderOverlay />}
 
-        {status === "" && <AccountOverview statistics={accountAnalysis?.general_statistics} overview={tradingAccountOverview} accountDetails={accountDetails} objectives={objectives} performanceChart={performanceChart} />}
-        {status === "Insights" && <Insights login_id={login_id} platform={platform} />}
+        {status === "" && <AccountOverview statistics={accountAnalysis?.general_statistics} info={accountAnalysis?.Basic_info} accountInsights={accountInsights} overview={tradingAccountOverview} accountDetails={accountDetails} objectives={objectives} performanceChart={performanceChart} />}
+        {status === "Insights" && <Insights accountInsights={accountInsights} login_id={login_id} platform={platform} />}
         {status === "Trader_Journal" && <TraderJournal login_id={login_id} platform={platform} />}
         {status === "Analysis" && <Analysis login_id={login_id} platform={platform} />}
       </div>

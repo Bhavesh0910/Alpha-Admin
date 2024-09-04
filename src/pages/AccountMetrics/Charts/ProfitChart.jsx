@@ -56,13 +56,8 @@ const ProfitChart = ({ ProfitData }) => {
       borderColor: "#415672",
       strokeDashArray: 8,
     },
-    labels: (ProfitData &&
-      ProfitData.date &&
-      ProfitData.date.map(date_str => date_str.split('T')[0])) || [], // Format dates as YYYY-MM-DD
     xaxis: {
-      categories: (ProfitData &&
-        ProfitData.date &&
-        ProfitData.date.map(date_str => date_str.split('T')[0])) || [], // Format dates as YYYY-MM-DD
+      categories: [], // Will be set dynamically
       tickAmount: 15, // Limit number of ticks to 15
       tooltip: {
         enabled: false,
@@ -74,7 +69,7 @@ const ProfitChart = ({ ProfitData }) => {
         show: false,
       },
       labels: {
-        formatter: (value) => value, // Directly use formatted date string
+        formatter: (value) => value,
         style: {
           colors: "#8B8E93",
           fontSize: "12px",
@@ -95,14 +90,14 @@ const ProfitChart = ({ ProfitData }) => {
           fontSize: "12px",
         },
       },
-      min: 0 
+      min: undefined, // Will be set dynamically
+      max: undefined, // Will be set dynamically
     },
     tooltip: {
       style: {
         fontSize: "14px",
         fontWeight: "700",
       },
-
     },
   });
 
@@ -110,6 +105,9 @@ const ProfitChart = ({ ProfitData }) => {
     if (ProfitData) {
       const profit = ProfitData.profit || [];
       const dates = (ProfitData.date || []).map(date_str => date_str.split('T')[0]); // Extract YYYY-MM-DD
+
+      const minProfit = Math.min(...profit);
+      const maxProfit = Math.max(...profit);
 
       setSeries([
         {
@@ -121,11 +119,15 @@ const ProfitChart = ({ ProfitData }) => {
 
       setOptions(prevOptions => ({
         ...prevOptions,
-        labels: dates,
         xaxis: {
           ...prevOptions.xaxis,
           categories: dates,
           tickAmount: 15, // Ensure x-axis shows a maximum of 15 ticks
+        },
+        yaxis: {
+          ...prevOptions.yaxis,
+          min: minProfit - 100, // Adding a small buffer to the min value
+          max: maxProfit + 100, // Adding a small buffer to the max value
         }
       }));
     }
