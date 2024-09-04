@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import "./Payouts.scss";
 import {DatePicker, Input, Button, Select, Dropdown, Menu, Modal, Form} from "antd";
 import {DownOutlined} from "@ant-design/icons";
@@ -299,7 +299,7 @@ const Payouts = () => {
   //   },
   // ];
 
-  const columns = [
+  const columns = useMemo(()=>[
     {
       title: "ID",
       dataIndex: "id",
@@ -445,7 +445,7 @@ const Payouts = () => {
         </>
       ),
     },
-  ];
+  ]);
   const handleSearch = (value) => {
     setPageNo(1);
     setPageSize(20);

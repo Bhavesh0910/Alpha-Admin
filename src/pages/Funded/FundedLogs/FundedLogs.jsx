@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Breadcrumb, Card } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
@@ -22,7 +22,7 @@ const FundedLogs = () => {
     dispatch(logsListReq({ idToken, url, key: "fundedLogData", dispatch }));
   }, [pageNo, pageSize, idToken, dispatch]);
 
-  const columns = [
+  const columns = useMemo(()=>[
     {
       title: "Admin Email ID",
       dataIndex: "admin_email",
@@ -90,7 +90,7 @@ const FundedLogs = () => {
         </div>
       ),
     },
-  ];
+  ]);
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);

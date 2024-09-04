@@ -1,5 +1,5 @@
 import {Button, Select} from "antd";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import arrowIcon from "../../assets/icons/status_arrow_left_white.svg";
 import {useNavigate} from "react-router-dom";
@@ -63,7 +63,7 @@ const Coupon = () => {
     setIsEditModalVisible(!isEditModalVisible);
   };
 
-  const columns = [
+  const columns = useMemo(()=>[
     {
       title: "Id",
       dataIndex: "id",
@@ -173,7 +173,7 @@ const Coupon = () => {
     //   key: "users",
     //   render: text => <div className="actn_btn_container">{text?.length || "-"}</div>,
     // },
-  ];
+  ]);
 
   return (
     <div className="coupon_container">

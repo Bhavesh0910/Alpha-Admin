@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {Breadcrumb, Card} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
@@ -25,7 +25,7 @@ const AffiliateLogs = () => {
     }
   }, [pageNo, pageSize, idToken, dispatch]);
 
-  const columns = [
+  const columns =useMemo(()=> [
     {
       title: "Admin Email ID",
       dataIndex: "admin_email",
@@ -70,7 +70,7 @@ const AffiliateLogs = () => {
       key: "repeat_commission",
       render: (text) => text || "-",
     },
-  ];
+  ]);
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);

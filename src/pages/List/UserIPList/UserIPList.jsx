@@ -1,18 +1,18 @@
-import { Button, message, Modal, Select, Tooltip } from "antd";
-import './UserIPList.scss';
-import React, { useEffect, useState } from "react";
+import {Button, message, Modal, Select, Tooltip} from "antd";
+import "./UserIPList.scss";
+import React, {useEffect, useMemo, useState} from "react";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import { useDispatch, useSelector } from "react-redux";
-import { blockOrUnblockIp, fetchIpLogs } from "../../../store/NewReducers/listSlice";
-import { CopyOutlined } from "@ant-design/icons";
+import {useDispatch, useSelector} from "react-redux";
+import {blockOrUnblockIp, fetchIpLogs} from "../../../store/NewReducers/listSlice";
+import {CopyOutlined} from "@ant-design/icons";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import blockIcon from '../../../assets/icons/block.svg'
-import unblockIcon from '../../../assets/icons/unblock.svg'
-import { returnMessages } from "../../../store/reducers/message";
+import blockIcon from "../../../assets/icons/block.svg";
+import unblockIcon from "../../../assets/icons/unblock.svg";
+import {returnMessages} from "../../../store/reducers/message";
 
-const { Option } = Select;
+const {Option} = Select;
 
 const UserIPList = () => {
   const [searchText, setSearchText] = useState("");
@@ -20,21 +20,20 @@ const UserIPList = () => {
   const [category, setCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
-  const { idToken } = useSelector((state) => state.auth);
+  const {idToken} = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [action, setAction] = useState(null);
   const [reason, setReason] = useState("");
   const [selectedRecord, setSelectedRecord] = useState(null);
 
-  const { ipLogsData, isLoading , isBlockLoading , error } = useSelector((state) => state.list);
+  const {ipLogsData, isLoading, isBlockLoading, error} = useSelector((state) => state.list);
 
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-
   const fetch = () => {
-    dispatch(fetchIpLogs({ idToken, search: searchText, blocked: activeTab === "blocked" ? 'True' : 'False', currentPage }));
+    dispatch(fetchIpLogs({idToken, search: searchText, blocked: activeTab === "blocked" ? "True" : "False", currentPage}));
   };
 
   useEffect(() => {
@@ -66,43 +65,42 @@ const UserIPList = () => {
   const handleBlock = async () => {
     if (selectedRecord && reason) {
       try {
-         dispatch(blockOrUnblockIp({
-          user_email: selectedRecord.user,
-          reason,
-          idToken,
-          block: action === "Block"
-        })).unwrap()
-        dispatch(returnMessages(`${action ? "Blocked" : "Unblocked"} Successfully` , 200))
+        dispatch(
+          blockOrUnblockIp({
+            user_email: selectedRecord.user,
+            reason,
+            idToken,
+            block: action === "Block",
+          }),
+        ).unwrap();
+        dispatch(returnMessages(`${action ? "Blocked" : "Unblocked"} Successfully`, 200));
         setIsModalVisible(false);
-        dispatch(fetchIpLogs({ idToken, search: '', blocked: activeTab === "blocked" ? 'True' : 'False', currentPage }));
-      } catch (error) {
-      }
+        dispatch(fetchIpLogs({idToken, search: "", blocked: activeTab === "blocked" ? "True" : "False", currentPage}));
+      } catch (error) {}
     } else {
       message.error("Please provide a reason");
     }
-    setIsModalVisible(false)
+    setIsModalVisible(false);
   };
 
-
-
-  console.log(isBlockLoading)
+  console.log(isBlockLoading);
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
 
-  const columns = [
+  const columns = useMemo(() => [
     {
       title: "User",
       dataIndex: "user",
       key: "user",
-      width:100,
+      width: 100,
       render: (text) => (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          {text || '-'}
+        <div style={{display: "flex", alignItems: "center"}}>
+          {text || "-"}
           <Tooltip title="Copy">
             <CopyOutlined
-              style={{ marginLeft: 8, cursor: 'pointer', color: '#75ebc3' }}
+              style={{marginLeft: 8, cursor: "pointer", color: "#75ebc3"}}
               onClick={() => message.success("Copied email")}
             />
           </Tooltip>
@@ -113,64 +111,68 @@ const UserIPList = () => {
       title: "Date Created",
       dataIndex: "created",
       key: "created",
-      width:100,
-      render: (text) => text || '-',
+      width: 100,
+      render: (text) => text || "-",
     },
     {
       title: "IP",
       dataIndex: "ip",
       key: "ip",
-      width:100,
-      render: (text) => text || '-',
+      width: 100,
+      render: (text) => text || "-",
     },
     {
       title: "Region",
       dataIndex: "region",
       key: "region",
-      width:100,
-      render: (text) => text || '-',
+      width: 100,
+      render: (text) => text || "-",
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      width:100,
-      render: (text) => (text ? "Blocked" : 'Allowed') || '-',
+      width: 100,
+      render: (text) => (text ? "Blocked" : "Allowed") || "-",
     },
     {
       title: "Action",
       dataIndex: "actions",
-      width:100,
+      width: 100,
       render: (_, record) => (
         <div className="action_wrapper">
           {record.blocked ? (
             <div
-            title="Unblock"
+              title="Unblock"
               className=""
               onClick={() => handleAction("Unblock", record)}
             >
-              <img src={unblockIcon} alt="" />
+              <img
+                src={unblockIcon}
+                alt=""
+              />
             </div>
           ) : (
             <div
-            title="Block"
+              title="Block"
               className=""
               onClick={() => handleAction("Block", record)}
             >
-              <img src={blockIcon} alt="" />
+              <img
+                src={blockIcon}
+                alt=""
+              />
             </div>
           )}
         </div>
       ),
     },
-  ];
+  ]);
 
-  
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
     setPageSize(updatedPageSize);
   }
-
 
   return (
     <div className="list_container">
@@ -200,7 +202,10 @@ const UserIPList = () => {
             onKeyDown={(e) => handleSearch(e)}
           />
           <div className="searchImg">
-            <img src={searchIcon} alt="searchIcon" />
+            <img
+              src={searchIcon}
+              alt="searchIcon"
+            />
           </div>
         </div>
       </div>
@@ -213,9 +218,9 @@ const UserIPList = () => {
         pageSize={pageSize}
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}
-        triggerChange={triggerChange}     
+        triggerChange={triggerChange}
         scrollY={400}
-        />
+      />
 
       <Modal
         title={`${action} Account`}
@@ -224,7 +229,10 @@ const UserIPList = () => {
         centered
         className="table-modal"
         footer={[
-          <div className="modal-btns-wrapper" key="footer">
+          <div
+            className="modal-btns-wrapper"
+            key="footer"
+          >
             <Button
               className="cancel-btn"
               key="cancel"

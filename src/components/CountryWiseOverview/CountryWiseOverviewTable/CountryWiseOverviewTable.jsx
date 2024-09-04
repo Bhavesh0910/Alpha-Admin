@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import "./CountryWiseOverviewTable.scss";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import dayjs from "dayjs";
@@ -36,38 +36,43 @@ const CountryWiseOverviewTable = () => {
     dispatch(countryWiseListReq({idToken, query, dispatch}));
   }, [dates, idToken, accRange]);
 
-  const columns = [
+  const columns = useMemo(() => [
     {
       title: "Country",
       dataIndex: "country",
       key: "country",
+      width: 100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Total Payments($)",
       dataIndex: "payment_total_amount",
       key: "totalPayments",
+      width: 100,
       render: (text) => (text ? Number(text).toFixed(2) : "-"),
     },
     {
       title: "Payment Count",
       dataIndex: "payment_total_count",
       key: "totalAccounts",
+      width: 100,
       render: (text) => text || "-",
     },
     {
       title: "Total Payouts($)",
       dataIndex: "payout_total_amount",
       key: "totalPayouts",
+      width: 100,
       render: (text) => (text ? Number(text).toFixed(2) : "-"),
     },
     {
       title: "Payouts Count",
       dataIndex: "payout_total_count",
       key: "totalPayouts",
+      width: 100,
       render: (text) => text || "-",
     },
-  ];
+  ]);
 
   const handleDateChange = (dates, dateStrings) => {
     if (dates) {

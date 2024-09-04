@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useMemo} from "react";
 import {Breadcrumb, Button, Card, DatePicker, Spin, Alert} from "antd";
 import dayjs from "dayjs";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
@@ -34,7 +34,7 @@ const PaymentExportHistory = () => {
     }
   };
 
-  const columns = [
+  const columns =useMemo(()=> [
     {
       title: "Created By",
       dataIndex: "created_by",
@@ -73,7 +73,7 @@ const PaymentExportHistory = () => {
           "-"
         ),
     },
-  ];
+  ]);
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);

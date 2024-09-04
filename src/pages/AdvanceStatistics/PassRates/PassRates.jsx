@@ -1,23 +1,23 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { DatePicker, Button, Modal, notification, Menu, Dropdown, Slider, Tooltip } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useEffect, useState, useCallback, useMemo} from "react";
+import {DatePicker, Button, Modal, notification, Menu, Dropdown, Slider, Tooltip} from "antd";
+import {useDispatch, useSelector} from "react-redux";
 import dayjs from "dayjs";
-import { fetchFailData, fetchPassRate, fetchStageChart } from "../../../store/NewReducers/advanceStatistics";
+import {fetchFailData, fetchPassRate, fetchStageChart} from "../../../store/NewReducers/advanceStatistics";
 import TotalPassedCharts from "./TotalPassedCharts";
 import TotalFailedCharts from "./TotalFailedCharts";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import { exportDataReq } from "../../../store/NewReducers/exportSlice";
-import { returnMessages } from "../../../store/reducers/message";
-import { returnErrors } from "../../../store/reducers/error";
+import {exportDataReq} from "../../../store/NewReducers/exportSlice";
+import {returnMessages} from "../../../store/reducers/message";
+import {returnErrors} from "../../../store/reducers/error";
 import exportIcon from "../../../assets/icons/export_btn_icon.svg";
 import ArrowDown from "../../../assets/icons/ArrowDown.svg";
 import ArrowUp from "../../../assets/icons/ArrowUp.svg";
 import ArrowUpBlack from "../../../assets/icons/ArrowUpBlack.svg";
 import "./PassRates.scss";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
-const { RangePicker } = DatePicker;
+const {RangePicker} = DatePicker;
 
 const PassRates = () => {
   const [showChart, setShowChart] = useState(false);
@@ -35,10 +35,10 @@ const PassRates = () => {
   const [failFilter, setFailFilter] = useState("day");
 
   const dispatch = useDispatch();
-  const { passRate, isLoading } = useSelector((state) => state.advanceStatistics);
-  const { idToken } = useSelector((state) => state.auth);
-  const { stage1ChartData, stage2ChartData , stage1FailData , stage2FailData , isLoadingStage1: isChartsLoading } = useSelector((state) => state.advanceStatistics);
-  const { isLoading: isExportLoading } = useSelector((state) => state.export);
+  const {passRate, isLoading} = useSelector((state) => state.advanceStatistics);
+  const {idToken} = useSelector((state) => state.auth);
+  const {stage1ChartData, stage2ChartData, stage1FailData, stage2FailData, isLoadingStage1: isChartsLoading} = useSelector((state) => state.advanceStatistics);
+  const {isLoading: isExportLoading} = useSelector((state) => state.export);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,42 +62,38 @@ const PassRates = () => {
         query += `&min_account_size=${minAccountSize}&max_account_size=${maxAccountSize}`;
       }
 
-      dispatch(fetchPassRate({ idToken, query }));
-
-    }
+      dispatch(fetchPassRate({idToken, query}));
+    };
 
     fetchData();
-  }, [dispatch, idToken, pageNo, pageSize, searchText, dates, selectedStage, accountSizeRange ]);
-
+  }, [dispatch, idToken, pageNo, pageSize, searchText, dates, selectedStage, accountSizeRange]);
 
   useEffect(() => {
     const [startDate, endDate] = dates || [];
-    dispatch(fetchStageChart({
-      idToken,
-      stage: selectedStage === "All" ? 1 : selectedStage === 'stage 1' ? 1 : 2,
-      startDate: startDate || null,
-      endDate: endDate || null,
-      filter_type: passFilter || null
-    }));
+    dispatch(
+      fetchStageChart({
+        idToken,
+        stage: selectedStage === "All" ? 1 : selectedStage === "stage 1" ? 1 : 2,
+        startDate: startDate || null,
+        endDate: endDate || null,
+        filter_type: passFilter || null,
+      }),
+    );
+  }, [dispatch, dates, passFilter, selectedStage]);
 
-  } , [dispatch ,dates , passFilter  , selectedStage])
-
-
-  
   useEffect(() => {
     const [startDate, endDate] = dates || [];
- 
-    dispatch(fetchFailData({
-      idToken,
-      stage: selectedStage === "All" ? 1 : selectedStage === 'stage 1' ? 1 : 2,
-      startDate: startDate || null,
-      endDate: endDate || null,
-      filter_type: failFilter || null
-    }));
 
-  } , [dispatch ,dates  , failFilter , selectedStage])
-
-
+    dispatch(
+      fetchFailData({
+        idToken,
+        stage: selectedStage === "All" ? 1 : selectedStage === "stage 1" ? 1 : 2,
+        startDate: startDate || null,
+        endDate: endDate || null,
+        filter_type: failFilter || null,
+      }),
+    );
+  }, [dispatch, dates, failFilter, selectedStage]);
 
   const onChangePassFilter = (e) => {
     setPassFilter(e.target.value);
@@ -115,10 +111,10 @@ const PassRates = () => {
       const [startDate, endDate] = exportDates;
       const url = `pass-rates/export/?start_date=${startDate}&end_date=${endDate}`;
 
-      dispatch(exportDataReq({ idToken, url }))
+      dispatch(exportDataReq({idToken, url}))
         .unwrap()
         .then((response) => {
-          const { s3_file_url, filename } = response;
+          const {s3_file_url, filename} = response;
           const link = document.createElement("a");
           link.href = s3_file_url;
           link.download = filename;
@@ -139,89 +135,90 @@ const PassRates = () => {
 
   const updateExportDateRange = (dates) => {
     setPageNo(1);
-    setExportDates(dates ? dates.map(date => date.format("DD/MMM/YYYY")) : []);
+    setExportDates(dates ? dates.map((date) => date.format("DD/MMM/YYYY")) : []);
   };
 
   const updateDateRange = (dates) => {
     setPageNo(1);
-    setDates(dates ? dates.map(date => date.format("DD MMM YYYY")) : []);
+    setDates(dates ? dates.map((date) => date.format("DD MMM YYYY")) : []);
   };
 
   const handleMenuClick = (e) => setSelectedStage(e.key);
 
   const menu = (
     <Menu
-    onClick={handleMenuClick} className="custom-dropdown-menu">
+      onClick={handleMenuClick}
+      className="custom-dropdown-menu"
+    >
       <Menu.Item key="All">All</Menu.Item>
       <Menu.Item key="stage 1">Stage 1</Menu.Item>
       <Menu.Item key="stage 2">Stage 2</Menu.Item>
     </Menu>
   );
 
-  const columns = [
+  const columns = useMemo(() => [
     {
-      title: 'Plan Type',
-      dataIndex: 'plan_type',
-      key: 'plan_type',
-      render: text => text || '-'
+      title: "Plan Type",
+      dataIndex: "plan_type",
+      key: "plan_type",
+      render: (text) => text || "-",
     },
     {
-      title: 'Created Date',
-      dataIndex: 'created_date',
-      key: 'created_date',
-      render: text => text || '-'
+      title: "Created Date",
+      dataIndex: "created_date",
+      key: "created_date",
+      render: (text) => text || "-",
     },
     {
-      title: 'Stage',
-      dataIndex: 'stage',
-      key: 'stage',
-      render: text => text || '-'
+      title: "Stage",
+      dataIndex: "stage",
+      key: "stage",
+      render: (text) => text || "-",
     },
     {
-      title: 'Passed',
-      dataIndex: 'passed',
-      key: 'passed',
-      render: text => text || '-'
+      title: "Passed",
+      dataIndex: "passed",
+      key: "passed",
+      render: (text) => text || "-",
     },
     {
-      title: 'Pass Rate (%)',
-      dataIndex: 'pass_rate',
-      key: 'pass_rate',
-      render: text => text !== undefined ? text : '-'
+      title: "Pass Rate (%)",
+      dataIndex: "pass_rate",
+      key: "pass_rate",
+      render: (text) => (text !== undefined ? text : "-"),
     },
     {
-      title: 'Pass Ratio',
-      dataIndex: 'pass_ratio',
-      key: 'pass_ratio',
-      render: text => text || '-'
+      title: "Pass Ratio",
+      dataIndex: "pass_ratio",
+      key: "pass_ratio",
+      render: (text) => text || "-",
     },
     {
-      title: 'Fail Rate (%)',
-      dataIndex: 'fail_rate',
-      key: 'fail_rate',
-      render: text => text || '-'
+      title: "Fail Rate (%)",
+      dataIndex: "fail_rate",
+      key: "fail_rate",
+      render: (text) => text || "-",
     },
     {
-      title: 'Fail Ratio',
-      dataIndex: 'fail_ratio',
-      key: 'fail_ratio',
-      render: text => text || '-'
+      title: "Fail Ratio",
+      dataIndex: "fail_ratio",
+      key: "fail_ratio",
+      render: (text) => text || "-",
     },
     {
-      title: 'Total Accounts',
-      dataIndex: 'total_accounts',
-      key: 'total_accounts',
-      render: text => text || '-'
-    }
-  ];
-  
+      title: "Total Accounts",
+      dataIndex: "total_accounts",
+      key: "total_accounts",
+      render: (text) => text || "-",
+    },
+  ]);
 
   const rangePresets = [
-    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
-    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
-    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
-    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
-    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] },
+    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
+    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
+    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
+    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
+    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]},
   ];
 
   const handleSearch = (e) => {
@@ -235,7 +232,7 @@ const PassRates = () => {
 
   return (
     <>
-    {/* {isExportLoading && <LoaderOverlay />} */}
+      {/* {isExportLoading && <LoaderOverlay />} */}
       <div className="passRates_main">
         <div className="passRates_header">
           <div className="heading">
@@ -243,7 +240,10 @@ const PassRates = () => {
           </div>
           <div className="passRates_export_btn_wrapper">
             <div className="passRates_export_btn">
-              <img src={exportIcon} alt="Export Icon" />
+              <img
+                src={exportIcon}
+                alt="Export Icon"
+              />
               <Button onClick={handleOpenExportModal}>Export</Button>
             </div>
             <Link to="/advance-statistics/export-history">
@@ -258,26 +258,37 @@ const PassRates = () => {
               className="show_hide_btn"
               onClick={() => setShowChart(!showChart)}
             >
-              <img src={showChart ? ArrowUp : ArrowDown} alt={showChart ? "Hide Graph" : "Show Graph"} />
+              <img
+                src={showChart ? ArrowUp : ArrowDown}
+                alt={showChart ? "Hide Graph" : "Show Graph"}
+              />
               <p>{showChart ? "Hide Graph" : "Show Graph"}</p>
             </Button>
           </div>
 
           <div className="chart_container">
-            
             {showChart && (
               <>
-              {isChartsLoading ? <LoaderOverlay /> :
-              <>
-                <div className="chart_div">
-                  
-                  <TotalPassedCharts passFilter={passFilter} onChangePassFilter={onChangePassFilter} data={selectedStage === 'stage 1' ? stage1ChartData : stage2ChartData || stage1ChartData} />
-                </div>
-                <div className="chart_div">
-                  <TotalFailedCharts failFilter={failFilter} onChangeFailFilter={onChangeFailFilter} data={selectedStage === 'stage 1' ? stage1FailData : stage2FailData || stage1FailData} />
-                </div>
-                </> 
-                }
+                {isChartsLoading ? (
+                  <LoaderOverlay />
+                ) : (
+                  <>
+                    <div className="chart_div">
+                      <TotalPassedCharts
+                        passFilter={passFilter}
+                        onChangePassFilter={onChangePassFilter}
+                        data={selectedStage === "stage 1" ? stage1ChartData : stage2ChartData || stage1ChartData}
+                      />
+                    </div>
+                    <div className="chart_div">
+                      <TotalFailedCharts
+                        failFilter={failFilter}
+                        onChangeFailFilter={onChangeFailFilter}
+                        data={selectedStage === "stage 1" ? stage1FailData : stage2FailData || stage1FailData}
+                      />
+                    </div>
+                  </>
+                )}
               </>
             )}
           </div>
@@ -286,7 +297,7 @@ const PassRates = () => {
         <div className="passRates_filters">
           <div className="date_picker">
             <RangePicker
-              ranges={rangePresets.reduce((acc, curr) => ({ ...acc, [curr.label]: curr.value }), {})}
+              ranges={rangePresets.reduce((acc, curr) => ({...acc, [curr.label]: curr.value}), {})}
               onChange={updateDateRange}
               format="DD MMM YYYY"
             />
@@ -294,13 +305,28 @@ const PassRates = () => {
 
           <div className="tabs_wrappers">
             <div className="tabs_inner">
-              <Dropdown overlay={menu} trigger={['click']} className="dropdown">
+              <Dropdown
+                overlay={menu}
+                trigger={["click"]}
+                className="dropdown"
+              >
                 <Button className="custom-dropdown-button">
-                  {selectedStage} <img src={ArrowUpBlack} alt="Dropdown Arrow" />
+                  {selectedStage}{" "}
+                  <img
+                    src={ArrowUpBlack}
+                    alt="Dropdown Arrow"
+                  />
                 </Button>
               </Dropdown>
-              <button className="tabs" onClick={() => setSliderVisible(!sliderVisible)}>
-                <img className={sliderVisible ? "arrow_up" : ''} src={ArrowUpBlack} alt="Account Size Arrow" />
+              <button
+                className="tabs"
+                onClick={() => setSliderVisible(!sliderVisible)}
+              >
+                <img
+                  className={sliderVisible ? "arrow_up" : ""}
+                  src={ArrowUpBlack}
+                  alt="Account Size Arrow"
+                />
                 <p>Account Size</p>
               </button>
               {sliderVisible && (
@@ -323,7 +349,10 @@ const PassRates = () => {
                 </div>
               )}
               <button className="tabs">
-                <img src={ArrowUpBlack} alt="Pro and Swing Arrow" />
+                <img
+                  src={ArrowUpBlack}
+                  alt="Pro and Swing Arrow"
+                />
                 <p>Pro and Swing</p>
               </button>
             </div>
@@ -343,8 +372,7 @@ const PassRates = () => {
 
         <div>
           {isLoading ? (
-            <LoaderOverlay /> 
-            
+            <LoaderOverlay />
           ) : (
             <AntTable
               data={passRate?.results || []}
@@ -374,7 +402,7 @@ const PassRates = () => {
         <div className="export_modal_wrapper">
           <RangePicker
             onChange={updateExportDateRange}
-            style={{ width: "100%" }}
+            style={{width: "100%"}}
           />
         </div>
         <p>File will contain information for the selected dates.</p>
@@ -397,11 +425,17 @@ const PassRates = () => {
   );
 };
 
-const ExpandedRowRender = ({ record }) => (
+const ExpandedRowRender = ({record}) => (
   <div className="expanded-row-content">
-    <p><strong>Account Balance:</strong> {record.account_balance || '-'}</p>
-    <p><strong>Breached:</strong> {record.breached !== undefined ? record.breached : '-'}</p>
-    <p><strong>New:</strong> {record.new !== undefined ? record.new : '-'}</p>
+    <p>
+      <strong>Account Balance:</strong> {record.account_balance || "-"}
+    </p>
+    <p>
+      <strong>Breached:</strong> {record.breached !== undefined ? record.breached : "-"}
+    </p>
+    <p>
+      <strong>New:</strong> {record.new !== undefined ? record.new : "-"}
+    </p>
   </div>
 );
 

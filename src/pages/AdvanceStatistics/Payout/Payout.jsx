@@ -1,21 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import "./Payout.scss";
 import ArrowUpGreen from "../../../assets/icons/upArrowGreen.svg";
 import exportIcon from "../../../assets/icons/export_btn_icon.svg";
-import { Link, useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchPayoutDetails, fetchTotalPayments } from "../../../store/NewReducers/advanceStatistics";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchPayoutDetails, fetchTotalPayments} from "../../../store/NewReducers/advanceStatistics";
 import moment from "moment";
-import { Button, DatePicker, Modal, notification } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
-import { returnMessages } from "../../../store/reducers/message";
-import { exportDataReq } from "../../../store/NewReducers/exportSlice";
-import { returnErrors } from "../../../store/reducers/error";
+import {Button, DatePicker, Modal, notification} from "antd";
+import {CloseOutlined} from "@ant-design/icons";
+import {returnMessages} from "../../../store/reducers/message";
+import {exportDataReq} from "../../../store/NewReducers/exportSlice";
+import {returnErrors} from "../../../store/reducers/error";
 import dayjs from "dayjs";
 
-const { RangePicker } = DatePicker;
+const {RangePicker} = DatePicker;
 
 const Payout = () => {
   const [searchText, setSearchText] = useState("");
@@ -28,9 +28,9 @@ const Payout = () => {
   const [dates, setDates] = useState(null);
   const [exportDates, setExportDates] = useState(null);
 
-  const { payoutDetails, totalPayments, isLoading } = useSelector((state) => state.advanceStatistics);
-  const { idToken } = useSelector((state) => state.auth);
-  const { isLoading: isExportLoading } = useSelector((state) => state.export);
+  const {payoutDetails, totalPayments, isLoading} = useSelector((state) => state.advanceStatistics);
+  const {idToken} = useSelector((state) => state.auth);
+  const {isLoading: isExportLoading} = useSelector((state) => state.export);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,8 +47,8 @@ const Payout = () => {
       query += `&start_date=${startDate}&end_date=${endDate}`;
     }
 
-    dispatch(fetchPayoutDetails({ idToken, query }));
-    dispatch(fetchTotalPayments({ idToken, query }));
+    dispatch(fetchPayoutDetails({idToken, query}));
+    dispatch(fetchTotalPayments({idToken, query}));
   }, [dispatch, idToken, pageNo, pageSize, searchText, dates]);
 
   const searchRef = useRef();
@@ -59,11 +59,11 @@ const Payout = () => {
   }
 
   const rangePresets = [
-    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
-    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
-    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
-    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
-    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] },
+    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
+    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
+    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
+    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
+    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]},
   ];
 
   const handleOpenModal = () => {
@@ -75,18 +75,17 @@ const Payout = () => {
   };
   console.log("isExportLoading:", isExportLoading);
 
-
   const handleExport = () => {
     if (exportDates && exportDates.length === 2) {
       const [startDate, endDate] = exportDates;
       const url = `export/payout-details/?start_date=${startDate}&end_date=${endDate}`;
 
-      dispatch(exportDataReq({ idToken, url }))
+      dispatch(exportDataReq({idToken, url}))
         .unwrap()
         .then((response) => {
-          const { s3_file_url, filename } = response;
+          const {s3_file_url, filename} = response;
 
-          const link = document.createElement('a');
+          const link = document.createElement("a");
           link.href = s3_file_url;
           link.download = filename;
           document.body.appendChild(link);
@@ -134,7 +133,7 @@ const Payout = () => {
     navigate(url);
   };
 
-  const columns = [
+  const columns = useMemo(() => [
     {
       title: "Login ID",
       dataIndex: "login_id",
@@ -198,12 +197,12 @@ const Payout = () => {
       key: "next_payout_date",
       render: (text) => moment(text).format("DD-MMM-YYYY") || "-",
     },
-  ];
+  ]);
 
   const updateExportDateRange = (dates) => {
     setPageNo(1);
     if (dates) {
-      setExportDates(dates.map(date => date.format("DD/MMM/YYYY")));
+      setExportDates(dates.map((date) => date.format("DD/MMM/YYYY")));
     } else {
       setExportDates([]);
     }
@@ -212,7 +211,7 @@ const Payout = () => {
   const updateDateRange = (dates) => {
     setPageNo(1);
     if (dates) {
-      setDates(dates.map(date => date.format("DD/MMM/YYYY")));
+      setDates(dates.map((date) => date.format("DD/MMM/YYYY")));
     } else {
       setDates([]);
     }
@@ -220,13 +219,13 @@ const Payout = () => {
 
   const handleExpectedTomorrowClick = () => {
     const today = dayjs();
-    const tomorrow = dayjs().add(1, 'day');
+    const tomorrow = dayjs().add(1, "day");
     updateDateRange([today, tomorrow]);
   };
 
   return (
     <>
-    {/* {isExportLoading && <LoaderOverlay />} */}
+      {/* {isExportLoading && <LoaderOverlay />} */}
       <div className="payout_main">
         <div className="payout_header">
           <h2>Payout</h2>
@@ -240,7 +239,7 @@ const Payout = () => {
               <h2>{totalPayments && totalPayments[0]?.new_request}</h2>
             </div>
           </div>
-    
+
           <div className="export_btn">
             <Button onClick={handleOpenModal}>
               <img
@@ -266,7 +265,11 @@ const Payout = () => {
           <div className="left">
             <h3>Eligible Payment List</h3>
           </div>
-          <button style={{cursor:'pointer'}} className="right" onClick={handleExpectedTomorrowClick}>
+          <button
+            style={{cursor: "pointer"}}
+            className="right"
+            onClick={handleExpectedTomorrowClick}
+          >
             Expected Tomorrow
           </button>
         </div>
@@ -295,32 +298,30 @@ const Payout = () => {
         <Modal
           title="Export"
           visible={isModalVisible}
-          onCancel={handleCloseModal} 
-          footer={null} 
-          className="export_modal" 
-          closeIcon={<CloseOutlined style={{ color: '#fff' }} />} 
+          onCancel={handleCloseModal}
+          footer={null}
+          className="export_modal"
+          closeIcon={<CloseOutlined style={{color: "#fff"}} />}
         >
-
           <div className="export_modal_wrapper">
             <RangePicker
               onChange={updateExportDateRange}
               autoFocus
               presets={rangePresets}
-              style={{ width: '100%' }} 
+              style={{width: "100%"}}
             />
           </div>
-          <p style={{ color: '#fff' }}>File will contain information of the date you’ve selected.</p>
+          <p style={{color: "#fff"}}>File will contain information of the date you’ve selected.</p>
           <div className="btn_wrapper">
             <Button
               type="primary"
               onClick={handleExport}
               style={{
-                backgroundColor: '#1890ff', 
-                borderColor: '#1890ff',
-                color: '#fff',
+                backgroundColor: "#1890ff",
+                borderColor: "#1890ff",
+                color: "#fff",
               }}
               loading={isExportLoading}
-
             >
               Export
             </Button>
@@ -333,13 +334,21 @@ const Payout = () => {
 
 export default Payout;
 
-const ExpandedRowRender = ({ record }) => {
+const ExpandedRowRender = ({record}) => {
   return (
     <div className="expanded-row-content">
-      <p><strong>Name:</strong> {record.name || '-'}</p>
-      <p><strong>Starting Balance:</strong> {record.starting_balance || '-'}</p>
-      <p><strong>Current Balance:</strong> {Number(record.current_balance).toFixed(2) || '-'}</p>
-      <p><strong>Current Equity:</strong> {Number(record.current_equity).toFixed(2) || '-'}</p>
+      <p>
+        <strong>Name:</strong> {record.name || "-"}
+      </p>
+      <p>
+        <strong>Starting Balance:</strong> {record.starting_balance || "-"}
+      </p>
+      <p>
+        <strong>Current Balance:</strong> {Number(record.current_balance).toFixed(2) || "-"}
+      </p>
+      <p>
+        <strong>Current Equity:</strong> {Number(record.current_equity).toFixed(2) || "-"}
+      </p>
     </div>
   );
 };

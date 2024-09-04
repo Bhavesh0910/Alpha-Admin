@@ -1,9 +1,9 @@
-import { Button, DatePicker, Dropdown, Menu, Select, Modal, Form, Input, Table } from "antd";
+import {Button, DatePicker, Dropdown, Menu, Select, Modal, Form, Input, Table} from "antd";
 import moment from "moment";
-import React, { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import React, {useEffect, useMemo, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import commentIcon from "../../assets/icons/comment.svg";
 import RightMark from "../../assets/icons/verified_green_circleIcon.svg";
@@ -18,16 +18,16 @@ import CrossMark from "../../assets/icons/notverified_red_circleIcon.svg";
 
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import { DownOutlined } from "@ant-design/icons";
+import {DownOutlined} from "@ant-design/icons";
 import "./StageManager.scss";
-import { supportListReq, nestedTableDataReq, statusUpdateReq, editCommentReq, updateContactReq, createAccountReq } from "../../store/NewReducers/Support";
+import {supportListReq, nestedTableDataReq, statusUpdateReq, editCommentReq, updateContactReq, createAccountReq} from "../../store/NewReducers/Support";
 import ReactCountryFlag from "react-country-flag";
 import dayjs from "dayjs";
-import { formatDate, formatDateTime, formatDateTimeNew, FormatUSD } from "../../utils/helpers/string";
-import { updateFlagReq } from "../../store/NewReducers/listSlice";
-const { RangePicker } = DatePicker;
+import {formatDate, formatDateTime, formatDateTimeNew, FormatUSD} from "../../utils/helpers/string";
+import {updateFlagReq} from "../../store/NewReducers/listSlice";
+const {RangePicker} = DatePicker;
 
-const { Option } = Select;
+const {Option} = Select;
 
 const StageManager = () => {
   const lookup = require("country-code-lookup");
@@ -53,8 +53,8 @@ const StageManager = () => {
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
   const [dates, setDates] = useState(null);
-  const { idToken } = useSelector((state) => state.auth);
-  const { count, data, isLoading, stageStatusOptions, refetch } = useSelector((state) => state.support);
+  const {idToken} = useSelector((state) => state.auth);
+  const {count, data, isLoading, stageStatusOptions, refetch} = useSelector((state) => state.support);
   const [fetchUpdate, setFetchUpdate] = useState(true);
   const location = useLocation();
   const dispatch = useDispatch();
@@ -100,7 +100,7 @@ const StageManager = () => {
     if (dates) {
       query += `&start_date=${dates[0].format("DD MMM YYYY")}&end_date=${dates[1].format("DD MMM YYYY")}`;
     }
-    dispatch(supportListReq({ idToken, query, url, dispatch }));
+    dispatch(supportListReq({idToken, query, url, dispatch}));
   }
 
   function updateDateRange(dates) {
@@ -157,7 +157,7 @@ const StageManager = () => {
     console.log(value, record, " value, record");
     setuserToUpdate(record);
     setUpdatedStatus(value);
-    setUpdatedContract({ value: value, isRisk: isRisk });
+    setUpdatedContract({value: value, isRisk: isRisk});
     setIsModalVisible(true);
     setModalAction("Contract");
   };
@@ -173,7 +173,8 @@ const StageManager = () => {
   const statusMenu = (key, record) => (
     <Menu
       className="menuCard"
-      onClick={(e) => openStatusUpdateModal(key, e.key, record)}>
+      onClick={(e) => openStatusUpdateModal(key, e.key, record)}
+    >
       <Menu.Item key="New">Action Required</Menu.Item>
       <Menu.Item key="In Progress">In Progress</Menu.Item>
       <Menu.Item key="Flagged">In Review</Menu.Item>
@@ -192,7 +193,7 @@ const StageManager = () => {
     // console.log("updatedStatus : ", updatedStatus);
     // console.log("formData : ", formData);
     // console.log("isPayoutUpdate : ", isPayoutUpdate);
-    dispatch(statusUpdateReq({ idToken, body: formData, id: userId, isPayoutUpdate, updatedStatus, dispatch }));
+    dispatch(statusUpdateReq({idToken, body: formData, id: userId, isPayoutUpdate, updatedStatus, dispatch}));
     setIsModalVisible(false);
   };
 
@@ -205,7 +206,7 @@ const StageManager = () => {
     console.log(" I am editing comment");
     console.log("======================================");
 
-    dispatch(editCommentReq({ idToken, body: formData, id: userId, stage: location.pathname, dispatch }));
+    dispatch(editCommentReq({idToken, body: formData, id: userId, stage: location.pathname, dispatch}));
     setIsModalVisible(false);
   };
 
@@ -219,15 +220,15 @@ const StageManager = () => {
     }
     let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
     console.log("userId : ", userId);
-    dispatch(updateContactReq({ idToken, body: formData, id: userId, dispatch }));
+    dispatch(updateContactReq({idToken, body: formData, id: userId, dispatch}));
     setIsModalVisible(false);
   };
 
   const handleCreateAccount = () => {
-    const body = { id: userToUpdate?.id };
+    const body = {id: userToUpdate?.id};
     console.log("userToUpdate?.id", userToUpdate?.id);
     console.log(body, "body");
-    dispatch(createAccountReq({ idToken, body, dispatch }));
+    dispatch(createAccountReq({idToken, body, dispatch}));
     setIsModalVisible(false);
   };
 
@@ -272,7 +273,7 @@ const StageManager = () => {
     formData.append("status", flagUpdatedValue);
     formData.append("notes", comment);
 
-    dispatch(updateFlagReq({ idToken, body: formData, id: flagUser?.id }));
+    dispatch(updateFlagReq({idToken, body: formData, id: flagUser?.id}));
     setFlagModel(false);
     reset();
   }
@@ -302,11 +303,11 @@ const StageManager = () => {
             title: "Account No.",
             dataIndex: "account_id",
             key: "account_id",
-            width: 50,
+            width: 70,
             render: (text, row) => (
               <Link
                 to="/trader-overview"
-              // onClick={() => handleActiveAccount(row, "account")}
+                // onClick={() => handleActiveAccount(row, "account")}
               >
                 {text ? text : "-"}
               </Link>
@@ -317,7 +318,7 @@ const StageManager = () => {
             title: "Email",
             dataIndex: "email",
             key: "email",
-            width: 40,
+            width: 70,
             render: (text) => (
               <div className="column_one_wrapper">
                 {/* <div
@@ -503,13 +504,13 @@ const StageManager = () => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
                 <Button
-                  style={{ background: "#c5ffff" }}
+                  style={{background: "#c5ffff"}}
                   onClick={() => navigate(`/account-analysis/${record.account_id}/${platform}`)}
                   className="account_metrics_btn"
                   title="Account Metrics"
                 >
                   <img
-                    style={{ height: "16px" }}
+                    style={{height: "16px"}}
                     src={AccIcon}
                     alt=""
                   />
@@ -523,7 +524,7 @@ const StageManager = () => {
             width: 80,
             render: (text, row) => (
               <div
-                style={{ cursor: "pointer" }}
+                style={{cursor: "pointer"}}
                 title="Create Account"
                 onClick={() => openCreateAccountModel(row)}
               >
@@ -562,7 +563,7 @@ const StageManager = () => {
             render: (text, row) => (
               <Link
                 to="/trader-overview"
-              // onClick={() => handleActiveAccount(row, "account")}
+                // onClick={() => handleActiveAccount(row, "account")}
               >
                 {text ? text : "-"}
               </Link>
@@ -573,7 +574,7 @@ const StageManager = () => {
             title: "Email",
             dataIndex: "email",
             key: "email",
-            width:10,
+            width: 10,
             render: (text) => (
               <div className="column_one_wrapper">
                 {/* <div
@@ -807,13 +808,13 @@ const StageManager = () => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
                 <Button
-                  style={{ background: "#c5ffff" }}
+                  style={{background: "#c5ffff"}}
                   onClick={() => navigate(`/account-analysis/${record.account_id}/${platform}`)}
                   className="account_metrics_btn"
                   title="Account Metrics"
                 >
                   <img
-                    style={{ height: "16px" }}
+                    style={{height: "16px"}}
                     src={AccIcon}
                     alt=""
                   />
@@ -836,7 +837,7 @@ const StageManager = () => {
               //   trigger={["click"]}
               // >
               <div
-                style={{ cursor: "pointer" }}
+                style={{cursor: "pointer"}}
                 title="Create Account"
                 onClick={() => openCreateAccountModel(row)}
               >
@@ -1042,13 +1043,13 @@ const StageManager = () => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
                 <Button
-                  style={{ background: "#c5ffff" }}
+                  style={{background: "#c5ffff"}}
                   onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}
                   className="account_metrics_btn"
                   title="Account Metrics"
                 >
                   <img
-                    style={{ height: "16px" }}
+                    style={{height: "16px"}}
                     src={AccIcon}
                     alt=""
                   />
@@ -1167,7 +1168,7 @@ const StageManager = () => {
             title: "Amount",
             dataIndex: "amount",
             key: "amount",
-            width: 60,
+            width: 80,
             render: (text) => <span>${text}</span>,
           },
           ,
@@ -1233,17 +1234,25 @@ const StageManager = () => {
             title: "Action",
             dataIndex: "action",
             key: "action",
-            width:90,
+            width: 90,
             render: (text, row, index) => (
               <>
                 <div className="action_button">
-                  <div style={{cursor:'pointer'}} title="Accept" onClick={() => openContractUpdateModal("Approved", row)}>
+                  <div
+                    style={{cursor: "pointer"}}
+                    title="Accept"
+                    onClick={() => openContractUpdateModal("Approved", row)}
+                  >
                     <img
                       src={acceptIcon}
                       alt=""
                     />
                   </div>
-                  <div style={{cursor: 'pointer'}} title="Reject" onClick={() => openContractUpdateModal("Rejected", row)}>
+                  <div
+                    style={{cursor: "pointer"}}
+                    title="Reject"
+                    onClick={() => openContractUpdateModal("Rejected", row)}
+                  >
                     <img
                       src={rejectIcon}
                       alt=""
@@ -1288,7 +1297,7 @@ const StageManager = () => {
             value={dates ? [dayjs(dates[0], "YYYY-MM-DD"), dayjs(dates[0], "YYYY-MM-DD")] : null}
             onChange={updateDateRange}
             autoFocus
-          // presets={rangePresets}
+            // presets={rangePresets}
           />
           <Button
             onClick={() => navigate(viewLogsLink)}
@@ -1415,7 +1424,7 @@ const StageManager = () => {
             label="Comment"
             value={editCommentToUpdate}
             onChange={(e) => setEditCommentToUpdate(e.target.value)}
-            style={{ color: "white" }}
+            style={{color: "white"}}
           >
             <Input.TextArea placeholder="Write your comment here.." />
           </Form.Item>
@@ -1446,11 +1455,11 @@ const StageManager = () => {
 
 export default StageManager;
 
-function ExpandedRowData({ record }) {
+function ExpandedRowData({record}) {
   const location = useLocation();
   const [url, setUrl] = useState();
-  const { idToken } = useSelector((state) => state.auth);
-  const { nestedTableData, isLoading } = useSelector((state) => state.support);
+  const {idToken} = useSelector((state) => state.auth);
+  const {nestedTableData, isLoading} = useSelector((state) => state.support);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalAction, setModalAction] = useState("");
@@ -1478,7 +1487,7 @@ function ExpandedRowData({ record }) {
 
   useEffect(() => {
     let flag = location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2" ? true : false;
-    dispatch(nestedTableDataReq({ idToken, url, flag, dispatch }));
+    dispatch(nestedTableDataReq({idToken, url, flag, dispatch}));
   }, [url]);
 
   const martingleStatus = nestedTableData?.martingale?.status || nestedTableData?.martingale_status;
@@ -1504,19 +1513,18 @@ function ExpandedRowData({ record }) {
 
     let stage = location.pathname === "/support/funded" ? "funded" : location.pathname === "/support/payout" ? "payout" : "stage";
 
-    dispatch(editCommentReq({ idToken, body: formData, id: userId, stage: stage, dispatch }));
+    dispatch(editCommentReq({idToken, body: formData, id: userId, stage: stage, dispatch}));
     setIsModalVisible(false);
   };
 
-  console.log(record)
+  console.log(record);
   return (
     <>
       {isLoading ? (
         "Loading..."
       ) : (
-
         <div className="nestedTable">
-          {location.pathname !== "/support/payout" &&
+          {location.pathname !== "/support/payout" && (
             <>
               <div>
                 <div>Martingle</div>
@@ -1525,7 +1533,7 @@ function ExpandedRowData({ record }) {
               </div>
               <div>
                 <div>Name</div>
-                <p>{nestedTableData?.user_id && nestedTableData?.user_id?.name || nestedTableData?.User_id && nestedTableData?.User_id?.name || record?.name ||  "-"}</p>
+                <p>{(nestedTableData?.user_id && nestedTableData?.user_id?.name) || (nestedTableData?.User_id && nestedTableData?.User_id?.name) || record?.name || "-"}</p>
               </div>
               <div className="date_time">
                 <div>Date (Created at)</div>
@@ -1537,23 +1545,23 @@ function ExpandedRowData({ record }) {
               </div>
               <div>
                 <div>Max Loss</div>
-                <p>{FormatUSD( nestedTableData && nestedTableData?.drawdown_result?.max_loss?.result || nestedTableData && nestedTableData?.stats?.max_loss || 0)}</p>
+                <p>{FormatUSD((nestedTableData && nestedTableData?.drawdown_result?.max_loss?.result) || (nestedTableData && nestedTableData?.stats?.max_loss) || 0)}</p>
               </div>
               <div>
                 <div>Profit</div>
-                <p>{FormatUSD(nestedTableData && nestedTableData?.drawdown_result?.max_loss?.result || nestedTableData && nestedTableData?.stats?.profit || 0)}</p>
+                <p>{FormatUSD((nestedTableData && nestedTableData?.drawdown_result?.max_loss?.result) || (nestedTableData && nestedTableData?.stats?.profit) || 0)}</p>
               </div>
               <div>
                 <div>Max Daily Loss</div>
-                <p>{FormatUSD(nestedTableData &&  nestedTableData?.drawdown_result?.max_daily_loss?.result || nestedTableData &&  nestedTableData?.stats?.max_daily_loss || 0)}</p>
+                <p>{FormatUSD((nestedTableData && nestedTableData?.drawdown_result?.max_daily_loss?.result) || (nestedTableData && nestedTableData?.stats?.max_daily_loss) || 0)}</p>
               </div>
               <div>
                 <div>Min Trading Day</div>
-                <p>{nestedTableData && nestedTableData?.trading_days?.result || "-"}</p>
+                <p>{(nestedTableData && nestedTableData?.trading_days?.result) || "-"}</p>
               </div>
               <div>
                 <div>Purchased date</div>
-                <p>{nestedTableData && nestedTableData?.purchase_date || "-"}</p>
+                <p>{(nestedTableData && nestedTableData?.purchase_date) || "-"}</p>
               </div>
               <div className="date_time">
                 <div>Account Started</div>
@@ -1562,85 +1570,147 @@ function ExpandedRowData({ record }) {
               </div>
               <div>
                 <div>Risk Report</div>
-                <p>{nestedTableData && nestedTableData?.risk_reports || "-"}</p>
+                <p>{(nestedTableData && nestedTableData?.risk_reports) || "-"}</p>
               </div>
               <div className="date_time">
                 <div>Account Passed</div>
                 {/* <p>{nestedTableData?.pass_date?(formatDateTimeNew(nestedTableData?.pass_date || "-")):'-'}</p> */}
-                <p>{formatDateTimeNew( nestedTableData && nestedTableData?.pass_date) || "-"}</p>
+                <p>{formatDateTimeNew(nestedTableData && nestedTableData?.pass_date) || "-"}</p>
               </div>
-           
 
-           
-                 <div>
-            <div>
-              {" "}
-              Comment{" "}
-              <img
-                width={"15px"}
-                src={addIcon}
-                alt=""
-                style={{ cursor: "pointer" }}
-                onClick={() => openEditModal(record?.comment, record)}
-              />
-            </div>
-            <p>{record?.comment || "-"}</p>
-          </div>
-            </>
-          }
-             {location.pathname === "/support/funded" && (
-               <>
-                </>
-              )}
-          {location.pathname === "/support/payout" && (
-            <>
-              <div className="nestedTable">
               <div>
                 <div>
-              {" "}
-              Comment{" "}
-              <img
-                width={"15px"}
-                src={addIcon}
-                alt=""
-                style={{ cursor: "pointer" }}
-                onClick={() => openEditModal(record?.comment, record)}
-              />
-            </div>
-            <p>{record?.comment || "-"}</p>
-          </div>
-                <div>
-                  <strong>Reason</strong>
-                  <p>{ nestedTableData && nestedTableData?.reason || "-"}</p>
+                  {" "}
+                  Comment{" "}
+                  <img
+                    width={"15px"}
+                    src={addIcon}
+                    alt=""
+                    style={{cursor: "pointer"}}
+                    onClick={() => openEditModal(record?.comment, record)}
+                  />
                 </div>
-                <div>
-                  <strong>Signature Request ID</strong>
-                  <p>{nestedTableData &&  nestedTableData?.signature_request_id || "-"}</p>
+                <p>{record?.comment || "-"}</p>
+              </div>
+            </>
+          )}
+          {location.pathname === "/support/funded" && <></>}
+          {location.pathname === "/support/payout" && (
+            <>
+              <div className="expanded_detail_box">
+                <div className="payoutNestedTable">
+                  <div>
+                    <strong>Signature Request ID</strong>
+                    <p>{(nestedTableData && nestedTableData?.signature_request_id) || "-"}</p>
+                  </div>
+                  <div>
+                    <strong>Country</strong>
+                    <p>{(nestedTableData && nestedTableData?.country) || "-"}</p>
+                  </div>
+                  <div>
+                    <strong>Contact</strong>
+                    <p>{(nestedTableData && nestedTableData?.contact) || "-"}</p>
+                  </div>
+
+                  <div>
+                    <strong>Type</strong>
+                    <p>{(nestedTableData && nestedTableData?.type) || "-"}</p>
+                  </div>
+
+                  {nestedTableData && nestedTableData?.type === "RISE" ? (
+                    <>
+                      <div>
+                        <strong>Rise Email</strong>
+                        <p>{nestedTableData?.rise_email || "-"}</p>
+                      </div>
+                      <div>
+                        <strong>Is Rise Verified</strong>
+                        <p>{nestedTableData && nestedTableData?.is_rise_verified ? "Yes" : "No"}</p>
+                      </div>
+                    </>
+                  ) : nestedTableData && nestedTableData?.type === "WISE" ? (
+                    <>
+                      <div>
+                        <strong>Wise Email</strong>
+                        <p>{nestedTableData?.wise_email || "-"}</p>
+                      </div>
+                      <div>
+                        <strong>Is Wise Verified</strong>
+                        <p>{nestedTableData && nestedTableData?.is_wise_verified ? "Yes" : "No"}</p>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        <strong>Verification Type</strong>
+                        <p>{(nestedTableData && nestedTableData?.verification_type) || "-"}</p>
+                      </div>
+                      <div>
+                        <strong>Account Name</strong>
+                        <p>{nestedTableData?.account_name || "-"}</p>
+                      </div>
+                      <div>
+                        <strong>Account Number</strong>
+                        <p>{nestedTableData?.account_number || "-"}</p>
+                      </div>
+                      <div>
+                        <strong>Account Type</strong>
+                        <p>{nestedTableData?.account_type || "-"}</p>
+                      </div>
+                      <div>
+                        <strong>City</strong>
+                        <p>{nestedTableData?.city || "-"}</p>
+                      </div>
+                      <div>
+                        <strong>Country</strong>
+                        <p>{nestedTableData?.country || "-"}</p>
+                      </div>
+                      <div>
+                        <strong>Address</strong>
+                        <p>{nestedTableData?.address || "-"}</p>
+                      </div>
+                      <div>
+                        <strong>Postal Code</strong>
+                        <p>{nestedTableData?.postal_code || "-"}</p>
+                      </div>
+                      <div>
+                        <strong>Contact</strong>
+                        <p>{nestedTableData?.contact || "-"}</p>
+                      </div>
+                      <div>
+                        <strong>Swift Bic Code</strong>
+                        <p>{nestedTableData?.swift_bic_code || "-"}</p>
+                      </div>
+                      <div>
+                        <strong>Payment Verification Status</strong>
+                        <p>{nestedTableData?.payment_verification_status || "-"}</p>
+                      </div>
+                    </>
+                  )}
                 </div>
-                <div>
-                  <strong>Country</strong>
-                  <p>{nestedTableData &&  nestedTableData?.country || "-"}</p>
-                </div>
-                <div>
-                  <strong>Contact</strong>
-                  <p>{nestedTableData &&  nestedTableData?.contact || "-"}</p>
-                </div>
-                <div>
-                  <strong>Type</strong>
-                  <p>{nestedTableData &&  nestedTableData?.type || "-"}</p>
-                </div>
-                <div>
-                  <strong>Wise Email</strong>
-                  <p>{nestedTableData?.wise_email || "-"}</p>
-                </div>
-                <div>
-                  <strong>Is Wise Verified</strong>
-                  <p>{nestedTableData &&  nestedTableData?.is_wise_verified ? "Yes" : "No"}</p>
+                <div className="nestedPayoutRow2">
+                  <div className="comment_box">
+                    <div>
+                      Comment{" "}
+                      <img
+                        width={"15px"}
+                        src={addIcon}
+                        alt=""
+                        style={{cursor: "pointer"}}
+                        onClick={() => openEditModal(record?.comment, record)}
+                      />
+                    </div>
+                    <div className="text">{record?.comment || "-"}</div>
+                  </div>
+                  <div className="reason_container">
+                    <strong>Reason</strong>
+                    <div className="text">{(nestedTableData && nestedTableData?.reason) || "-"}</div>
+                  </div>
                 </div>
               </div>
             </>
           )}
-       
+
           <Modal
             title={modalAction}
             open={isModalVisible}
@@ -1670,7 +1740,7 @@ function ExpandedRowData({ record }) {
                 label="Comment"
                 value={editCommentToUpdate}
                 onChange={(e) => setEditCommentToUpdate(e.target.value)}
-                style={{ color: "white" }}
+                style={{color: "white"}}
               >
                 <Input.TextArea placeholder="Write your comment here.." />
               </Form.Item>
@@ -1678,8 +1748,6 @@ function ExpandedRowData({ record }) {
           </Modal>
         </div>
       )}
-
-
     </>
   );
 }

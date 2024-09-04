@@ -1,5 +1,5 @@
 import {Button, DatePicker, Select} from "antd";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import "./Billing.scss";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import notVerifiedIcon from "../../../assets/icons/notverified_red_circleIcon.svg";
@@ -61,7 +61,7 @@ const Billing = () => {
     setPageSize(updatedPageSize);
   }
 
-  const columns = [
+  const columns =useMemo(()=> [
     {
       title: "Email ID",
       dataIndex: "email",
@@ -112,7 +112,7 @@ const Billing = () => {
       width:100,
       render: (text) => <Button className="standard_button profit_share_btn">{text || '-'}</Button>,
     },
-  ];
+  ]);
   
 
   function updateDateRange(dates) {

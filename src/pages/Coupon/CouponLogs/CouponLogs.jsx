@@ -1,17 +1,15 @@
-import { Breadcrumb, Card } from "antd";
-import React, { useEffect, useState } from "react";
+import {Breadcrumb, Card} from "antd";
+import React, {useEffect, useMemo, useState} from "react";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { logsListReq } from "../../../store/NewReducers/logsSlice";
+import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {logsListReq} from "../../../store/NewReducers/logsSlice";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import { render } from "react-saga";
+import {render} from "react-saga";
 
 const CouponLogs = () => {
-  const { idToken } = useSelector((state) => state.auth);
-  const { couponLogData, count, isLoading } = useSelector(
-    (state) => state.logs
-  );
+  const {idToken} = useSelector((state) => state.auth);
+  const {couponLogData, count, isLoading} = useSelector((state) => state.logs);
 
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -21,10 +19,10 @@ const CouponLogs = () => {
     const baseurl = "v3/coupon-log/list/";
     const query = `?page=${pageNo}&page_size=${pageSize}`;
     const url = baseurl + query;
-    dispatch(logsListReq({ idToken, url, key: "couponLogData", dispatch }));
+    dispatch(logsListReq({idToken, url, key: "couponLogData", dispatch}));
   }, [pageNo, pageSize, idToken]);
 
-  const columns = [
+  const columns = useMemo(() => [
     {
       title: "Admin Email ID",
       dataIndex: "admin_email",
@@ -85,7 +83,7 @@ const CouponLogs = () => {
       key: "action",
       render: (text) => (text ? text : "-"),
     },
-  ];
+  ]);
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
