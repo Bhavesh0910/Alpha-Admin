@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Breadcrumb, Card } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import AntTable from "../../../../ReusableComponents/AntTable/AntTable";
@@ -21,7 +21,7 @@ const PayoutViewLogTable = () => {
     dispatch(logsListReq({ idToken, url, key: "payoutLogData", dispatch }));
   }, [pageNo, pageSize, idToken, dispatch]);
 
-  const columns = [
+  const columns = useMemo(()=>[
     {
       title: "Admin Email ID",
       dataIndex: "admin_email",
@@ -50,7 +50,7 @@ const PayoutViewLogTable = () => {
       width:100,
       render: (text) => (text ? text : "-"),
     },
-  ];
+  ]);
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);

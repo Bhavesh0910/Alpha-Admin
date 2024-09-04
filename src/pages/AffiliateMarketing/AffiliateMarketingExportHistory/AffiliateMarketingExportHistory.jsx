@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {Button, Card, Breadcrumb} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
@@ -26,7 +26,7 @@ const AffiliateMarketingExportHistory = () => {
   const {exportHistoryData, isLoading, error} = useSelector((state) => state.affiliate);
   console.log(exportHistoryData);
 
-  const columns = [
+  const columns = useMemo(()=>[
     {
       title: "Created By",
       dataIndex: "created_by",
@@ -70,7 +70,7 @@ const AffiliateMarketingExportHistory = () => {
           "-"
         ),
     },
-  ];
+  ]);
 
   const handlePageChange = (page, updatedPageSize) => {
     setPageNo(page);

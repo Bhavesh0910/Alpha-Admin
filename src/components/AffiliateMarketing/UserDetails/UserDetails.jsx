@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Button, Radio } from "antd";
 import { CloseOutlined } from '@ant-design/icons';
 import "./UserDetails.scss";
@@ -53,47 +53,54 @@ const UserDetails = ({ isUserDetailOpened, setIsUserDetailOpened, id }) => {
     }
   };
 
-  const columns = [
+  const columns =useMemo(()=> [
     {
       title: "Referred Trader",
       dataIndex: "referredTrader",
       key: "referredTrader",
+      width:100,
     },
     {
       title: "Paid Amount",
       dataIndex: "paidAmount",
       key: "paidAmount",
+      width:100,
       render: (text) => `$${text}`,
     },
     {
       title: "Commission Amount",
       dataIndex: "commissionAmount",
       key: "commissionAmount",
+      width:100,
       render: (text) => `$${text}`,
     },
     {
       title: "Percentage",
       dataIndex: "percentage",
       key: "percentage",
+      width:100,
       render: (text) => `${text}%`,
     },
     {
       title: "Created At",
       dataIndex: "createdAt",
       key: "createdAt",
+      width:100,
       render: (text) => new Date(text).toLocaleDateString(),
     },
     {
       title: "Payment ID",
       dataIndex: "paymentId",
       key: "paymentId",
+      width:100,
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      width:100,
     },
-  ];
+  ]);
 
   const handleCloseBtn = () => {
     setIsUserDetailOpened(false);

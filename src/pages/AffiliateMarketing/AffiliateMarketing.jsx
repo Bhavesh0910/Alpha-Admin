@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import {Button, DatePicker, Select} from "antd";
 import {Link, useNavigate} from "react-router-dom";
 import searchIcon from "../../assets/icons/searchIcon.svg";
@@ -90,7 +90,7 @@ const AffiliateMarketing = ({userData}) => {
     );
   };
 
-  const columns = [
+  const columns = useMemo(()=>[
     {
       title: "Name",
       dataIndex: "name",
@@ -161,7 +161,7 @@ const AffiliateMarketing = ({userData}) => {
         </button>
       ),
     },
-  ];
+  ]);
 
   const dummyData = [
     {

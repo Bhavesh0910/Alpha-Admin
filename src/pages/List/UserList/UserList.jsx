@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./UserList.scss";
 import { Table, Input, Select, Button, Modal, Tooltip, message, Radio, Form, Input as AntInput, Dropdown, Menu } from "antd";
 import moment from "moment";
@@ -214,7 +214,7 @@ const UserListTable = () => {
     </Menu>
   );
 
-  const columns = [
+  const columns = useMemo(()=>[
     {
       title: "Flag",
       dataIndex: "status",
@@ -324,7 +324,7 @@ const UserListTable = () => {
         </div>
       ),
     },
-  ];
+  ]);
   
 
   const handleExpand = (record) => {

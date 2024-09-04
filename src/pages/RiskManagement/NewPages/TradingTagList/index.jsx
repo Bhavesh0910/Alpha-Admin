@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useMemo, useState} from "react";
 import {Typography, Radio, DatePicker, Dropdown, Space, Menu} from "antd";
 import "./style.scss";
 
@@ -7,7 +7,7 @@ import AntTable from "../../../../ReusableComponents/AntTable/AntTable";
 
 const {Title} = Typography;
 function TradingTagList() {
-  const columns = [
+  const columns = useMemo(()=>[
     {
       title: "Sr. no.",
       dataIndex: "sr_no",
@@ -50,7 +50,7 @@ function TradingTagList() {
       key: "status",
       width: 150,
     },
-  ];
+  ]);
 
   const menu = (
     <Menu className="TradingTagList_filters">

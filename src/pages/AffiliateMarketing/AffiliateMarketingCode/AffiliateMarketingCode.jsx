@@ -1,5 +1,5 @@
 import { Breadcrumb, Card } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import AntTable from '../../../ReusableComponents/AntTable/AntTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -34,7 +34,7 @@ const AffiliateMarketingLogs = () => {
     setPageSize(updatedPageSize);
   }
 
-  const columns = [
+  const columns = useMemo(()=>[
     {
       title: 'Admin Email ID',
       dataIndex: 'email',
@@ -65,7 +65,7 @@ const AffiliateMarketingLogs = () => {
       dataIndex: 'discount',
       key: 'discount',
     },
-  ];
+  ]);
 
   return (
     <Card className="table-wrapper viewLogs_table">

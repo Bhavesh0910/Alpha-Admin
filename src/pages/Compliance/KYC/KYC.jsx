@@ -1,5 +1,5 @@
 import {Button, DatePicker, Select} from "antd";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {ReactComponent as DownloadToPC} from "../../../assets/icons/download_to_pc.svg";
 import "./KYC.scss";
 
@@ -71,30 +71,30 @@ const KYC = () => {
     setPageSize(updatedPageSize);
   }
 
-  const columns = [
+  const columns = useMemo(() => [
     {
       title: "Email ID",
       dataIndex: "email",
       key: "email",
-      width:50,
+      width: 50,
     },
     {
       title: "Account Number",
       dataIndex: "user",
       key: "user",
-      width:100,
+      width: 100,
     },
     {
       title: "Date",
       dataIndex: "created_at",
       key: "created_at",
-      width:100,
+      width: 100,
     },
     {
       title: "Veriff",
       dataIndex: "admin_status",
       key: "admin_status",
-      width:100,
+      width: 100,
       render: (text) => (
         <div
           className={`sumsubStatus_indicator ${text === "Approved" ? "approved" : text === "Pending" ? "pending" : text === "in_progress" ? "in_progress" : text === "in_review" ? "in_review" : ""}`}
@@ -107,7 +107,7 @@ const KYC = () => {
       title: "Admin Review",
       dataIndex: "admin_review",
       key: "admin_review",
-      width:100,
+      width: 100,
       render: (text) =>
         text !== null ? (
           <div
@@ -123,7 +123,7 @@ const KYC = () => {
       title: "Country",
       dataIndex: "country",
       key: "country",
-      width:100,
+      width: 100,
       render: (country) => {
         console.log(country, "country");
         const countryName = country;
@@ -148,7 +148,7 @@ const KYC = () => {
       title: "Contract",
       dataIndex: "contract",
       key: "contract",
-      width:100,
+      width: 100,
       render: (text) =>
         text !== null ? (
           <span style={{cursor: "pointer"}}>
@@ -158,7 +158,7 @@ const KYC = () => {
           "-"
         ),
     },
-  ];
+  ]);
 
   const dummyData = [
     {
@@ -193,7 +193,6 @@ const KYC = () => {
         </div>
         <div className="table_header_filter">
           <div className="search_box_wrapper search_box_wrapper">
-      
             <input
               placeholder="Search by Email..."
               className="search_input"

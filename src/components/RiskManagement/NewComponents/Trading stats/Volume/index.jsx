@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import AntTable from "./../../../../../ReusableComponents/AntTable/AntTable";
 
 export const Volume = () => {
-  const columns = [
+  const columns = useMemo(()=>[
     {
       title: "Sr. no.",
       dataIndex: "sr_no",
@@ -57,7 +57,7 @@ export const Volume = () => {
         key: "%_1_month",
         width: 150,
       },
-  ];
+  ]);
   return (
     <div>
       <AntTable

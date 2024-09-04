@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Breadcrumb, Card } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import AntTable from "../../../../ReusableComponents/AntTable/AntTable";
@@ -36,7 +36,7 @@ const UserListLogs = () => {
     date_time: log.date_time ? dayjs(log.date_time).format('YYYY-MM-DD HH:mm:ss') : '-',
   }));
 
-  const columns = [
+  const columns = useMemo(()=>[
     {
       title: "Admin Email ID",
       dataIndex: "admin_email",
@@ -55,7 +55,7 @@ const UserListLogs = () => {
       key: "status",
       render: (text) => (text ? text : "-"),
     },
-  ];
+  ]);
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);

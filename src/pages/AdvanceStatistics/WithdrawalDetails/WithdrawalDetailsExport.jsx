@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { Breadcrumb, Button, Card, DatePicker, Spin, Alert } from "antd";
+import React, {useState, useEffect, useMemo} from "react";
+import {Breadcrumb, Button, Card, DatePicker, Spin, Alert} from "antd";
 import dayjs from "dayjs";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchExportHistoryReq } from "../../../store/NewReducers/exportHistorySlice";
+import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchExportHistoryReq} from "../../../store/NewReducers/exportHistorySlice";
 import "./WithdrawalDetailsExport.scss";
 import downloadIcon from "../../../assets/icons/download_to_pc.svg";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 
-const { RangePicker } = DatePicker;
+const {RangePicker} = DatePicker;
 
 const WithdrawalDetailsExportHistory = () => {
   const dispatch = useDispatch();
-  const { exportHistoryData, isLoading, isError, errorMessage } = useSelector((state) => state.exportHistory);
+  const {exportHistoryData, isLoading, isError, errorMessage} = useSelector((state) => state.exportHistory);
   const [dates, setDates] = useState([dayjs().subtract(1, "month"), dayjs()]);
-  const { idToken } = useSelector((state) => state.auth);
+  const {idToken} = useSelector((state) => state.auth);
 
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -25,11 +25,11 @@ const WithdrawalDetailsExportHistory = () => {
     // const endDate = dates[1]?.format("DD/MMM/YYYY").toLowerCase(); // Adjusted format to abbreviated month in lowercase
 
     // if (startDate && endDate) {
-      // const query = `?start_date=${startDate}&end_date=${endDate}`;
-      const url = `v3/withdrawal/details-export/history/`;
-      dispatch(fetchExportHistoryReq({ idToken, url , dispatch }));
+    // const query = `?start_date=${startDate}&end_date=${endDate}`;
+    const url = `v3/withdrawal/details-export/history/`;
+    dispatch(fetchExportHistoryReq({idToken, url, dispatch}));
     // }
-  }, [ dispatch, idToken]);
+  }, [dispatch, idToken]);
 
   const handleDateChange = (values) => {
     if (values) {
@@ -37,7 +37,7 @@ const WithdrawalDetailsExportHistory = () => {
     }
   };
 
-  const columns = [
+  const columns = useMemo(() => [
     {
       title: "Created By",
       dataIndex: "created_by",
@@ -52,7 +52,7 @@ const WithdrawalDetailsExportHistory = () => {
       title: "Created At",
       dataIndex: "created_at",
       key: "created_at",
-      render: (text) => dayjs(text).format('DD/MM/YYYY HH:mm:ss'), 
+      render: (text) => dayjs(text).format("DD/MM/YYYY HH:mm:ss"),
     },
     {
       title: "Download",
@@ -61,18 +61,20 @@ const WithdrawalDetailsExportHistory = () => {
         <Button
           className="download_btn"
           type="link"
-          href={record.excel_file} 
+          href={record.excel_file}
           target="_blank"
-          disabled={!record.excel_file} 
+          disabled={!record.excel_file}
         >
           Download
-          <img src={downloadIcon} alt="" />
+          <img
+            src={downloadIcon}
+            alt=""
+          />
         </Button>
       ),
     },
-  ];
+  ]);
 
-  
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
     setPageSize(updatedPageSize);
@@ -110,7 +112,7 @@ const WithdrawalDetailsExportHistory = () => {
       ) : (
         <AntTable
           columns={columns}
-          data={exportHistoryData ? exportHistoryData.results : []} 
+          data={exportHistoryData ? exportHistoryData.results : []}
           totalPages={Math.ceil(exportHistoryData?.count / pageSize)}
           totalItems={exportHistoryData.count}
           pageSize={pageSize}
