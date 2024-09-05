@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 import profileIcon from "../../../../assets/icons/profileIcon.svg";
 import BalanceChart from "../../Charts/BalanceChart";
 import ProfitChart from "../../Charts/ProfitChart";
-import { dollarUS, formatCurrency, formatDate, FormatUSD } from "../../../../utils/helpers/string";
+import { dollarUS, formatCurrency, formatDate, FormatUSD, formatValue } from "../../../../utils/helpers/string";
 import DrawdownChart from "../../Charts/DrawdownChart";
 
-const AccountOverview = ({ overview, statistics, accountInsights, info, accountDetails, objectives, performanceChart }) => {
+const AccountOverview = ({ overview, statistics, info, accountDetails, objectives, performanceChart }) => {
 
   console.log(overview)
   const [charts, setCharts] = useState("BalanceChart");
@@ -18,9 +18,8 @@ const AccountOverview = ({ overview, statistics, accountInsights, info, accountD
     setCharts(e.target.value);
   };
 
-  console.log(objectives, "objectives");
 
-  console.log(accountDetails)
+
 
   const [currentTime, setCurrentTime] = useState("");
 
@@ -52,29 +51,28 @@ const AccountOverview = ({ overview, statistics, accountInsights, info, accountD
             <button>{accountDetails?.status}</button>
             <button className="in_progress">{accountDetails?.progress}</button>
           </div>
-
           <div className="top_left_div_lower">
-            <div>
-              <p>Start Date</p>
-              <h3>{formatDate(accountDetails?.start_date)}</h3>
-            </div>
-            <div>
-              <p>End Date</p>
-              <h3>{formatDate(info?.end_date)}</h3>
-            </div>
-            <div>
-              <p>Account Size</p>
-              <h3> {accountDetails?.challenge?.account_balance ? dollarUS(accountDetails?.challenge?.account_balance) : "0"}</h3>
-            </div>
-            <div>
-              <p>Equity</p>
-              <h3>{accountDetails?.equity ? dollarUS(accountDetails?.equity) : "0"}</h3>
-            </div>
-            <div>
-              <p>No. of Trades</p>
-              <h3>{accountInsights?.total_trades}</h3>
-            </div>
+          <div>
+            <p>Start Date</p>
+            <h3>{formatDate(accountDetails?.start_date)}</h3>
           </div>
+          <div>
+            <p>End Date</p>
+            <h3>{formatDate(info?.end_date)}</h3>
+          </div>
+          <div>
+            <p>Account Size</p>
+            <h3>{formatValue(accountDetails?.challenge?.account_balance) ? dollarUS(accountDetails?.challenge?.account_balance) : "0"}</h3>
+          </div>
+          <div>
+            <p>Equity</p>
+            <h3>{formatValue(accountDetails?.equity) ? dollarUS(accountDetails?.equity) : "0"}</h3>
+          </div>
+          <div>
+            <p>No. of Trades</p>
+            <h3>{formatValue(overview?.calculated_data?.trades)}</h3>
+          </div>
+        </div>
         </div>
 
         <div className="top_right_div">
@@ -96,7 +94,7 @@ const AccountOverview = ({ overview, statistics, accountInsights, info, accountD
             </div>
             <div>
               <p>Abs Gain</p>
-              <h3>$00</h3>
+              <h3>{overview?.calculated_data?.absolute_gain ? formatCurrency(overview?.calculated_data?.absolute_gain) : '-'}</h3>
             </div>
             <div>
               <p>Monthly</p>
@@ -138,54 +136,55 @@ const AccountOverview = ({ overview, statistics, accountInsights, info, accountD
               <h2>Statistic</h2>
             </div>
             <div className="bottom_main_left_satistic_inner">
-              <div className="bottom_main_left_satistic_inner_one">
-                <div>
-                  <p>Equity</p>
-                  <h3>{accountDetails?.equity ? dollarUS(accountDetails?.equity) : "0"}</h3>
-                </div>
-                <div>
-                  <p>Balance</p>
-                  <h3> {accountDetails?.challenge?.account_balance ? dollarUS(accountDetails?.challenge?.account_balance) : "0"}</h3>
-                </div>
-                <div>
-                  <p>No. of trades</p>
-                  <h3>{accountInsights?.total_trades}</h3>
-                </div>
-                <div>
-                  <p>Lots</p>
-                  <h3>{accountInsights?.lots}</h3>
-                </div>
-                <div>
-                  <p>Win rate</p>
-                  <h3>{statistics?.win_rate?.toFixed(2)}</h3>
-                </div>
-                <div>
-                  <p>Highest</p>
-                  <h3>-</h3>
-                </div>
-              </div>
-              <div className="bottom_main_left_satistic_inner_two">
-                <div>
-                  <p>Average profit</p>
-                  <h3>${statistics?.Average_profit?.toFixed(2)}</h3>
-                </div>
-                <div>
-                  <p>Average loss</p>
-                  <h3>${statistics?.Average_loss?.toFixed(2)}</h3>
-                </div>
-                <div>
-                  <p>Average RRR</p>
-                  <h3>{statistics?.RRR?.toFixed(2)}</h3>
-                </div>
-                {/* <div>
-                  <p>Martingale Status</p>
-                  <button>{accountDetails?.martingale}</button>
-                </div> */}
-                <div>
-                  <p>Martingale Count</p>
-                  <h3>{accountDetails?.martingale_count}</h3>
-                </div>
-              </div>
+      <div className="bottom_main_left_satistic_inner_one">
+        <div>
+          <p>Equity</p>
+          <h3>{accountDetails?.equity ? dollarUS(accountDetails?.equity) : "0"}</h3>
+        </div>
+        <div>
+          <p>Balance</p>
+          <h3>{accountDetails?.challenge?.account_balance ? dollarUS(accountDetails?.challenge?.account_balance) : "0"}</h3>
+        </div>
+        <div>
+          <p>No. of trades</p>
+          <h3>{formatValue(overview?.calculated_data?.trades , 0)}</h3>
+        </div>
+        <div>
+          <p>Lots</p>
+          <h3>{formatValue(overview?.calculated_data?.lots)}</h3>
+        </div>
+        <div>
+          <p>Win rate</p>
+          <h3>{formatValue(statistics?.win_rate)}</h3>
+        </div>
+        <div>
+          <p>Highest</p>
+          <h3>{formatValue(overview?.calculated_data?.highest , 0)}</h3>
+        </div>
+      </div>
+      <div className="bottom_main_left_satistic_inner_two">
+        <div>
+          <p>Average profit</p>
+          <h3>${formatValue(statistics?.Average_profit)}</h3>
+        </div>
+        <div>
+          <p>Average loss</p>
+          <h3>${formatValue(statistics?.Average_loss)}</h3>
+        </div>
+        <div>
+          <p>Average RRR</p>
+          <h3>{formatValue(statistics?.RRR)}</h3>
+        </div>
+        {/* <div>
+          <p>Martingale Status</p>
+          <button>{accountDetails?.martingale}</button>
+        </div> */}
+        <div>
+          <p>Martingale Count</p>
+          <h3>{formatValue(accountDetails?.martingale_count , 0)}</h3>
+        </div>
+    </div>
+
             </div>
             <div className="bottom_main_left_satistic_lower">
               <h3>Last Updated:</h3>
@@ -201,16 +200,16 @@ const AccountOverview = ({ overview, statistics, accountInsights, info, accountD
           <div className="bottom_main_right_inner">
             <div className="bottom_main_right_inner_div">
               <div>
-                {objectives && objectives?.payout_dates ? 
-                <>
-                 <h4>
-                       Withdrawal Dates - <span>{`${objectives?.payout_dates[0]} &  ${objectives?.payout_dates[1]}`} </span>
-                    </h4>
-                </>
-                :
+                {objectives && objectives?.payout_dates ?
                   <>
                     <h4>
-                      Minimum days - {objectives?.trading_days?.target} <span>{">"}</span>
+                      Withdrawal Dates - <span>{`${objectives?.payout_dates[0]} &  ${objectives?.payout_dates[1]}`} </span>
+                    </h4>
+                  </>
+                  :
+                  <>
+                    <h4>
+                      Min Trading days - {objectives?.trading_days?.target} <span>{">"}</span>
                     </h4>
                     <p>Results : {objectives?.trading_days?.result ?? 0}</p>
                   </>
@@ -244,10 +243,10 @@ const AccountOverview = ({ overview, statistics, accountInsights, info, accountD
               </div>
               <button
                 className={`${objectives?.drawdown_result?.max_loss?.status === "In Progress"
-                    ? "status_in_progress"
-                    : objectives?.drawdown_result?.max_loss?.status === "Success"
-                      ? "status_succcess"
-                      : "status_failed"
+                  ? "status_in_progress"
+                  : objectives?.drawdown_result?.max_loss?.status === "Success"
+                    ? "status_succcess"
+                    : "status_failed"
                   }`}
               >
                 {objectives?.drawdown_result?.max_loss?.status}
@@ -263,10 +262,10 @@ const AccountOverview = ({ overview, statistics, accountInsights, info, accountD
               </div>
               <button
                 className={`${objectives?.drawdown_result?.max_daily_loss?.status === "In Progress"
-                    ? "status_in_progress"
-                    : objectives?.drawdown_result?.max_daily_loss?.status === "Success"
-                      ? "status_succcess"
-                      : "status_failed"
+                  ? "status_in_progress"
+                  : objectives?.drawdown_result?.max_daily_loss?.status === "Success"
+                    ? "status_succcess"
+                    : "status_failed"
                   }`}
               >
                 {objectives && objectives?.drawdown_result?.max_daily_loss?.status}

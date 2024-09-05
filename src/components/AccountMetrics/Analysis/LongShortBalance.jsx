@@ -38,8 +38,8 @@ const LongShortBalance = ({ data }) => {
       header: "No of Trades",
       icon: TradesIcon,
       data: {
-        long: formatValue(data?.number_of_long_trade),
-        short: formatValue(data?.number_of_Short_trade)
+        long: formatValue(data?.number_of_long_trade , 0),
+        short: formatValue(data?.number_of_Short_trade , 0)
       }
     },
     {

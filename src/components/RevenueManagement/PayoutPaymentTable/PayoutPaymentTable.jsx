@@ -323,20 +323,21 @@ const PayoutPaymentTable = ({activeTab}) => {
     setPageSize(updatedPageSize);
   }
 
-  console.log("payment data : ", paymentData);
+  console.log("payment data : ", paymentData , payoutData);
 
   return (
-    <AntTable
-      data={activeTab === "payments" ? paymentData?.results || [] : payoutData || []}
-      columns={activeTab === "payments" ? paymentColumns : payoutColumns}
-      totalPages={Math.ceil(paymentData?.count / pageSize)}
-      totalItems={paymentData?.count}
-      pageSize={pageSize}
-      CurrentPageNo={pageNo}
-      setPageSize={setPageSize}
-      triggerChange={triggerChange}
-    />
-  );
+      <AntTable
+        data={activeTab === "payments" ? paymentData?.results || [] : payoutData?.results || []}
+        columns={activeTab === "payments" ? paymentColumns : payoutColumns}
+        totalPages={activeTab === "payments" ? Math.ceil((paymentData?.count || 0) / pageSize) : Math.ceil((payoutData?.count || 0) / pageSize)}
+        totalItems={activeTab === "payments" ? paymentData?.count || 0 : payoutData?.count || 0}
+        pageSize={pageSize}
+        CurrentPageNo={pageNo}
+        setPageSize={setPageSize}
+        triggerChange={triggerChange}
+      />
+    );
+    
 };
 
 export default PayoutPaymentTable;
