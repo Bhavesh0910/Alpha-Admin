@@ -116,7 +116,7 @@ code {
 }
 
 .ant-select {
-  width: 300px;
+  width: 100%;
   min-height: 44px;
 
   .ant-select-selector {
@@ -219,11 +219,16 @@ input:-webkit-autofill:active {
   border-radius: var(--Corner-2, 10px);
   border: 1px solid var(--Stroke, #252a29);
   background: var(--Stroke, #252a29);
+  
   .ant-picker-presets {
     border-radius: var(--table-box, 20px);
     background: #fff;
-
+    max-width: none !important;
     ul {
+      @media only screen and (max-width: 760px){
+        height: 100% !important;
+      
+      }
       li {
         display: flex;
         align-items: center;
@@ -250,6 +255,7 @@ input:-webkit-autofill:active {
     border-radius: var(--Corner-2, 10px) !important;
     background: #fff !important;
     color: #1e1e1e !important;
+    
     .ant-picker-datetime-panel {
       .ant-picker-date-panel {
         color: #1e1e1e !important;
@@ -751,6 +757,11 @@ input:-webkit-autofill:active {
   }
 
   .ant-picker-panel-layout {
+    @media only screen and (max-width: 600px) {
+      flex-direction: column !important;
+      
+    }
+    
     .ant-picker-panel {
       .ant-picker-year-panel {
         .ant-picker-header {
