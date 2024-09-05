@@ -107,4 +107,25 @@
         font-weight: 700;
         line-height: normal; 
     }
+
+    .ref_list_table{
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+      .header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+      h3{
+        color: var(--white, #FFF);
+        font-family: "Nunito Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal; 
+      }
+    }
 }

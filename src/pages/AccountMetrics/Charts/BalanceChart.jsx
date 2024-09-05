@@ -1,26 +1,38 @@
 import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import { utc_to_eet } from "../../../utils/helpers/string";
+import dayjs from "dayjs";
 
 const BalanceChart = ({ performanceChart }) => {
   const [series, setSeries] = useState([]);
   const [options, setOptions] = useState({
     chart: {
       id: 'balance-chart',
-      type: 'line', 
+      type: 'line',
+      toolbar: {
+        show: false,
+      },
     },
     xaxis: {
       type: 'category',
       labels: {
-        rotate: -45,
+        rotate: -20,
+        style: {
+          fontSize: '10px', 
+        },
+        formatter: (value) => dayjs(value).format("DD-MM-YYYY")
+
       },
-      tickAmount: 10,
+      tickAmount: 7, 
     },
     yaxis: {
       title: {
         text: 'Value'
       },
-      min: 0 
+      tickAmount: 7, 
+      labels: {
+        formatter: (value) => value.toFixed(2), 
+      },
     },
     title: {
       text: 'Balance vs Equity',
@@ -43,6 +55,10 @@ const BalanceChart = ({ performanceChart }) => {
       const equityData = performanceChart.map((data) => data.equity);
       const timeLabels = performanceChart.map((data) => utc_to_eet(data.time));
 
+      const allValues = [...balanceData, ...equityData];
+      const minValue = Math.min(...allValues);
+      const maxValue = Math.max(...allValues);
+
       setSeries([
         {
           name: "Equity",
@@ -58,7 +74,12 @@ const BalanceChart = ({ performanceChart }) => {
         ...prevOptions,
         xaxis: {
           ...prevOptions.xaxis,
-          categories: timeLabels, 
+          categories: timeLabels,
+        },
+        yaxis: {
+          ...prevOptions.yaxis,
+          min: 0,
+          max: maxValue + 1000, 
         },
       }));
     }

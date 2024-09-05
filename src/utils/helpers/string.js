@@ -42,7 +42,24 @@ export const getOrdinalSuffix = (rank) => {
   return rank + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
 };
 
+
+export function formatValue(value) {
+  // Check for null, undefined, or empty string and return '-'
+  if (value === null || value === undefined || value === '') {
+    return '-';
+  }
+  // Return 0 if the value is 0
+  if (value === 0) {
+    return 0;
+  }
+  // Return the value as is
+  return value;
+}
+
+
 // USD Formatter
+
+
 
 
 export const formatCurrency = (value) => {
@@ -50,6 +67,7 @@ export const formatCurrency = (value) => {
       return "$0.00";
   }
   
+
   const numberValue = parseFloat(value);
   
   const formatted = numberValue.toLocaleString('en-US', {

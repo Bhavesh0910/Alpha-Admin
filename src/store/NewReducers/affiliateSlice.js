@@ -225,7 +225,6 @@ const affiliateSlice = createSlice({
       .addCase(fetchAffExportData.fulfilled, (state, action) => {
         state.isLoading = false;
         state.affiliateExportData = action.payload;
-        window.open(action.payload.s3_file_url, "_blank");
       })
       .addCase(fetchAffExportData.rejected, (state, action) => {
         state.isLoading = false;

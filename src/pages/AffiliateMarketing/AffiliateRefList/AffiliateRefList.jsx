@@ -1,35 +1,61 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./AffiliateRefList.scss";
-import { DatePicker, Button, Select, Tooltip, notification, Card, Dropdown, Menu, Modal, Form, Input } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { DatePicker, Button, notification, Modal } from "antd";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import exportBtnIcon from "../../../assets/icons/export_btn_icon.svg";
-
 import dayjs from "dayjs";
-
 import { useDispatch, useSelector } from "react-redux";
+import AntTable from "../../../ReusableComponents/AntTable/AntTable";
+import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import LineChart from "./LineChart";
+import { traderAffiliateRefList } from "../../../utils/api/apis";
+import { fetchAffExportData } from "../../../store/NewReducers/affiliateSlice";
+import { returnErrors } from "../../../store/reducers/error";
+import { returnMessages } from "../../../store/reducers/message";
+import { CloseOutlined } from "@ant-design/icons";
 
-const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 const AffiliateRefList = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [activeTab, setActiveTab] = useState("all");
     const [searchText, setSearchText] = useState("");
     const [search, setSearch] = useState("");
     const [category, setCategory] = useState("all");
-
-    const dispatch = useDispatch();
-
     const [pageSize, setPageSize] = useState(20);
     const [pageNo, setPageNo] = useState(1);
-    const [dates, setDates] = useState();
+    const [dates, setDates] = useState(null);
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [exportDates, setExportDates] = useState(null);
+    const [referredList, setReferredList] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isExportLoading, setIsExportLoading] = useState(false);
 
+    const { idToken } = useSelector((state) => state.auth);
+    const { isLoading: isExportLoadingState, affiliateExportData } = useSelector((state) => state.affiliate);
+    const { state } = useLocation();
+    const id = state?.id;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setIsLoading(true);
+            try {
+                const data = await traderAffiliateRefList(idToken, id, activeTab);
+                setReferredList(data);
+            } catch (error) {
+                console.error("Error fetching referred list:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [id, activeTab, idToken]);
 
     const handleSearch = (value) => {
         setPageNo(1);
-        setPageSize(20);
         setSearchText(value);
     };
 
@@ -43,52 +69,119 @@ const AffiliateRefList = () => {
         setCategory(value);
     };
 
-    function triggerChange(page, updatedPageSize) {
-        setPageNo(page);
-        setPageSize(updatedPageSize);
-    }
-
-    function updateDateRange(dates) {
+    const updateDateRange = (dates) => {
         setPageNo(1);
         if (dates) {
             setDates(dates.map((date) => date.format("DD MMM YYYY")));
         } else {
             setDates(null);
         }
-    }
+    };
 
     const rangePresets = [
         { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
         { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
         { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
         { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
-        { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] }, // Assuming "All time" covers a very long period
+        { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] },
     ];
 
-    const chartData = {
-        categories: ['01 Jan', '02 Jan', '03 Jan', '04 Jan', '05 Jan', '06 Jan', '07 Jan'],
-        series: [
-            {
-                name: "Approved Amount",
-                data: [4000, 3000, 2000, 2780, 1890, 2390, 3490]
+    const handleExport = async () => {
+        if (exportDates && exportDates.length === 2) {
+            const [startDate, endDate] = exportDates;
+            setIsExportLoading(true);
+            try {
+                const response = await dispatch(fetchAffExportData({ idToken, affiliateId: id, startDate, endDate }));
+                if (response?.data?.s3_file_url) {
+                    const s3_file_url = response.data.s3_file_url;
+                    const link = document.createElement("a");
+                    link.href = s3_file_url;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    dispatch(returnMessages("Export Successful", 200));
+                } else {
+                    console.error("Failed to fetch export data.");
+                }
+            } catch (error) {
+                console.error("Error exporting data:", error);
+                dispatch(returnErrors("Error exporting data", 400));
+            } finally {
+                setIsExportLoading(false);
+                setModalVisible(false);
             }
-        ]
+        } else {
+            notification.warning({
+                message: "Invalid Dates",
+                description: "Please select a valid date range.",
+            });
+        }
     };
 
-    const [isModalVisible, setModalVisible] = useState(false);
-
-    const handleCloseModal = () => {
+    const openModal = () => {
         setModalVisible(true);
     };
+
+    const closeModal = () => {
+        setModalVisible(false);
+    };
+
+    const updateExportDateRange = (dates) => {
+        if (dates) {
+            setExportDates(dates.map(date => date.format("YYYY-MM-DD")));
+        } else {
+            setExportDates(null);
+        }
+    };
+
+    const columns = [
+        {
+            title: "Referred Trader",
+            dataIndex: "referredTrader",
+            key: "referredTrader",
+        },
+        {
+            title: "Paid Amount",
+            dataIndex: "paidAmount",
+            key: "paidAmount",
+            render: (text) => `$${text}`,
+        },
+        {
+            title: "Commission Amount",
+            dataIndex: "commissionAmount",
+            key: "commissionAmount",
+            render: (text) => `$${text}`,
+        },
+        {
+            title: "Percentage",
+            dataIndex: "percentage",
+            key: "percentage",
+            render: (text) => `${text}%`,
+        },
+        {
+            title: "Created At",
+            dataIndex: "createdAt",
+            key: "createdAt",
+            render: (text) => new Date(text).toLocaleDateString(),
+        },
+        {
+            title: "Payment ID",
+            dataIndex: "paymentId",
+            key: "paymentId",
+        },
+        {
+            title: "Status",
+            dataIndex: "status",
+            key: "status",
+        },
+    ];
+
     return (
         <div className="affreflist_container">
-            <div className="header_wrapper">
-
-            </div>
+            <div className="header_wrapper"></div>
             <div className="table_header_filter">
                 <div className="header_left">
                     <div className="search_box_wrapper">
-
                         <input
                             placeholder="Search..."
                             className="search_input"
@@ -100,14 +193,8 @@ const AffiliateRefList = () => {
                                 }
                             }}
                         />
-                        <div
-                            className="searchImg"
-                            onClick={() => handleSearch(search)}
-                        >
-                            <img
-                                src={searchIcon}
-                                alt="searchIcon"
-                            />
+                        <div className="searchImg" onClick={() => handleSearch(search)}>
+                            <img src={searchIcon} alt="searchIcon" />
                         </div>
                     </div>
                     <div className="header_middle">
@@ -119,40 +206,34 @@ const AffiliateRefList = () => {
                                 All
                             </Button>
                             <Button
-                                className={activeTab === "paid" ? "active" : ""}
-                                onClick={() => handleTabChange("paid")}
+                                className={activeTab === "successful" ? "active" : ""}
+                                onClick={() => handleTabChange("successful")}
                             >
-                                Paid
+                                Successful
                             </Button>
                             <Button
-                                className={activeTab === "unpaid" ? "active" : ""}
-                                onClick={() => handleTabChange("unpaid")}
+                                className={activeTab === "unsuccessful" ? "active" : ""}
+                                onClick={() => handleTabChange("unsuccessful")}
                             >
-                                Unpaid
+                                Unsuccessful
                             </Button>
                         </div>
-
                     </div>
                 </div>
             </div>
             <div className="header_bottom">
                 <RangePicker
-                    // placeholder={dates}
-                    //  defaultValue={defaultDates}
                     onChange={updateDateRange}
                     autoFocus
                     presets={rangePresets}
                 />
                 <div className="export_btn">
-                    <Button onClick={handleCloseModal}>
-                        <img
-                            src={exportBtnIcon}
-                            alt="export_btn_icon"
-                        />
+                    <Button onClick={openModal} loading={isExportLoading}>
+                        <img src={exportBtnIcon} alt="export_btn_icon" />
                         Export
                     </Button>
                     <Link
-                        to={"/AffiliateRefLists/AffiliateRefLists-export-history"}
+                        to="/affiliate-marketing/affiliateMarketing-exportHistory"
                         style={{ color: "white" }}
                     >
                         View Export History
@@ -162,13 +243,51 @@ const AffiliateRefList = () => {
 
             <div className="pushleads">
                 <div className="chart_wrapper">
-                    <h3 className="chart_title">
-                        Pushleads
-                    </h3>
-                    <LineChart data={chartData} />
+                    <h3 className="chart_title">Pushleads</h3>
+                    <LineChart />
+                </div>
+                <div className="ref_list_table">
+                    <h3>Referred List</h3>    
+                    <AntTable
+                        columns={columns}
+                        dataSource={referredList}
+                      
+                    />
                 </div>
             </div>
 
+            <Modal
+                title="Export Data"
+                visible={isModalVisible}
+                onCancel={closeModal}
+                footer={[
+                    <Button key="cancel" onClick={closeModal}>
+                        Cancel
+                    </Button>,
+                    <Button
+                        key="export"
+                        type="primary"
+                        onClick={handleExport}
+                        loading={isExportLoading}
+                    >
+                        Export
+                    </Button>
+                ]}
+            >
+                <div>
+                    <RangePicker
+                        onChange={updateExportDateRange}
+                        autoFocus
+                        presets={rangePresets}
+                        defaultValue={exportDates ? [
+                            dayjs(exportDates[0]),
+                            dayjs(exportDates[1])
+                        ] : null}
+                    />
+                </div>
+            </Modal>
+
+            {isLoading && <LoaderOverlay />}
         </div>
     );
 };

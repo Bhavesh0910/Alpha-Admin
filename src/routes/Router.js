@@ -516,7 +516,7 @@ function Router() {
           />
           <Route
             exact={true}
-            path="/affiliate-marketing/ref-list"
+            path="/affiliate-marketing/ref-list/"
             element={
               <PageLayout headerName="Affiliate Marketing">
                 <AffiliateRefList />

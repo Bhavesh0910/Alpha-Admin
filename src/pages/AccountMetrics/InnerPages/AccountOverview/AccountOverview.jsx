@@ -1,14 +1,14 @@
-import {Breadcrumb, Radio, Tabs} from "antd";
-import React, {useEffect, useState} from "react";
+import { Breadcrumb, Radio, Tabs } from "antd";
+import React, { useEffect, useState } from "react";
 import "./AccountOverview.scss";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import profileIcon from "../../../../assets/icons/profileIcon.svg";
 import BalanceChart from "../../Charts/BalanceChart";
 import ProfitChart from "../../Charts/ProfitChart";
-import {dollarUS, formatCurrency, formatDate, FormatUSD} from "../../../../utils/helpers/string";
+import { dollarUS, formatCurrency, formatDate, FormatUSD } from "../../../../utils/helpers/string";
 import DrawdownChart from "../../Charts/DrawdownChart";
 
-const AccountOverview = ({overview, statistics , accountDetails, objectives , performanceChart}) => {
+const AccountOverview = ({ overview, statistics, accountInsights, info, accountDetails, objectives, performanceChart }) => {
 
   console.log(overview)
   const [charts, setCharts] = useState("BalanceChart");
@@ -26,8 +26,9 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
 
   useEffect(() => {
     const now = new Date();
-    setCurrentTime(now.toString()); 
+    setCurrentTime(now.toString());
   }, []);
+
 
   return (
     <div className="accountMetrics_wrapper">
@@ -59,7 +60,7 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
             </div>
             <div>
               <p>End Date</p>
-              <h3>{formatDate(accountDetails?.expiry_date)}</h3>
+              <h3>{formatDate(info?.end_date)}</h3>
             </div>
             <div>
               <p>Account Size</p>
@@ -71,49 +72,49 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
             </div>
             <div>
               <p>No. of Trades</p>
-              <h3>-</h3>
+              <h3>{accountInsights?.total_trades}</h3>
             </div>
           </div>
         </div>
 
         <div className="top_right_div">
-                    <div className="accountMetrics_wrapper_header">
-                        <h2>Daily Summary</h2>
-                    </div>
-                    <div className="top_right_div_lower">
-                        <div>
-                            <p>Gain</p>
-                            <h3>$00</h3>
-                        </div>
-                        <div>
-                            <p>Daily</p>
-                            <h3>{overview?.calculated_data?.daily_gain ? formatCurrency(overview?.calculated_data?.daily_gain) : "$0.00"}</h3>
-                        </div>
-                        <div>
-                            <p>Leverage</p>
-                            <h3>1:{accountDetails?.challenge?.Leverage}</h3>
-                        </div>
-                        <div>
-                            <p>Abs Gain</p>
-                            <h3>$00</h3>
-                        </div>
-                        <div>
-                            <p>Monthly</p>
-                            <h3>{overview?.calculated_data?.monthly_gain ? formatCurrency(overview?.calculated_data?.monthly_gain) : "$0.00"}</h3>
-                        </div>
-                        <div>
-                            <p>Drawdown</p>
-                            <h3>{overview?.calculated_data?.draw_down ? formatCurrency(overview?.calculated_data?.draw_down) : "$0.00"}</h3>
-                        </div>
-                    </div>
-                </div>
+          <div className="accountMetrics_wrapper_header">
+            <h2>Daily Summary</h2>
+          </div>
+          <div className="top_right_div_lower">
+            <div>
+              <p>Gain</p>
+              <h3>$00</h3>
+            </div>
+            <div>
+              <p>Daily</p>
+              <h3>{overview?.calculated_data?.daily_gain ? formatCurrency(overview?.calculated_data?.daily_gain) : "$0.00"}</h3>
+            </div>
+            <div>
+              <p>Leverage</p>
+              <h3>1:{accountDetails?.challenge?.Leverage}</h3>
+            </div>
+            <div>
+              <p>Abs Gain</p>
+              <h3>$00</h3>
+            </div>
+            <div>
+              <p>Monthly</p>
+              <h3>{overview?.calculated_data?.monthly_gain ? formatCurrency(overview?.calculated_data?.monthly_gain) : "$0.00"}</h3>
+            </div>
+            <div>
+              <p>Drawdown</p>
+              <h3>{overview?.calculated_data?.draw_down ? formatCurrency(overview?.calculated_data?.draw_down) : "$0.00"}</h3>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="accountMetrics_wrapper_bottom">
         <div className="bottom_main_left">
           <div className="bottom_main_left_charts">
             <div
               className="trader-overview-header-right tabs_wrapper"
-              style={{width: "100%"}}
+              style={{ width: "100%" }}
             >
               <Radio.Group
                 value={charts}
@@ -127,8 +128,8 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
 
             <div className="charts_div">
               {charts === "BalanceChart" && <BalanceChart performanceChart={performanceChart} />}
-              {charts === "ProfitChart" && <ProfitChart ProfitData={overview?.profit_chart}/>}
-              {charts === "DrawdownChart" && <DrawdownChart drawdownData={overview?.drawdown_chart}/>}
+              {charts === "ProfitChart" && <ProfitChart ProfitData={overview?.profit_chart} />}
+              {charts === "DrawdownChart" && <DrawdownChart drawdownData={overview?.drawdown_chart} />}
 
             </div>
           </div>
@@ -148,11 +149,11 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
                 </div>
                 <div>
                   <p>No. of trades</p>
-                  <h3>-</h3>
+                  <h3>{accountInsights?.total_trades}</h3>
                 </div>
                 <div>
                   <p>Lots</p>
-                  <h3>-</h3>
+                  <h3>{accountInsights?.lots}</h3>
                 </div>
                 <div>
                   <p>Win rate</p>
@@ -200,11 +201,20 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
           <div className="bottom_main_right_inner">
             <div className="bottom_main_right_inner_div">
               <div>
-                <h4>
-                  Minimum days - {objectives?.trading_days?.target} <span>{">"}</span>
-                </h4>
-                <p>Results : {objectives?.trading_days?.result || 0}</p>
-
+                {objectives && objectives?.payout_dates ? 
+                <>
+                 <h4>
+                       Withdrawal Dates - <span>{`${objectives?.payout_dates[0]} &  ${objectives?.payout_dates[1]}`} </span>
+                    </h4>
+                </>
+                :
+                  <>
+                    <h4>
+                      Minimum days - {objectives?.trading_days?.target} <span>{">"}</span>
+                    </h4>
+                    <p>Results : {objectives?.trading_days?.result ?? 0}</p>
+                  </>
+                }
               </div>
               <button className={`${objectives?.trading_days?.status === "In Progress" ? "status_in_progress" : objectives?.trading_days?.status === "Success" ? "status_succcess" : "status_failed"}`}>
                 {objectives?.trading_days?.status}
@@ -233,13 +243,12 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
                 <p>Results : {FormatUSD(objectives?.drawdown_result?.max_loss?.result ?? 0)}</p>
               </div>
               <button
-                className={`${
-                  objectives?.drawdown_result?.max_loss?.status === "In Progress"
+                className={`${objectives?.drawdown_result?.max_loss?.status === "In Progress"
                     ? "status_in_progress"
                     : objectives?.drawdown_result?.max_loss?.status === "Success"
-                    ? "status_succcess"
-                    : "status_failed"
-                }`}
+                      ? "status_succcess"
+                      : "status_failed"
+                  }`}
               >
                 {objectives?.drawdown_result?.max_loss?.status}
               </button>
@@ -253,15 +262,14 @@ const AccountOverview = ({overview, statistics , accountDetails, objectives , pe
                 <p>Remaining : {FormatUSD(objectives?.drawdown_result?.max_daily_loss?.remaining ?? 0)}</p>
               </div>
               <button
-                className={`${
-                  objectives?.drawdown_result?.max_daily_loss?.status === "In Progress"
+                className={`${objectives?.drawdown_result?.max_daily_loss?.status === "In Progress"
                     ? "status_in_progress"
                     : objectives?.drawdown_result?.max_daily_loss?.status === "Success"
-                    ? "status_succcess"
-                    : "status_failed"
-                }`}
+                      ? "status_succcess"
+                      : "status_failed"
+                  }`}
               >
-                { objectives && objectives?.drawdown_result?.max_daily_loss?.status}
+                {objectives && objectives?.drawdown_result?.max_daily_loss?.status}
               </button>
             </div>
           </div>

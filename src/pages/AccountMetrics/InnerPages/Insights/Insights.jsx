@@ -29,6 +29,17 @@ const Insights = ({ login_id, platform }) => {
     return <div>{error}</div>;
   }
 
+  // Utility function to handle default values and formatting
+  const formatValue = (value) => {
+    if (typeof value === 'string') {
+      return value
+    }
+    if (value === undefined || value === null || isNaN(value)) {
+      return '-';
+    }
+    return value.toFixed(2);
+  };
+
   return (
     <div className="insights_main">
       {/* Tabination */}
@@ -49,70 +60,70 @@ const Insights = ({ login_id, platform }) => {
           <div className="insights_main_left">
             <div>
               <p>Total Trades</p>
-              <p>{accountInsights?.total_trades}</p>
+              <p>{formatValue(accountInsights?.total_trades)}</p>
             </div>
             <div>
               <p>Long Trades</p>
-              <p>{accountInsights?.Long_trade}</p>
+              <p>{formatValue(accountInsights?.Long_trade)}</p>
             </div>
             <div>
               <p>Short Trades</p>
-              <p>{accountInsights?.short_trade}</p>
+              <p>{formatValue(accountInsights?.short_trade)}</p>
             </div>
             <div>
               <p>Best Trade</p>
-              <p>{accountInsights?.best_trade}</p>
+              <p>{formatValue(accountInsights?.best_trade)}</p>
             </div>
             <div>
               <p>Worst Trade</p>
-              <p>{accountInsights?.worst_trade}</p>
+              <p>{formatValue(accountInsights?.worst_trade)}</p>
             </div>
             <div>
               <p>Commission</p>
-              <p>{accountInsights?.commission}</p>
+              <p>{formatValue(accountInsights?.commission)}</p>
             </div>
             <div>
               <p>Pips</p>
-              <p>{accountInsights?.pips}</p>
+              <p>{formatValue(accountInsights?.pips)}</p>
             </div>
           </div>
 
           <div className="insights_main_right">
             <div>
               <p>Long Won</p>
-              <p>{accountInsights?.long_won}</p>
+              <p>{formatValue(accountInsights?.long_won)}</p>
             </div>
             <div>
               <p>Short Won</p>
-              <p>{accountInsights?.short_won}</p>
+              <p>{formatValue(accountInsights?.short_won)}</p>
             </div>
             <div>
               <p>Best Trade Pip</p>
-              <p>{(accountInsights?.best_trade_pip)?.toFixed(2)}</p>
+              <p>{formatValue(accountInsights?.best_trade_pip)}</p>
             </div>
             <div>
               <p>Worst Trade Pip</p>
-              <p>{accountInsights?.worst_trade_pip && accountInsights?.worst_trade_pip?.toFixed(2)}</p>
+              <p>{formatValue(accountInsights?.worst_trade_pip)}</p>
             </div>
             <div>
               <p>Average Win</p>
-              <p>{accountInsights?.average_win}</p>
+              <p>{formatValue(accountInsights?.average_win)}</p>
             </div>
             <div>
               <p>Average Loss</p>
-              <p>{accountInsights?.average_loss}</p>
+              <p>{formatValue(accountInsights?.average_loss)}</p>
             </div>
             <div>
               <p>Loss Ratio</p>
-              <p>{Number(accountInsights?.loss_ratio)?.toFixed(2)}</p>
+              <p>{formatValue(accountInsights?.loss_ratio)}</p>
             </div>
             <div>
               <p>Profit</p>
-              <p>{accountInsights?.Profit}</p>
+              <p>{formatValue(accountInsights?.Profit)}</p>
             </div>
             <div>
               <p>Average Trade Length</p>
-              <p>{accountInsights?.average_trade_length}</p>
+              <p>{formatValue(accountInsights?.average_trade_length)}</p>
             </div>
           </div>
         </div>
