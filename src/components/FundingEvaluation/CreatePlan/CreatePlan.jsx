@@ -242,7 +242,7 @@ const CreateTradingAccount = () => {
             />
           </div>
         </div>
-        <div className="row2">
+        <div className="row1">
           <div className="form_input">
             <label htmlFor="AccountBalance">Account Balance</label>
             <Select
@@ -286,6 +286,12 @@ const CreateTradingAccount = () => {
               placeholder="Enter server"
               // onChange={(e) => setData((prev) => ({ ...prev, server: e.target.value }))}
               value={"ACGMarkets-Live"}
+            />
+          </div>
+          <div className="form_input">
+            <label htmlFor="Reason">Reason</label>
+            <Input
+              placeholder="Enter Reason"
             />
           </div>
         </div>

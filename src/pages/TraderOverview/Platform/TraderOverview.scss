@@ -14,7 +14,6 @@
     @media (max-width: 720px) {
       width: 100%;
     }
-
   }
 
   /* CSS to style custom scrollbar for Ant Design table */
@@ -123,6 +122,10 @@
         border-radius: var(--Corner-Radius, 10px);
         border: 1px solid var(--Stroke, #252a29);
         background: var(--Main-Background, #f6fefe);
+
+        @media only screen and (max-width: 430px) {
+          width: 100% !important;
+        }
       }
       .ant-select-selector {
         background: var(--Main-Background, #f6fefe);
@@ -134,7 +137,7 @@
         font-weight: 600;
         line-height: normal;
         outline: none;
-        overflow: auto;
+        // overflow: auto;
       }
       .ant-select-arrow {
         color: #a6a6a6;
@@ -162,10 +165,10 @@
         max-width: 100%;
       }
     }
-    .trader_overview_row2_groupB{
+    .trader_overview_row2_groupB {
       display: flex;
       gap: 20px;
-      @media only screen and (max-width: 810px) {
+      @media only screen and (max-width: 854px) {
         flex-direction: column;
       }
     }
@@ -217,7 +220,7 @@
 }
 
 .ant-picker-panels {
-  @media only screen and (max-width: 810px) {
+  @media only screen and (max-width: 912px) {
     flex-direction: column;
     gap: 20px;
     // max-width: 100%;
@@ -379,6 +382,12 @@
   // flex-basis: 20%;
   flex-shrink: 1;
   // overflow: auto;
+  @media only screen and (max-width: 478px) {
+    max-height: 85px;
+    // flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+  }
   .ant-radio-button-wrapper {
     display: flex;
     min-height: 36px;
@@ -426,13 +435,13 @@
 // .ant-select-selection-item {
 //   display: none !important;
 // }
-.NestedTable{
+.NestedTable {
   display: flex;
   justify-content: space-between;
   // gap: 10%;
   align-items: center;
   padding: 1rem;
-  p{
+  p {
     color: var(--Brand-2, #12181f);
     font-family: "Nunito Sans";
     font-size: 18px;
@@ -443,8 +452,19 @@
   }
 }
 
-
-.label{
+.label {
   font-size: 16px;
   color: #000;
+}
+.phase_filters{
+  @media only screen and (max-width: 478px) {
+    display: none;
+  }
+}
+.mobileFilter {
+  display: none;
+
+  @media only screen and (max-width: 478px) {
+    display: block;
+  }
 }
