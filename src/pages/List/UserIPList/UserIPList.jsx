@@ -100,7 +100,7 @@ const UserIPList = () => {
           {text || "-"}
           <Tooltip title="Copy">
             <CopyOutlined
-              style={{marginLeft: 8, cursor: "pointer", color: "#75ebc3"}}
+              style={{marginLeft: 8, cursor: "pointer", color: "#04d9ff"}}
               onClick={() => message.success("Copied email")}
             />
           </Tooltip>

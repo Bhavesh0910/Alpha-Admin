@@ -483,6 +483,7 @@ function TraderOverview() {
             <Select
               // placeholder="Select Platform"
               defaultValue={options[0].value}
+              showSearch={false}
               className="header-select"
               onChange={handlePlatformChange}
               options={options}
@@ -632,10 +633,7 @@ function TraderOverview() {
                 alt="searchIcon"
               />
             </div>
-          </div>
-        </div>
-
-        <div className="trader_overview_row2_groupB">
+          </div>{" "}
           <div>
             <RangePicker
               // placeholder={['Start Date', 'End Date']}
@@ -643,7 +641,10 @@ function TraderOverview() {
               onChange={updateDateRange}
             />
           </div>
-          <div className="phase_filters">
+        </div>
+
+        <div className="trader_overview_row2_groupB">
+          <div>
             <Radio.Group
               value={phase}
               onChange={onChangePhase}
@@ -655,40 +656,6 @@ function TraderOverview() {
               <Radio.Button value="Evalution">Evalution</Radio.Button>
               <Radio.Button value="Free Trail">Free Trial</Radio.Button>
             </Radio.Group>
-          </div>
-          <div className="mobileFilter">
-            <Select placeholder="Select a filter">
-              <Option
-                key={"all"}
-                value={"all"}
-              >
-                All
-              </Option>
-              <Option
-                key={"Funded"}
-                value={"Funded"}
-              >
-                Funded
-              </Option>
-              <Option
-                key={"Verification"}
-                value={"Verification"}
-              >
-                Verification
-              </Option>
-              <Option
-                key={"Evalution"}
-                value={"Evalution"}
-              >
-                Evalution
-              </Option>
-              <Option
-                key={"Free Trail"}
-                value={"Free Trail"}
-              >
-                Free Trail
-              </Option>
-            </Select>
           </div>
         </div>
       </div>
