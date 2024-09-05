@@ -8,6 +8,7 @@ import resultIcon from "../../../assets/icons/resultIcon.svg";
 import Winrate from "../../../assets/icons/Winrate.svg";
 import averageProfit from "../../../assets/icons/averageProfit.svg";
 import RRR from "../../../assets/icons/RRR.svg";
+import { formatValue } from "../../../utils/helpers/string";
 
 const formatPercentage = (value) => `${(value * 100).toFixed(2)}%`;
 
@@ -16,6 +17,7 @@ const formatCurrency = (value) => {
   const formattedValue = value.toFixed(2);
   return formattedValue.startsWith('-') ? `-$${formattedValue.slice(1)}` : `$${formattedValue}`;
 };
+
 
 const LongShortBalance = ({ data }) => {
   const [longChart, setLongChart] = useState("Balance");
@@ -36,43 +38,45 @@ const LongShortBalance = ({ data }) => {
       header: "No of Trades",
       icon: TradesIcon,
       data: {
-        long: data?.number_of_long_trade || '-',
-        short: data?.number_of_Short_trade || '-'
+        long: formatValue(data?.number_of_long_trade),
+        short: formatValue(data?.number_of_Short_trade)
       }
     },
     {
       header: "Results",
       icon: resultIcon,
       data: {
-        long: formatCurrency(data?.long_profit) || '-',
-        short: formatCurrency(data?.short_profit) || '-'
+        long: formatValue(formatCurrency(data?.long_profit)),
+        short: formatValue(formatCurrency(data?.short_profit))
       }
     },
     {
       header: "Win Rate",
       icon: Winrate,
       data: {
-        long: formatPercentage(data?.long_win_rate) || '-',
-        short: formatPercentage(data?.short_win_rate) || '-'
+        long: formatValue(formatPercentage(data?.long_win_rate)),
+        short: formatValue(formatPercentage(data?.short_win_rate))
       }
     },
     {
       header: "Average Profit",
       icon: averageProfit,
       data: {
-        long: formatCurrency(data?.long_avg_profit) || '-',
-        short: formatCurrency(data?.short_avg_profit) || '-'
+        long: formatValue(formatCurrency(data?.long_avg_profit)),
+        short: formatValue(formatCurrency(data?.short_avg_profit))
       }
     },
     {
       header: "RRR",
       icon: RRR,
       data: {
-        long: formatPercentage(data?.long_rrr) || '-',
-        short: formatPercentage(data?.short_rrr) || '-'
+        long: formatValue(formatPercentage(data?.long_rrr)),
+        short: formatValue(formatPercentage(data?.short_rrr))
       }
     }
   ];
+  
+ 
 
   return (
     <div className="long_short_balance">

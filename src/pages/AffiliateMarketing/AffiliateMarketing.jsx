@@ -1,37 +1,28 @@
-import React, {useEffect, useMemo, useRef, useState} from "react";
-import {Button, DatePicker, Select} from "antd";
-import {Link, useNavigate} from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Select } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchNewAffiliateCodeList} from "../../store/NewReducers/affiliateSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchNewAffiliateCodeList } from "../../store/NewReducers/affiliateSlice";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-
 import "./AffiliateMarketing.scss";
 import exportBtnIcon from "../../assets/icons/export_btn_icon.svg";
-import UserDetails from "../../components/AffiliateMarketing/UserDetails/UserDetails";
-import ReactCountryFlag from "react-country-flag";
-const {Option} = Select;
 
-const AffiliateMarketing = ({userData}) => {
-  const lookup = require("country-code-lookup");
+const { Option } = Select;
+
+const AffiliateMarketing = () => {
   const [searchText, setSearchText] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [category, setCategory] = useState("all");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [filterData, setFilterData] = useState([]);
-
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
-  const {affiliateData, currentPage, totalPages, totalItems, page_size, count, isLoading} = useSelector((state) => state.affiliate);
-  // const {affiliateData, currentPage, totalPages, page_size, count, isLoading} = useSelector((state) => state.affiliate.newCodeListData);
-  // const {count, isLoading} = useSelector((state) => state.affiliate);
-  const {idToken} = useSelector((state) => state.auth);
-
+  const { affiliateData, isLoading } = useSelector((state) => state.affiliate);
+  const { idToken } = useSelector((state) => state.auth);
   const newCodeData = useSelector((state) => state.affiliate.newCodeListData);
-
-  // console.log("isLoading", isLoading);
 
   useEffect(() => {
     dispatch(
@@ -42,25 +33,14 @@ const AffiliateMarketing = ({userData}) => {
         searchText,
       }),
     );
-  }, [dispatch, pageNo, searchText, pageSize, newCodeData?.isLoading, category]);
-
-  const searchRef = useRef();
+  }, [dispatch, pageNo, searchText, pageSize, idToken]);
 
   useEffect(() => {
     setFilterData(newCodeData?.results);
   }, [newCodeData]);
 
-  const handleRowClick = (affiliateId, email) => {
-    // const url = `/affiliate-marketing/code?email=${email}`;
-    // navigate(url);
-  };
-
-  const [isUserDetailOpened, setIsUserDetailOpened] = useState(false);
-  const [id, setId] = useState();
   const handleViewDetailsBtn = (id) => {
-    setIsUserDetailOpened(!isUserDetailOpened);
-    setId(id);
-    console.log(id);
+    navigate('/affiliate-marketing/ref-list', { state: { id } });
   };
 
   function triggerChange(page, updatedPageSize) {
@@ -76,10 +56,7 @@ const AffiliateMarketing = ({userData}) => {
       <>
         {parts.map((part, index) =>
           regex.test(part) ? (
-            <span
-              key={index}
-              className="highlight"
-            >
+            <span key={index} className="highlight">
               {part}
             </span>
           ) : (
@@ -90,12 +67,12 @@ const AffiliateMarketing = ({userData}) => {
     );
   };
 
-  const columns = useMemo(()=>[
+  const columns = [
     {
       title: "Name",
       dataIndex: "name",
       render: (text, record) => (
-        <div onClick={() => handleRowClick(record.id, record.email)}>
+        <div onClick={() => handleViewDetailsBtn(record.id)}>
           {category === "name" || category === "all"
             ? highlightText(
                 text
@@ -116,8 +93,8 @@ const AffiliateMarketing = ({userData}) => {
       dataIndex: "email",
       render: (text, record) => (
         <div
-          onClick={() => handleRowClick(record.id, record.email)}
-          style={{display: "flex", alignItems: "center", gap: "12px"}}
+          onClick={() => handleViewDetailsBtn(record.id)}
+          style={{ display: "flex", alignItems: "center", gap: "12px" }}
         >
           {category === "email" || category === "all"
             ? highlightText(
@@ -138,14 +115,14 @@ const AffiliateMarketing = ({userData}) => {
       title: "Referred Count",
       dataIndex: "referred_count",
       key: "referred_count",
-      width:150,
+      width: 150,
       render: (text) => text || "-",
     },
     {
       title: "Coupon Discount",
       dataIndex: "coupon_discount",
       key: "coupon_discount",
-      width:150,
+      width: 150,
       render: (text) => text || "-",
     },
     {
@@ -161,45 +138,12 @@ const AffiliateMarketing = ({userData}) => {
         </button>
       ),
     },
-  ]);
-
-  const dummyData = [
-    {
-      key: "1",
-      name: "Jacob Jones",
-      email: "debra.holt@example.com",
-      country: "Georgia",
-      flag: "https://flagcdn.com/w320/de.png", // Example flag URL
-      referredCount: 1,
-      commissionEarned: "$202.87",
-      challenge200k: 4,
-      challenge300k: 2,
-      referredList: "View Details",
-    },
   ];
 
   const handleSearch = (e) => {
-    console.log("search1", e.target.value);
     if (e.key === "Enter") {
-      console.log(searchText, e.key);
       setSearchText(e.target.value);
     }
-  };
-
-  const handleClick = () => {
-    setSearchText(searchRef.current.value);
-  };
-
-  const handleTabChange = (key) => {
-    setActiveTab(key);
-  };
-
-  const handleCategoryChange = (value) => {
-    setCategory(value);
-  };
-
-  const handleSearchButtonClick = () => {
-    setSearchText(searchText);
   };
 
   return (
@@ -215,42 +159,23 @@ const AffiliateMarketing = ({userData}) => {
       </div>
       <div className="table_header_filter">
         <div className="search_box_wrapper">
-          {/* <Select
-            className="category_dropdown"
-            defaultValue="all"
-            onChange={handleCategoryChange}
-          >
-            <Option value="all">All Categories</Option>
-            <Option value="name">Name</Option>
-            <Option value="email">Email</Option>
-          </Select> */}
           <input
             placeholder="Search by Email..."
             className="search_input"
             onKeyDown={(e) => handleSearch(e)}
-            ref={searchRef}
           />
-          <div
-            className="searchImg"
-            onClick={(e) => handleClick(e)}
-          >
-            <img
-              src={searchIcon}
-              alt="searchIcon"
-            />
+          <div className="searchImg">
+            <img src={searchIcon} alt="searchIcon" />
           </div>
         </div>
         <div className="export_btn">
           <Button onClick={() => navigate("/affiliate-marketing/create-affiliate-code")}>
-            <img
-              src={exportBtnIcon}
-              alt="create_btn_icon"
-            />
+            <img src={exportBtnIcon} alt="create_btn_icon" />
             Create
           </Button>
         </div>
       </div>
-      {newCodeData?.isLoading ? (
+      {isLoading ? (
         <LoaderOverlay />
       ) : (
         <AntTable
@@ -264,18 +189,6 @@ const AffiliateMarketing = ({userData}) => {
           triggerChange={triggerChange}
           scrollY={400}
         />
-      )}
-
-      {isUserDetailOpened && isUserDetailOpened === true ? (
-        <div className="userDetails_container">
-          <UserDetails
-            id={id}
-            isUserDetailOpened={isUserDetailOpened}
-            setIsUserDetailOpened={setIsUserDetailOpened}
-          />
-        </div>
-      ) : (
-        ""
       )}
     </div>
   );

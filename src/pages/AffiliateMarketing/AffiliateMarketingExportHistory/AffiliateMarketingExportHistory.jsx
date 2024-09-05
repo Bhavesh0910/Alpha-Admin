@@ -78,11 +78,9 @@ const AffiliateMarketingExportHistory = () => {
   };
 
   return (
-    <Card className="table-wrapper viewLogs_table aff_export">
-      <div className="header_wrapper">
-        <h3 className="page_header">Export History</h3>
-      </div>
-      <div className="breadcrumb_wrapper">
+    <div className="table-wrapper viewLogs_table aff_export">
+ 
+      <div style={{marginBottom:'20px'}} className="breadcrumb_wrapper">
         <Breadcrumb separator=">">
           <Breadcrumb.Item>
             <a href="/affiliate-marketing/">Affiliate List</a>
@@ -92,8 +90,6 @@ const AffiliateMarketingExportHistory = () => {
       </div>
       {isLoading ? (
         <LoaderOverlay />
-      ) : error ? (
-        <div className="error_message">Error: {error}</div>
       ) : (
         <AntTable
           columns={columns}
@@ -106,7 +102,7 @@ const AffiliateMarketingExportHistory = () => {
           triggerChange={handlePageChange}
         />
       )}
-    </Card>
+    </div>
   );
 };
 

@@ -61,7 +61,7 @@ const LineChart = ({ data }) => {
     return (
             <ReactApexChart 
                 options={options} 
-                series={data.series} 
+                series={data?.series || []} 
                 type="line" 
                 height={400} 
                 width={'100%'}

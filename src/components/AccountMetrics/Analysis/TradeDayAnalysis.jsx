@@ -1,6 +1,7 @@
 import React from 'react';
 import './TradeDayAnalysis.scss';
 import BarChart from './Charts/BarChart';
+import { formatValue } from '../../../utils/helpers/string';
 
 const DataBox = ({ title, value }) => {
     return (
@@ -23,13 +24,27 @@ function TradeDayAnalysis({ data }) {
     console.log(data)
 
     const dataBoxes = [
-        { title: 'Number of Trades', value: data?.number_of_trade || '-' },
-        { title: 'Positive Days', value: data?.positive_days ? data.positive_days.toFixed(2) : '-' },
-        { title: 'Average Positive Day', value: data?.avg_positive_days ? data.avg_positive_days.toFixed(2) : '-' },
-        { title: 'Negative Days', value: data?.negative_days ? data.negative_days.toFixed(2) : '-' },
-        { title: 'Average Negative Days', value: data?.avg_negative_days ? data.avg_negative_days.toFixed(2) : '-' },
-    ];
-
+        { 
+          title: 'Number of Trades', 
+          value: formatValue(data?.number_of_trade) 
+        },
+        { 
+          title: 'Positive Days', 
+          value: formatValue(data?.positive_days !== undefined ? data.positive_days.toFixed(2) : '-') 
+        },
+        { 
+          title: 'Average Positive Day', 
+          value: formatValue(data?.avg_positive_days !== undefined ? data.avg_positive_days.toFixed(2) : '-') 
+        },
+        { 
+          title: 'Negative Days', 
+          value: formatValue(data?.negative_days !== undefined ? data.negative_days.toFixed(2) : '-') 
+        },
+        { 
+          title: 'Average Negative Days', 
+          value: formatValue(data?.avg_negative_days !== undefined ? data.avg_negative_days.toFixed(2) : '-') 
+        }
+      ];
     return (
         <div className='trade_day_analysis'>
             <div className='analysis_box'>

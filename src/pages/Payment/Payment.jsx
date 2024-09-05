@@ -59,14 +59,30 @@ const Payment = () => {
         width: 150,
         render: (text) => {
           return (
-            <div
-              onClick={() => {
-                dispatch(selectedEmail(text));
-                navigate("/payments/payments-export-history");
-              }}
-            >
-              {text}
-            </div>
+            <div className="copy_text_btn">
+            {text ? (
+              <>
+                <a href={`mailto:${text}`}>{text}</a>
+                <Tooltip title="Copy Email">
+                  <Button
+                    icon={<CopyButton />}
+                    size="small"
+                    style={{ marginLeft: 8 }}
+                    onClick={() => {
+                      navigator.clipboard.writeText(text);
+                      notification.success({
+                        message: "Email copied to clipboard",
+                        placement: "topRight",
+                      });
+                    }}
+                    className="copy_btn"
+                  />
+                </Tooltip>
+              </>
+            ) : (
+              "-"
+            )}
+          </div>
           );
         },
       },
