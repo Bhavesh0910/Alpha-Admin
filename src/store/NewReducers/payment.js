@@ -189,7 +189,7 @@ const paymentSlice = createSlice({
       .addCase(payoutListReq.fulfilled, (state, action) => {
         state.isLoading = false;
         console.log("Paypout paylaod .. ",action.payload);
-        state.payoutData = action.payload?.data?.data?.results; // Update state with fetched data
+        state.payoutData = action.payload?.data?.data; // Update state with fetched data
         state.count = action.payload?.data?.data?.count; // Update state with fetched data
       })
       .addCase(payoutListReq.rejected, (state) => {
@@ -210,7 +210,7 @@ async function payoutListApi(idToken, query) {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const res = axios.get(`${baseUrl}v2/get-payout/`, config);
+    const res = axios.get(`${baseUrl}v2/get-payout/${query}`, config);
     return res;
   } catch (error) {
     throw error;

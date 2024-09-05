@@ -43,18 +43,19 @@ export const getOrdinalSuffix = (rank) => {
 };
 
 
-export function formatValue(value) {
-  // Check for null, undefined, or empty string and return '-'
-  if (value === null || value === undefined || value === '') {
-    return '-';
-  }
-  // Return 0 if the value is 0
-  if (value === 0) {
-    return 0;
-  }
-  // Return the value as is
-  return value;
-}
+
+ export const formatValue = (value , fixed = true) => {
+    if (typeof value === 'string') {
+      return value
+    }
+    if (value === undefined || value === null || isNaN(value)) {
+      return '-';
+    }
+    if(fixed){
+    return value.toFixed(2);
+    }
+    return value
+  };
 
 
 // USD Formatter
