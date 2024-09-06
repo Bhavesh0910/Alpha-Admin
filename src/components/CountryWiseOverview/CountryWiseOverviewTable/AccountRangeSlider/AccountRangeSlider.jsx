@@ -1,28 +1,33 @@
-import {Button, Slider} from "antd";
-import {useState} from "react";
+import { Button, Slider } from "antd";
+import { useState, useEffect } from "react";
 import "./AccountRangeSlider.scss";
 import crossIcon from "../../../../assets/icons/cross_icon_white.svg";
-const AccountRangeSlider = ({setIsRangeOpen, isRangeOpen, setAccRange}) => {
-  const [value, setValue] = useState(30); // Default value is 30
+
+const AccountRangeSlider = ({ setIsRangeOpen, isRangeOpen, setAccRange, accRange }) => {
+  const [value, setValue] = useState(accRange || 30);
+
+  console.log(accRange)
+  useEffect(() => {
+    setValue(accRange || 30);
+  }, [accRange]);
 
   const handleChange = (newValue) => {
     setValue(newValue);
   };
 
-  const handleCloseBtn = (newValue) => {
-    setIsRangeOpen(!isRangeOpen);
+  const handleCloseBtn = () => {
+    setIsRangeOpen(false);
   };
 
-  function handleApply(x) {
-    setAccRange(x === "null" ? null : value);
+  const handleApply = () => {
+    setAccRange(value === 0 ? null : value);
     handleCloseBtn();
-  }
+  };
+
   return (
     <div
       className="accountRange_Wrapper"
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
+      onClick={(e) => e.stopPropagation()}
     >
       <div className="header_wapper">
         <h2>Accounts Range</h2>
