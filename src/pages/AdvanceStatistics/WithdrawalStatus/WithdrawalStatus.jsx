@@ -276,6 +276,7 @@ const WithdrawalStatus = () => {
       });
     }
   };
+  
 
   return (
     <div className="withdrawal_status_container">
@@ -312,7 +313,7 @@ const WithdrawalStatus = () => {
             </div>
           </div>
           <div className="header_middle">
-            <div className="filter_btns">
+            <div className="filter_btn">
               <Button
                 className={activeTab === "All" ? "btn_active" : ""}
                 onClick={() => handleTabChange("All")}
@@ -337,6 +338,8 @@ const WithdrawalStatus = () => {
               >
                 New
               </Button>
+
+              
             </div>
           </div>
         </div>

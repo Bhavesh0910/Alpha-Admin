@@ -109,26 +109,34 @@
 
 
 
-    .filter_btns {
+    .filter_btn {
       display: flex;
-      gap: 20px;
-      min-height: 46px;
+      gap: 6px;
+      padding: 4px;
+      align-items: center;
+      border-radius: var(--Corner-1, 10px);
+      border: 1px solid var(--Stroke, #252a29) !important;
+      background: var(--Main-Background, #f6fefe);
       .ant-btn {
-        border-radius: 10px;
-        background: #f6fefe;
-        display: flex;
-        height: 46px;
-        padding: 0px 15px;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        color: #12181f;
-        font-family: "Nunito Sans";
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
+        background: transparent;
+        border: none;      
       }
+      // .ant-btn {
+      //   border-radius: 10px;
+      //   background: #f6fefe;
+      //   display: flex;
+      //   height: 46px;
+      //   padding: 0px 15px;
+      //   justify-content: center;
+      //   align-items: center;
+      //   gap: 10px;
+      //   color: #12181f;
+      //   font-family: "Nunito Sans";
+      //   font-size: 14px;
+      //   font-style: normal;
+      //   font-weight: 400;
+      //   line-height: normal;
+      // }
     }
   }
 
@@ -315,8 +323,14 @@
         }
       }
 
-      .filter_buttons {
+      .filter_btn {
         min-height: 44px;
+        button{
+          border-radius: var(--Corner-1, 5px);
+          background: transparent !important;
+          color: #1e1e1e;
+          border: none;
+        }
       }
     }
 
