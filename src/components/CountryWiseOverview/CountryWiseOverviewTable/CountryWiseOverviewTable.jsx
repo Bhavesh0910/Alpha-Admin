@@ -97,7 +97,7 @@ const CountryWiseOverviewTable = () => {
 
   const handleDateChange = (dates, dateStrings) => {
     if (dates) {
-      setDates(dates.map((item) => item.format("YYYY-MM-DD")));
+      setDates(dates.map((item) => item.format("DD/MMM/YYYY")));
     } else {
       setDates(dates);
     }
