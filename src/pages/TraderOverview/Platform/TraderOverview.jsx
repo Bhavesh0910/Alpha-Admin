@@ -244,7 +244,7 @@ function TraderOverview() {
         title: "Country",
         dataIndex: "country",
         key: "country",
-        width: "15%",
+        width: 200,
         render: (country, {record}) => {
           const countryName = (country !== "undefined" ? country : null) || "-";
           const countryCode = lookup.byCountry(countryName);
@@ -266,7 +266,7 @@ function TraderOverview() {
         title: "Account No.",
         dataIndex: "login_id",
         key: "login_id",
-        width: 100,
+        width: 200,
         render: (text, record) =>
           text ? (
             <div
@@ -314,42 +314,42 @@ function TraderOverview() {
         title: "Leverage",
         dataIndex: "leverage",
         key: "leverage",
-        width: "15%",
+        width:100,
         render: (leverage) => <span>1:{leverage || "-"}</span>,
       },
       {
         title: "Start Date",
         dataIndex: "start_date",
         key: "start_date",
-        width: "15%",
+        width: 100,
         render: (startDate) => <span>{startDate ? formatDate(startDate) : "-"}</span>,
       },
       {
         title: "End Date",
         dataIndex: "expiry_date",
         key: "expiry_date",
-        width: "15%",
+        width: 100,
         render: (expiryDate) => <span>{expiryDate ? formatDate(expiryDate) : "-"}</span>,
       },
       {
         title: "Trader Type",
         dataIndex: "status",
         key: "status",
-        width: "15%",
+        width: 100,
         render: (text) => <p className={`status_text ${text === "Evaluation" ? "evaluation" : "free_trial"}`}>{highlightText(text || "-", searchText)}</p>,
       },
       {
         title: "Status",
         dataIndex: "user_is_active",
         key: "user_is_active",
-        width: "15%",
+        width: 100,
         render: (text) => (text ? "Unblocked" : "Blocked") || "-",
       },
       {
         title: "Action",
         dataIndex: "action",
         key: "action",
-        width: "25%",
+        width: 100,
         render: (_, record) => (
           <div className="btn-wrapper">
             {record.user_is_active ? (
@@ -644,7 +644,7 @@ function TraderOverview() {
         </div>
 
         <div className="trader_overview_row2_groupB">
-          <div>
+          <div className="phase_filters">
             <Radio.Group
               value={phase}
               onChange={onChangePhase}
@@ -656,6 +656,40 @@ function TraderOverview() {
               <Radio.Button value="Evalution">Evalution</Radio.Button>
               <Radio.Button value="Free Trail">Free Trial</Radio.Button>
             </Radio.Group>
+          </div>
+          <div className="mobileFilter">
+            <Select placeholder="Select a filter">
+              <Option
+                key={"all"}
+                value={"all"}
+              >
+                All
+              </Option>
+              <Option
+                key={"Funded"}
+                value={"Funded"}
+              >
+                Funded
+              </Option>
+              <Option
+                key={"Verification"}
+                value={"Verification"}
+              >
+                Verification
+              </Option>
+              <Option
+                key={"Evalution"}
+                value={"Evalution"}
+              >
+                Funded
+              </Option>
+              <Option
+                key={"Free Trial"}
+                value={"Free Trial"}
+              >
+                Free Trial
+              </Option>
+            </Select>
           </div>
         </div>
       </div>

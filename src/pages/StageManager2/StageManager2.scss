@@ -88,7 +88,7 @@
     padding: 4px;
     align-items: center;
 
-    @media only screen and (max-width: 912px) {
+    @media only screen and (max-width: 1024px) {
       display: none;
     }
 
@@ -129,7 +129,7 @@
   .mobileSelector {
     display: none;
 
-    @media only screen and (max-width: 912px) {
+    @media only screen and (max-width: 1024px) {
       display: block;
     }
 
