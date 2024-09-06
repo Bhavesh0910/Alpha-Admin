@@ -18,6 +18,8 @@
     height: 100% !important;
     position: absolute;
     overflow: visible;
+    max-height: 150px !important;
+    overflow: auto;
     // left: auto;
     // top: 0px !important;
     // right: 0px !important;
@@ -48,18 +50,23 @@
 #payoutChart {
   display: grid;
   grid-template-columns: 80% 20%;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 100%;
+  }
+
   #custom_pie_chart {
-    min-height: 100% !important;
+    // min-height: 100% !important;
   }
   .apexcharts-canvas {
-    height: 100% !important;
+    // height: 100% !important;
   }
   .apexcharts-svg {
-    height: 100% !important;
+    // height: 100% !important;
     foreignObject {
-      height: 100% !important;
+      // height: 100% !important;
       .apexcharts-legend {
-        top: 0px !important;
+        // top: 0px !important;
       }
     }
   }

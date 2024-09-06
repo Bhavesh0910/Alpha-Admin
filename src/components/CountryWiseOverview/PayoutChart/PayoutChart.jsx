@@ -1,9 +1,19 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import "./PayoutChart.scss";
 import Chart from "react-apexcharts";
 import {formatCurrency} from "../../../utils/helpers/string";
 const PayoutChart = ({chartData}) => {
-  console.log("cahrtdata : ", chartData);
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth < 700);
+
+  const handleResize = () => {
+    setIsMobileView(window.innerWidth < 700);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const options = {
     chart: {
       type: "pie",
@@ -22,12 +32,11 @@ const PayoutChart = ({chartData}) => {
     dataLabels: {
       formatter(val, opts) {
         const name = opts.w.globals.labels[opts.seriesIndex];
-        // return [name,val.toFixed(1) + "%"];
         return [val.toFixed(1) + "%"];
       },
     },
     legend: {
-      show: true,
+      show: !isMobileView,
     },
     stroke: {
       show: true,
@@ -46,7 +55,7 @@ const PayoutChart = ({chartData}) => {
     },
   };
 
-  const series = chartData?.series || []; // Dummy data similar to the data in the image
+  const series = chartData?.series || [];
 
   return (
     <div className="payoutChart_wrapper">
@@ -60,16 +69,28 @@ const PayoutChart = ({chartData}) => {
           type="pie"
           id="custom_pie_chart"
         />
-        <span className="labels_container">
-          {chartData?.amounts?.map((amount, index) => (
-            <div
-              key={index}
-              className="label_with_value m2"
-            >
-              <span className="value piechartamount">{formatCurrency(amount)}</span>
-            </div>
-          ))}
-        </span>
+        <div className="chart_custom_legends">
+          <div className="labels_container none">
+            {chartData?.labels?.map((item, index) => (
+              <div
+                key={index}
+                className="label_with_value m2"
+              >
+                <span className="value piechartamount">{item}</span>
+              </div>
+            ))}
+          </div>
+          <div className="labels_container">
+            {chartData?.amounts?.map((amount, index) => (
+              <div
+                key={index}
+                className="label_with_value m2"
+              >
+                <span className="value piechartamount">{formatCurrency(amount)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
