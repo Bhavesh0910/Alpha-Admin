@@ -34,10 +34,21 @@ const PieChart = ({data}) => {
         breakpoint: 480,
         options: {
           chart: {
-            width: 200,
+            width: 300,
           },
           legend: {
-            show: false,
+            show: true,
+          },
+        },
+      },
+      {
+        breakpoint: 410,
+        options: {
+          chart: {
+            width: 240,
+          },
+          legend: {
+            show: true,
           },
         },
       },
@@ -68,7 +79,33 @@ const PieChart = ({data}) => {
       },
     },
   };
-
+  const assessmentData = [
+    {
+      label: "Total Pass",
+      value: accountOverviewData?.stage1?.pass_count || "-",
+      tooltip: accountOverviewData?.stage1?.pass_count || "-",
+    },
+    {
+      label: "Total Fail",
+      value: accountOverviewData?.stage1?.fail_count || "-",
+      tooltip: accountOverviewData?.stage1?.fail_count || "-",
+    },
+    {
+      label: "Total In Progress",
+      value: accountOverviewData?.stage1?.in_progress_count || "-",
+      tooltip: accountOverviewData?.stage1?.in_progress_count || "-",
+    },
+  ];
+  const roundedValues = assessmentData.map((item) => {
+    const value = item.value;
+    if (value > 9999) {
+      return {
+        ...item,
+        value: `${Math.floor(value / 1000)}k`,
+      };
+    }
+    return item;
+  });
   return (
     <div className="pieChart_wrapper">
       <h2>Stage 01</h2>
@@ -90,6 +127,19 @@ const PieChart = ({data}) => {
               className="label_with_value"
             >
               <span className="value">{item}</span>
+            </div>
+          ))}
+           {/* {roundedValues.map((item, index) => (
+            <div key={index} className="label_with_value">
+              <span className="value" title={item.tooltip}>{item.value}</span>
+            </div>
+          ))} */}
+        </div>
+        <div className="mobileLabels_container">
+          {assessmentData?.map((item, index) => (
+            <div key={index} className="label_with_value">
+              <span className="label">{item?.label}:</span>
+              <span className="value" title={item.tooltip}>{item?.value}</span>
             </div>
           ))}
         </div>

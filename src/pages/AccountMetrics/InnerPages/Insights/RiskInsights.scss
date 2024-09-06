@@ -1,0 +1,25 @@
+.risk_insights {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+    .chart_wrapper {
+        border-radius: var(--table-box, 20px);
+        background: #fff;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        h2 {
+            color: var(--Text, #1e1e1e);
+            font-family: "Nunito Sans";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+        .chart {
+            border-radius: 20px;
+            background: var(--Table-header-fill, #edf0f0);
+        }
+    }
+}

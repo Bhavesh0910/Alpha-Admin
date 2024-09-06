@@ -371,10 +371,10 @@ const StageManager = () => {
           //   render: (text) => (text ? text : "-"),
           // },
           {
-            title: "Flag",
+            title: "Country",
             dataIndex: "country",
             key: "country",
-            width: 60,
+            width: 80,
             render: (country) => {
               const countryName = country;
               const countryCode = lookup.byCountry(countryName);
@@ -627,10 +627,10 @@ const StageManager = () => {
           //   render: (text) => (text ? text : "-"),
           // },
           {
-            title: "Flag",
+            title: "Country",
             dataIndex: "country",
             key: "country",
-            width: 60,
+            width: 80,
             render: (country) => {
               const countryName = country;
               const countryCode = lookup.byCountry(countryName);

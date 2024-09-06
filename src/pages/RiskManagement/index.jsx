@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./style.scss";
-import {DatePicker, Typography} from "antd";
-import {useDispatch, useSelector} from "react-redux";
+import { DatePicker, notification, Typography } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 import PieChart from "../../components/RiskManagement/PieChart/PieChart";
 import FundingTotalProgress from "../../components/RiskManagement/FundingTotalProgress/FundingTotalProgress";
 import AccountProfitChart from "../../components/RiskManagement/AccountProfitChart/AccountProfitChart";
@@ -9,40 +9,59 @@ import StageStatisticsChart from "../../components/RiskManagement/StageStatistic
 import dayjs from "dayjs";
 import Stage2Chart from "../../components/RiskManagement/Stage2Chart/Stage2Chart";
 import Stage2Statistics from "../../components/RiskManagement/Stage2Statistics/Stage2Statistics";
-import {fetchAccountOverviewStats, fetchFundingChart, fetchStageChart} from "../../store/NewReducers/riskSlice";
+import { fetchAccountOverviewStats, fetchFundingChart, fetchStageChart } from "../../store/NewReducers/riskSlice";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
-const {Title} = Typography;
-const {RangePicker} = DatePicker;
+const { Title } = Typography;
+const { RangePicker } = DatePicker;
 
 function RiskManagement() {
   const dispatch = useDispatch();
-  const {accountOverviewData, isLoadingFundingdata, isLoadingStage1, isLoadingStats, error} = useSelector((state) => state.risk);
+  const { accountOverviewData, isLoadingFundingdata, isLoadingStage1, isLoadingStats, error } = useSelector((state) => state.risk);
   const idToken = useSelector((state) => state.auth.idToken);
   const [defaultDates, setDefaultDates] = useState([dayjs(), dayjs().subtract(1, "month")]);
 
+
+  const [isValidRange, setIsValidRange] = useState(true);
+
+
   const onRangeChange = (dates) => {
     if (dates && idToken) {
-      const startDate = dates[0].format("DD/MMM/YYYY");
-      const endDate = dates[1].format("DD/MMM/YYYY");
-      dispatch(fetchAccountOverviewStats({idToken, startDate, endDate}));
-      dispatch(fetchFundingChart({idToken, startDate, endDate}));
-      dispatch(fetchStageChart({idToken, stage: 1, startDate, endDate}));
-      dispatch(fetchStageChart({idToken, stage: 2, startDate, endDate}));
+      const [startDate, endDate] = dates;
+
+      if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
+        setIsValidRange(false);
+        notification.error({
+          message: 'Invalid Date Range',
+          description: 'The selected date range contains dates in the future. Please select a valid range.',
+        });
+        return;
+      }
+
+      setIsValidRange(true);
+      const formattedStartDate = startDate.format("DD/MMM/YYYY");
+      const formattedEndDate = endDate.format("DD/MMM/YYYY");
+
+      dispatch(fetchAccountOverviewStats({ idToken, startDate: formattedStartDate, endDate: formattedEndDate }));
+      dispatch(fetchFundingChart({ idToken, startDate: formattedStartDate, endDate: formattedEndDate }));
+      dispatch(fetchStageChart({ idToken, stage: 1, startDate: formattedStartDate, endDate: formattedEndDate }));
+      dispatch(fetchStageChart({ idToken, stage: 2, startDate: formattedStartDate, endDate: formattedEndDate }));
     } else {
-      dispatch(fetchAccountOverviewStats({idToken, startDate: null}));
-      dispatch(fetchFundingChart({idToken, startDate: null}));
-      dispatch(fetchStageChart({idToken, stage: 1, startDate: null}));
-      dispatch(fetchStageChart({idToken, stage: 2, startDate: null}));
+
+      setIsValidRange(true);
+      dispatch(fetchAccountOverviewStats({ idToken, startDate: null }));
+      dispatch(fetchFundingChart({ idToken, startDate: null }));
+      dispatch(fetchStageChart({ idToken, stage: 1, startDate: null }));
+      dispatch(fetchStageChart({ idToken, stage: 2, startDate: null }));
     }
   };
 
   const rangePresets = [
-    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
-    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
-    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
-    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
-    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]}, // Assuming "All time" covers a very long period
+    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
+    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
+    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
+    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
+    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] }, // Assuming "All time" covers a very long period
   ];
 
   useEffect(() => {
@@ -56,7 +75,7 @@ function RiskManagement() {
     <div className="risk_management_wrapper">
       <div className="header_box">
         <Title
-          style={{color: "#1E1E1E"}}
+          style={{ color: "#1E1E1E" }}
           level={4}
         >
           Admin Overview

@@ -4,6 +4,7 @@ import { Radio, Spin } from "antd";
 import { fetchAccountInsights } from "../../../../store/NewReducers/amSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { formatValue } from "../../../../utils/helpers/string";
+import RiskInsights from "./RiskInsights";
 
 const Insights = ({ login_id, platform }) => {
   const [insightTab, setInsightTab] = useState("");
@@ -44,6 +45,7 @@ const Insights = ({ login_id, platform }) => {
 
       {/* Main Container */}
 
+      {insightTab === "Insights" ? <RiskInsights data={accountInsights} /> :
 
         <div className="insights_main_container">
           <div className="insights_main_header">
@@ -126,7 +128,7 @@ const Insights = ({ login_id, platform }) => {
             </div>
           </div>
         </div>
-      
+      }
     </div>
   );
 };

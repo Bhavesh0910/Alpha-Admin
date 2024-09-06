@@ -220,13 +220,16 @@ input:-webkit-autofill:active {
   border-radius: var(--Corner-2, 10px);
   border: 1px solid var(--Stroke, #252a29);
   background: var(--Stroke, #252a29);
-
+  @media only screen and (max-width: 912px){
+    display: flex;
+    flex-direction: column;
+  }
   .ant-picker-presets {
     border-radius: var(--table-box, 20px);
     background: #fff;
     max-width: none !important;
     ul {
-      @media only screen and (max-width: 760px) {
+      @media only screen and (max-width: 912px){
         height: 100% !important;
       }
       li {
