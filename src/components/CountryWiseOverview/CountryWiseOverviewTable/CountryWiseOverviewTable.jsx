@@ -185,6 +185,8 @@ const CountryWiseOverviewTable = () => {
               isRangeOpen={isRangeOpen}
               setIsRangeOpen={setIsRangeOpen}
               setAccRange={setAccRange}
+              accRange={accRange}
+          
             />
           ) : (
             ""
@@ -198,7 +200,12 @@ const CountryWiseOverviewTable = () => {
       <AntTable
         data={listData || []}
         columns={columns}
-        serverSide={false}
+        totalPages={Math.ceil(listData?.length / pageSize)}
+        totalItems={listData?.length}
+        pageSize={pageSize}
+        CurrentPageNo={pageNo}
+        setPageSize={setPageSize}
+        triggerChange={triggerChange}
       />
     </div>
   );
