@@ -19,7 +19,7 @@ function RiskManagement() {
   const dispatch = useDispatch();
   const { accountOverviewData, isLoadingFundingdata, isLoadingStage1, isLoadingStats, error } = useSelector((state) => state.risk);
   const idToken = useSelector((state) => state.auth.idToken);
-  const [defaultDates, setDefaultDates] = useState([dayjs(), dayjs().subtract(1, "month")]);
+  const [defaultDates, setDefaultDates] = useState([ dayjs().subtract(1, "month"),dayjs()]);
 
 
   const [isValidRange, setIsValidRange] = useState(true);

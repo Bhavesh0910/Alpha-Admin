@@ -1,9 +1,19 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import "./PayoutChart.scss";
 import Chart from "react-apexcharts";
 import {formatCurrency} from "../../../utils/helpers/string";
 const PayoutChart = ({chartData}) => {
-  console.log("cahrtdata : ", chartData);
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth < 700);
+
+  const handleResize = () => {
+    setIsMobileView(window.innerWidth < 700);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const options = {
     chart: {
       type: "pie",
@@ -22,12 +32,11 @@ const PayoutChart = ({chartData}) => {
     dataLabels: {
       formatter(val, opts) {
         const name = opts.w.globals.labels[opts.seriesIndex];
-        // return [name,val.toFixed(1) + "%"];
         return [val.toFixed(1) + "%"];
       },
     },
     legend: {
-      show: true,
+      show: !isMobileView,
     },
     stroke: {
       show: true,
@@ -46,7 +55,7 @@ const PayoutChart = ({chartData}) => {
     },
   };
 
-  const series = chartData?.series || []; // Dummy data similar to the data in the image
+  const series = chartData?.series || [];
 
   return (
     <div className="payoutChart_wrapper">
@@ -70,6 +79,21 @@ const PayoutChart = ({chartData}) => {
             </div>
           ))}
         </span>
+        <div className="mobileLabels_container">
+          {chartData?.amounts?.map((item, index) => (
+            <div
+              key={index}
+              className="label_with_value"
+            >
+              <span
+                className="circle"
+                style={{backgroundColor: options.colors[index]}}
+              ></span>
+              <span className="label">{chartData?.labels?.[index]}:</span>
+              <span className="value">{formatCurrency(chartData?.amounts?.[index])}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

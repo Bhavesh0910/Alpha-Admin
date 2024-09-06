@@ -66,7 +66,33 @@ const Stage2Chart = ({data}) => {
       },
     },
   };
-
+  const assessmentData = [
+    {
+      label: "Total Pass",
+      value: accountOverviewData?.stage2?.pass_count || "-",
+      tooltip: accountOverviewData?.stage2?.pass_count || "-",
+    },
+    {
+      label: "Total Fail",
+      value: accountOverviewData?.stage2?.fail_count || "-",
+      tooltip: accountOverviewData?.stage2?.fail_count || "-",
+    },
+    {
+      label: "Total In Progress",
+      value: accountOverviewData?.stage2?.in_progress_count || "-",
+      tooltip: accountOverviewData?.stage2?.in_progress_count || "-",
+    },
+  ];
+  const roundedValues = assessmentData.map((item) => {
+    const value = item.value;
+    if (value > 9999) {
+      return {
+        ...item,
+        value: `${Math.floor(value / 1000)}k`,
+      };
+    }
+    return item;
+  });
   return (
     <div className="pieChart_wrapper">
       <h2>Stage 02</h2>
@@ -87,6 +113,30 @@ const Stage2Chart = ({data}) => {
               className="label_with_value"
             >
               <span className="value">{label}</span>
+            </div>
+          ))}
+          {/* {roundedValues?.map((item, index) => (
+            <div
+              key={index}
+              className="label_with_value"
+            >
+              <span
+                className="value"
+                title={item.tooltip}
+              >
+                {item.value}
+              </span>
+            </div>
+          ))} */}
+        </div>
+        <div className="mobileLabels_container">
+          {assessmentData?.map((item, index) => (
+            <div
+              key={index}
+              className="label_with_value"
+            >
+              <span className="label">{item?.label}:</span>
+              <span className="value" title={item.tooltip}>{item?.value}</span>
             </div>
           ))}
         </div>

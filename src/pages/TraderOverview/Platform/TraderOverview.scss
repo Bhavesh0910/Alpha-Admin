@@ -197,8 +197,8 @@
       border-radius: var(--Corner-Radius, 10px);
       border: 1px solid var(--Stroke, #252a29);
       background: var(--Main-Background, #f6fefe);
-      width: 100%;
-      max-width: 282px;
+      // width: 100%;
+      width: 282px;
 
       @media only screen and (max-width: 900px) {
         min-height: 44px;
@@ -478,16 +478,17 @@
     font-size: 16px;
     color: #000;
   }
-  .phase_filters {
-    @media only screen and (max-width: 478px) {
-      display: none;
-    }
-  }
-  .mobileFilter {
-    display: none;
 
-    @media only screen and (max-width: 478px) {
-      display: block;
-    }
+}
+.phase_filters {
+  @media only screen and (max-width: 478px) {
+    display: none;
+  }
+}
+.mobileFilter {
+  display: none;
+
+  @media only screen and (max-width: 478px) {
+    display: block;
   }
 }
