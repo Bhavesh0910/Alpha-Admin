@@ -19,22 +19,16 @@ const CreateTradingAccount = () => {
   const {fundingData} = useSelector((state) => state.funding);
   const [index, setIndex] = useState(0);
 
-  useEffect(() => {
-    console.log("emailOpts : ", emailOpts);
-  }, [emailOpts]);
-
   // User search by email
   const fetch = async (value) => {
     setIsLoading(true);
     const response = await UserSearchReq(idToken, value);
     setIsLoading(false);
-    // console.log(response)
     if (response?.status < 399) {
       const userArray = response?.data?.results?.map((item) => ({
         label: item?.email,
         value: item?.id,
       }));
-      // console.log("userArray", userArray)
       setEmailOpts(userArray);
     } else {
       const msg = response?.response?.data?.detail || "Something went wrong";
@@ -42,11 +36,6 @@ const CreateTradingAccount = () => {
     }
   };
 
-  const [planOptions, setPlanOptions] = useState([]);
-  const [competitionOptions, setCompetitionOptions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [selectedCompetition, setSelectedCompetition] = useState(null);
-  const [phase, setPhase] = useState(null);
   const [isSpinner, setIsSpinner] = useState(false);
 
   const stages = ["Evaluation", "Verification", "Funded"];
@@ -63,12 +52,12 @@ const CreateTradingAccount = () => {
     name: "",
     pwd: "",
     pwdInvestor: "",
-    raw_spread: "Raw Spread",
-    status: "Evaluation",
+    raw_spread: "",
+    status: "",
     user: "",
-    platform: "MT5",
+    platform: "",
     email: "",
-    reason: "testing",
+    reason: "",
     // plan_type: "",
     // account_size: "",
   });
@@ -88,6 +77,10 @@ const CreateTradingAccount = () => {
       setAmounts(Amounts);
     }
   }, [fundingData]);
+
+  useEffect(() => {
+    console.log("dataFundingAcc : ", data);
+  }, [data]);
 
   const handleCreateTradingAccount = async () => {
     setIsSpinner(true);
@@ -136,6 +129,8 @@ const CreateTradingAccount = () => {
         reason: reason,
       };
     }
+
+    console.log("traderdata : ", traderData);
     const response = await CreateTradingAccountReq(idToken, traderData, data?.platform);
     if (response?.status < 399) {
       dispatch(returnMessages("Created Account Successfully", 201));
@@ -143,6 +138,22 @@ const CreateTradingAccount = () => {
       const msg = response?.response?.data?.detail || "Something went wrong";
       dispatch(returnErrors(msg, 400));
     }
+    setData({
+      challenge: null,
+      group: "ACGd\\demo ACG",
+      leverage: "",
+      name: "",
+      pwd: "",
+      pwdInvestor: "",
+      raw_spread: "",
+      status: "",
+      user: "",
+      platform: "",
+      email: "",
+      reason: "",
+    });
+
+    traderData = {};
     setIsSpinner(false);
   };
 
@@ -168,6 +179,7 @@ const CreateTradingAccount = () => {
               style={{width: "100%"}}
               options={platforms.map((platform) => ({label: platform, value: platform}))}
               onChange={(value) => setData((prev) => ({...prev, platform: value}))}
+              value={data?.platform === "" ? null : data?.platform}
             />
           </div>
           <div className="form_input">
@@ -175,6 +187,7 @@ const CreateTradingAccount = () => {
             <Input
               placeholder="Enter your Account Name"
               onChange={(e) => setData((prev) => ({...prev, name: e.target.value}))}
+              value={data?.name}
             />
           </div>
           <div className="form_input">
@@ -182,6 +195,7 @@ const CreateTradingAccount = () => {
             <Input
               placeholder="Enter your password"
               onChange={(e) => setData((prev) => ({...prev, pwd: e.target.value, pwdInvestor: e.target.value}))}
+              value={data?.pwd}
             />
           </div>
         </div>
@@ -205,6 +219,7 @@ const CreateTradingAccount = () => {
               }
               notFoundContent={isLoading ? <Spin size="small" /> : null}
               options={emailOpts}
+              value={data?.email === "" ? null : data?.email}
             />
           </div>
           <div className="form_input">
@@ -214,6 +229,7 @@ const CreateTradingAccount = () => {
               placeholder="Select a Raw Spread"
               options={rawSpreadOptions}
               onChange={(value) => setData((prev) => ({...prev, raw_spread: value === "Raw Spread" ? true : false}))}
+              value={data?.raw_spread === "" ? null : data?.raw_spread ? "Raw Spread" : "No Commission"}
             />
           </div>
           <div className="form_input">
@@ -232,13 +248,16 @@ const CreateTradingAccount = () => {
                 }
                 setIndex(x || 0);
                 const updates = {
-                  // plan_type: value,
                   challenge: x + 1,
                 };
+                // setData((prev) => {
+                //   return {...prev, ...updates};
+                // });
                 setData((prev) => {
-                  return {...prev, ...updates};
+                  return {...prev, fundingEvalValue: value};
                 });
               }}
+              value={data?.fundingEvalValue ? data?.fundingEvalValue : null}
             />
           </div>
         </div>
@@ -249,19 +268,19 @@ const CreateTradingAccount = () => {
               className="funding_evaluation_selector"
               placeholder="Enter account balance"
               options={index !== -1 ? amounts[index]?.map((item) => ({label: item, value: item})) : []}
-              onChange={(value) => {
+              onChange={(value, x) => {
                 const update = {
                   // account_size: value,
-                  leverage:
-                    parseInt(fundingData[fundingEvaluationOptions[index]?.value].map((item) => (item?.account_balance === value ? item?.Leverage : -1)).filter((item) => item !== -1)[0]) || null,
+                  leverage: 100,
+                  // parseInt(fundingData[fundingEvaluationOptions[index]?.value].map((item) => (item?.account_balance === value ? item?.Leverage : -1)).filter((item) => item !== -1)[0]) || null,
                 };
+                const selectedChallenge = fundingData?.[data?.fundingEvalValue]?.filter((item) => item.account_balance === value)?.map((item) => item.id);
                 setData((prev) => ({...prev, ...update}));
+                setData((prev) => ({...prev, challenge: selectedChallenge ? selectedChallenge[0] : null}));
+                setData((prev) => ({...prev, leverageDisplayValue: value}));
               }}
+              value={data?.leverageDisplayValue ? data?.leverageDisplayValue : null}
             />
-            {/* <Input
-              placeholder="Enter account balance"
-              onChange={(e) => setData((prev) => ({ ...prev, accountBalance: e.target.value }))}
-            /> */}
           </div>
           <div className="form_input">
             <label htmlFor="Stage">Stage</label>
@@ -270,13 +289,13 @@ const CreateTradingAccount = () => {
               placeholder="Select Stage"
               options={stages.map((stage) => ({label: stage, value: stage}))}
               onChange={(value) => setData((prev) => ({...prev, status: value}))}
+              value={data?.status === "" ? null : data?.status}
             />
           </div>
           <div className="form_input">
             <label htmlFor="Server">Broker</label>
             <Input
               placeholder="Enter Broker"
-              // onChange={(e) => setData((prev) => ({ ...prev, broker: e.target.value }))}
               value={"ACG Markets"}
             />
           </div>
@@ -284,7 +303,6 @@ const CreateTradingAccount = () => {
             <label htmlFor="Server">Server</label>
             <Input
               placeholder="Enter server"
-              // onChange={(e) => setData((prev) => ({ ...prev, server: e.target.value }))}
               value={"ACGMarkets-Live"}
             />
           </div>
@@ -292,6 +310,8 @@ const CreateTradingAccount = () => {
             <label htmlFor="Reason">Reason</label>
             <Input
               placeholder="Enter Reason"
+              onChange={(e) => setData((prev) => ({...prev, reason: e.target.value}))}
+              value={data?.reason}
             />
           </div>
         </div>
@@ -310,17 +330,3 @@ const CreateTradingAccount = () => {
 };
 
 export default CreateTradingAccount;
-
-// account_size: ""
-// challenge: ""
-// group: "ACGd\\demo ACG"
-// leverage: ""
-// name: ""
-// plan_type: ""
-// platform: "MT5"
-// pwd: ""
-// pwdInvestor: ""
-// raw_spread: "Raw Spread"
-// status: "Evaluation"
-// user: ""
-// user_data: null

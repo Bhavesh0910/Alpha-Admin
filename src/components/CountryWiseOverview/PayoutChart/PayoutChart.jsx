@@ -69,11 +69,11 @@ const PayoutChart = ({chartData}) => {
           type="pie"
           id="custom_pie_chart"
         />
-        <span className="labels_container">
+        <span className="labels_container mt20">
           {chartData?.amounts?.map((amount, index) => (
             <div
               key={index}
-              className="label_with_value m2"
+              className="label_with_value"
             >
               <span className="value piechartamount">{formatCurrency(amount)}</span>
             </div>

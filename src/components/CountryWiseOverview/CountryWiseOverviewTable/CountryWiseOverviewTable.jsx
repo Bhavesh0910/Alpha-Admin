@@ -41,36 +41,57 @@ const CountryWiseOverviewTable = () => {
       title: "Country",
       dataIndex: "country",
       key: "country",
-      width: 100,
+      width: 110,
       render: (text) => (text ? text : "-"),
+    },
+    {
+      title: "No. Of Payment",
+      dataIndex: "payment_total_count",
+      key: "totalPayments",
+      width: 95,
+      render: (text) => (text === 0 ? 0 : text ? text : "-"),
     },
     {
       title: "Total Payments($)",
       dataIndex: "payment_total_amount",
       key: "totalPayments",
-      width: 100,
-      render: (text) => (text ? Number(text).toFixed(2) : "-"),
-    },
-    {
-      title: "Payment Count",
-      dataIndex: "payment_total_count",
-      key: "totalAccounts",
-      width: 100,
-      render: (text) => text || "-",
+      width: 95,
+      render: (text) => (text === 0 ? 0 : text ? Number(text).toFixed(2) : "-"),
     },
     {
       title: "Total Payouts($)",
       dataIndex: "payout_total_amount",
       key: "totalPayouts",
-      width: 100,
-      render: (text) => (text ? Number(text).toFixed(2) : "-"),
+      width: 95,
+      render: (text) => (text === 0 ? 0 : text ? Number(text).toFixed(2) : "-"),
     },
     {
-      title: "Payouts Count",
+      title: "No. of Payouts",
       dataIndex: "payout_total_count",
       key: "totalPayouts",
-      width: 100,
-      render: (text) => text || "-",
+      width: 95,
+      render: (text) => (text === 0 ? 0 : text ? text : "-"),
+    },
+    {
+      title: "Total No. of Accounts",
+      dataIndex: "total_no_of_account",
+      key: "totalPayouts",
+      width: 95,
+      render: (text) => (text === 0 ? 0 : text ? text : "-"),
+    },
+    {
+      title: "Total No. of Violations",
+      dataIndex: "total_no_of_violations",
+      key: "totalPayouts",
+      width: 95,
+      render: (text) => (text === 0 ? 0 : text ? text : "-"),
+    },
+    {
+      title: "Total No. of Breached Accounts",
+      dataIndex: "total_no_breaches",
+      key: "totalPayouts",
+      width: 95,
+      render: (text) => (text === 0 ? 0 : text ? text : "-"),
     },
   ]);
 
@@ -186,7 +207,6 @@ const CountryWiseOverviewTable = () => {
               setIsRangeOpen={setIsRangeOpen}
               setAccRange={setAccRange}
               accRange={accRange}
-          
             />
           ) : (
             ""

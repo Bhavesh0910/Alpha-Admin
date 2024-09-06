@@ -11,8 +11,8 @@ export const countryWiseList = async (idToken, query) => {
       },
     };
 
-    let response = await axios.get(`${baseUrl}v2/risk-management/${query && query}`, config);
-    // let response = await axios.get(`${baseUrl}v4/country-wise-overview/${query && query}`, config);
+    // let response = await axios.get(`${baseUrl}v2/risk-management/${query && query}`, config);
+    let response = await axios.get(`${baseUrl}v3/country-wise-overview/${query && query}`, config);
     // let response1 = await axios.get(`${baseUrl}v2/payout-percentage/${query && query}`, config);
     // let response2 = await axios.get(`${baseUrl}v2/payment-percentage/${query && query}`, config);
 
@@ -28,7 +28,7 @@ export const countryWiseListReq = createAsyncThunk("countryWise/countryWiseList"
     const response = await countryWiseList(idToken, query);
     return response;
   } catch (error) {
-    dispatch(returnErrors(error.response?.data?.detail || "Error Fetching List...", 400));
+    dispatch(returnErrors(error.response?.data?.detail || "Error Fetching countrywise data!", 400));
     return rejectWithValue(error.response.data);
   }
 });

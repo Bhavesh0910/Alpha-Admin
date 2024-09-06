@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from "react";
 import "./TraderOverview.scss";
-import {Table, DatePicker, Button, Card, Radio, Select, Typography, Modal, Cascader, Tag} from "antd";
+import {Table, DatePicker, Button, Card, Radio, Select, Typography, Modal, Cascader, Tag, Dropdown, Menu, Form, Input} from "antd";
 
 import {Link, useNavigate} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
@@ -21,6 +21,7 @@ import {changeAccountStatusApi} from "../../../utils/apis/accountsApi";
 import {fetchFundingDetails} from "../../../store/NewReducers/fundingSlice";
 import {data} from "./../../../components/AffiliateMarketing/UserDetails/UserDetails";
 import {DownOutlined, UpOutlined} from "@ant-design/icons";
+import {updateFlagReq} from "../../../store/NewReducers/listSlice";
 const {Title} = Typography;
 const {Option, OptGroup} = Select;
 const {RangePicker} = DatePicker;
@@ -58,12 +59,19 @@ function TraderOverview() {
   const [selectedChallenges, setSelectedChallenges] = useState([]);
   const [showChallenges, setShowChallenges] = useState(false);
 
+  const [flagUser, setFlagUser] = useState(null);
+  const [flagModal, setFlagModel] = useState(false);
+  const [flagUpdatedValue, setFlagUpdatedValue] = useState(null);
+  const [comment, setComment] = useState(null);
+
+  const {refetch} = useSelector((state) => state.list);
+
   useEffect(() => {
     dispatch(fetchFundingDetails(idToken));
   }, []);
   useEffect(() => {
     fetchTradersData(dates, pageNo, pageSize, searchText, status, phase, platform, Challenges);
-  }, [idToken, dates, pageNo, pageSize, searchText, status, phase, platform, refresh, Challenges]);
+  }, [idToken, dates, pageNo, pageSize, searchText, status, phase, platform, refresh, Challenges, refetch]);
 
   // useEffect(() => {
   //   if (fundingData) {
@@ -222,6 +230,42 @@ function TraderOverview() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedTrader, setSelectedTrader] = useState(null);
 
+  const handleModalCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  function reset() {
+    setFlagUser(null);
+    setFlagUpdatedValue(null);
+    setComment(null);
+  }
+
+  const openStatusUpdateModal = (updatedValue, record) => {
+    setFlagModel(true);
+    setFlagUser(record);
+    setFlagUpdatedValue(updatedValue);
+  };
+
+  const statusMenu = (key, record) => (
+    <Menu
+      className="menuCard"
+      onClick={(e) => openStatusUpdateModal(e.key, record)}
+    >
+      <Menu.Item key="Safe">Safe</Menu.Item>
+      <Menu.Item key="Warning">Warning</Menu.Item>
+      <Menu.Item key="Blacklisted">Blacklisted</Menu.Item>
+    </Menu>
+  );
+
+  function handleUpdateFlag() {
+    const formData = new FormData();
+    formData.append("status", flagUpdatedValue);
+    formData.append("notes", comment);
+    dispatch(updateFlagReq({idToken, body: formData, id: flagUser?.user_id?.id}));
+    setFlagModel(false);
+    reset();
+  }
+
   const columns = useMemo(
     () => [
       // {
@@ -240,6 +284,22 @@ function TraderOverview() {
       //     );
       //   },
       // },
+      {
+        title: "Flag",
+        dataIndex: "status",
+        width: "80px",
+        render: (text, record) => (
+          <div className="flagContainer">
+            <p className={`flag ${text === "Blacklisted" ? "Red" : text === "Warning" ? "Yellow" : "Green"}`}></p>
+            <Dropdown
+              overlay={() => statusMenu(text, record)}
+              trigger={["click"]}
+            >
+              <DownOutlined />
+            </Dropdown>
+          </div>
+        ),
+      },
       {
         title: "Country",
         dataIndex: "country",
@@ -314,7 +374,7 @@ function TraderOverview() {
         title: "Leverage",
         dataIndex: "leverage",
         key: "leverage",
-        width:100,
+        width: 100,
         render: (leverage) => <span>1:{leverage || "-"}</span>,
       },
       {
@@ -790,6 +850,25 @@ function TraderOverview() {
               placeholder="Write your reason here.."
             ></textarea>
           </div>
+        </Modal>
+        <Modal
+          title={"Flag User"}
+          open={flagModal}
+          className="reset"
+          onCancel={() => {
+            reset();
+            setFlagModel(false);
+          }}
+          onOk={handleUpdateFlag}
+        >
+          <Form.Item
+            label="Reason"
+            value={comment}
+            className="reset"
+            onChange={(e) => setComment(e.target.value)}
+          >
+            <Input.TextArea placeholder="Write your comment here.." />
+          </Form.Item>
         </Modal>
       </Card>
     </div>

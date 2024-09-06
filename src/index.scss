@@ -350,8 +350,8 @@ input:-webkit-autofill:active {
   border-radius: var(--Corner-Radius, 10px);
   border: 1px solid var(--Stroke, #252a29);
   background: var(--Main-Background, #f6fefe);
-  width: 100%;
-  // width: 400px;
+  // width: 100%;
+  width: 400px;
   max-width: 400px;
   max-height: 44px;
 
