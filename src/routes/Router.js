@@ -175,7 +175,7 @@ function Router() {
 
           <Route
             exact={true}
-            path="/account-analysis/:login_id/:platform"
+            path="/account-analysis/:login_id/:platform/:user_id"
             element={
               <PageLayout headerName="Account Analysis">
                 <AccountMetrics />

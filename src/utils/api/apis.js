@@ -114,7 +114,7 @@ const updateUserAddress = async (idToken, data) => {
   return output;
 };
 
-const updateUserDetailsRequest = async ({formData, idToken}) => {
+const updateUserDetailsRequest = async ({formData, idToken , id}) => {
   let config = {
     headers: {
       Authorization: `Bearer ${idToken}`,
@@ -122,7 +122,7 @@ const updateUserDetailsRequest = async ({formData, idToken}) => {
   };
   let output;
   await axios
-    .patch(`${baseUrl}user/profile/`, formData, config)
+    .patch(`${baseUrl}v2/admin/user-profile/${id}`, formData, config)
     .then((res) => {
       output = res.data;
       return output;
@@ -1192,6 +1192,20 @@ export const getTradeJournal = async (login_id, platform = "mt5", idToken) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching trade journal:", error);
+    throw error;
+  }
+};
+
+export const getTransactionHistory = async (idToken) => {
+  try {
+    const response = await axios.get(`${baseUrl}v2/transaction/history/`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching transaction history:", error);
     throw error;
   }
 };

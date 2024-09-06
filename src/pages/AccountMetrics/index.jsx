@@ -12,6 +12,8 @@ import Analysis from "./InnerPages/Analysis/Analysis";
 import { fetchAccountAnalysis, fetchAccountDetails, fetchAccountInsights, fetchObjectives, fetchPerformanceChart, fetchTradeJournal, fetchTradingAccountOverview } from "../../store/NewReducers/amSlice";
 import { useDispatch, useSelector } from "react-redux";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
+import ProfileDetails from "./InnerPages/ProfileDetails/ProfileDetails";
+import TransactionHistory from "./InnerPages/TransactionHistory/TransactionHistory";
 
 const AccountMetrics = () => {
   const [status, setStatus] = useState("");
@@ -20,7 +22,7 @@ const AccountMetrics = () => {
     setPageNo(1);
     setStatus(e.target.value);
   };
-  const { login_id ,  platform } = useParams();
+  const { login_id ,  platform , user_id } = useParams();
 
   console.log("platformmmmmmm : ",platform) 
   const idToken = useSelector((state) => state.auth.idToken);
@@ -79,8 +81,10 @@ const AccountMetrics = () => {
           >
             <Radio.Button value="">Account Overview</Radio.Button>
             <Radio.Button value="Insights">Insights</Radio.Button>
+            <Radio.Button value="Profile">Profile Details</Radio.Button>
             <Radio.Button value="Trader_Journal">Trade History</Radio.Button>
             <Radio.Button value="Analysis">Analysis</Radio.Button>
+            <Radio.Button value="Transaction">Transaction History</Radio.Button>
           </Radio.Group>
 
           {/* <Button
@@ -94,8 +98,11 @@ const AccountMetrics = () => {
 
         {status === "" && <AccountOverview statistics={accountAnalysis?.general_statistics} info={accountAnalysis?.Basic_info} accountInsights={accountInsights} overview={tradingAccountOverview} accountDetails={accountDetails} objectives={objectives} performanceChart={performanceChart} />}
         {status === "Insights" && <Insights login_id={login_id} platform={platform} />}
+        {status === "Profile" && <ProfileDetails id={user_id} /> }
         {status === "Trader_Journal" && <TraderJournal login_id={login_id} platform={platform} />}
         {status === "Analysis" && <Analysis login_id={login_id} platform={platform} />}
+        {status === "Transaction" && <TransactionHistory />}
+
       </div>
     </>
   );

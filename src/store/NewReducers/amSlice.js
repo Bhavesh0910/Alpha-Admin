@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { returnErrors } from '../reducers/error';
-import { getAccountDetails, getAccountInsights, getTradeJournal, getTradingAccountOverview, getObjectives, getPerformanceChart, getAccountAnalysis } from '../../utils/api/apis';
+import { getAccountDetails, getAccountInsights, getTradeJournal, getTradingAccountOverview, getObjectives, getPerformanceChart, getAccountAnalysis, getTransactionHistory, baseUrl } from '../../utils/api/apis';
+import axios from 'axios';
 
 // Thunk for fetching trading account overview
 export const fetchTradingAccountOverview = createAsyncThunk(
@@ -78,6 +79,21 @@ export const fetchTradeJournal = createAsyncThunk(
   }
 );
 
+export const fetchTransactionHistory = createAsyncThunk(
+  'amSlice/fetchTransactionHistory',
+  async ({ idToken }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await getTransactionHistory(idToken);
+      return response;
+    } catch (error) {
+      const msg = error.response?.data?.detail || 'Error fetching transaction history';
+      dispatch(returnErrors(msg, 400));
+      return rejectWithValue(msg);
+    }
+  }
+);
+
+
 // Thunk for fetching objectives
 export const fetchObjectives = createAsyncThunk(
   'amSlice/fetchObjectives',
@@ -108,6 +124,25 @@ export const fetchPerformanceChart = createAsyncThunk(
   }
 );
 
+export const getUserProfileData = createAsyncThunk(
+  'fetchUserProfileData',
+  async ({ idToken, id , dispatch }, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      };
+      const response = await axios(`${baseUrl}v2/admin/user-profile/${id}`, config);
+      return response.data;
+    } catch (error) {
+      dispatch(returnErrors(error.response?.data?.detail || 'Error while fetching User Data!', 400));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
 const amSlice = createSlice({
   name: 'amSlice',
   initialState: {
@@ -115,9 +150,11 @@ const amSlice = createSlice({
     accountDetails: null,
     accountInsights: null,
     tradeJournal: null,
+    transactionHistory: null,
     objectives: null,
     accountAnalysis: null, 
     performanceChart: null,
+    userProfileData: null,
     isLoading: false,
     error: null,
   },
@@ -173,6 +210,18 @@ const amSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       })
+      .addCase(fetchTransactionHistory.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchTransactionHistory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.transactionHistory = action.payload;
+      })
+      .addCase(fetchTransactionHistory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
       .addCase(fetchObjectives.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -206,6 +255,18 @@ const amSlice = createSlice({
         state.performanceChart = action.payload;
       })
       .addCase(fetchPerformanceChart.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(getUserProfileData.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getUserProfileData.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userProfileData = action.payload;
+      })
+      .addCase(getUserProfileData.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

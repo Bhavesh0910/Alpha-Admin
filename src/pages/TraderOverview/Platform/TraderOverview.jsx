@@ -271,7 +271,7 @@ function TraderOverview() {
           text ? (
             <div
               style={{cursor: "pointer"}}
-              onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}
+              onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record.user_id?.id}`)}
             >
               {text}
             </div>
@@ -288,7 +288,7 @@ function TraderOverview() {
           text ? (
             <div
               style={{cursor: "pointer"}}
-              onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}
+              onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record.user_id?.id}`)}
             >
               {text}
             </div>
