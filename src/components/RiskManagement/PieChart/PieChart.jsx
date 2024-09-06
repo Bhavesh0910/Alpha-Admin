@@ -136,7 +136,7 @@ const PieChart = ({data}) => {
           ))} */}
         </div>
         <div className="mobileLabels_container">
-          {accountOverviewData.series?.map((item, index) => (
+          {assessmentData?.map((item, index) => (
             <div key={index} className="label_with_value">
               <span className="label">{item?.label}:</span>
               <span className="value" title={item.tooltip}>{item?.value}</span>
