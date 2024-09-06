@@ -263,10 +263,10 @@ function TraderOverview() {
         },
       },
       {
-        title: "Account Number",
+        title: "Account No.",
         dataIndex: "login_id",
         key: "login_id",
-        width: "15%",
+        width: 100,
         render: (text, record) =>
           text ? (
             <div
@@ -283,7 +283,7 @@ function TraderOverview() {
         title: "Email",
         dataIndex: "email",
         key: "email",
-        width: "15%",
+        width: 100,
         render: (text, record) =>
           text ? (
             <div
@@ -317,20 +317,20 @@ function TraderOverview() {
         width: "15%",
         render: (leverage) => <span>1:{leverage || "-"}</span>,
       },
-      // {
-      //   title: "Start Date",
-      //   dataIndex: "start_date",
-      //   key: "start_date",
-      //   width: 150,
-      //   render: (startDate) => <span>{startDate ? formatDate(startDate) : "-"}</span>,
-      // },
-      // {
-      //   title: "End Date",
-      //   dataIndex: "expiry_date",
-      //   key: "expiry_date",
-      //   width: 150,
-      //   render: (expiryDate) => <span>{expiryDate ? formatDate(expiryDate) : "-"}</span>,
-      // },
+      {
+        title: "Start Date",
+        dataIndex: "start_date",
+        key: "start_date",
+        width: "15%",
+        render: (startDate) => <span>{startDate ? formatDate(startDate) : "-"}</span>,
+      },
+      {
+        title: "End Date",
+        dataIndex: "expiry_date",
+        key: "expiry_date",
+        width: "15%",
+        render: (expiryDate) => <span>{expiryDate ? formatDate(expiryDate) : "-"}</span>,
+      },
       {
         title: "Trader Type",
         dataIndex: "status",
@@ -483,6 +483,7 @@ function TraderOverview() {
             <Select
               // placeholder="Select Platform"
               defaultValue={options[0].value}
+              showSearch={false}
               className="header-select"
               onChange={handlePlatformChange}
               options={options}
@@ -632,10 +633,7 @@ function TraderOverview() {
                 alt="searchIcon"
               />
             </div>
-          </div>
-        </div>
-
-        <div className="trader_overview_row2_groupB">
+          </div>{" "}
           <div>
             <RangePicker
               // placeholder={['Start Date', 'End Date']}
@@ -643,7 +641,10 @@ function TraderOverview() {
               onChange={updateDateRange}
             />
           </div>
-          <div className="phase_filters">
+        </div>
+
+        <div className="trader_overview_row2_groupB">
+          <div>
             <Radio.Group
               value={phase}
               onChange={onChangePhase}
@@ -655,40 +656,6 @@ function TraderOverview() {
               <Radio.Button value="Evalution">Evalution</Radio.Button>
               <Radio.Button value="Free Trail">Free Trial</Radio.Button>
             </Radio.Group>
-          </div>
-          <div className="mobileFilter">
-            <Select placeholder="Select a filter">
-              <Option
-                key={"all"}
-                value={"all"}
-              >
-                All
-              </Option>
-              <Option
-                key={"Funded"}
-                value={"Funded"}
-              >
-                Funded
-              </Option>
-              <Option
-                key={"Verification"}
-                value={"Verification"}
-              >
-                Verification
-              </Option>
-              <Option
-                key={"Evalution"}
-                value={"Evalution"}
-              >
-                Evalution
-              </Option>
-              <Option
-                key={"Free Trail"}
-                value={"Free Trail"}
-              >
-                Free Trail
-              </Option>
-            </Select>
           </div>
         </div>
       </div>
@@ -805,14 +772,14 @@ const ExpandableRow = ({record}) => {
           <div>Name</div>
           <p>{record?.name || "-"}</p>
         </div>
-        <div>
+        {/* <div>
           <div>Start Date</div>
           <p>{record?.start_date ? dayjs(record?.start_date).format("YYYY-MM-DD") : "-"}</p>
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <div>End Date</div>
-          <p>{record?.expiry_date ? dayjs(record?.expiry_date).format("YYYY-MM-DD") : "-"}</p>
-        </div>
+          <p>{record?.expiry_date ? formatDate(record?.expiry_date)  : "-"}</p>
+        </div> */}
         <div>
           <div>Equity</div>
           <p>{record?.equity ? `$${record?.equity}` : "-"}</p>

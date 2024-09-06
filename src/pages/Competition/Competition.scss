@@ -283,7 +283,7 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: #75ebc3;
+      background-color: #04d9ff;
       border-radius: 50px;
       height: 10px;
     }
@@ -294,7 +294,7 @@
     }
 
     &::-webkit-scrollbar-thumb:hover {
-      background-color: #75ebc3;
+      background-color: #04d9ff;
     }
   }
   label {
@@ -321,7 +321,7 @@
     .ant-picker {
       max-width: 100% !important;
     }
-    .ant-select{
+    .ant-select {
       width: 100%;
     }
   }
