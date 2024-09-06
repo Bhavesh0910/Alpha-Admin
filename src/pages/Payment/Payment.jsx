@@ -15,8 +15,8 @@ import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 import {DownOutlined} from "@ant-design/icons";
-import { returnErrors } from "../../store/reducers/error";
-import { returnMessages } from "../../store/reducers/message";
+import {returnErrors} from "../../store/reducers/error";
+import {returnMessages} from "../../store/reducers/message";
 const {Option} = Select;
 const {RangePicker} = DatePicker;
 
@@ -60,29 +60,29 @@ const Payment = () => {
         render: (text) => {
           return (
             <div className="copy_text_btn">
-            {text ? (
-              <>
-                <a href={`mailto:${text}`}>{text}</a>
-                <Tooltip title="Copy Email">
-                  <Button
-                    icon={<CopyButton />}
-                    size="small"
-                    style={{ marginLeft: 8 }}
-                    onClick={() => {
-                      navigator.clipboard.writeText(text);
-                      notification.success({
-                        message: "Email copied to clipboard",
-                        placement: "topRight",
-                      });
-                    }}
-                    className="copy_btn"
-                  />
-                </Tooltip>
-              </>
-            ) : (
-              "-"
-            )}
-          </div>
+              {text ? (
+                <>
+                  <a href={`mailto:${text}`}>{text}</a>
+                  <Tooltip title="Copy Email">
+                    <Button
+                      icon={<CopyButton />}
+                      size="small"
+                      style={{marginLeft: 8}}
+                      onClick={() => {
+                        navigator.clipboard.writeText(text);
+                        notification.success({
+                          message: "Email copied to clipboard",
+                          placement: "topRight",
+                        });
+                      }}
+                      className="copy_btn"
+                    />
+                  </Tooltip>
+                </>
+              ) : (
+                "-"
+              )}
+            </div>
           );
         },
       },
@@ -252,7 +252,10 @@ const Payment = () => {
   );
 
   const statusMenu = (key, record) => (
-    <Menu className="menuCard" onClick={(e) => openStatusUpdateModal(e.key, record)}>
+    <Menu
+      className="menuCard"
+      onClick={(e) => openStatusUpdateModal(e.key, record)}
+    >
       <Menu.Item key="New">New</Menu.Item>
       <Menu.Item key="Approved">Approved</Menu.Item>
       <Menu.Item key="In Progress">In Progress</Menu.Item>
@@ -337,7 +340,7 @@ const Payment = () => {
   const handleCloseModal = () => {
     setModalVisible(true);
   };
-  const { exportLink } = useSelector((state) => state.payment);
+  const {exportLink} = useSelector((state) => state.payment);
 
   return (
     <div className="payment_container">
@@ -402,13 +405,15 @@ const Payment = () => {
                 Unpaid
               </Button>
             </div>
-            <RangePicker
-              // placeholder={dates}
-              //  defaultValue={defaultDates}
-              onChange={updateDateRange}
-              autoFocus
-              presets={rangePresets}
-            />
+            <div className="paymentDateRange">
+              <RangePicker
+                // placeholder={dates}
+                //  defaultValue={defaultDates}
+                onChange={updateDateRange}
+                autoFocus
+                presets={rangePresets}
+              />
+            </div>
           </div>
         </div>
         <div className="export_btn">
@@ -483,45 +488,39 @@ const Payment = () => {
 
 export default Payment;
 
-
-
-const CalendarModal = ({ idToken, exportLink , status, handleCloseModal, setModalVisible }) => {
+const CalendarModal = ({idToken, exportLink, status, handleCloseModal, setModalVisible}) => {
   const dispatch = useDispatch();
-  
+
   const [dates, setDates] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const rangePresets = [
-    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
-    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
-    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
-    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
-    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] },
+    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
+    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
+    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
+    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
+    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]},
   ];
 
   const onRangeChange = (dates) => {
     // setPageNo(1);
     if (dates) {
-      setDates(dates.map(date => date.format("DD/MMM/YYYY")));
-      console.log(dates)
+      setDates(dates.map((date) => date.format("DD/MMM/YYYY")));
+      console.log(dates);
     } else {
-      setDates([])
+      setDates([]);
     }
   };
-  
-
-  
-
 
   const handleExport = () => {
     if (dates && dates?.length === 2) {
       const [startDate, endDate] = dates;
       let query = `?start_date=${startDate}&end_date=${endDate}&status=${status === "all" ? "" : status === "paid" ? 1 : 0}`;
 
-      dispatch(paymentExportsReq({ idToken, query, dispatch }))
+      dispatch(paymentExportsReq({idToken, query, dispatch}))
         .unwrap()
         .then((response) => {
-          const { s3_file_url, filename } = response;
+          const {s3_file_url, filename} = response;
 
           const link = document.createElement("a");
           link.href = s3_file_url;
@@ -529,11 +528,10 @@ const CalendarModal = ({ idToken, exportLink , status, handleCloseModal, setModa
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
-          setModalVisible(false)
-          dispatch(returnMessages("Export Successful", 200));
-    
           setModalVisible(false);
+          dispatch(returnMessages("Export Successful", 200));
 
+          setModalVisible(false);
         })
         .catch((error) => {
           dispatch(returnErrors("Export failed", 400));
@@ -546,8 +544,6 @@ const CalendarModal = ({ idToken, exportLink , status, handleCloseModal, setModa
     }
   };
 
- 
-
   useEffect(() => {
     if (exportLink) {
       handleCloseModal();
@@ -555,8 +551,14 @@ const CalendarModal = ({ idToken, exportLink , status, handleCloseModal, setModa
   }, [exportLink]);
 
   return (
-    <div className="calendarModal_container" onClick={() => setModalVisible(false)}>
-      <div className="calendarModal_wrapper" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="calendarModal_container"
+      onClick={() => setModalVisible(false)}
+    >
+      <div
+        className="calendarModal_wrapper"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h4>Export</h4>
         <div className="calendar_wrapper">
           <RangePicker
@@ -566,9 +568,9 @@ const CalendarModal = ({ idToken, exportLink , status, handleCloseModal, setModa
         </div>
         <p>File will contain information for the dates you’ve selected.</p>
         <div className="calandarModal_export_btn">
-          <Button 
-            className="standard_button" 
-            onClick={handleExport} 
+          <Button
+            className="standard_button"
+            onClick={handleExport}
             loading={isLoading}
           >
             Export
@@ -578,8 +580,6 @@ const CalendarModal = ({ idToken, exportLink , status, handleCloseModal, setModa
     </div>
   );
 };
-
-
 
 export const ExpandableRow = ({record}) => {
   return (
