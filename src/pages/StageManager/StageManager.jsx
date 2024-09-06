@@ -579,7 +579,7 @@ const StageManager = () => {
             title: "Email",
             dataIndex: "email",
             key: "email",
-            width: 10,
+            width: 40,
             render: (text) => (
               <div className="column_one_wrapper">
                 {/* <div

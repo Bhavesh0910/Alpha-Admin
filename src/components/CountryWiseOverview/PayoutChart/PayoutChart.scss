@@ -3,7 +3,8 @@
   border-radius: var(--Corner-Radius, 10px);
   background: var(--white, #fff);
   display: grid;
-  grid-template-rows: 10% 90%;
+  grid-template-rows: 5% 95%;
+  
   .header_wrapper {
     h2 {
       color: var(--Text-white, #1e1e1e);
@@ -26,6 +27,10 @@
     // padding: 0 !important;
     // justify-content: center !important;
     // gap: 8px;
+
+    @media only screen and (max-width:650px){
+      display: none;
+    }
     .apexcharts-legend-series {
       display: flex;
       align-items: center;
@@ -36,7 +41,7 @@
         border-radius: 50% !important;
       }
       .apexcharts-legend-text {
-        color: var(--Paragraph-text-colour, #a6a6a6) !important;
+        color: var(--Paragraph-text-colour, #000) !important;
         font-family: "Nunito Sans" !important;
         font-size: 11px !important;
         font-style: normal !important;
@@ -45,16 +50,12 @@
       }
     }
   }
+  
 }
 
 #payoutChart {
   display: grid;
   grid-template-columns: 80% 20%;
-
-  @media (max-width: 700px) {
-    grid-template-columns: 100%;
-  }
-
   #custom_pie_chart {
     // min-height: 100% !important;
   }
@@ -62,7 +63,7 @@
     // height: 100% !important;
   }
   .apexcharts-svg {
-    // height: 100% !important;
+    min-height: 100%;
     foreignObject {
       // height: 100% !important;
       .apexcharts-legend {
@@ -70,15 +71,56 @@
       }
     }
   }
-  .m2 {
-    margin-bottom: 1px;
-  }
+  // .m2 {
+  //   margin-bottom: 1px;
+  // }
 
-  .mml {
-    margin-left: -3rem;
-  }
+  // .mml {
+  //   margin-left: -3rem;
+  // }
   .piechartamount {
     font-family: "Nunito Sans";
     font-size: 11px;
+    color : #000;
+    @media only screen and (max-width:650px){
+      display:none;
+    }
+  }
+  .mobileLabels_container {
+    @media only screen and (min-width: 650px) {
+      display: none !important;
+    }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    .circle {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      margin-right: 5px;
+      display: inline-block;
+    }
+    .label_with_value {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .value {
+        color: var(--Text-white, #000);
+        font-family: "Nunito Sans";
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+      }
+      .label {
+        color: var(--Paragraph-text-colour, #000) !important;
+        font-family: "Nunito Sans" !important;
+        font-size: 16px !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+        line-height: 24px !important;
+        text-wrap: nowrap !important;
+      }
+    }
   }
 }

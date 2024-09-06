@@ -85,6 +85,21 @@ const PaymentChart = ({chartData}) => {
             ))}
           </div>
         </div>
+        <div className="mobileLabels_container">
+          {chartData?.amounts?.map((item, index) => (
+            <div
+              key={index}
+              className="label_with_value"
+            >
+              <span
+                className="circle"
+                style={{backgroundColor: options.colors[index]}}
+              ></span>
+              <span className="label">{chartData?.labels?.[index]}:</span>
+              <span className="value">{formatCurrency(chartData?.amounts?.[index])}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
