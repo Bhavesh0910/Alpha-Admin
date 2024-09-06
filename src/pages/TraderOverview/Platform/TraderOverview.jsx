@@ -268,37 +268,32 @@ function TraderOverview() {
 
   const columns = useMemo(
     () => [
-      // {
-      //   title: "Name",
-      //   dataIndex: "name",
-      //   key: "name",
-      //   width: 150,
-      //   render: (value, record) => {
-      //     return (
-      //       <p
-      //         style={{cursor: "pointer"}}
-      //         onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}
-      //       >
-      //         {value || "-"}
-      //       </p>
-      //     );
-      //   },
-      // },
       {
         title: "Flag",
         dataIndex: "status",
         width: "80px",
-        render: (text, record) => (
-          <div className="flagContainer">
-            <p className={`flag ${text === "Blacklisted" ? "Red" : text === "Warning" ? "Yellow" : "Green"}`}></p>
-            <Dropdown
-              overlay={() => statusMenu(text, record)}
-              trigger={["click"]}
-            >
-              <DownOutlined />
-            </Dropdown>
-          </div>
-        ),
+        render: (text, record) => {
+          const getStatusColor = (status) => {
+            if (status === "Blacklisted") {
+              return "Red";
+            } else if (status === "Warning") {
+              return "Yellow";
+            } else {
+              return "Green";
+            }
+          };
+          return (
+            <div className="flagContainer">
+              <p className={`flag ${getStatusColor(record?.user_id?.status)}`}></p>
+              <Dropdown
+                overlay={() => statusMenu(text, record)}
+                trigger={["click"]}
+              >
+                <DownOutlined />
+              </Dropdown>
+            </div>
+          );
+        },
       },
       {
         title: "Country",
@@ -865,9 +860,12 @@ function TraderOverview() {
             label="Reason"
             value={comment}
             className="reset"
-            onChange={(e) => setComment(e.target.value)}
           >
-            <Input.TextArea placeholder="Write your comment here.." />
+            <Input.TextArea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Write your comment here.."
+            />
           </Form.Item>
         </Modal>
       </Card>
