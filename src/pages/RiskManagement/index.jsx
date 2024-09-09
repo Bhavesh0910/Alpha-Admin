@@ -19,11 +19,10 @@ function RiskManagement() {
   const dispatch = useDispatch();
   const { accountOverviewData, isLoadingFundingdata, isLoadingStage1, isLoadingStats, error } = useSelector((state) => state.risk);
   const idToken = useSelector((state) => state.auth.idToken);
-  const [defaultDates, setDefaultDates] = useState([ dayjs().subtract(1, "month"),dayjs()]);
-
+  const [defaultDates, setDefaultDates] = useState([dayjs().subtract(1, "month"), dayjs()]);
 
   const [isValidRange, setIsValidRange] = useState(true);
-
+  const [lastValidRange, setLastValidRange] = useState({ startDate: dayjs().subtract(1, "month"), endDate: dayjs() });
 
   const onRangeChange = (dates) => {
     if (dates && idToken) {
@@ -33,12 +32,27 @@ function RiskManagement() {
         setIsValidRange(false);
         notification.error({
           message: 'Invalid Date Range',
-          description: 'The selected date range contains dates in the future. Please select a valid range.',
+          description: `The selected date range (${startDate?.format("DD/MMM/YYYY")} - ${endDate?.format("DD/MMM/YYYY")}) contains dates in the future. Please select a valid range.`,
         });
+
+        if (lastValidRange.startDate && lastValidRange.endDate) {
+   
+
+          setDefaultDates([lastValidRange.startDate, lastValidRange.endDate]);
+
+          dispatch(fetchAccountOverviewStats({ idToken, startDate: lastValidRange.startDate.format("DD/MMM/YYYY"), endDate: lastValidRange.endDate.format("DD/MMM/YYYY") }));
+          dispatch(fetchFundingChart({ idToken, startDate: lastValidRange.startDate.format("DD/MMM/YYYY"), endDate: lastValidRange.endDate.format("DD/MMM/YYYY") }));
+          dispatch(fetchStageChart({ idToken, stage: 1, startDate: lastValidRange.startDate.format("DD/MMM/YYYY"), endDate: lastValidRange.endDate.format("DD/MMM/YYYY") }));
+          dispatch(fetchStageChart({ idToken, stage: 2, startDate: lastValidRange.startDate.format("DD/MMM/YYYY"), endDate: lastValidRange.endDate.format("DD/MMM/YYYY") }));
+        }
         return;
       }
 
       setIsValidRange(true);
+
+      setLastValidRange({ startDate, endDate });
+      setDefaultDates([startDate, endDate]);
+
       const formattedStartDate = startDate.format("DD/MMM/YYYY");
       const formattedEndDate = endDate.format("DD/MMM/YYYY");
 
@@ -47,7 +61,6 @@ function RiskManagement() {
       dispatch(fetchStageChart({ idToken, stage: 1, startDate: formattedStartDate, endDate: formattedEndDate }));
       dispatch(fetchStageChart({ idToken, stage: 2, startDate: formattedStartDate, endDate: formattedEndDate }));
     } else {
-
       setIsValidRange(true);
       dispatch(fetchAccountOverviewStats({ idToken, startDate: null }));
       dispatch(fetchFundingChart({ idToken, startDate: null }));
@@ -66,7 +79,6 @@ function RiskManagement() {
 
   useEffect(() => {
     if (idToken) {
-      const defaultDates = [dayjs().subtract(1, "month"), dayjs()];
       onRangeChange(defaultDates);
     }
   }, [dispatch, idToken]);
@@ -81,7 +93,7 @@ function RiskManagement() {
           Admin Overview
         </Title>
         <RangePicker
-          defaultValue={defaultDates}
+          value={defaultDates} // Use value prop to control the picker
           presets={rangePresets}
           onChange={onRangeChange}
         />
