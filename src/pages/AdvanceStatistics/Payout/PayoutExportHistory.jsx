@@ -114,7 +114,7 @@ const PayoutExportHistory = () => {
           columns={columns}
           data={exportHistoryData ? exportHistoryData.results : []}
           totalPages={Math.ceil(exportHistoryData?.count / pageSize)}
-          totalItems={exportHistoryData.count}
+          totalItems={exportHistoryData?.count}
           pageSize={pageSize}
           CurrentPageNo={pageNo}
           setPageSize={setPageSize}
