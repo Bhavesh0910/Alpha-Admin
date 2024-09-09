@@ -142,7 +142,7 @@ code {
     padding-right: 10px;
   }
   .ant-select-selection-placeholder {
-    color: #a6a6a6 !important;
+    color: #1e1e1e !important;
   }
   .ant-select-selection-item {
     color: var(--primary-font-family) !important;
@@ -172,7 +172,7 @@ code {
   }
 
   &::placeholder {
-    color: #a6a6a6 !important;
+    color: #1e1e1e !important;
   }
   
 }
@@ -398,7 +398,7 @@ input:-webkit-autofill:active {
     }
   }
   input {
-    color: var(--Paragraph-text-colour, #a6a6a6) !important;
+    color: var(--Paragraph-text-colour, #1e1e1e) !important;
     font-family: var(--primary-font-family) !important;
     font-size: 14px;
     font-style: normal;
@@ -410,6 +410,9 @@ input:-webkit-autofill:active {
     padding: 12px 20px;
     width: 100%;
     // max-width: 325px;
+    &::placeholder{
+      color: #1e1e1e !important;
+    }
     @media only screen and (max-width: 768px) {
       font-size: 14px !important;
       padding: 0px 10px !important;
@@ -470,7 +473,7 @@ input:-webkit-autofill:active {
       content: none;
     }
     span {
-      color: var(--Paragraph-text-colour, #a6a6a6);
+      color: var(--Paragraph-text-colour, #12181f);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -582,7 +585,7 @@ input:-webkit-autofill:active {
 
   .ant-picker-input {
     input {
-      color: var(--primary-text-color) !important;
+      color:#000 !important;
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -590,7 +593,7 @@ input:-webkit-autofill:active {
       line-height: normal;
 
       &::placeholder {
-        color: var(--Paragraph-text-colour, #a6a6a6);
+        color: var(--Paragraph-text-colour, #1e1e1e);
       }
     }
   }
@@ -601,14 +604,14 @@ input:-webkit-autofill:active {
 
   .ant-picker-range-separator {
     span {
-      color: #a6a6a6 !important;
+      color: #12181f !important;
     }
   }
   .ant-picker-suffix {
     cursor: pointer !important;
     span {
       svg {
-        fill: #a6a6a6;
+        fill: #12181f;
       }
     }
   }
@@ -946,3 +949,6 @@ html * {
   }
 }
 
+:where(.css-dev-only-do-not-override-m4timi).ant-select-dropdown .ant-select-item-group {
+  color:#1e1e1e;
+}

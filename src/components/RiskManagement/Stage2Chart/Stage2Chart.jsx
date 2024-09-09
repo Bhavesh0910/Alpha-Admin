@@ -135,8 +135,19 @@ const Stage2Chart = ({data}) => {
               key={index}
               className="label_with_value"
             >
-              <span className="label">{item?.label}:</span>
-              <span className="value" title={item.tooltip}>{item?.value}</span>
+              <div className="labels">
+                <span
+                  className="square"
+                  style={{backgroundColor: options.colors[index]}}
+                ></span>
+                <span className="label">{item?.label}:</span>
+              </div>
+              <span
+                className="value"
+                title={item?.tooltip}
+              >
+                {item?.value}
+              </span>
             </div>
           ))}
         </div>

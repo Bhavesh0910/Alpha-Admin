@@ -106,6 +106,7 @@ const PieChart = ({data}) => {
     }
     return item;
   });
+  console.log(accountOverviewData);
   return (
     <div className="pieChart_wrapper">
       <h2>Stage 01</h2>
@@ -129,7 +130,7 @@ const PieChart = ({data}) => {
               <span className="value">{item}</span>
             </div>
           ))}
-           {/* {roundedValues.map((item, index) => (
+          {/* {roundedValues.map((item, index) => (
             <div key={index} className="label_with_value">
               <span className="value" title={item.tooltip}>{item.value}</span>
             </div>
@@ -137,9 +138,23 @@ const PieChart = ({data}) => {
         </div>
         <div className="mobileLabels_container">
           {assessmentData?.map((item, index) => (
-            <div key={index} className="label_with_value">
-              <span className="label">{item?.label}:</span>
-              <span className="value" title={item.tooltip}>{item?.value}</span>
+            <div
+              key={index}
+              className="label_with_value"
+            >
+              <div className="labels">
+                <span
+                  className="square"
+                  style={{backgroundColor: options.colors[index]}}
+                ></span>
+                <span className="label">{item?.label}:</span>
+              </div>
+              <span
+                className="value"
+                title={item.tooltip}
+              >
+                {item?.value}
+              </span>
             </div>
           ))}
         </div>

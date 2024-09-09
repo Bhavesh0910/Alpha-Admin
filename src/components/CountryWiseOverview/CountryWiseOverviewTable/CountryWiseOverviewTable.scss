@@ -17,7 +17,7 @@
     flex-shrink: 0;
     .ant-picker-input {
       input {
-        color: var(--primary-text-color) !important;
+        color: 1e1e1e !important;
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -25,7 +25,7 @@
         line-height: normal;
 
         &::placeholder {
-          color: var(--Paragraph-text-colour, #a6a6a6);
+          color: var(--Paragraph-text-colour, #1e1e1e);
         }
       }
     }
@@ -36,14 +36,14 @@
 
     .ant-picker-range-separator {
       span {
-        color: #a6a6a6 !important;
+        color: #1e1e1e !important;
       }
     }
     .ant-picker-suffix {
       cursor: pointer !important;
       span {
         svg {
-          fill: #a6a6a6;
+          fill: #1e1e1e;
         }
       }
     }

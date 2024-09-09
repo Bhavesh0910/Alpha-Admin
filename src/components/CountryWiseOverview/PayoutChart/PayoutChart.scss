@@ -4,7 +4,7 @@
   background: var(--white, #fff);
   display: grid;
   grid-template-rows: 5% 95%;
-  
+
   .header_wrapper {
     h2 {
       color: var(--Text-white, #1e1e1e);
@@ -20,7 +20,7 @@
     position: absolute;
     overflow: visible;
     max-height: 150px !important;
-    overflow: auto;
+    // overflow: auto;
     // left: auto;
     // top: 0px !important;
     // right: 0px !important;
@@ -28,7 +28,7 @@
     // justify-content: center !important;
     // gap: 8px;
 
-    @media only screen and (max-width:650px){
+    @media only screen and (max-width: 650px) {
       display: none;
     }
     .apexcharts-legend-series {
@@ -50,12 +50,14 @@
       }
     }
   }
-  
 }
 
 #payoutChart {
   display: grid;
   grid-template-columns: 80% 20%;
+  @media only screen and (max-width: 650px) {
+    grid-template-columns: 100%;
+  }
   #custom_pie_chart {
     // min-height: 100% !important;
   }
@@ -79,16 +81,15 @@
     margin-top: 20px;
   }
 
-
   // .mml {
   //   margin-left: -3rem;
   // }
   .piechartamount {
     font-family: "Nunito Sans";
     font-size: 11px;
-    color : #000;
-    @media only screen and (max-width:650px){
-      display:none;
+    color: #000;
+    @media only screen and (max-width: 650px) {
+      display: none;
     }
   }
   .mobileLabels_container {
@@ -99,32 +100,47 @@
     flex-direction: column;
     justify-content: space-between;
     gap: 20px;
-    .circle {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      margin-right: 5px;
-      display: inline-block;
-    }
+    align-items: baseline;
+
     .label_with_value {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 20px;
+      width: 100%;
+      .labels {
+        display: flex;
+        align-items: center;
+        .circle {
+          width: 15px;
+          height: 15px;
+          border-radius: 50%;
+          margin-right: 5px;
+          display: inline-block;
+        }
+        .label {
+          color: var(--Paragraph-text-colour, #a6a6a6) !important;
+          font-family: "Nunito Sans" !important;
+          font-size: 13px !important;
+          font-style: normal !important;
+          font-weight: 400 !important;
+          line-height: 24px !important;
+          text-wrap: nowrap !important;
+          @media only screen and (min-width: 360px) {
+            font-size: 12px;
+          }
+        }
+      }
+
       .value {
         color: var(--Text-white, #000);
         font-family: "Nunito Sans";
-        font-size: 20px;
+        font-size: 16px;
         font-style: normal;
         font-weight: 700;
-      }
-      .label {
-        color: var(--Paragraph-text-colour, #000) !important;
-        font-family: "Nunito Sans" !important;
-        font-size: 16px !important;
-        font-style: normal !important;
-        font-weight: 400 !important;
-        line-height: 24px !important;
-        text-wrap: nowrap !important;
+        @media only screen and (min-width: 360px) {
+          font-size: 14px;
+        }
       }
     }
   }

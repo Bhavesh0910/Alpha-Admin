@@ -85,11 +85,12 @@ const PayoutChart = ({chartData}) => {
               key={index}
               className="label_with_value"
             >
+              <div className="labels">
               <span
                 className="circle"
                 style={{backgroundColor: options.colors[index]}}
               ></span>
-              <span className="label">{chartData?.labels?.[index]}:</span>
+              <span className="label">{chartData?.labels?.[index]}:</span></div>
               <span className="value">{formatCurrency(chartData?.amounts?.[index])}</span>
             </div>
           ))}

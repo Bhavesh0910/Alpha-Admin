@@ -321,7 +321,7 @@ function TraderOverview() {
         title: "Account No.",
         dataIndex: "login_id",
         key: "login_id",
-        width: 200,
+        width: 100,
         render: (text, record) =>
           text ? (
             <div
@@ -355,7 +355,7 @@ function TraderOverview() {
         title: "Balance",
         dataIndex: "balance",
         key: "balance",
-        width: 150,
+        width: 120,
         render: (startingBalance) => <span>{startingBalance ? "$" + parseFloat(startingBalance).toFixed(2).toLocaleString() : "-"}</span>,
       },
       // {
