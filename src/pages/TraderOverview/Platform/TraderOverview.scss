@@ -170,7 +170,7 @@
   }
   .trader_overview_header_row2 {
     display: flex;
-    gap: 20px;
+    gap: 10px;
     justify-content: space-between;
     @media only screen and (max-width: 1080px) {
       flex-direction: column;
@@ -178,7 +178,7 @@
 
     .trader_overview_row2_groupA {
       display: flex;
-      gap: 20px;
+      gap: 10px;
       width: 100%;
       max-width: fit-content;
       @media only screen and (max-width: 810px) {

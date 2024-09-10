@@ -4,11 +4,11 @@ import "./AccountRangeSlider.scss";
 import crossIcon from "../../../../assets/icons/cross_icon_white.svg";
 
 const AccountRangeSlider = ({ setIsRangeOpen, isRangeOpen, setAccRange, accRange }) => {
-  const [value, setValue] = useState(accRange || 30);
+  const [value, setValue] = useState(accRange || 100);
 
   console.log(accRange)
   useEffect(() => {
-    setValue(accRange || 30);
+    setValue(accRange || 100);
   }, [accRange]);
 
   const handleChange = (newValue) => {
@@ -39,7 +39,7 @@ const AccountRangeSlider = ({ setIsRangeOpen, isRangeOpen, setAccRange, accRange
       </div>
       <div className="country_info">
         <p>
-          Countries with <span>{value} accounts</span>
+          Countries with <span>{"<"}{value} accounts</span>
         </p>
       </div>
       <Slider
@@ -49,7 +49,7 @@ const AccountRangeSlider = ({ setIsRangeOpen, isRangeOpen, setAccRange, accRange
         onChange={handleChange}
         tooltip={{
           placement: "bottom",
-          formatter: (value) => `${value} accounts`,
+          formatter: (value) => `More than ${value} `,
         }}
       />
       <div className="action_btn_wrapper">
