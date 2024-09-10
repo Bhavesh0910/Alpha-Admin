@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import "./CountryWiseOverviewTable.scss";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import dayjs from "dayjs";
-import {Button, DatePicker, Select} from "antd";
+import {Button, DatePicker, notification, Select} from "antd";
 import AccountRangeSlider from "./AccountRangeSlider/AccountRangeSlider";
 import rangeIcon from "../../../assets/icons/range_icon_gray.svg";
 import {useDispatch, useSelector} from "react-redux";
@@ -15,6 +15,7 @@ const CountryWiseOverviewTable = () => {
   const {idToken} = useSelector((state) => state.auth);
   const {listData, count, filterListData} = useSelector((state) => state.countryWise);
   const [dates, setDates] = useState(null);
+  const [lastValidDates, setLastValidDates] = useState([dayjs().subtract(1, "month"), dayjs()]);
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [accRange, setAccRange] = useState(null);
@@ -23,18 +24,49 @@ const CountryWiseOverviewTable = () => {
   const [selectedCountries, setSelectedCountries] = useState([]);
 
   const [countriesLibrary, setCountriesLibrary] = useState({});
+  const [isValidRange, setIsValidRange] = useState(true);
+
+  const handleDateChange = (dates) => {
+    if (dates) {
+      setDates(dates);
+      fetchCountryWiseData();
+    } else {
+      setDates(null);
+      setLastValidDates([dayjs().subtract(1, "month"), dayjs()]);
+      fetchCountryWiseData();
+    }
+  };
 
   useEffect(() => {
-    // let query = `?page=${pageNo}&page_size=${pageSize}`;
-    let query = "";
+    if (idToken) {
+      fetchCountryWiseData();
+    }
+  }, [idToken, dates, accRange]);
+
+  const fetchCountryWiseData = () => {
     if (dates) {
-      query += `?start_date=${dates[0]}&end_date=${dates[1]}`;
+      const [startDate, endDate] = dates;
+      if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
+        setIsValidRange(false);
+        notification.error({
+          message: 'Invalid Date Range',
+          description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
+        });
+        setDates(lastValidDates);
+      } else {
+        setIsValidRange(true);
+        setLastValidDates([startDate, endDate]);
+
+        const formattedStartDate = startDate.format("DD/MMM/YYYY");
+        const formattedEndDate = endDate.format("DD/MMM/YYYY");
+
+        dispatch(countryWiseListReq({ idToken, query: `?start_date=${formattedStartDate}&end_date=${formattedEndDate}${accRange ? `&min_account_count=${accRange}` : ''}` }));
+      }
+    } else {
+      setIsValidRange(true);
+      dispatch(countryWiseListReq({ idToken }));
     }
-    if (accRange) {
-      query = dates ? query + `&min_account_count=${accRange}` : `?min_account_count=${accRange}`;
-    }
-    dispatch(countryWiseListReq({idToken, query, dispatch}));
-  }, [dates, idToken, accRange]);
+  };
 
   const columns = useMemo(() => [
     {
@@ -95,13 +127,6 @@ const CountryWiseOverviewTable = () => {
     },
   ]);
 
-  const handleDateChange = (dates, dateStrings) => {
-    if (dates) {
-      setDates(dates.map((item) => item.format("DD/MMM/YYYY")));
-    } else {
-      setDates(dates);
-    }
-  };
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
@@ -151,6 +176,11 @@ const CountryWiseOverviewTable = () => {
     setCountriesLibrary(data);
   }, [filterListData]);
 
+
+  useEffect(() => {
+    console.log("Component rendered or state updated");
+  }, [dates, idToken, accRange]);
+  
   function handleCountriesData(val = true) {
     const data = selectedCountries.map((item) => countriesLibrary[item]);
     if (val && selectedCountries && selectedCountries.length > 0) {
@@ -213,6 +243,7 @@ const CountryWiseOverviewTable = () => {
           )}
         </div>
         <RangePicker
+          value={dates}
           presets={rangePresets}
           onChange={handleDateChange}
         />
