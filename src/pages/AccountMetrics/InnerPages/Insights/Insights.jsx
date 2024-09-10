@@ -23,13 +23,8 @@ const Insights = ({ login_id, platform }) => {
     dispatch(fetchAccountInsights({ login_id, platform, idToken }));
   }, [dispatch, login_id, platform, idToken]);
 
-  if (isLoading) {
-    return <Spin size="large" className="spinner" />;
-  }
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+
 
 
 

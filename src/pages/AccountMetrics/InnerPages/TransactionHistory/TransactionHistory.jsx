@@ -128,13 +128,16 @@ const ExpandedRowRender = ({ record }) => {
                 <strong>Funding Evaluation:</strong> {record.Funding_evaluation || '-'}
             </p>
             <p>
-                <strong>Invoice:</strong> {record?.invoice} 
-            </p>
+            <strong>Invoice: </strong> 
+            {record?.invoice !== "N/A" ? 
+      <a href={record?.invoice} target="_blank" rel="noopener noreferrer">
+         View 
+      </a>   : '-' }         </p>
             <p>
                 <strong>Promo:</strong> {record.promo || '-'}
             </p>
             <p>
-                <strong>Meta Data:</strong> {parseMetaData(record.meta_data)}
+            {parseMetaData(record.meta_data)}
             </p>
         </div>
     );
@@ -147,7 +150,7 @@ const parseMetaData = (metaData) => {
             <div>
                 {Object.entries(parsedData).map(([key, value]) => (
                     <div key={key}>
-                        {key}: {String(value)}
+                        <strong>{key}</strong>: {String(value)}
                     </div>
                 ))}
             </div>

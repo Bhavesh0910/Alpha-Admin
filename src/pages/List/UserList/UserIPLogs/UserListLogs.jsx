@@ -69,7 +69,7 @@ const UserListLogs = () => {
           separator=">"
           items={[
             {
-              title: <a href="/user-ip-list/">User IP List</a>,
+              title: <a href="/list/user-list/">User List</a>,
             },
             {
               title: <a href="#">Log</a>,

@@ -189,10 +189,10 @@ const UserProfile = () => {
                 disabled={!isEditableProfile}
                 value={formData.selectedCountry}
               >
-                <Option value="usa">USA</Option>
+                {/* <Option value="usa">USA</Option>
                 <Option value="canada">Canada</Option>
                 <Option value="uk">UK</Option>
-                <Option value="australia">Australia</Option>
+                <Option value="australia">Australia</Option> */}
               </Select>
             </div>
             <div className="form_input_box">
@@ -259,10 +259,10 @@ const UserProfile = () => {
                 onChange={handleCategoryChange}
                 disabled={!isEditableAccount}
               >
-                <Option value="english">English</Option>
+                {/* <Option value="english">English</Option>
                 <Option value="spanish">Spanish</Option>
                 <Option value="french">French</Option>
-                <Option value="german">German</Option>
+                <Option value="german">German</Option> */}
               </Select>
             </div>
             <div className="form_input_box">
@@ -273,10 +273,10 @@ const UserProfile = () => {
                 onChange={handleCategoryChange}
                 disabled={!isEditableAccount}
               >
-                <Option value="gmt">GMT</Option>
+                {/* <Option value="gmt">GMT</Option>
                 <Option value="est">EST</Option>
                 <Option value="pst">PST</Option>
-                <Option value="cst">CST</Option>
+                <Option value="cst">CST</Option> */}
               </Select>
             </div>
           </div>
