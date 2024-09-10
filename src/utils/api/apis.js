@@ -114,15 +114,17 @@ const updateUserAddress = async (idToken, data) => {
   return output;
 };
 
-const updateUserDetailsRequest = async ({formData, idToken , id}) => {
+const updateUserDetailsRequest = async ({updatedData, idToken , id}) => {
   let config = {
     headers: {
       Authorization: `Bearer ${idToken}`,
     },
   };
   let output;
+
+  console.log(updatedData)
   await axios
-    .patch(`${baseUrl}v2/admin/user-profile/${id}`, formData, config)
+    .patch(`${baseUrl}v2/admin/user-profile/${id}`, updatedData, config)
     .then((res) => {
       output = res.data;
       return output;
@@ -431,6 +433,25 @@ const traderAffiliateRefList = async (idToken, id , status = 'success') => {
     throw error;
   }
 };
+
+
+export const getPushleadsChartData = async (idToken, id , code) => {
+  console.log(id , code)
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    
+    };
+    const response = await axios.get(`${baseUrl}pushlead/?session=${id}&affiliate_code=${code}`, config);
+    return response.data;
+  } catch (error) {
+    console.error("Error in getting trader ref list", error);
+    throw error;
+  }
+};
+
 
 export async function fetchAffiliateExport(idToken, affiliateId) {
   try {

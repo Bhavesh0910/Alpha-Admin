@@ -44,6 +44,10 @@ const CountryWiseOverviewTable = () => {
   }, [idToken, dates, accRange]);
 
   const fetchCountryWiseData = () => {
+
+    if(!dates && accRange){
+      dispatch(countryWiseListReq({ idToken , query:'' , dispatch }));
+    }
     if (dates) {
       const [startDate, endDate] = dates;
       if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
@@ -59,12 +63,12 @@ const CountryWiseOverviewTable = () => {
 
         const formattedStartDate = startDate.format("DD/MMM/YYYY");
         const formattedEndDate = endDate.format("DD/MMM/YYYY");
-
+       
         dispatch(countryWiseListReq({ idToken, query: `?start_date=${formattedStartDate}&end_date=${formattedEndDate}${accRange ? `&min_account_count=${accRange}` : ''}` }));
       }
     } else {
       setIsValidRange(true);
-      dispatch(countryWiseListReq({ idToken }));
+      dispatch(countryWiseListReq({ idToken , query:'' , dispatch }));
     }
   };
 

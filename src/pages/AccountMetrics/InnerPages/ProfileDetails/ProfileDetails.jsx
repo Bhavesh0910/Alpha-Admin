@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUserDetailsRequest } from "../../../../utils/api/apis";
 import LoaderOverlay from "../../../../ReusableComponents/LoaderOverlay";
 import { getUserProfileData } from "../../../../store/NewReducers/amSlice";
+import { returnMessages } from "../../../../store/reducers/message";
+import { returnErrors } from "../../../../store/reducers/error";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -80,26 +82,42 @@ const ProfileDetails = ({id}) => {
   };
 
 
-  console.log(id , data)
+
   const handleSave = async () => {
-
-
+  
     setIsLoading(true);
+  
     try {
       const updatedData = {
-        ...formData,
-        contact: `${countryCode} ${phoneNumber}`,
+        profile: {
+          full_name: `${formData.first_name} ${formData.last_name}`, 
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          Contact_number: `${countryCode} ${phoneNumber}`, 
+          Country: formData.selectedCountry,
+          City: formData.city,
+          photo: null
+        },
+        settings: {
+          Language: formData.language,
+          Time_Zone: formData.time_zone
+        }
       };
-      await updateUserDetailsRequest({ idToken, updatedData , id });
+
+      console.log(updatedData)
+  
+      await updateUserDetailsRequest({ idToken, updatedData, id: id });
+  
+      dispatch(returnMessages("User details updated successfully"));
       console.log("User details updated:", updatedData);
     } catch (error) {
       console.error("Error updating user details:", error);
+      dispatch(returnErrors("Error updating user details"));
     } finally {
       setIsLoading(false);
       setIsEditableProfile(false);
     }
   };
-
 
   return (
     <div className="ProfileDetails_container">

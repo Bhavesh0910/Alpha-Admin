@@ -22,73 +22,45 @@ const FundedLogs = () => {
     dispatch(logsListReq({ idToken, url, key: "fundedLogData", dispatch }));
   }, [pageNo, pageSize, idToken, dispatch]);
 
-  const columns = useMemo(()=>[
+  const columns = useMemo(() => [
     {
       title: "Admin Email ID",
       dataIndex: "admin_email",
       key: "admin_email",
-      width:100,
+      width: 150,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Date and Time",
       dataIndex: "date_time",
       key: "date_time",
-      width:100,
+      width: 150,
+      render: (text) => (text ? new Date(text).toLocaleString() : "-"),
+    },
+    {
+      title: "User ID",
+      dataIndex: "user_id",
+      key: "user_id",
+      width: 100,
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Account No.",
-      dataIndex: "account_no",
-      key: "account_no",
-      width:100,
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Password",
-      dataIndex: "password",
-      key: "password",
-      width:100,
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-      width:100,
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Raw Spread",
-      dataIndex: "raw_spread",
-      key: "raw_spread",
-      width:100,
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Funding Evaluation",
-      dataIndex: "funding_evaluation",
-      key: "funding_evaluation",
-      width:100,
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Account Balance",
-      dataIndex: "account_balance",
-      key: "account_balance",
-      width:100,
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Stage",
-      dataIndex: "stage",
-      key: "stage",
-      width:100,
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      width: 120,
       render: (text) => (
-        <div className="stage_status_wrapper">
-          <p className={text === "funded" ? "funded" : ""}>{text}</p>
+        <div className="status_wrapper">
+          <p className={text.toLowerCase().replace(/\s+/g, '-')}>{text}</p>
         </div>
       ),
+    },
+    {
+      title: "Comment",
+      dataIndex: "comment",
+      key: "comment",
+      width: 200,
+      render: (text) => (text ? text : "-"),
     },
   ]);
 

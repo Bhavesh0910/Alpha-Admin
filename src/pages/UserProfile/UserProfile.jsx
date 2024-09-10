@@ -1,16 +1,18 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./UserProfile.scss";
-import {Breadcrumb, Typography, Button, Input, Select, Space, Spin} from "antd";
-import {useDispatch, useSelector} from "react-redux";
-import {getUserDetailsReq, updateUserDetailsRequest} from "../../utils/api/apis";
-import {setUser} from "../../store/reducers/userSlice";
+import { Breadcrumb, Typography, Button, Input, Select, Space, Spin } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserDetailsRequest } from "../../utils/api/apis";
+import { setUser } from "../../store/reducers/userSlice";
 import profileImg from "../../assets/images/user.png";
 import editBtn from "../../assets/icons/editBtnIcon.svg";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import {getUserProfileData, requestPasswordReset} from "../../store/NewReducers/userProfileSlice";
+import { getUserProfileData, requestPasswordReset } from "../../store/NewReducers/userProfileSlice";
+import { returnMessages } from "../../store/reducers/message";
+import { returnErrors } from "../../store/reducers/error";
 
-const {Title} = Typography;
-const {Option} = Select;
+const { Title } = Typography;
+const { Option } = Select;
 
 const UserProfile = () => {
   const [isEditableProfile, setIsEditableProfile] = useState(false);
@@ -21,13 +23,6 @@ const UserProfile = () => {
   const [countryCode, setCountryCode] = useState("+91");
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  const {idToken} = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-
-  const {data, isLoading: accountsLoading} = useSelector((state) => state.userProfile);
-
-  console.log(data, "userDetailssssss");
-
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -35,24 +30,36 @@ const UserProfile = () => {
     email: "",
     selectedCountry: "",
     city: "",
+    username: "",
+    language: "",
+    time_zone: "",
   });
 
+  const { idToken } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const { data, isLoading: accountsLoading } = useSelector((state) => state.userProfile);
+
   useEffect(() => {
-    dispatch(getUserProfileData({idToken, dispatch}));
+    dispatch(getUserProfileData({ idToken, dispatch }));
   }, [dispatch, idToken]);
 
   useEffect(() => {
-    setFormData({
-      first_name: data?.data?.first_name || "",
-      last_name: data?.data?.last_name || "",
-      // contact: data?.data?.Contact_number || "+91 ",
-      email: data?.data?.email || "",
-      selectedCountry: data?.data?.Country || "",
-      city: data?.data?.City || "",
-    });
+    if (data?.data) {
+      setFormData({
+        first_name: data.data.first_name || "",
+        last_name: data.data.last_name || "",
+        email: data.data.email || "",
+        selectedCountry: data.data.Country || "",
+        city: data.data.City || "",
+        username: data.data.username || "",
+        language: data.data.language || "",
+        time_zone: data.data.time_zone || "",
+      });
 
-    setCountryCode(data?.data?.Contact_number?.split(" ")[1] || "+91");
-    setPhoneNumber(data?.data?.Contact_number?.split(" ")[0] || "");
+      setCountryCode(data.data.Contact_number?.split(" ")[1] || "+91");
+      setPhoneNumber(data.data.Contact_number?.split(" ")[0] || "");
+    }
   }, [data]);
 
   const handleCategoryChange = (value) => {
@@ -67,32 +74,50 @@ const UserProfile = () => {
     setIsEditableAccount(!isEditableAccount);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    const userId = data?.data?.User_id?.id;
 
-    const id = data && data?.data?.User_id?.id
     setIsLoading(true);
-    updateUserDetailsRequest({idToken, formData , id})
-      .then(() => {
-        console.log("User details updated:", formData);
-      })
-      .catch((error) => {
-        console.error("Error updating user details:", error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+
+    try {
+      const updatedData = {
+        profile: {
+          full_name: `${formData.first_name} ${formData.last_name}`,
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          Contact_number: `${countryCode} ${phoneNumber}`,
+          Country: formData.selectedCountry,
+          City: formData.city,
+          photo: null,
+        },
+        settings: {
+          Language: formData.language || null,
+          Time_Zone: formData.time_zone || null,
+        },
+      };
+
+      console.log(updatedData , formData)
+      await updateUserDetailsRequest({ idToken, updatedData, id: userId });
+
+      dispatch(returnMessages("User details updated successfully"));
+    } catch (error) {
+      console.error("Error updating user details:", error);
+      dispatch(returnErrors("Error updating user details"));
+    } finally {
+      setIsLoading(false);
+      setIsEditableProfile(false);
+      setIsEditableAccount(false); // Ensure this is also saved
+    }
   };
 
   const handlePasswordReset = () => {
-    console.log(data.data.email)
     if (data?.data?.email) {
       dispatch(requestPasswordReset({ idToken, email: data.data.email }));
     } else {
       console.error("Email is not available for password reset.");
     }
-
-
   };
+
   return (
     <div className="userProfile_container">
       <div className="header_wrapper">
@@ -100,22 +125,13 @@ const UserProfile = () => {
       </div>
       <div className="userProfile_wrapper">
         {isLoading && <LoaderOverlay />}
-        <form
-          className="userProfileForm user_profile"
-          action=""
-        >
+        <form className="userProfileForm user_profile">
           <div className="account_settings_header">
             <div className="profile_details_wrapper">
               <div className="profile_edit_btn">
-                <img
-                  src={profileImg}
-                  alt="userProfilePic"
-                />
+                <img src={profileImg} alt="userProfilePic" />
                 <button>
-                  <img
-                    src={editBtn}
-                    alt="editButton"
-                  />
+                  <img src={editBtn} alt="editButton" />
                 </button>
               </div>
               <div>
@@ -123,10 +139,7 @@ const UserProfile = () => {
                 <p>{data?.data?.email}</p>
               </div>
             </div>
-            <Button
-              className="edit_btn"
-              onClick={toggleEditableProfile}
-            >
+            <Button className="edit_btn" onClick={toggleEditableProfile}>
               {isEditableProfile ? "Save" : "Edit"}
             </Button>
           </div>
@@ -138,7 +151,7 @@ const UserProfile = () => {
                 placeholder="Enter First Name"
                 disabled={!isEditableProfile}
                 value={formData.first_name}
-                onChange={(e) => setFormData({...formData, first_name: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
               />
             </div>
             <div className="form_input_box">
@@ -148,21 +161,21 @@ const UserProfile = () => {
                 placeholder="Enter Last Name"
                 disabled={!isEditableProfile}
                 value={formData.last_name}
-                onChange={(e) => setFormData({...formData, last_name: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
               />
             </div>
             <div className="form_input_box">
               <label htmlFor="contact_number">Contact Number</label>
               <Space.Compact>
                 <Input
-                  style={{width: "30%"}}
+                  style={{ width: "30%" }}
                   placeholder="Country Code"
                   disabled={!isEditableProfile}
                   value={countryCode}
                   onChange={(e) => setCountryCode(e.target.value)}
                 />
                 <Input
-                  style={{width: "70%"}}
+                  style={{ width: "70%" }}
                   placeholder="Phone Number"
                   disabled={!isEditableProfile}
                   value={phoneNumber}
@@ -177,22 +190,19 @@ const UserProfile = () => {
                 placeholder="Enter Email"
                 disabled={!isEditableProfile}
                 value={formData.email}
-                onChange={(e) => setFormData({...formData, email: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
             </div>
             <div className="form_input_box">
               <label htmlFor="country">Country</label>
               <Select
                 className="country_dropdown"
-                defaultValue="Select Country"
-                onChange={handleCategoryChange}
+                placeholder="Select Country"
+                onChange={(value) => setFormData({ ...formData, selectedCountry: value })}
                 disabled={!isEditableProfile}
                 value={formData.selectedCountry}
               >
-                {/* <Option value="usa">USA</Option>
-                <Option value="canada">Canada</Option>
-                <Option value="uk">UK</Option>
-                <Option value="australia">Australia</Option> */}
+                {/* Add your country options here */}
               </Select>
             </div>
             <div className="form_input_box">
@@ -202,20 +212,17 @@ const UserProfile = () => {
                 placeholder="Enter City"
                 disabled={!isEditableProfile}
                 value={formData.city}
-                onChange={(e) => setFormData({...formData, city: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
               />
             </div>
           </div>
           <div className="reset_password_wrapper">
-            <Title
-              className="title"
-              level={3}
-            >
+            <Title className="title" level={3}>
               Reset Password
             </Title>
             <Button
-            onClick={handlePasswordReset}
-              style={{maxWidth: "234px"}}
+              onClick={handlePasswordReset}
+              style={{ maxWidth: "234px" }}
               className="standard_button"
             >
               Send Link For Reset Password
@@ -223,22 +230,13 @@ const UserProfile = () => {
           </div>
         </form>
 
-        <form
-          className="userProfileForm account_settings"
-          action=""
-        >
+        <form className="userProfileForm account_settings">
           <div className="account_settings_header">
-            <Title
-              className="title"
-              level={3}
-            >
+            <Title className="title" level={3}>
               Account Settings
             </Title>
 
-            <Button
-              className="edit_btn"
-              onClick={toggleEditableAccount}
-            >
+            <Button className="edit_btn" onClick={toggleEditableAccount}>
               {isEditableAccount ? "Save" : "Edit"}
             </Button>
           </div>
@@ -249,15 +247,18 @@ const UserProfile = () => {
                 id="username"
                 placeholder="Enter Username"
                 disabled={!isEditableAccount}
+                value={formData.username}
+                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
               />
             </div>
             <div className="form_input_box">
               <label htmlFor="language">Language</label>
               <Select
                 className="language_dropdown"
-                defaultValue="Select Language"
-                onChange={handleCategoryChange}
+                placeholder="Select Language"
+                onChange={(value) => setFormData({ ...formData, language: value })}
                 disabled={!isEditableAccount}
+                value={formData.language}
               >
                 {/* <Option value="english">English</Option>
                 <Option value="spanish">Spanish</Option>
@@ -269,9 +270,10 @@ const UserProfile = () => {
               <label htmlFor="timezone">Timezone</label>
               <Select
                 className="timezone_dropdown"
-                defaultValue="Select Timezone"
-                onChange={handleCategoryChange}
+                placeholder="Select Timezone"
+                onChange={(value) => setFormData({ ...formData, time_zone: value })}
                 disabled={!isEditableAccount}
+                value={formData.time_zone}
               >
                 {/* <Option value="gmt">GMT</Option>
                 <Option value="est">EST</Option>
@@ -283,7 +285,7 @@ const UserProfile = () => {
           <div className="btn_wrapper">
             <Button
               onClick={handleSave}
-              style={{maxWidth: "131px"}}
+              style={{ maxWidth: "131px" }}
               className="standard_button"
             >
               Save Changes
