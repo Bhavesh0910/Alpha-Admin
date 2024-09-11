@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import { dollarUS } from "../../../utils/helpers/string";
+import dayjs from 'dayjs'; 
+import { Empty } from "antd";
 
 const DrawdownChart = ({ drawdownData }) => {
   const [series, setSeries] = useState([]);
@@ -22,7 +24,7 @@ const DrawdownChart = ({ drawdownData }) => {
         stops: [0, 90, 100],
       },
     },
-    colors: ["#FF5733"], // Set color for the drawdown chart
+    colors: ["#00FFBB"], 
     chart: {
       fontFamily: "Outfit, sans-serif",
       toolbar: {
@@ -46,8 +48,8 @@ const DrawdownChart = ({ drawdownData }) => {
       strokeDashArray: 8,
     },
     xaxis: {
-      categories: [], // Will be set dynamically
-      tickAmount: 6, // Limit number of ticks to 15
+      categories: [], 
+      tickAmount: 6, 
       tooltip: {
         enabled: false,
       },
@@ -58,12 +60,16 @@ const DrawdownChart = ({ drawdownData }) => {
         show: false,
       },
       labels: {
-        formatter: (value) => value,
+        formatter: (value) => dayjs(value).format("DD MMM YY, HH:mm"), 
         style: {
           colors: "#8B8E93",
           fontSize: "12px",
         },
+        rotate: -20, 
       },
+      min: undefined,
+      max: undefined,
+      tickPlacement: 'between', 
     },
     yaxis: {
       axisTicks: {
@@ -73,14 +79,15 @@ const DrawdownChart = ({ drawdownData }) => {
         show: false,
       },
       labels: {
-        formatter: (value) => dollarUS(value),
+        formatter: (value) => dollarUS(value?.toFixed(2)),
         style: {
           colors: "#8B8E93",
           fontSize: "12px",
         },
       },
-      min: undefined, 
-      max: undefined, 
+      min: undefined, // Will be set dynamically
+      max: undefined, // Will be set dynamically
+      tickAmount: undefined, // Will be set dynamically
     },
     tooltip: {
       style: {
@@ -93,10 +100,41 @@ const DrawdownChart = ({ drawdownData }) => {
   useEffect(() => {
     if (drawdownData) {
       const drawdowns = drawdownData?.draw_down || [];
-      const dates = (drawdownData?.date || []).map(date_str => date_str.split('T')[0]); 
+      const dates = (drawdownData?.date || []).map(date_str => 
+        dayjs(date_str).format("DD MMM YY, HH:mm") 
+      );
+
+      if (drawdowns.length === 0) {
+        setSeries([]);
+        setOptions(prevOptions => ({
+          ...prevOptions,
+          xaxis: {
+            ...prevOptions.xaxis,
+            categories: [],
+          },
+          yaxis: {
+            ...prevOptions.yaxis,
+            min: 0,
+            max: 100, // Placeholder values if no data
+            tickAmount: 5,
+          },
+        }));
+        return;
+      }
 
       const minDrawdown = Math.min(...drawdowns);
       const maxDrawdown = Math.max(...drawdowns);
+
+      const range = maxDrawdown - minDrawdown;
+      const interval = Math.ceil(range / 10); // Calculate interval dynamically
+
+      const yAxisMin = Math.min(0, minDrawdown - interval); 
+      const yAxisMax = Math.max(0, maxDrawdown + interval);
+
+      const numTicks = Math.min(6, Math.ceil((yAxisMax - yAxisMin) / interval)); 
+
+      const numberOfLabelsToShow = Math.max(2, Math.min(6, drawdowns.length));
+      const step = Math.floor(dates.length / numberOfLabelsToShow);
 
       setSeries([
         {
@@ -110,25 +148,42 @@ const DrawdownChart = ({ drawdownData }) => {
         ...prevOptions,
         xaxis: {
           ...prevOptions.xaxis,
-          categories: dates,
-          tickAmount: 6,
+          categories: dates.filter((_, index) => index % step === 0), 
+          tickAmount: numberOfLabelsToShow,
+          labels: {
+            ...prevOptions.xaxis.labels,
+            rotate: -20, 
+          },
+          min: dates[0], 
+          max: dates[dates.length - 1], 
         },
         yaxis: {
           ...prevOptions.yaxis,
-          min: minDrawdown - 100, 
-          max: maxDrawdown + 100,
-        }
+          min: yAxisMin, 
+          max: yAxisMax, 
+          tickAmount: numTicks, 
+        },
       }));
     }
   }, [drawdownData]);
 
+  const isNoData = !drawdownData || !drawdownData.draw_down || drawdownData.draw_down.length === 0;
+
   return (
-    <div id="chart">
+    <div id="chart" style={{ position: 'relative' }}>
+      {isNoData ? 
+        <div className="no-data-message">
+   <Empty description="No Data Available" />
+  
+        </div>
+      
+         :
       <ReactApexChart
         options={options}
         series={series}
         height={"100%"}
       />
+      }
     </div>
   );
 };

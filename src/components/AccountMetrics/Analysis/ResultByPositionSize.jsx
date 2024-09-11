@@ -1,16 +1,12 @@
 import React from 'react';
 import BarChart from './Charts/BarChart';
-import { useDispatch } from 'react-redux';
-import { returnErrors } from '../../../store/reducers/error';
 
 function ResultByPositionSize({ data }) {
-  const dispatch = useDispatch();
-
   const isEmpty = !data || Object.keys(data).length === 0;
 
-  const categories = isEmpty ? ['No data available'] : Object.keys(data);
-  const numberOfTrades = isEmpty ? [0] : Object.values(data).map(item => item?.number_of_trade || 0);
-  const results = isEmpty ? [0] : Object.values(data).map(item => item?.results || 0);
+  const categories = isEmpty ? [] : Object.keys(data);
+  const numberOfTrades = isEmpty ? [] : Object.values(data).map(item => item?.number_of_trade || 0);
+  const results = isEmpty ? [] : Object.values(data).map(item => item?.results || 0);
 
   const seriesData = [
     {

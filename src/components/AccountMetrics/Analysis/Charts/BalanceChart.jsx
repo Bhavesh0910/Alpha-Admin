@@ -1,13 +1,15 @@
 import React from "react";
 import Chart from "react-apexcharts";
+import { Empty } from "antd"; 
 
 const BalanceChart = ({ data }) => {
-  // Ensure data is an array
+
   const chartData = Array.isArray(data) ? data : [];
+  const hasData = chartData.length > 0;
 
   const options = {
     chart: {
-      type: "line",
+      type: "area",
       height: 350,
       toolbar: {
         show: false,
@@ -26,13 +28,13 @@ const BalanceChart = ({ data }) => {
         shadeIntensity: 0.25,
         gradientToColors: ["#04D9FF"],
         inverseColors: true,
-        opacityFrom: 0.7,
-        opacityTo: 0.3,
+        opacityFrom: 0.8,
+        opacityTo: 0.4,  
         stops: [0, 70, 100],
       },
     },
     xaxis: {
-      categories: chartData.map((_, index) => index + 1),
+      categories: hasData ? chartData.map((_, index) => index + 1) : [],
       labels: {
         style: {
           colors: "#000",
@@ -40,12 +42,11 @@ const BalanceChart = ({ data }) => {
         rotate: -45,
         trim: true,
       },
-      tickAmount: 10, // Show a maximum of 10 ticks
+      tickAmount: 10, 
     },
-    
     yaxis: {
-      min: Math.min(...chartData, 0) - 50, // Set min to the lowest value minus some buffer
-      max: Math.max(...chartData, 0) + 50, // Set max to the highest value plus some buffer
+      min: hasData ? Math.min(...chartData, 0) - 50 : 0, 
+      max: hasData ? Math.max(...chartData, 0) + 50 : 100, 
       labels: {
         style: {
           colors: "#000",
@@ -58,24 +59,33 @@ const BalanceChart = ({ data }) => {
     legend: {
       show: false,
     },
-    
+    grid: {
+      borderColor: '#e7e7e7',
+      strokeDashArray: 4,
+    },
   };
 
-  const series = [
+  const series = hasData ? [
     {
       name: "Balance",
       data: chartData,
     },
-  ];
+  ] : [];
 
   return (
-    <div className="chart">
-      <Chart
-        options={options}
-        series={series}
-        type="line"
-        height={"100%"}
-      />
+    <div className="chart" style={{ position: 'relative', height: '100%' }}>
+      {hasData ? (
+        <Chart
+          options={options}
+          series={series}
+          type="area"
+          height={"100%"}
+        />
+      ) : (
+        <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Empty description="No Data Available" />
+        </div>
+      )}
     </div>
   );
 };

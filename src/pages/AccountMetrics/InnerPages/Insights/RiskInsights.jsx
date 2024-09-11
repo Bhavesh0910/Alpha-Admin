@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactApexCharts from 'react-apexcharts';
+import { Empty } from 'antd'; // Import Empty component
 import './RiskInsights.scss';
 
 const RiskInsights = ({ data }) => {
@@ -41,6 +42,8 @@ const RiskInsights = ({ data }) => {
         }))
     } : { trades: [], lots: [] };
 
+  const isDataEmpty = (data) => !data || data.length === 0;
+
   const chartOptions = {
     chart: {
       type: 'line',
@@ -51,18 +54,20 @@ const RiskInsights = ({ data }) => {
     xaxis: {
       type: 'datetime',
       labels: {
-        datetimeUTC: false
+        datetimeUTC: false,
+        format: 'dd MMM HH:mm' // Format for the x-axis labels
       }
     },
     stroke: {
-      curve: 'smooth'
+      curve: 'smooth',
+      width: 2,
     },
     dataLabels: {
       enabled: false
     },
     tooltip: {
       x: {
-        format: 'dd/MM/yy'
+        format: 'dd MMM HH:mm' // Format for the tooltip
       }
     },
     yaxis: {
@@ -81,12 +86,16 @@ const RiskInsights = ({ data }) => {
       <div className="chart_wrapper">
         <h2 className="chart_title">Risk Per Trade</h2>
         <div className="chart">
-          <ReactApexCharts
-            options={chartOptions}
-            series={[{ name: 'Risk Percent', data: riskPerTradeData }]}
-            type="line"
-            height={350}
-          />
+          {isDataEmpty(riskPerTradeData) ? (
+            <Empty description="No Data Available" />
+          ) : (
+            <ReactApexCharts
+              options={chartOptions}
+              series={[{ name: 'Risk Percent', data: riskPerTradeData }]}
+              type="line"
+              height={350}
+            />
+          )}
         </div>
       </div>
 
@@ -94,27 +103,26 @@ const RiskInsights = ({ data }) => {
       <div className="chart_wrapper">
         <h2 className="chart_title">Concurrent Trades and Lots</h2>
         <div className="chart">
-          <ReactApexCharts
-            options={{
-              ...chartOptions,
-              yaxis: {
-                title: {
-                  text: 'Value'
+          {isDataEmpty(concurrentTradesLotsData) ? (
+            <Empty description="No Data Available" />
+          ) : (
+            <ReactApexCharts
+              options={{
+                ...chartOptions,
+                yaxis: {
+                  title: {
+                    text: 'Value'
+                  }
                 }
-              }
-            }}
-            series={[
-              { name: 'Trades', data: concurrent_trades_lots?.date && concurrent_trades_lots?.trade
-                ? concurrent_trades_lots.date.map((date, index) => ({
-                    x: date, 
-                    y: concurrent_trades_lots.trade[index]
-                  })) 
-                : [] },
-              { name: 'Lots', data: concurrentTradesLotsData }
-            ]}
-            type="line"
-            height={350}
-          />
+              }}
+              series={[
+                { name: 'Trades', data: concurrentTradesLotsData },
+                { name: 'Lots', data: concurrentTradesLotsData }
+              ]}
+              type="line"
+              height={350}
+            />
+          )}
         </div>
       </div>
 
@@ -122,12 +130,16 @@ const RiskInsights = ({ data }) => {
       <div className="chart_wrapper">
         <h2 className="chart_title">Lots Per Trade</h2>
         <div className="chart">
-          <ReactApexCharts
-            options={chartOptions}
-            series={[{ name: 'Lots', data: lotsPerTradeData }]}
-            type="line"
-            height={350}
-          />
+          {isDataEmpty(lotsPerTradeData) ? (
+            <Empty description="No Data Available" />
+          ) : (
+            <ReactApexCharts
+              options={chartOptions}
+              series={[{ name: 'Lots', data: lotsPerTradeData }]}
+              type="line"
+              height={350}
+            />
+          )}
         </div>
       </div>
 
@@ -135,28 +147,35 @@ const RiskInsights = ({ data }) => {
       <div className="chart_wrapper">
         <h2 className="chart_title">Trades and Lots Per Day</h2>
         <div className="chart">
-          <ReactApexCharts
-            options={{
-              ...chartOptions,
-              stroke: {
-                curve: 'smooth'
-              },
-              yaxis: {
-                title: {
-                  text: 'Value'
+          {isDataEmpty(tradesAndLotsPerDayData.trades) && isDataEmpty(tradesAndLotsPerDayData.lots) ? (
+            <Empty description="No Data Available" />
+          ) : (
+            <ReactApexCharts
+              options={{
+                ...chartOptions,
+                stroke: {
+                  curve: 'smooth',
+                  width: 2,
+                },
+                xaxis: {
+                  ...chartOptions.xaxis,
+                  labels: {
+                    ...chartOptions.xaxis.labels,
+                    format: 'dd MMM HH:mm' // Custom format for x-axis labels
+                  }
+                },
+                legend: {
+                  position: 'top'
                 }
-              },
-              legend: {
-                position: 'top'
-              }
-            }}
-            series={[
-              { name: 'Trades', data: tradesAndLotsPerDayData.trades },
-              { name: 'Lots', data: tradesAndLotsPerDayData.lots }
-            ]}
-            type="line"
-            height={350}
-          />
+              }}
+              series={[
+                { name: 'Trades', data: tradesAndLotsPerDayData.trades },
+                { name: 'Lots', data: tradesAndLotsPerDayData.lots }
+              ]}
+              type="line"
+              height={350}
+            />
+          )}
         </div>
       </div>
     </div>

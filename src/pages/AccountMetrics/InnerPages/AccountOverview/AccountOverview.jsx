@@ -17,6 +17,7 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
     setPageNos(1);
     setCharts(e.target.value);
   };
+  
 
 
 
@@ -58,7 +59,7 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
           </div>
           <div>
             <p>End Date</p>
-            <h3>{formatDate(info?.end_date)}</h3>
+            <h3>{formatDate(accountDetails?.expiry_date)}</h3>
           </div>
           <div>
             <p>Account Size</p>
@@ -125,9 +126,9 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
             </div>
 
             <div className="charts_div">
-              {charts === "BalanceChart" && <BalanceChart performanceChart={performanceChart} />}
-              {charts === "ProfitChart" && <ProfitChart ProfitData={overview?.profit_chart} />}
-              {charts === "DrawdownChart" && <DrawdownChart drawdownData={overview?.drawdown_chart} />}
+              {charts === "BalanceChart" && <BalanceChart performanceChart={performanceChart ?? []} />}
+              {charts === "ProfitChart" && <ProfitChart ProfitData={overview?.profit_chart ?? []} />}
+              {charts === "DrawdownChart" && <DrawdownChart drawdownData={overview?.drawdown_chart ?? []} />}
 
             </div>
           </div>
@@ -165,11 +166,11 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
       <div className="bottom_main_left_satistic_inner_two">
         <div>
           <p>Average profit</p>
-          <h3>${formatValue(statistics?.Average_profit)}</h3>
+          <h3 style={{color:'#009017'}}> {statistics?.Average_profit ? "$" : '' }{formatValue(statistics?.Average_profit)}</h3>
         </div>
         <div>
           <p>Average loss</p>
-          <h3>${formatValue(statistics?.Average_loss)}</h3>
+          <h3 style={{color:'#F20000'}}>{statistics?.Average_loss ? "$" : '' }{formatValue(statistics?.Average_loss)}</h3>
         </div>
         <div>
           <p>Average RRR</p>
@@ -215,7 +216,7 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
                   </>
                 }
               </div>
-              <button className={`${objectives?.trading_days?.status === "In Progress" ? "status_in_progress" : objectives?.trading_days?.status === "Success" ? "status_succcess" : "status_failed"}`}>
+              <button className={`${objectives?.trading_days?.status === "In Progress" ? "status_in_progress" : objectives?.trading_days?.status === "Success" ? "status_green" : "status_red"}`}>
                 {objectives?.trading_days?.status}
               </button>
             </div>
@@ -228,7 +229,7 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
                 <p>Results : {FormatUSD(objectives?.profit_target?.result)}</p>
               </div>
               <button
-                className={`${objectives?.profit_target?.status === "In Progress" ? "status_in_progress" : objectives?.profit_target?.status === "Success" ? "status_succcess" : "status_failed"}`}
+                className={`${objectives?.profit_target?.status === "In Progress" ? "status_in_progress" : objectives?.profit_target?.status === "Success" ? "status_green" : "status_red"}`}
               >
                 {objectives?.profit_target?.status}
               </button>
@@ -245,8 +246,8 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
                 className={`${objectives?.drawdown_result?.max_loss?.status === "In Progress"
                   ? "status_in_progress"
                   : objectives?.drawdown_result?.max_loss?.status === "Success"
-                    ? "status_succcess"
-                    : "status_failed"
+                    ? "status_green"
+                    : "status_red"
                   }`}
               >
                 {objectives?.drawdown_result?.max_loss?.status}
@@ -264,8 +265,8 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
                 className={`${objectives?.drawdown_result?.max_daily_loss?.status === "In Progress"
                   ? "status_in_progress"
                   : objectives?.drawdown_result?.max_daily_loss?.status === "Success"
-                    ? "status_succcess"
-                    : "status_failed"
+                    ? "status_green"
+                    : "status_red"
                   }`}
               >
                 {objectives && objectives?.drawdown_result?.max_daily_loss?.status}

@@ -30,19 +30,19 @@ function TradeDayAnalysis({ data }) {
         },
         { 
           title: 'Positive Days', 
-          value: formatValue( data?.positive_days , 0) 
+          value: formatValue( data?.positive_days ) 
         },
         { 
           title: 'Average Positive Day', 
-          value: formatValue(data?.avg_positive_days , 0) 
+          value: formatValue(data?.avg_positive_days ) 
         },
         { 
           title: 'Negative Days', 
-          value: formatValue(data?.negative_days  , 0) 
+          value: formatValue(data?.negative_days ) 
         },
         { 
           title: 'Average Negative Days', 
-          value: formatValue(data?.avg_negative_days , 0) 
+          value: formatValue(data?.avg_negative_days ) 
         }
       ];
     return (
@@ -64,7 +64,7 @@ function TradeDayAnalysis({ data }) {
                 </h2>
 
                 <div className='chart_wrapper'>
-                    <BarChart seriesData={seriesData1} categories={categories} />
+                    <BarChart seriesData={seriesData1 ?? []} categories={categories ?? []} />
                 </div>
             </div>
         </div>

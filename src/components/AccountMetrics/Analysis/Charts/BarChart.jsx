@@ -1,7 +1,12 @@
+import { Empty } from 'antd';
 import React from 'react';
-import Chart from 'react-apexcharts';
+import ReactApexChart from 'react-apexcharts';
 
 const BarChart = ({ seriesData, categories, title }) => {
+
+  console.log(seriesData)
+  const isNoData = !seriesData.length || seriesData.every(series => !series.data.length);
+
   const options = {
     chart: {
       type: 'bar',
@@ -32,13 +37,14 @@ const BarChart = ({ seriesData, categories, title }) => {
         style: {
           colors: '#000',
         },
-        formatter: (value) => value.toFixed(2), // Format to 2 decimal places
+        formatter: (value) => value.toFixed(2),
       },
     },
     plotOptions: {
       bar: {
         horizontal: false,
         endingShape: 'rounded',
+        columnWidth: '50%',
       },
     },
     dataLabels: {
@@ -47,7 +53,7 @@ const BarChart = ({ seriesData, categories, title }) => {
     stroke: {
       show: true,
       width: 2,
-      colors: ['#04D9FF'],
+      colors: ['#04D9FF', '#FF8500'],
     },
     fill: {
       type: 'gradient',
@@ -61,7 +67,7 @@ const BarChart = ({ seriesData, categories, title }) => {
         stops: [0, 100],
       },
     },
-    colors: ['#00BFFF'],
+    colors: ['#00BFFF', '#FF4500'],
     legend: {
       position: 'top',
       horizontalAlign: 'left',
@@ -69,13 +75,19 @@ const BarChart = ({ seriesData, categories, title }) => {
   };
 
   return (
-    <div className="bar_chart">
-      <Chart
-        options={options}
-        series={seriesData}
-        type="bar"
-        height={350}
-      />
+    <div className="bar_chart" style={{ position: 'relative', height: '350px' }}>
+      {isNoData ? (
+        <div className="no-data-message" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Empty description="No Data Available" />
+        </div>
+      ) : (
+        <ReactApexChart
+          options={options}
+          series={seriesData}
+          type="bar"
+          height={350}
+        />
+      )}
     </div>
   );
 };

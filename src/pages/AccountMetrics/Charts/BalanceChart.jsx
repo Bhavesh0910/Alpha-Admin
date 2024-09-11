@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import { utc_to_eet } from "../../../utils/helpers/string";
 import dayjs from "dayjs";
+import { Empty } from "antd";
 
 const BalanceChart = ({ performanceChart }) => {
   const [series, setSeries] = useState([]);
@@ -18,25 +19,27 @@ const BalanceChart = ({ performanceChart }) => {
       labels: {
         rotate: -20,
         style: {
-          fontSize: '10px', 
+          fontSize: '10px',
         },
-        formatter: (value) => dayjs(value).format("DD-MM-YYYY")
-
+        formatter: (value) => dayjs(value).format("DD MMM YY, HH:mm"),
       },
-      tickAmount: 7, 
+      tickAmount: 7,
+    },
+    stroke:{
+      width: 2
     },
     yaxis: {
       title: {
-        text: 'Value'
+        text: 'Value',
       },
-      tickAmount: 7, 
+      tickAmount: 7,
       labels: {
-        formatter: (value) => value.toFixed(2), 
+        formatter: (value) => "$" + value.toFixed(2),
       },
     },
     title: {
       text: 'Balance vs Equity',
-      align: 'left'
+      align: 'left',
     },
     dataLabels: {
       enabled: false,
@@ -58,6 +61,37 @@ const BalanceChart = ({ performanceChart }) => {
       const allValues = [...balanceData, ...equityData];
       const minValue = Math.min(...allValues);
       const maxValue = Math.max(...allValues);
+      const numberOfLabelsToShow = Math.max(2, Math.min(6, timeLabels.length));
+
+      if (minValue === maxValue) {
+        setOptions(prevOptions => ({
+          ...prevOptions,
+          yaxis: {
+            ...prevOptions.yaxis,
+            min: minValue - 1000,
+            max: minValue + 1000,
+            tickAmount: numberOfLabelsToShow,
+          },
+        }));
+      } else {
+        const range = maxValue - minValue;
+        const interval = Math.ceil(range / 10);
+
+        const yAxisMin = Math.floor(minValue / interval) * interval;
+        const yAxisMax = Math.ceil(maxValue / interval) * interval;
+
+        const tickAmount = Math.min(6 , Math.ceil((yAxisMax - yAxisMin) / interval) + 1);
+
+        setOptions(prevOptions => ({
+          ...prevOptions,
+          yaxis: {
+            ...prevOptions.yaxis,
+            min: yAxisMin,
+            max: yAxisMax,
+            tickAmount: tickAmount,
+          },
+        }));
+      }
 
       setSeries([
         {
@@ -70,24 +104,27 @@ const BalanceChart = ({ performanceChart }) => {
         },
       ]);
 
-      setOptions((prevOptions) => ({
+      setOptions(prevOptions => ({
         ...prevOptions,
         xaxis: {
           ...prevOptions.xaxis,
           categories: timeLabels,
         },
-        yaxis: {
-          ...prevOptions.yaxis,
-          min: 0,
-          max: maxValue + 1000, 
-        },
       }));
     }
   }, [performanceChart]);
 
+  const isNoData = !performanceChart || performanceChart.length === 0;
+
   return (
-    <div id="chart">
-      <ReactApexChart options={options} series={series} type="line" height={"100%"} />
+    <div id="chart" style={{ position: 'relative', height: '100%' }}>
+      {isNoData ? (
+        <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Empty description="No Data Available" />
+        </div>
+      ) : (
+        <ReactApexChart options={options} series={series} type="line" height={"100%"} />
+      )}
     </div>
   );
 };
