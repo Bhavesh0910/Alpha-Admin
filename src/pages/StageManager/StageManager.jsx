@@ -1,9 +1,9 @@
-import {Button, DatePicker, Dropdown, Menu, Select, Modal, Form, Input, Table} from "antd";
+import { Button, DatePicker, Dropdown, Menu, Select, Modal, Form, Input, Table } from "antd";
 import moment from "moment";
-import React, {useEffect, useMemo, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {Link, useLocation, useNavigate} from "react-router-dom";
-import {toast} from "react-toastify";
+import React, { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import commentIcon from "../../assets/icons/comment.svg";
 import RightMark from "../../assets/icons/verified_green_circleIcon.svg";
@@ -18,21 +18,21 @@ import CrossMark from "../../assets/icons/notverified_red_circleIcon.svg";
 
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import {DownOutlined} from "@ant-design/icons";
+import { DownOutlined } from "@ant-design/icons";
 import "./StageManager.scss";
-import {supportListReq, nestedTableDataReq, statusUpdateReq, editCommentReq, updateContactReq, createAccountReq} from "../../store/NewReducers/Support";
+import { supportListReq, nestedTableDataReq, statusUpdateReq, editCommentReq, updateContactReq, createAccountReq } from "../../store/NewReducers/Support";
 import ReactCountryFlag from "react-country-flag";
 import dayjs from "dayjs";
-import {formatDate, formatDateTime, formatDateTimeNew, FormatUSD} from "../../utils/helpers/string";
-import {updateFlagReq} from "../../store/NewReducers/listSlice";
+import { formatDate, formatDateTime, formatDateTimeNew, FormatUSD } from "../../utils/helpers/string";
+import { updateFlagReq } from "../../store/NewReducers/listSlice";
 import axios from "axios";
-import {baseUrl} from "../../utils/api/apis";
-import {returnErrors} from "../../store/reducers/error";
+import { baseUrl } from "../../utils/api/apis";
+import { returnErrors } from "../../store/reducers/error";
 import downloadIcon from "../../assets/icons/download_to_pc.svg";
-import {copyToClipboard} from "../../utils/utilityFunctions";
-const {RangePicker} = DatePicker;
+import { copyToClipboard } from "../../utils/utilityFunctions";
+const { RangePicker } = DatePicker;
 
-const {Option} = Select;
+const { Option } = Select;
 
 const StageManager = () => {
   const lookup = require("country-code-lookup");
@@ -60,8 +60,8 @@ const StageManager = () => {
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
   const [dates, setDates] = useState(null);
-  const {idToken} = useSelector((state) => state.auth);
-  const {count, data, isLoading, stageStatusOptions, refetch} = useSelector((state) => state.support);
+  const { idToken } = useSelector((state) => state.auth);
+  const { count, data, isLoading, stageStatusOptions, refetch } = useSelector((state) => state.support);
   const [fetchUpdate, setFetchUpdate] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState(false);
   const location = useLocation();
@@ -109,7 +109,7 @@ const StageManager = () => {
     if (dates) {
       query += `&start_date=${dates[0].format("DD MMM YYYY")}&end_date=${dates[1].format("DD MMM YYYY")}`;
     }
-    dispatch(supportListReq({idToken, query, url, dispatch}));
+    dispatch(supportListReq({ idToken, query, url, dispatch }));
   }
 
   function updateDateRange(dates) {
@@ -166,7 +166,7 @@ const StageManager = () => {
     console.log(value, record, " value, record");
     setuserToUpdate(record);
     setUpdatedStatus(value);
-    setUpdatedContract({value: value, isRisk: isRisk});
+    setUpdatedContract({ value: value, isRisk: isRisk });
     setIsModalVisible(true);
     setModalAction("Contract");
   };
@@ -202,7 +202,7 @@ const StageManager = () => {
     // console.log("updatedStatus : ", updatedStatus);
     // console.log("formData : ", formData);
     // console.log("isPayoutUpdate : ", isPayoutUpdate);
-    dispatch(statusUpdateReq({idToken, body: formData, id: userId, isPayoutUpdate, updatedStatus, dispatch}));
+    dispatch(statusUpdateReq({ idToken, body: formData, id: userId, isPayoutUpdate, updatedStatus, dispatch }));
     setIsModalVisible(false);
   };
 
@@ -215,7 +215,7 @@ const StageManager = () => {
     console.log(" I am editing comment");
     console.log("======================================");
 
-    dispatch(editCommentReq({idToken, body: formData, id: userId, stage: location.pathname, dispatch}));
+    dispatch(editCommentReq({ idToken, body: formData, id: userId, stage: location.pathname, dispatch }));
     setIsModalVisible(false);
   };
 
@@ -229,15 +229,15 @@ const StageManager = () => {
     }
     let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
     console.log("userId : ", userId);
-    dispatch(updateContactReq({idToken, body: formData, id: userId, dispatch}));
+    dispatch(updateContactReq({ idToken, body: formData, id: userId, dispatch }));
     setIsModalVisible(false);
   };
 
   const handleCreateAccount = () => {
-    const body = {id: userToUpdate?.id};
+    const body = { id: userToUpdate?.id };
     console.log("userToUpdate?.id", userToUpdate?.id);
     console.log(body, "body");
-    dispatch(createAccountReq({idToken, body, dispatch}));
+    dispatch(createAccountReq({ idToken, body, dispatch }));
     setIsModalVisible(false);
   };
 
@@ -283,7 +283,7 @@ const StageManager = () => {
     formData.append("status", flagUpdatedValue);
     formData.append("notes", comment);
 
-    dispatch(updateFlagReq({idToken, body: formData, id: flagUser?.id}));
+    dispatch(updateFlagReq({ idToken, body: formData, id: flagUser?.id }));
     setFlagModel(false);
     reset();
   }
@@ -308,14 +308,14 @@ const StageManager = () => {
                   setClose(true);
                   setSelectedIndex(index);
                 }}
-                // onMouseLeave={() => setClose(false)}
+              // onMouseLeave={() => setClose(false)}
               >
                 <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
                 <Dropdown
                   overlay={() => statusMenuFlag(text?.status, row)}
                   open={selectedIndex === index ? close : false}
                   trigger={["click"]}
-                  // onMouseLeave={() => setClose(false)}
+                // onMouseLeave={() => setClose(false)}
                 >
                   <DownOutlined />
                 </Dropdown>
@@ -331,7 +331,7 @@ const StageManager = () => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
                 <div
-                  style={{cursor: "pointer"}}
+                  style={{ cursor: "pointer" }}
                   onClick={() => navigate(`/account-analysis/${record?.account_id}/${platform}/${record?.User_id?.id}`)}
                 >
                   {text ? text : "-"}
@@ -530,13 +530,13 @@ const StageManager = () => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
                 <Button
-                  style={{background: "#c5ffff"}}
+                  style={{ background: "#c5ffff" }}
                   onClick={() => navigate(`/account-analysis/${record?.account_id}/${platform}/${record?.User_id?.id}`)}
                   className="account_metrics_btn"
                   title="Account Metrics"
                 >
                   <img
-                    style={{height: "16px"}}
+                    style={{ height: "16px" }}
                     src={AccIcon}
                     alt=""
                   />
@@ -550,7 +550,7 @@ const StageManager = () => {
             width: 80,
             render: (text, row) => (
               <div
-                style={{cursor: "pointer"}}
+                style={{ cursor: "pointer" }}
                 title="Create Account"
                 onClick={() => openCreateAccountModel(row)}
               >
@@ -590,7 +590,7 @@ const StageManager = () => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
                 <div
-                  style={{cursor: "pointer"}}
+                  style={{ cursor: "pointer" }}
                   onClick={() => navigate(`/account-analysis/${record?.account_id}/${platform}/${record?.User_id?.id}`)}
                 >
                   {text ? text : "-"}
@@ -837,13 +837,13 @@ const StageManager = () => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
                 <Button
-                  style={{background: "#c5ffff"}}
+                  style={{ background: "#c5ffff" }}
                   onClick={() => navigate(`/account-analysis/${record.account_id}/${platform}/${record?.User_id?.id}`)}
                   className="account_metrics_btn"
                   title="Account Metrics"
                 >
                   <img
-                    style={{height: "16px"}}
+                    style={{ height: "16px" }}
                     src={AccIcon}
                     alt=""
                   />
@@ -866,7 +866,7 @@ const StageManager = () => {
               //   trigger={["click"]}
               // >
               <div
-                style={{cursor: "pointer"}}
+                style={{ cursor: "pointer" }}
                 title="Create Account"
                 onClick={() => openCreateAccountModel(row)}
               >
@@ -936,7 +936,7 @@ const StageManager = () => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
                 <div
-                  style={{cursor: "pointer"}}
+                  style={{ cursor: "pointer" }}
                   onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record?.user_id?.id}`)}
                 >
                   {text ? text : "-"}
@@ -976,27 +976,7 @@ const StageManager = () => {
           //     />
           //   ),
           // },
-          {
-            title: "Max Loss",
-            dataIndex: "stats",
-            key: "stats",
-            width: 80,
-            render: (text) => (text?.max_loss ? text?.max_loss.toFixed(2) : "-"),
-          },
-          {
-            title: "Daily Loss",
-            dataIndex: "stats",
-            key: "stats",
-            width: 80,
-            render: (text) => (text?.max_daily_loss ? text?.max_daily_loss?.toFixed(2) : "-"),
-          },
-          {
-            title: "Profit",
-            dataIndex: "stats",
-            key: "stats",
-            width: 60,
-            render: (text) => (text?.profit ? text?.profit?.toFixed(2) : "-"),
-          },
+      
           {
             title: "Balance",
             dataIndex: "stats",
@@ -1083,13 +1063,13 @@ const StageManager = () => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
                 <Button
-                  style={{background: "#c5ffff"}}
+                  style={{ background: "#c5ffff" }}
                   onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record?.user_id?.id}`)}
                   className="account_metrics_btn"
                   title="Account Metrics"
                 >
                   <img
-                    style={{height: "16px"}}
+                    style={{ height: "16px" }}
                     src={AccIcon}
                     alt=""
                   />
@@ -1127,7 +1107,7 @@ const StageManager = () => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
                 <div
-                  style={{cursor: "pointer"}}
+                  style={{ cursor: "pointer" }}
                   onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record?.user?.id}`)}
                 >
                   {text ? text : "-"}
@@ -1228,7 +1208,7 @@ const StageManager = () => {
             width: 80,
             render: (text, record) => <span>{record?.performance_bonus && record?.amount ? `$${record?.performance_bonus + record?.amount}` : "-"} </span>,
           },
-          
+
           // {
           //   title: "Comment",
           //   dataIndex: "comment",
@@ -1296,7 +1276,7 @@ const StageManager = () => {
               <>
                 <div className="action_button">
                   <div
-                    style={{cursor: "pointer"}}
+                    style={{ cursor: "pointer" }}
                     title="Accept"
                     onClick={() => openContractUpdateModal("Approved", row)}
                   >
@@ -1306,7 +1286,7 @@ const StageManager = () => {
                     />
                   </div>
                   <div
-                    style={{cursor: "pointer"}}
+                    style={{ cursor: "pointer" }}
                     title="Reject"
                     onClick={() => openContractUpdateModal("Rejected", row)}
                   >
@@ -1354,7 +1334,7 @@ const StageManager = () => {
             value={dates ? [dayjs(dates[0], "YYYY-MM-DD"), dayjs(dates[0], "YYYY-MM-DD")] : null}
             onChange={updateDateRange}
             autoFocus
-            // presets={rangePresets}
+          // presets={rangePresets}
           />
           <Button
             onClick={() => navigate(viewLogsLink)}
@@ -1482,7 +1462,7 @@ const StageManager = () => {
             label="Comment"
             value={editCommentToUpdate}
             onChange={(e) => setEditCommentToUpdate(e.target.value)}
-            style={{color: "white"}}
+            style={{ color: "white" }}
           >
             <Input.TextArea placeholder="Write your comment here.." />
           </Form.Item>
@@ -1513,11 +1493,11 @@ const StageManager = () => {
 
 export default StageManager;
 
-function ExpandedRowData({record}) {
+function ExpandedRowData({ record }) {
   const location = useLocation();
   const [url, setUrl] = useState();
-  const {idToken} = useSelector((state) => state.auth);
-  const {nestedTableData, isLoading} = useSelector((state) => state.support);
+  const { idToken } = useSelector((state) => state.auth);
+  const { nestedTableData, isLoading } = useSelector((state) => state.support);
   const [contract, setContract] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -1550,7 +1530,7 @@ function ExpandedRowData({record}) {
 
   useEffect(() => {
     let flag = location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2" ? true : false;
-    dispatch(nestedTableDataReq({idToken, url, flag, dispatch}));
+    dispatch(nestedTableDataReq({ idToken, url, flag, dispatch }));
   }, [url]);
 
   const martingleStatus = nestedTableData?.martingale?.status || nestedTableData?.martingale_status;
@@ -1576,7 +1556,7 @@ function ExpandedRowData({record}) {
 
     let stage = location.pathname === "/support/funded" ? "funded" : location.pathname === "/support/payout" ? "payout" : "stage";
 
-    dispatch(editCommentReq({idToken, body: formData, id: userId, stage: stage, dispatch}));
+    dispatch(editCommentReq({ idToken, body: formData, id: userId, stage: stage, dispatch }));
     setIsModalVisible(false);
   };
 
@@ -1601,6 +1581,15 @@ function ExpandedRowData({record}) {
   }
   const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
   console.log("platform", platform);
+
+  useEffect(() => {
+    console.log('kkk')
+    if (location.pathname === '/support/funded') {
+      setUrl(`v2/get/funded/details/${record.login_id}/`);
+      dispatch(nestedTableDataReq({ idToken, url, flag: false, dispatch }));
+    }
+
+  }, [url])
   return (
     <>
       {loading && <LoaderOverlay />}
@@ -1608,7 +1597,7 @@ function ExpandedRowData({record}) {
         "Loading..."
       ) : (
         <div className="nestedTable">
-          {location.pathname !== "/support/payout" && (
+          {location.pathname !== "/support/payout" &&  location.pathname !== "/support/funded" && (
             <div className="expanded_detail_box">
               <div className="payoutNestedTable">
                 <div>
@@ -1667,7 +1656,7 @@ function ExpandedRowData({record}) {
                     <div>
                       <div>Stage 1 id</div>
                       <p
-                        style={{cursor: "pointer"}}
+                        style={{ cursor: "pointer" }}
                         onClick={() => navigate(`/account-analysis/${nestedTableData?.login_id}/${platform}/${record?.User_id?.id}`)}
                       >
                         {(nestedTableData?.user_id && nestedTableData?.user_id?.stage1_id) || (nestedTableData?.User_id && nestedTableData?.User_id?.stage1_id) || record?.stage1_id || "-"}
@@ -1676,19 +1665,6 @@ function ExpandedRowData({record}) {
                   </>
                 )}
 
-                {location.pathname === "/support/funded" && (
-                  <>
-                    {" "}
-                    <div>
-                      <div>Stage 1 id</div>
-                      <p>{(nestedTableData?.user_id && nestedTableData?.user_id?.stage1_id) || (nestedTableData?.User_id && nestedTableData?.User_id?.stage1_id) || record?.stage1_id || "-"}</p>
-                    </div>
-                    <div>
-                      <div>Stage 2 id</div>
-                      <p>{(nestedTableData?.user_id && nestedTableData?.user_id?.stage2_id) || (nestedTableData?.User_id && nestedTableData?.User_id?.stage2_id) || record?.stage2_id || "-"}</p>
-                    </div>
-                  </>
-                )}
               </div>
               <div className="nestedPayoutRow2">
                 <div className="comment_box">
@@ -1698,7 +1674,7 @@ function ExpandedRowData({record}) {
                       width={"15px"}
                       src={addIcon}
                       alt=""
-                      style={{cursor: "pointer"}}
+                      style={{ cursor: "pointer" }}
                       onClick={() => openEditModal(record?.comment, record)}
                     />
                   </div>
@@ -1727,6 +1703,93 @@ function ExpandedRowData({record}) {
             </div>
           )}
 
+
+          {location.pathname === "/support/funded" && (
+            <>
+              {" "}
+              <div>
+                  <div>Name</div>
+                  <p>{(nestedTableData?.user_id && nestedTableData?.user_id?.name) || "-"}</p>
+                </div>
+              <div>
+                  <div>Martingle</div>
+                  {/* <div>{nestedTableData?.contact}</div> */}
+                  <button className={`${martingleStatus === "Success" ? "status_success" : "notButton"}`}>Success</button>
+                </div>
+
+              
+
+                <div>
+                  <div>Equity</div>
+                  <p>{(nestedTableData && nestedTableData?.equity) || "-"}</p>
+                </div>
+                <div>
+                  <div>Platform</div>
+                  <p>{(nestedTableData && nestedTableData?.platform) || "-"}</p>
+                </div>
+                <div>
+                    <strong>Country</strong>
+                    <p onClick={() => copyToClipboard(nestedTableData?.user_id?.country)}>{(nestedTableData && nestedTableData?.user_id?.country) || "-"}</p>
+                  </div>
+                  <div>
+                    <strong>Status</strong>
+                    <p>{(nestedTableData && nestedTableData?.user_id?.status) || "-"}</p>
+                  </div>
+              <div>
+                <div>Stage 1 id</div>
+                <p>{(nestedTableData?.user_id && nestedTableData?.user_id?.stage1_id) || (nestedTableData?.User_id && nestedTableData?.User_id?.stage1_id) || record?.stage1_id || "-"}</p>
+              </div>
+              <div>
+                <div>Stage 2 id</div>
+                <p>{(nestedTableData?.user_id && nestedTableData?.user_id?.stage2_id) || (nestedTableData?.User_id && nestedTableData?.User_id?.stage2_id) || record?.stage2_id || "-"}</p>
+              </div>
+              <div>
+                  <div>Max Loss</div>
+                  <p>{FormatUSD((nestedTableData && nestedTableData?.max_loss)  ?? "-")}</p>
+                </div>
+                <div>
+                  <div>Profit</div>
+                  <p>{FormatUSD((nestedTableData && nestedTableData?.max_loss)  ?? "-")}</p>
+                </div>
+                <div>
+                  <div>Max Daily Loss</div>
+                  <p>{FormatUSD((nestedTableData && nestedTableData?.max_daily_loss) ?? "-")}</p>
+                </div>
+                <div className="date_time">
+                  <div>Date Joined</div>
+                  <p>{moment(record?.user_id?.date_joined).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
+                </div>
+                <div className="date_time">
+                  <div>Date (Created at)</div>
+                  <p>{moment(record?.start_date).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
+                </div>
+                  <div className="comment_box">
+                    <div>
+                      Comment{" "}
+                      <img
+                        width={"15px"}
+                        src={addIcon}
+                        alt=""
+                        style={{ cursor: "pointer" }}
+                        onClick={() => openEditModal(record?.comment, record)}
+                      />
+                    </div>
+                    <div
+                      className="text"
+                    >
+                      {record?.comment || "-"}
+                    </div>
+                  </div>
+                  <div className="reason_container">
+                    <strong>Reason</strong>
+                    <div
+                      className="text"
+                    >
+                      {(nestedTableData && nestedTableData?.reason) || "-"}
+                    </div>
+                  </div>
+            </>
+          )}
           {location.pathname === "/support/payout" && (
             <>
               <div className="expanded_detail_box">
@@ -1738,7 +1801,7 @@ function ExpandedRowData({record}) {
                         onClick={async () => {
                           try {
                             const response = await handleDownloadContract(nestedTableData?.signature_request_id);
-                            const blob = new Blob([response], {type: "application/pdf"});
+                            const blob = new Blob([response], { type: "application/pdf" });
                             const url = URL.createObjectURL(blob);
                             const a = document.createElement("a");
                             a.href = url;
@@ -1858,7 +1921,7 @@ function ExpandedRowData({record}) {
                         width={"15px"}
                         src={addIcon}
                         alt=""
-                        style={{cursor: "pointer"}}
+                        style={{ cursor: "pointer" }}
                         onClick={() => openEditModal(record?.comment, record)}
                       />
                     </div>
@@ -1912,7 +1975,7 @@ function ExpandedRowData({record}) {
                 label="Comment"
                 value={editCommentToUpdate}
                 onChange={(e) => setEditCommentToUpdate(e.target.value)}
-                style={{color: "white"}}
+                style={{ color: "white" }}
               >
                 <Input.TextArea placeholder="Write your comment here.." />
               </Form.Item>
