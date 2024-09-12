@@ -31,7 +31,10 @@
         }
       }
     }
-
+    @media (max-width: 440px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
     @media (max-width: 720px) {
       width: 100%;
     }
@@ -137,7 +140,7 @@
       .header-select {
         // display: flex;
         height: 42px;
-        width: 100%;
+        width: 100% !important;
         align-items: center;
         gap: 10px;
         border-radius: var(--Corner-Radius, 10px);
@@ -172,7 +175,7 @@
     display: flex;
     gap: 10px;
     justify-content: space-between;
-    @media only screen and (max-width: 1080px) {
+    @media only screen and (max-width: 1344px) {
       flex-direction: column;
     }
 
@@ -198,10 +201,11 @@
       border: 1px solid var(--Stroke, #252a29);
       background: var(--Main-Background, #f6fefe);
       // width: 100%;
-      width: 282px;
+      width: 240px;
 
-      @media only screen and (max-width: 900px) {
+      @media only screen and (max-width: 810px) {
         min-height: 44px;
+        width: 403px !important;
       }
 
       .ant-picker-active-bar {

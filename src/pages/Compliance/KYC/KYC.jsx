@@ -91,7 +91,7 @@ const KYC = () => {
       width: 100,
     },
     {
-      title: "Veriff",
+      title: "Sumsub Status",
       dataIndex: "admin_status",
       key: "admin_status",
       width: 100,
@@ -151,9 +151,13 @@ const KYC = () => {
       width: 100,
       render: (text) =>
         text !== null ? (
-          <span style={{cursor: "pointer"}}>
+          <a
+            style={{cursor: "pointer"}}
+            href={text}
+            target="_blank"
+          >
             <DownloadToPC />
-          </span>
+          </a>
         ) : (
           "-"
         ),
