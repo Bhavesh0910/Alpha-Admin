@@ -7,37 +7,35 @@ import {useSelector} from "react-redux";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
 const CountryWiseOverview = () => {
-  const {listData, isLoading} = useSelector((state) => state.countryWise);
+  const {listData, isCountrySelectedFlag,filterListData, isLoading} = useSelector((state) => state.countryWise);
   const [chartData, setChartData] = useState({series: [[], []], labels: [[], []], amounts: [[], []]});
   const [totalData, setTotalData] = useState({totalPayment: 0, totalPayout: 0});
 
   useEffect(() => {
     if (listData && Array.isArray(listData) && listData.length > 0) {
-      const getTop10ByField = (data, field, slice = true) => {
+      let inputVal = 8;
+      const getTopNFields = (data, field, slice = true, key = inputVal) => {
         if (slice) {
           return [...data]
             .filter((item) => item && item[field] !== undefined && item[field] !== null)
             .sort((a, b) => b[field] - a[field])
-            .slice(0, 8); // Top 8 items
+            .slice(0, key);
         } else {
           return [...data].map((item) => (item ? item : "-")).sort((a, b) => b[field] - a[field]);
         }
       };
       //filter((item) => item && item[field] !== undefined && item[field] !== null)
-      let top10Payments;
-      let top10Payouts;
-      if (listData.length > 8) {
-        top10Payments = getTop10ByField(listData, "payment_total_amount");
-        top10Payouts = getTop10ByField(listData, "payout_total_amount");
+      let topNPayments;
+      let topNPayouts;
+      if (listData.length > inputVal) {
+        topNPayments = getTopNFields(listData, "payment_total_amount");
+        topNPayouts = getTopNFields(listData, "payout_total_amount");
       } else {
-        top10Payments = getTop10ByField(listData, "payment_total_amount", false);
-        top10Payouts = getTop10ByField(listData, "payout_total_amount", false);
+        topNPayments = getTopNFields(listData, "payment_total_amount", false);
+        topNPayouts = getTopNFields(listData, "payout_total_amount", false);
       }
 
-      // console.log("Top 10 Payments: ", top10Payments);
-      // console.log("Top 10 Payouts: ", top10Payouts);
-
-      const total = listData.reduce(
+      const total = filterListData.reduce(
         (acc, item) => {
           acc.totalPayment += item.payment_total_amount || 0;
           acc.totalPayout += item.payout_total_amount || 0;
@@ -49,42 +47,48 @@ const CountryWiseOverview = () => {
         },
       );
 
-      // console.log("Total Payments: ", total.totalPayment);
-      // console.log("Total Payouts: ", total.totalPayout);
-
-      const paymentPercentages = top10Payments.map((item) => ({
+      const paymentPercentages = topNPayments.map((item) => ({
         country: item.country,
         percentage: ((item.payment_total_amount / total.totalPayment) * 100).toFixed(2),
         paymentAmount: item.payment_total_amount?.toFixed(2),
       }));
 
-      const payoutPercentages = top10Payouts.map((item) => ({
+      const payoutPercentages = topNPayouts.map((item) => ({
         country: item.country,
         percentage: ((item?.payout_total_amount / total.totalPayout) * 100).toFixed(2),
         payoutAmount: item?.payout_total_amount?.toFixed(2),
       }));
 
-      console.log("Payment Percentages: ", paymentPercentages);
-      console.log("Payout Percentages: ", payoutPercentages);
-
       const topPaymentPercentageSum = paymentPercentages.reduce((sum, item) => sum + parseFloat(item.percentage), 0);
       const topPayoutPercentageSum = payoutPercentages.reduce((sum, item) => sum + parseFloat(item.percentage), 0);
 
-      // console.log("Top Payment Percentage Sum: ", topPaymentPercentageSum);
-      // console.log("Top Payout Percentage Sum: ", topPayoutPercentageSum);
+      let payoutSeries = [];
+      let payoutLabels = [];
+      let payoutAmounts = [];
+      let paymentSeries = [];
+      let paymentAmounts = [];
+      let paymentLabels = [];
 
-      const paymentAmounts = [...paymentPercentages.map((item) => item.paymentAmount)].map((item) => (item ? item : "-"));
-      const paymentLabels = [...paymentPercentages.map((item) => item.country), "Other"].map((item) => (item ? item : "-"));
-      const paymentSeries = [...paymentPercentages.map((item) => parseFloat(item.percentage)), parseFloat((100 - topPaymentPercentageSum).toFixed(2))];
+      const paymentAmountSum = paymentPercentages.reduce((sum, item) => sum + parseFloat(item.paymentAmount), 0);
+      const payoutAmountSum = payoutPercentages.reduce((sum, item) => sum + parseFloat(item.payoutAmount), 0);
 
-      const payoutAmounts = [...payoutPercentages.map((item) => item.payoutAmount)].map((item) => (item ? item : "-"));
-      const payoutLabels = [...payoutPercentages.map((item) => item.country), "Other"].map((item) => (item ? item : "-"));
-      const payoutSeries = [...payoutPercentages.map((item) => parseFloat(item.percentage)), parseFloat((100 - topPayoutPercentageSum).toFixed(2))].map((item) => (isNaN(item) ? 0 : item));
+      if (!isCountrySelectedFlag && listData.length > inputVal) {
+        paymentAmounts = [...paymentPercentages.map((item) => item.paymentAmount), total.totalPayment - paymentAmountSum].map((item) => (item ? item : "-"));
+        paymentLabels = [...paymentPercentages.map((item) => item.country), "Other"].map((item) => (item ? item : "-"));
+        paymentSeries = [...paymentPercentages.map((item) => parseFloat(item.percentage)), parseFloat((100 - topPaymentPercentageSum).toFixed(2))];
 
-      // console.log("Payment Series: ", paymentSeries);
-      // console.log("Payment Labels: ", paymentLabels);
-      // console.log("Payout Series: ", payoutSeries);
-      // console.log("Payout Labels: ", payoutLabels);
+        payoutAmounts = [...payoutPercentages.map((item) => item.payoutAmount), total.totalPayout - payoutAmountSum].map((item) => (item ? item : "-"));
+        payoutLabels = [...payoutPercentages.map((item) => item.country), "Other"].map((item) => (item ? item : "-"));
+        payoutSeries = [...payoutPercentages.map((item) => parseFloat(item.percentage)), parseFloat((100 - topPayoutPercentageSum).toFixed(2))].map((item) => (isNaN(item) ? 0 : item));
+      } else {
+        paymentAmounts = paymentPercentages.map((item) => item.paymentAmount);
+        paymentLabels = paymentPercentages.map((item) => item.country);
+        paymentSeries = paymentPercentages.map((item) => parseFloat(item.percentage));
+
+        payoutAmounts = payoutPercentages.map((item) => item.payoutAmount);
+        payoutLabels = payoutPercentages.map((item) => item.country);
+        payoutSeries = payoutPercentages.map((item) => parseFloat(item.percentage));
+      }
 
       setChartData({series: [paymentSeries, payoutSeries], labels: [paymentLabels, payoutLabels], amounts: [paymentAmounts, payoutAmounts]});
       setTotalData(total);

@@ -54,6 +54,8 @@ const StageManager = () => {
   const [flagUpdatedValue, setFlagUpdatedValue] = useState(null);
   const [comment, setComment] = useState(null);
 
+  const [close, setClose] = useState(false);
+
   const [status, setStatus] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
@@ -61,8 +63,10 @@ const StageManager = () => {
   const {idToken} = useSelector((state) => state.auth);
   const {count, data, isLoading, stageStatusOptions, refetch} = useSelector((state) => state.support);
   const [fetchUpdate, setFetchUpdate] = useState(true);
+  const [selectedIndex, setSelectedIndex] = useState(false);
   const location = useLocation();
   const dispatch = useDispatch();
+
   const options =
     stageStatusOptions || location.pathname === "/support/funded"
       ? ["New", "In Progress", "Flagged", "Dissmissed", "Rejected", "Approved"]
@@ -266,6 +270,7 @@ const StageManager = () => {
     <Menu
       className="menuCard"
       onClick={(e) => openFlagUpdateModal(e.key, record)}
+      onMouseLeave={() => setClose(false)}
     >
       <Menu.Item key="Safe">Safe</Menu.Item>
       <Menu.Item key="Warning">Warning</Menu.Item>
@@ -283,6 +288,10 @@ const StageManager = () => {
     reset();
   }
 
+  useEffect(() => {
+    console.log("Close : ", close);
+  }, [close]);
+
   const columns = useMemo(() => {
     switch (location?.pathname) {
       case "/support/stage-1":
@@ -292,12 +301,21 @@ const StageManager = () => {
             dataIndex: "User_id",
             key: "User_id",
             width: 60,
-            render: (text, row) => (
-              <div className="flagContainer">
+            render: (text, row, index) => (
+              <div
+                className="flagContainer"
+                onClick={() => {
+                  setClose(true);
+                  setSelectedIndex(index);
+                }}
+                // onMouseLeave={() => setClose(false)}
+              >
                 <p className={`flag ${text?.status === "Blacklisted" ? "Red" : text?.status === "Warning" ? "Yellow" : "Green"}`}></p>
                 <Dropdown
                   overlay={() => statusMenuFlag(text?.status, row)}
+                  open={selectedIndex === index ? close : false}
                   trigger={["click"]}
+                  // onMouseLeave={() => setClose(false)}
                 >
                   <DownOutlined />
                 </Dropdown>
@@ -309,14 +327,17 @@ const StageManager = () => {
             dataIndex: "account_id",
             key: "account_id",
             width: 70,
-            render: (text, row) => (
-              <Link
-                to="/trader-overview"
-                // onClick={() => handleActiveAccount(row, "account")}
-              >
-                {text ? text : "-"}
-              </Link>
-            ),
+            render: (text, record) => {
+              const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
+              return (
+                <div
+                  style={{cursor: "pointer"}}
+                  onClick={() => navigate(`/account-analysis/${record?.account_id}/${platform}/${record?.User_id?.id}`)}
+                >
+                  {text ? text : "-"}
+                </div>
+              );
+            },
           },
           // Table.EXPAND_COLUMN,
           {
@@ -451,19 +472,19 @@ const StageManager = () => {
               />
             ),
           },
-          {
-            title: "Credential Generated",
-            dataIndex: "credential_generated",
-            key: "credential_generated",
-            width: 100,
-            render: (text, row) => (
-              <img
-                width={"25px"}
-                src={text || row.status === "approved" ? RightMark : CrossMark}
-                alt=""
-              />
-            ),
-          },
+          // {
+          //   title: "Credential Generated",
+          //   dataIndex: "credential_generated",
+          //   key: "credential_generated",
+          //   width: 100,
+          //   render: (text, row) => (
+          //     <img
+          //       width={"25px"}
+          //       src={text || row.status === "approved" ? RightMark : CrossMark}
+          //       alt=""
+          //     />
+          //   ),
+          // },
           // {
           //   title: "Date (created at)",
           //   dataIndex: "created_at",
@@ -510,7 +531,7 @@ const StageManager = () => {
               return (
                 <Button
                   style={{background: "#c5ffff"}}
-                  onClick={() => navigate(`/account-analysis/${record.account_id}/${platform}`)}
+                  onClick={() => navigate(`/account-analysis/${record?.account_id}/${platform}/${record?.User_id?.id}`)}
                   className="account_metrics_btn"
                   title="Account Metrics"
                 >
@@ -565,14 +586,17 @@ const StageManager = () => {
             dataIndex: "account_id",
             key: "account_id",
             width: 80,
-            render: (text, row) => (
-              <Link
-                to="/trader-overview"
-                // onClick={() => handleActiveAccount(row, "account")}
-              >
-                {text ? text : "-"}
-              </Link>
-            ),
+            render: (text, record) => {
+              const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
+              return (
+                <div
+                  style={{cursor: "pointer"}}
+                  onClick={() => navigate(`/account-analysis/${record?.account_id}/${platform}/${record?.User_id?.id}`)}
+                >
+                  {text ? text : "-"}
+                </div>
+              );
+            },
           },
           // Table.EXPAND_COLUMN,
           {
@@ -707,19 +731,19 @@ const StageManager = () => {
               />
             ),
           },
-          {
-            title: "Credential Generated",
-            dataIndex: "credential_generated",
-            key: "credential_generated",
-            width: 100,
-            render: (text, row) => (
-              <img
-                width={"25px"}
-                src={text || row?.status === "approved" ? RightMark : CrossMark}
-                alt=""
-              />
-            ),
-          },
+          // {
+          //   title: "Credential Generated",
+          //   dataIndex: "credential_generated",
+          //   key: "credential_generated",
+          //   width: 100,
+          //   render: (text, row) => (
+          //     <img
+          //       width={"25px"}
+          //       src={text || row?.status === "approved" ? RightMark : CrossMark}
+          //       alt=""
+          //     />
+          //   ),
+          // },
           {
             title: "Contract Issued",
             dataIndex: "issue_contract",
@@ -814,7 +838,7 @@ const StageManager = () => {
               return (
                 <Button
                   style={{background: "#c5ffff"}}
-                  onClick={() => navigate(`/account-analysis/${record.account_id}/${platform}`)}
+                  onClick={() => navigate(`/account-analysis/${record.account_id}/${platform}/${record?.User_id?.id}`)}
                   className="account_metrics_btn"
                   title="Account Metrics"
                 >
@@ -908,6 +932,17 @@ const StageManager = () => {
             dataIndex: "login_id",
             key: "accountNumber",
             width: 100,
+            render: (text, record) => {
+              const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
+              return (
+                <div
+                  style={{cursor: "pointer"}}
+                  onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record?.user_id?.id}`)}
+                >
+                  {text ? text : "-"}
+                </div>
+              );
+            },
           },
           {
             title: "Email",
@@ -928,19 +963,19 @@ const StageManager = () => {
               />
             ),
           },
-          {
-            title: "Credential Generated",
-            dataIndex: "credential_generated",
-            key: "credential_generated",
-            width: 100,
-            render: (text, row) => (
-              <img
-                width={"25px"}
-                src={text || row.status === "approved" ? RightMark : CrossMark}
-                alt=""
-              />
-            ),
-          },
+          // {
+          //   title: "Credential Generated",
+          //   dataIndex: "credential_generated",
+          //   key: "credential_generated",
+          //   width: 100,
+          //   render: (text, row) => (
+          //     <img
+          //       width={"25px"}
+          //       src={text || row.status === "approved" ? RightMark : CrossMark}
+          //       alt=""
+          //     />
+          //   ),
+          // },
           {
             title: "Max Loss",
             dataIndex: "stats",
@@ -1049,7 +1084,7 @@ const StageManager = () => {
               return (
                 <Button
                   style={{background: "#c5ffff"}}
-                  onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}`)}
+                  onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record?.user_id?.id}`)}
                   className="account_metrics_btn"
                   title="Account Metrics"
                 >
@@ -1088,7 +1123,17 @@ const StageManager = () => {
             dataIndex: "login_id",
             key: "login_id",
             width: 100,
-            render: (text) => <span>{text}</span>,
+            render: (text, record) => {
+              const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
+              return (
+                <div
+                  style={{cursor: "pointer"}}
+                  onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record?.user?.id}`)}
+                >
+                  {text ? text : "-"}
+                </div>
+              );
+            },
           },
           {
             title: "Email",
@@ -1116,19 +1161,19 @@ const StageManager = () => {
               />
             ),
           },
-          {
-            title: "Credential Generated",
-            dataIndex: "credential_generated",
-            key: "credential_generated",
-            width: 100,
-            render: (text, row) => (
-              <img
-                width={"25px"}
-                src={text || row.status === "approved" ? RightMark : CrossMark}
-                alt=""
-              />
-            ),
-          },
+          // {
+          //   title: "Credential Generated",
+          //   dataIndex: "credential_generated",
+          //   key: "credential_generated",
+          //   width: 100,
+          //   render: (text, row) => (
+          //     <img
+          //       width={"25px"}
+          //       src={text || row.status === "approved" ? RightMark : CrossMark}
+          //       alt=""
+          //     />
+          //   ),
+          // },
           {
             title: "KYC",
             dataIndex: "kyc",
@@ -1164,10 +1209,10 @@ const StageManager = () => {
           },
           {
             title: "Bonus",
-            dataIndex: "bonus",
+            dataIndex: "performance_bonus",
             key: "bonus",
             width: 65,
-            render: (text) => (text ? <span>{text}%</span> : "-"),
+            render: (text) => (text ? <span>{text}</span> : "-"),
           },
           {
             title: "Amount",
@@ -1176,7 +1221,14 @@ const StageManager = () => {
             width: 80,
             render: (text) => <span>${text}</span>,
           },
-          ,
+          {
+            title: "Total Payout",
+            dataIndex: "",
+            key: "totalPayout",
+            width: 80,
+            render: (text, record) => <span>{record?.performance_bonus && record?.amount ? `$${record?.performance_bonus + record?.amount}` : "-"} </span>,
+          },
+          
           // {
           //   title: "Comment",
           //   dataIndex: "comment",
@@ -1275,7 +1327,7 @@ const StageManager = () => {
       default:
         break;
     }
-  }, [location.pathname]);
+  }, [location.pathname, close]);
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
@@ -1385,21 +1437,22 @@ const StageManager = () => {
         </div>
       </div>
       {isLoading && <LoaderOverlay />}
-
-      <AntTable
-        columns={columns}
-        data={data || []}
-        totalPages={Math.ceil(count / pageSize)}
-        totalItems={count}
-        pageSize={pageSize}
-        CurrentPageNo={pageNo}
-        setPageSize={setPageSize}
-        triggerChange={triggerChange}
-        isExpandable={true}
-        // expandedRowRender={ExpandedRowData}
-        ExpandedComp={ExpandedRowData}
-        rowId={location.pathname === "/support/funded" ? "login_id" : "id"}
-      />
+      <div onMouseLeave={() => setClose(false)}>
+        <AntTable
+          columns={columns}
+          data={data || []}
+          totalPages={Math.ceil(count / pageSize)}
+          totalItems={count}
+          pageSize={pageSize}
+          CurrentPageNo={pageNo}
+          setPageSize={setPageSize}
+          triggerChange={triggerChange}
+          isExpandable={true}
+          // expandedRowRender={ExpandedRowData}
+          ExpandedComp={ExpandedRowData}
+          rowId={location.pathname === "/support/funded" ? "login_id" : "id"}
+        />
+      </div>
       <Modal
         title={modalAction}
         open={isModalVisible}
@@ -1473,7 +1526,7 @@ function ExpandedRowData({record}) {
   const [userToUpdate, setuserToUpdate] = useState(null);
   const [editCommentToUpdate, setEditCommentToUpdate] = useState(null);
   const [updatedContract, setUpdatedContract] = useState(null);
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
     if (record.id === null || record.id === undefined) {
@@ -1546,7 +1599,8 @@ function ExpandedRowData({record}) {
     }
     setLoading(false);
   }
-
+  const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
+  console.log("platform", platform);
   return (
     <>
       {loading && <LoaderOverlay />}
@@ -1555,60 +1609,108 @@ function ExpandedRowData({record}) {
       ) : (
         <div className="nestedTable">
           {location.pathname !== "/support/payout" && (
-            <>
-              <div>
-                <div>Martingle</div>
-                {/* <div>{nestedTableData?.contact}</div> */}
-                <button className={`${martingleStatus === "Success" ? "status_success" : "notButton"}`}>Success</button>
-              </div>
-              <div>
-                <div>Name</div>
-                <p>{(nestedTableData?.user_id && nestedTableData?.user_id?.name) || (nestedTableData?.User_id && nestedTableData?.User_id?.name) || record?.name || "-"}</p>
-              </div>
-              <div className="date_time">
-                <div>Date (Created at)</div>
-                <p>{moment(record?.created_at).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
-              </div>
-              <div className="date_time">
-                <div>Date (last updated)</div>
-                <p>{moment(record?.updated_at).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
-              </div>
-              <div>
-                <div>Max Loss</div>
-                <p>{FormatUSD((nestedTableData && nestedTableData?.drawdown_result?.max_loss?.result) || (nestedTableData && nestedTableData?.stats?.max_loss) || 0)}</p>
-              </div>
-              <div>
-                <div>Profit</div>
-                <p>{FormatUSD((nestedTableData && nestedTableData?.drawdown_result?.max_loss?.result) || (nestedTableData && nestedTableData?.stats?.profit) || 0)}</p>
-              </div>
-              <div>
-                <div>Max Daily Loss</div>
-                <p>{FormatUSD((nestedTableData && nestedTableData?.drawdown_result?.max_daily_loss?.result) || (nestedTableData && nestedTableData?.stats?.max_daily_loss) || 0)}</p>
-              </div>
-              <div>
-                <div>Min Trading Day</div>
-                <p>{(nestedTableData && nestedTableData?.trading_days?.result) || "-"}</p>
-              </div>
-              <div>
-                <div>Purchased date</div>
-                <p>{(nestedTableData && nestedTableData?.purchase_date) || "-"}</p>
-              </div>
-              <div className="date_time">
-                <div>Account Started</div>
-                {/* <p>{nestedTableData?.start_date?(formatDateTimeNew(nestedTableData?.start_date || "-")):'-'}</p> */}
-                <p>{formatDateTimeNew(nestedTableData && nestedTableData?.start_date) || "-"}</p>
-              </div>
-              <div>
-                <div>Risk Report</div>
-                <p>{(nestedTableData && nestedTableData?.risk_reports) || "-"}</p>
-              </div>
-              <div className="date_time">
-                <div>Account Passed</div>
-                {/* <p>{nestedTableData?.pass_date?(formatDateTimeNew(nestedTableData?.pass_date || "-")):'-'}</p> */}
-                <p>{formatDateTimeNew(nestedTableData && nestedTableData?.pass_date) || "-"}</p>
-              </div>
+            <div className="expanded_detail_box">
+              <div className="payoutNestedTable">
+                <div>
+                  <div>Martingle</div>
+                  {/* <div>{nestedTableData?.contact}</div> */}
+                  <button className={`${martingleStatus === "Success" ? "status_success" : "notButton"}`}>Success</button>
+                </div>
+                <div>
+                  <div>Name</div>
+                  <p>{(nestedTableData?.user_id && nestedTableData?.user_id?.name) || (nestedTableData?.User_id && nestedTableData?.User_id?.name) || record?.name || "-"}</p>
+                </div>
+                <div className="date_time">
+                  <div>Date (Created at)</div>
+                  <p>{moment(record?.created_at).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
+                </div>
+                <div className="date_time">
+                  <div>Date (last updated)</div>
+                  <p>{moment(record?.updated_at).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
+                </div>
+                <div>
+                  <div>Max Loss</div>
+                  <p>{FormatUSD((nestedTableData && nestedTableData?.drawdown_result?.max_loss?.result) || (nestedTableData && nestedTableData?.stats?.max_loss) || 0)}</p>
+                </div>
+                <div>
+                  <div>Profit</div>
+                  <p>{FormatUSD((nestedTableData && nestedTableData?.drawdown_result?.max_loss?.result) || (nestedTableData && nestedTableData?.stats?.profit) || 0)}</p>
+                </div>
+                <div>
+                  <div>Max Daily Loss</div>
+                  <p>{FormatUSD((nestedTableData && nestedTableData?.drawdown_result?.max_daily_loss?.result) || (nestedTableData && nestedTableData?.stats?.max_daily_loss) || 0)}</p>
+                </div>
+                <div>
+                  <div>Min Trading Day</div>
+                  <p>{(nestedTableData && nestedTableData?.trading_days?.result) || "-"}</p>
+                </div>
+                <div>
+                  <div>Purchased date</div>
+                  <p>{(nestedTableData && nestedTableData?.purchase_date) || "-"}</p>
+                </div>
+                <div className="date_time">
+                  <div>Account Started</div>
+                  {/* <p>{nestedTableData?.start_date?(formatDateTimeNew(nestedTableData?.start_date || "-")):'-'}</p> */}
+                  <p>{formatDateTimeNew(nestedTableData && nestedTableData?.start_date) || "-"}</p>
+                </div>
+                <div>
+                  <div>Risk Report</div>
+                  <p>{(nestedTableData && nestedTableData?.risk_reports) || "-"}</p>
+                </div>
+                <div className="date_time">
+                  <div>Account Passed</div>
+                  {/* <p>{nestedTableData?.pass_date?(formatDateTimeNew(nestedTableData?.pass_date || "-")):'-'}</p> */}
+                  <p>{formatDateTimeNew(nestedTableData && nestedTableData?.pass_date) || "-"}</p>
+                </div>
+                {location.pathname === "/support/stage-2" && (
+                  <>
+                    <div>
+                      <div>Stage 1 id</div>
+                      <p
+                        style={{cursor: "pointer"}}
+                        onClick={() => navigate(`/account-analysis/${nestedTableData?.login_id}/${platform}/${record?.User_id?.id}`)}
+                      >
+                        {(nestedTableData?.user_id && nestedTableData?.user_id?.stage1_id) || (nestedTableData?.User_id && nestedTableData?.User_id?.stage1_id) || record?.stage1_id || "-"}
+                      </p>
+                    </div>
+                  </>
+                )}
 
-              <div>
+                {location.pathname === "/support/funded" && (
+                  <>
+                    {" "}
+                    <div>
+                      <div>Stage 1 id</div>
+                      <p>{(nestedTableData?.user_id && nestedTableData?.user_id?.stage1_id) || (nestedTableData?.User_id && nestedTableData?.User_id?.stage1_id) || record?.stage1_id || "-"}</p>
+                    </div>
+                    <div>
+                      <div>Stage 2 id</div>
+                      <p>{(nestedTableData?.user_id && nestedTableData?.user_id?.stage2_id) || (nestedTableData?.User_id && nestedTableData?.User_id?.stage2_id) || record?.stage2_id || "-"}</p>
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className="nestedPayoutRow2">
+                <div className="comment_box">
+                  <div>
+                    Comment{" "}
+                    <img
+                      width={"15px"}
+                      src={addIcon}
+                      alt=""
+                      style={{cursor: "pointer"}}
+                      onClick={() => openEditModal(record?.comment, record)}
+                    />
+                  </div>
+                  <div
+                    className="text"
+                    onClick={() => copyToClipboard(nestedTableData?.country)}
+                  >
+                    {record?.comment || "-"}
+                  </div>
+                </div>
+              </div>
+              {/* <div>
                 <div>
                   {" "}
                   Comment{" "}
@@ -1621,10 +1723,10 @@ function ExpandedRowData({record}) {
                   />
                 </div>
                 <p>{record?.comment || "-"}</p>
-              </div>
-            </>
+              </div> */}
+            </div>
           )}
-          {location.pathname === "/support/funded" && <></>}
+
           {location.pathname === "/support/payout" && (
             <>
               <div className="expanded_detail_box">

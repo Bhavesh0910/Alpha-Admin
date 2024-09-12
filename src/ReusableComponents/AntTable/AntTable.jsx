@@ -61,7 +61,9 @@ const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460, column
   }, [expandedRowKeys]);
 
   return (
-    <div className="ant_table_container">
+    <div
+      className="ant_table_container"
+    >
       <Table
         columns={columns}
         dataSource={data}

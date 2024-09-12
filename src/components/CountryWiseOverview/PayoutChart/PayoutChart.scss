@@ -18,15 +18,15 @@
   .apexcharts-legend {
     height: 100% !important;
     position: absolute;
-    overflow: visible;
-    max-height: 150px !important;
-    // overflow: auto;
-    // left: auto;
-    // top: 0px !important;
-    // right: 0px !important;
-    // padding: 0 !important;
-    // justify-content: center !important;
+    left: auto;
+    top: 0px !important;
+    right: 0px !important;
+    padding: 0 !important;
+    justify-content: center !important;
     // gap: 8px;
+
+    max-height: 200px !important;
+    overflow: auto;
 
     @media only screen and (max-width: 650px) {
       display: none;
@@ -59,15 +59,15 @@
     grid-template-columns: 100%;
   }
   #custom_pie_chart {
-    // min-height: 100% !important;
+    min-height: 100% !important;
   }
   .apexcharts-canvas {
-    // height: 100% !important;
+    height: 100% !important;
   }
   .apexcharts-svg {
     min-height: 100%;
     foreignObject {
-      // height: 100% !important;
+      height: 100% !important;
       .apexcharts-legend {
         // top: 0px !important;
       }
