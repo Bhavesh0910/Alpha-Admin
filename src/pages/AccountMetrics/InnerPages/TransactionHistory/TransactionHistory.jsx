@@ -74,9 +74,10 @@ function TransactionHistory() {
                         statusClass = 'status_yellow';
                         break;
                     default:
+                        statusClass = 'status_yellow';
                         break;
                 }
-                return <div className={`status_btn ${statusClass}`}>{text === 'Payment Pending' ? "Pending" :  text || '-'}</div>;
+                return <div style={{textTransform:'capitalize'}} className={`status_btn ${statusClass}`}>{text === 'Payment Pending' ? "Pending" :  text || '-'}</div>;
             },
         },
         {
