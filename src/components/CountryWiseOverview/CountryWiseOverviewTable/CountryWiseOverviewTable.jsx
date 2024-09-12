@@ -6,7 +6,7 @@ import {Button, DatePicker, notification, Select} from "antd";
 import AccountRangeSlider from "./AccountRangeSlider/AccountRangeSlider";
 import rangeIcon from "../../../assets/icons/range_icon_gray.svg";
 import {useDispatch, useSelector} from "react-redux";
-import {countryWiseListReq, resetCountryWiseData, setCountryWiseData} from "../../../store/NewReducers/countryWise";
+import {countryWiseListReq, resetCountryWiseData, setCountrySelectedFlag, setCountryWiseData} from "../../../store/NewReducers/countryWise";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 
 const {RangePicker} = DatePicker;
@@ -136,6 +136,7 @@ const CountryWiseOverviewTable = () => {
     setPageNo(page);
     setPageSize(updatedPageSize);
   }
+
   const rangePresets = [
     {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
     {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
@@ -178,6 +179,9 @@ const CountryWiseOverviewTable = () => {
       };
     });
     setCountriesLibrary(data);
+    return () => {
+      dispatch(setCountrySelectedFlag(true));
+    };
   }, [filterListData]);
 
 
@@ -188,9 +192,11 @@ const CountryWiseOverviewTable = () => {
   function handleCountriesData(val = true) {
     const data = selectedCountries.map((item) => countriesLibrary[item]);
     if (val && selectedCountries && selectedCountries.length > 0) {
+      dispatch(setCountrySelectedFlag(true));
       dispatch(setCountryWiseData(data));
     } else {
       dispatch(resetCountryWiseData());
+      dispatch(setCountrySelectedFlag(false));
     }
     setFilteredCountries(countries);
   }
