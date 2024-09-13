@@ -83,6 +83,7 @@ const complianceList = createSlice({
     data: [],
     count: 1,
     bilingDetailsData: [],
+    refetch: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -123,6 +124,17 @@ const complianceList = createSlice({
         state.bilingDetailsData = action.payload?.data;
       })
       .addCase(getBillingDetailsReq.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(updateKycStatus.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(updateKycStatus.fulfilled, (state, action) => {
+        state.refetch = !state.refetch;
+      })
+      .addCase(updateKycStatus.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });

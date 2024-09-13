@@ -1965,6 +1965,15 @@ function ExpandedRowData({record}) {
                       {(nestedTableData && nestedTableData?.reason) || "-"}
                     </div>
                   </div>
+                  <div className="reason_container">
+                    <strong>Payment Reference</strong>
+                    <div
+                      className="text"
+                      onClick={() => copyToClipboard(nestedTableData?.payment_reference)}
+                    >
+                      {(nestedTableData && nestedTableData?.payment_reference) || "-"}
+                    </div>
+                  </div>
                 </div>
               </div>
             </>

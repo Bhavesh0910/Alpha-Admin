@@ -34,7 +34,7 @@ const KYC = () => {
   const [kycUpdatedValue, setKycUpdatedValue] = useState(null);
   const [comment, setComment] = useState(null);
 
-  const {data, isLoading: accountsLoading, count} = useSelector((state) => state.compliance);
+  const {data, isLoading: accountsLoading,refetch, count} = useSelector((state) => state.compliance);
 
   console.log(data, "data");
 
@@ -56,7 +56,7 @@ const KYC = () => {
     console.log(query, "query");
 
     dispatch(getKycList({idToken, query, dispatch}));
-  }, [idToken, pageNo, pageSize, dates, status, searchText]);
+  }, [idToken, pageNo, pageSize, dates, status, searchText, refetch]);
 
   const handleSearch = (value) => {
     setPageNo(1);
