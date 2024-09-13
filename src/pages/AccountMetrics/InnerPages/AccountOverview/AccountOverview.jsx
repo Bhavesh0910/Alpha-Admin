@@ -83,7 +83,7 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
           <div className="top_right_div_lower">
             <div>
               <p>Gain</p>
-              <h3>$00</h3>
+              <h3>{overview?.calculated_data?.absolute_gain ? formatCurrency(overview?.calculated_data?.absolute_gain) : "$0.00"}</h3>
             </div>
             <div>
               <p>Daily</p>
