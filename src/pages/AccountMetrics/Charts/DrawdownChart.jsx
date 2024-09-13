@@ -101,7 +101,7 @@ const DrawdownChart = ({ drawdownData }) => {
     if (drawdownData) {
       const drawdowns = drawdownData?.draw_down || [];
       const dates = (drawdownData?.date || []).map(date_str => 
-        dayjs(date_str).format("DD MMM YY, HH:mm") 
+        dayjs(date_str).format("DD MMM YY, HH:mm")
       );
 
       if (drawdowns.length === 0) {
@@ -115,7 +115,7 @@ const DrawdownChart = ({ drawdownData }) => {
           yaxis: {
             ...prevOptions.yaxis,
             min: 0,
-            max: 100, // Placeholder values if no data
+            max: 100,
             tickAmount: 5,
           },
         }));
@@ -133,35 +133,33 @@ const DrawdownChart = ({ drawdownData }) => {
 
       const numTicks = Math.min(6, Math.ceil((yAxisMax - yAxisMin) / interval)); 
 
-      const numberOfLabelsToShow = Math.max(2, Math.min(6, drawdowns.length));
-      const step = Math.floor(dates.length / numberOfLabelsToShow);
+      const numberOfLabelsToShow = drawdowns.length === 1 ? 1 : Math.max(2, Math.min(6, drawdowns.length));
+      const step = drawdowns.length > 1 ? Math.floor(dates.length / numberOfLabelsToShow) : 1;
 
-      setSeries([
-        {
-          name: "Drawdown",
-          type: "line",
-          data: drawdowns,
-        },
-      ]);
+      setSeries([{
+        name: "Drawdown",
+        type: "line",
+        data: drawdowns,
+      }]);
 
       setOptions(prevOptions => ({
         ...prevOptions,
         xaxis: {
           ...prevOptions.xaxis,
-          categories: dates.filter((_, index) => index % step === 0), 
+          categories: dates.filter((_, index) => index % step === 0),
           tickAmount: numberOfLabelsToShow,
           labels: {
             ...prevOptions.xaxis.labels,
-            rotate: -20, 
+            rotate: -20,
           },
-          min: dates[0], 
-          max: dates[dates.length - 1], 
+          min: dates[0],
+          max: dates[dates.length - 1],
         },
         yaxis: {
           ...prevOptions.yaxis,
-          min: yAxisMin, 
-          max: yAxisMax, 
-          tickAmount: numTicks, 
+          min: yAxisMin,
+          max: yAxisMax,
+          tickAmount: numTicks,
         },
       }));
     }
@@ -173,16 +171,14 @@ const DrawdownChart = ({ drawdownData }) => {
     <div id="chart" style={{ position: 'relative' }}>
       {isNoData ? 
         <div className="no-data-message">
-   <Empty description="No Data Available" />
-  
+          <Empty description="No Data Available" />
         </div>
-      
-         :
-      <ReactApexChart
-        options={options}
-        series={series}
-        height={"100%"}
-      />
+        :
+        <ReactApexChart
+          options={options}
+          series={series}
+          height={"100%"}
+        />
       }
     </div>
   );

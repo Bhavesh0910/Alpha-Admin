@@ -44,18 +44,23 @@ export const getOrdinalSuffix = (rank) => {
 
 
 
- export const formatValue = (value , fixed = true) => {
-    if (typeof value === 'string') {
-      return value
-    }
-    if (value === undefined || value === null || isNaN(value)) {
-      return '-';
-    }
-    if(fixed){
-    return value.toFixed(2);
-    }
-    return value
-  };
+export const formatValue = (value, fixed = true) => {
+  if (typeof value === 'string') {
+    return value;
+  }
+
+  if (value === undefined || value === null || isNaN(Number(value))) {
+    return '-';
+  }
+
+  const numValue = Number(value);
+
+  if (fixed) {
+    return numValue?.toFixed(2);
+  }
+  
+  return numValue;
+};
 
 
 // USD Formatter

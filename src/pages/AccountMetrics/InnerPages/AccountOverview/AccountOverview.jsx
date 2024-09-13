@@ -55,11 +55,11 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
           <div className="top_left_div_lower">
           <div>
             <p>Start Date</p>
-            <h3>{formatDate(accountDetails?.start_date)}</h3>
+            <h3>{accountDetails?.start_date ? formatDate(accountDetails?.start_date) : '-'}</h3>
           </div>
           <div>
             <p>End Date</p>
-            <h3>{formatDate(accountDetails?.expiry_date)}</h3>
+            <h3>{accountDetails?.expiry_date ? formatDate(accountDetails?.expiry_date) : '-'}</h3>
           </div>
           <div>
             <p>Account Size</p>

@@ -149,7 +149,7 @@
           flex-wrap: wrap;
           div {
             flex: 1;
-            min-width: 80px;
+            min-width: fit-content;
           }
         }
       }
