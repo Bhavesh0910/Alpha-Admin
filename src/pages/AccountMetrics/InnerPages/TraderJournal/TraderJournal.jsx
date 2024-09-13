@@ -1,19 +1,19 @@
-import React, {useEffect, useMemo, useState} from "react";
-import {Table, Button} from "antd";
+import React, { useEffect, useMemo, useState } from "react";
+import { Table, Button } from "antd";
 import "./TraderJournal.scss";
 import AntTable from "../../../../ReusableComponents/AntTable/AntTable";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchTradeJournal} from "../../../../store/NewReducers/amSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTradeJournal } from "../../../../store/NewReducers/amSlice";
 
-const TraderJournal = ({login_id, platform}) => {
+const TraderJournal = ({ login_id, platform }) => {
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
   const idToken = useSelector((state) => state.auth.idToken);
   const dispatch = useDispatch();
-  const {tradeJournal, isLoading, error} = useSelector((state) => state.accountMetrics);
+  const { tradeJournal, isLoading, error } = useSelector((state) => state.accountMetrics);
 
   useEffect(() => {
-    dispatch(fetchTradeJournal({login_id, platform, idToken}));
+    dispatch(fetchTradeJournal({ login_id, platform, idToken }));
   }, [dispatch, login_id, platform, idToken]);
 
   console.log(tradeJournal);
@@ -26,95 +26,87 @@ const TraderJournal = ({login_id, platform}) => {
       width: 50,
     },
     {
-      title: "Position",
-      dataIndex: "position",
-      key: "position",
-      width: 70,
+      title: "Position ID",
+      dataIndex: "positionId",
+      key: "positionId",
+      width: 80,
     },
     {
       title: "Symbol",
       dataIndex: "symbol",
       key: "symbol",
+      width: 80,
+    },
+    {
+      title: "Direction",
+      dataIndex: "direction",
+      key: "direction",
       width: 70,
     },
     {
-      title: "Date Opened",
-      dataIndex: "dateOpen",
-      key: "dateOpen",
-      width: 70,
+      title: "Open Timestamp",
+      dataIndex: "openTimestamp",
+      key: "openTimestamp",
+      width: 150,
+      render: (text) => new Date(text).toLocaleString(),
     },
     {
-      title: "Date Closed",
-      dataIndex: "dateClose",
-      key: "dateClose",
-      width: 70,
+      title: "Close Timestamp",
+      dataIndex: "closeTimestamp",
+      key: "closeTimestamp",
+      width: 150,
+      render: (text) => new Date(text).toLocaleString(),
     },
     {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
-      width: 70,
+      title: "Entry Price",
+      dataIndex: "entryPrice",
+      key: "entryPrice",
+      width: 100,
+      render: (text) => `$${(Number(text) || 0).toFixed(2)}`,
     },
     {
-      title: "Profit",
-      dataIndex: "profitSum",
-      key: "profitSum",
+      title: "Close Price",
+      dataIndex: "closePrice",
+      key: "closePrice",
+      width: 100,
+      render: (text) => `$${(Number(text) || 0).toFixed(2)}`,
+    },
+    {
+      title: "P&L",
+      dataIndex: "pnl",
+      key: "pnl",
       width: 70,
-      render: (text) => `$${text.toFixed(2)}`, // Format profit with dollar sign
+      render: (text) => `$${(Number(text) || 0).toFixed(2)}`,
     },
     {
       title: "Commission",
-      dataIndex: "commissionSum",
-      key: "commissionSum",
-      width: 105,
+      dataIndex: "commission",
+      key: "commission",
+      width: 100,
+      render: (text) => `$${(Number(text) || 0).toFixed(2)}`,
     },
     {
       title: "Swap",
-      dataIndex: "swapSum",
-      key: "swapSum",
-      width: 65,
+      dataIndex: "swap",
+      key: "swap",
+      width: 100,
+      render: (text) => `$${(Number(text) || 0).toFixed(2)}`,
     },
     {
-      title: "Volume Buy",
-      dataIndex: "volumeSumBuy",
-      key: "volumeSumBuy",
+      title: "Volume",
+      dataIndex: "volume",
+      key: "volume",
       width: 80,
+      render: (text) => (Number(text) || 0).toFixed(2),
     },
     {
-      title: "Volume Sell",
-      dataIndex: "volumeSumSell",
-      key: "volumeSumSell",
+      title: "Stake",
+      dataIndex: "stake",
+      key: "stake",
       width: 80,
+      render: (text) => (Number(text) || 0).toFixed(2),
     },
-    {
-      title: "Average Buy Price",
-      dataIndex: "priceAvgBuy",
-      key: "priceAvgBuy",
-      width: 80,
-      render: (text) => `$${text.toFixed(2)}`, // Format price with dollar sign
-    },
-    {
-      title: "Average Sell Price",
-      dataIndex: "priceAvgSell",
-      key: "priceAvgSell",
-      width: 80,
-      render: (text) => `$${text.toFixed(2)}`, // Format price with dollar sign
-    },
-    {
-      title: "Stop Loss",
-      dataIndex: "stopLoss",
-      key: "stopLoss",
-      width: 60,
-      render: (text) => (text !== null ? `$${text.toFixed(2)}` : "-"),
-    },
-    {
-      title: "Take Profit",
-      dataIndex: "takeProfit",
-      key: "takeProfit",
-      width: 60,
-      render: (text) => (text !== null ? `$${text.toFixed(2)}` : "-"),
-    },
-  ]);
+  ], []);
 
   const handleDelete = (id) => {
     console.log("Delete row with id:", id);
@@ -122,23 +114,21 @@ const TraderJournal = ({login_id, platform}) => {
 
   let data = [];
   if (tradeJournal) {
-    data = Object.values(tradeJournal).flatMap((tradeDate) =>
-      tradeDate.trades.map((trade) => ({
-        login: trade.login,
-        position: trade.position,
-        symbol: trade.symbol,
-        dateOpen: new Date(trade.dateOpen).toLocaleString(),
-        dateClose: new Date(trade.dateClose).toLocaleString(),
-        action: trade.action,
-        profitSum: trade.profitSum,
-        commissionSum: trade.commissionSum,
-        swapSum: trade.swapSum,
-        volumeSumBuy: trade.volumeSumBuy,
-        volumeSumSell: trade.volumeSumSell,
-        priceAvgBuy: trade.priceAvgBuy,
-        priceAvgSell: trade.priceAvgSell,
-        stopLoss: trade.stopLoss,
-        takeProfit: trade.takeProfit,
+    data = Object.values(tradeJournal).flatMap((dateEntry) =>
+      dateEntry.trades.map((trade) => ({
+        login: trade?.login ?? "-",
+        positionId: trade?.positionId ?? "-",
+        symbol: trade?.symbol ?? "-",
+        direction: trade?.direction ?? "-",
+        openTimestamp: trade?.openTimestamp ?? "-",
+        closeTimestamp: trade?.closeTimestamp ?? "-",
+        entryPrice: trade?.entryPrice ?? 0,
+        closePrice: trade?.closePrice ?? 0,
+        pnl: trade?.pnl ?? 0,
+        commission: trade?.commission ?? 0,
+        swap: trade?.swap ?? 0,
+        volume: trade?.volume ?? 0,
+        stake: trade?.stake ?? 0,
       })),
     );
   }
@@ -153,8 +143,8 @@ const TraderJournal = ({login_id, platform}) => {
       <AntTable
         columns={columns}
         data={data}
-        totalPages={Math.ceil(data?.length / pageSize)}
-        totalItems={data?.length}
+        totalPages={Math.ceil(data.length / pageSize)}
+        totalItems={data.length}
         pageSize={pageSize}
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}

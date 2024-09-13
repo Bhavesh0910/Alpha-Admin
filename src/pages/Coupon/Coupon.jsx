@@ -1,22 +1,24 @@
-import {Button, Select} from "antd";
-import React, {useEffect, useMemo, useState} from "react";
+import { Button, Select } from "antd";
+import React, { useEffect, useMemo, useState } from "react";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import arrowIcon from "../../assets/icons/status_arrow_left_white.svg";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import "./Coupon.scss";
 import EditCouponModal from "../../components/Coupon/EditCouponModal/EditCouponModal";
-import {useDispatch, useSelector} from "react-redux";
-import {getCoupons} from "../../store/NewReducers/Coupons";
+import { useDispatch, useSelector } from "react-redux";
+import { getCoupons } from "../../store/NewReducers/Coupons";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 import editIcon from "../../assets/icons/edit.svg";
 import publicIcon from "../../assets/icons/public.svg";
 import privateIcon from "../../assets/icons/private.svg";
 
-const {Option} = Select;
+const { Option } = Select;
 
 const Coupon = () => {
   const [searchText, setSearchText] = useState("");
+  const [search ,  setSearch] = useState("");
+
   const [activeTab, setActiveTab] = useState("all");
   const [category, setCategory] = useState("all");
   const [pageSize, setPageSize] = useState(20);
@@ -25,8 +27,8 @@ const Coupon = () => {
   const [filterData, setFilterData] = useState([]);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
-  const {idToken} = useSelector((state) => state.auth);
-  const {couponData,count, isLoading, refresh} = useSelector((state) => state.coupon);
+  const { idToken } = useSelector((state) => state.auth);
+  const { couponData, count, isLoading, refresh } = useSelector((state) => state.coupon);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -36,15 +38,17 @@ const Coupon = () => {
     }
   }, [idToken, pageNo, pageSize, searchText, refresh, activeTab]);
 
-  function fetchCoupons(idToken, pageNo, pageSize, searchText,activeTab) {
-    dispatch(getCoupons({idToken, pageNo, pageSize, searchText,activeTab}));
+  function fetchCoupons(idToken, pageNo, pageSize, searchText, activeTab) {
+    dispatch(getCoupons({ idToken, pageNo, pageSize, searchText, activeTab }));
   }
 
-  const handleSearch = (e) => {
-    if (e.key === "Enter") {
-      setSearchText(e.target.value);
-    }
+  
+  const handleSearch = (value) => {
+    setPageNo(1);
+    setPageSize(20);
+    setSearchText(value);
   };
+
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
@@ -63,7 +67,7 @@ const Coupon = () => {
     setIsEditModalVisible(!isEditModalVisible);
   };
 
-  const columns = useMemo(()=>[
+  const columns = useMemo(() => [
     {
       title: "Id",
       dataIndex: "id",
@@ -189,12 +193,21 @@ const Coupon = () => {
             {/* <Select className="category_dropdown" defaultValue="all" onChange={handleCategoryChange}>
               <Option value="all">All Categories</Option>
             </Select> */}
-            <input
-              placeholder="Search by Coupon code..."
+                 <input
+              placeholder="Search by coupon code..."
               className="search_input"
-              onKeyDown={(e) => handleSearch(e)}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch(e.target.value);
+                }
+              }}
             />
-            <div className="searchImg">
+            <div
+              className="searchImg"
+              onClick={() => handleSearch(search)}
+            >
               <img
                 src={searchIcon}
                 alt="searchIcon"

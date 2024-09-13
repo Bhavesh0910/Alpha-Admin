@@ -26,7 +26,7 @@ const ProfileDetails = ({id}) => {
   const [category, setCategory] = useState("Alpha Pro 5K");
   const [isLoading, setIsLoading] = useState(false);
   
-  const [countryCode, setCountryCode] = useState("+91");
+  const [countryCode, setCountryCode] = useState("+");
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const { idToken } = useSelector((state) => state.auth);
@@ -51,7 +51,7 @@ const ProfileDetails = ({id}) => {
         language: data.language || "",
         time_zone: data.time_zone || "", 
       });
-      setCountryCode(data?.contact_number?.split(" ")[1] || "+91");
+      setCountryCode(data?.contact_number?.split(" ")[1] || "+");
       setPhoneNumber(data?.contact_number?.split(" ")[0] || "");
     }
     }, [data]);
@@ -108,11 +108,11 @@ const ProfileDetails = ({id}) => {
   
       await updateUserDetailsRequest({ idToken, updatedData, id: id });
   
-      dispatch(returnMessages("User details updated successfully"));
+      dispatch(returnMessages("User details updated successfully" , 200));
       console.log("User details updated:", updatedData);
     } catch (error) {
       console.error("Error updating user details:", error);
-      dispatch(returnErrors("Error updating user details"));
+      dispatch(returnErrors("Error updating user details" , 400));
     } finally {
       setIsLoading(false);
       setIsEditableProfile(false);

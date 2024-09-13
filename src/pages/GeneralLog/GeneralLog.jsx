@@ -12,6 +12,7 @@ const { Option } = Select;
 
 const GeneralLog = () => {
   const [searchText, setSearchText] = useState("");
+  const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [category, setCategory] = useState("all");
   const [pageSize, setPageSize] = useState(20);
@@ -27,10 +28,10 @@ const GeneralLog = () => {
     }
   }, [dispatch, idToken, pageNo, pageSize, searchText]);
 
-  const handleSearch = (e) => {
-    if (e.key === "Enter") {
-      setSearchText(e.target.value);
-    }
+  const handleSearch = (value) => {
+    setPageNo(1);
+    setPageSize(20);
+    setSearchText(value);
   };
 
   const handleTabChange = (key) => {
@@ -81,16 +82,26 @@ const GeneralLog = () => {
     <div className="generalLog_container">
       <div className="header_wrapper">
         <h3> General Log</h3>
-        <div className="search_box_wrapper">
-          <input
-            placeholder="Search by category or email..."
-            className="search_input"
-            onKeyDown={(e) => handleSearch(e)}
-          />
-          <div className="searchImg">
-            <img src={searchIcon} alt="searchIcon" />
-          </div>
-        </div>
+               <input
+              placeholder="Search by category or email..."
+              className="search_input"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch(e.target.value);
+                }
+              }}
+            />
+            <div
+              className="searchImg"
+              onClick={() => handleSearch(search)}
+            >
+              <img
+                src={searchIcon}
+                alt="searchIcon"
+              />
+            </div>
       </div>
       {isLoading && <LoaderOverlay />}
       <AntTable

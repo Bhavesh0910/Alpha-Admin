@@ -11,6 +11,7 @@ import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import blockIcon from "../../../assets/icons/block.svg";
 import unblockIcon from "../../../assets/icons/unblock.svg";
 import {returnMessages} from "../../../store/reducers/message";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 const {Option} = Select;
 
@@ -98,12 +99,16 @@ const UserIPList = () => {
       render: (text) => (
         <div style={{display: "flex", alignItems: "center"}}>
           {text || "-"}
-          <Tooltip title="Copy">
-            <CopyOutlined
-              style={{marginLeft: 8, cursor: "pointer", color: "#04d9ff"}}
-              onClick={() => message.success("Copied email")}
-            />
-          </Tooltip>
+          <CopyToClipboard text={text || "-"}>
+            <Tooltip title="Copy user">
+              <Button
+                type="link"
+                icon={<CopyOutlined style={{ color: "#04D9FF" }} />}
+                onClick={() => message.success("Copied user")}
+                disabled={!text}
+              />
+            </Tooltip>
+          </CopyToClipboard>
         </div>
       ),
     },

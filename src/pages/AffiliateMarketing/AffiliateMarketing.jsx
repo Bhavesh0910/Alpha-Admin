@@ -13,6 +13,7 @@ const { Option } = Select;
 
 const AffiliateMarketing = () => {
   const [searchText, setSearchText] = useState("");
+  const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [category, setCategory] = useState("all");
   const navigate = useNavigate();
@@ -75,16 +76,16 @@ const AffiliateMarketing = () => {
         <div onClick={() => handleViewDetailsBtn(record.id)}>
           {category === "name" || category === "all"
             ? highlightText(
-                text
-                  ?.split(" ")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" ") || "-",
-                searchText,
-              )
-            : text
+              text
                 ?.split(" ")
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(" ") || "-"}
+                .join(" ") || "-",
+              searchText,
+            )
+            : text
+              ?.split(" ")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ") || "-"}
         </div>
       ),
     },
@@ -93,21 +94,21 @@ const AffiliateMarketing = () => {
       dataIndex: "email",
       render: (text, record) => (
         <div
-          onClick={() => handleViewDetailsBtn(record?.id , record?.code)}
+          onClick={() => handleViewDetailsBtn(record?.id, record?.code)}
           style={{ display: "flex", alignItems: "center", gap: "12px" }}
         >
           {category === "email" || category === "all"
             ? highlightText(
-                text
-                  ?.split(" ")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" ") || "-",
-                searchText,
-              )
-            : text
+              text
                 ?.split(" ")
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(" ") || "-"}
+                .join(" ") || "-",
+              searchText,
+            )
+            : text
+              ?.split(" ")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ") || "-"}
         </div>
       ),
     },
@@ -139,7 +140,7 @@ const AffiliateMarketing = () => {
       render: (text, record) => (
         <button
           className="view_details_btn standard_button"
-          onClick={() => handleViewDetailsBtn(record.id , record?.code)}
+          onClick={() => handleViewDetailsBtn(record.id, record?.code)}
         >
           View Details
         </button>
@@ -147,10 +148,12 @@ const AffiliateMarketing = () => {
     },
   ];
 
-  const handleSearch = (e) => {
-    if (e.key === "Enter") {
-      setSearchText(e.target.value);
-    }
+  const handleSearch = (search) => {
+    setPageNo(1)
+    setPageSize(20)
+    setSearchText(search);
+
+
   };
 
   return (
@@ -169,9 +172,11 @@ const AffiliateMarketing = () => {
           <input
             placeholder="Search by Email..."
             className="search_input"
-            onKeyDown={(e) => handleSearch(e)}
+            onKeyDown={(e) => setSearch(e.target.value)}
           />
-          <div className="searchImg">
+          <div className="searchImg"            
+           onClick={() => handleSearch(search)}
+          >
             <img src={searchIcon} alt="searchIcon" />
           </div>
         </div>
