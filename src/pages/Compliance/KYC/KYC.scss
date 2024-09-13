@@ -46,7 +46,7 @@
   .sumsubStatus_indicator,
   .adminStatus_indicator {
     display: flex;
-    max-width: 92px;
+    max-width: 104px;
     width: 100%;
     padding: 6px 10px;
     justify-content: center;
@@ -59,6 +59,11 @@
     &.approved {
       border: 1px solid var(--sucess, #009017);
       background: var(--Success-Body, #cdffdd);
+    }
+
+    &.rejected {
+      border: 1px solid var(--Failed, #f20000);
+      background: var(--Failed-body, #ffe1e1);
     }
 
     &.in_progress,

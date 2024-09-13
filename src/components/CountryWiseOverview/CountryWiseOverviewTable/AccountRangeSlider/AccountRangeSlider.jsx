@@ -6,10 +6,10 @@ import crossIcon from "../../../../assets/icons/cross_icon_white.svg";
 const AccountRangeSlider = ({ setIsRangeOpen, isRangeOpen, setAccRange, accRange }) => {
   const [value, setValue] = useState(accRange || 100);
 
-  console.log(accRange)
-  useEffect(() => {
-    setValue(accRange || 100);
-  }, [accRange]);
+  // console.log(accRange)
+  // useEffect(() => {
+  //   setValue(accRange || 100);
+  // }, [accRange]);
 
   const handleChange = (newValue) => {
     setValue(newValue);
@@ -39,13 +39,13 @@ const AccountRangeSlider = ({ setIsRangeOpen, isRangeOpen, setAccRange, accRange
       </div>
       <div className="country_info">
         <p>
-          Countries with <span>{"<"}{value} accounts</span>
+          Countries with <span>{">"}{value} accounts</span>
         </p>
       </div>
       <Slider
         value={value}
         min={0}
-        max={100}
+        max={1000}
         onChange={handleChange}
         tooltip={{
           placement: "bottom",

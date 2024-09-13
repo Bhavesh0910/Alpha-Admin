@@ -29,11 +29,11 @@ const CountryWiseOverviewTable = () => {
   const handleDateChange = (dates) => {
     if (dates) {
       setDates(dates);
-      fetchCountryWiseData();
+      // fetchCountryWiseData();
     } else {
       setDates(null);
       setLastValidDates([dayjs().subtract(1, "month"), dayjs()]);
-      fetchCountryWiseData();
+      // fetchCountryWiseData();
     }
   };
 
@@ -41,34 +41,33 @@ const CountryWiseOverviewTable = () => {
     if (idToken) {
       fetchCountryWiseData();
     }
+    console.log("I am here")
   }, [idToken, dates, accRange]);
 
   const fetchCountryWiseData = () => {
-
-    if(!dates && accRange){
-      dispatch(countryWiseListReq({ idToken , query:'' , dispatch }));
-    }
     if (dates) {
       const [startDate, endDate] = dates;
       if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
         setIsValidRange(false);
         notification.error({
-          message: 'Invalid Date Range',
+          message: "Invalid Date Range",
           description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
         });
         setDates(lastValidDates);
+        console.log("Here in IF COMP", dates);
       } else {
+        console.log("Here in ELSE COMP", dates);
         setIsValidRange(true);
         setLastValidDates([startDate, endDate]);
 
         const formattedStartDate = startDate.format("DD/MMM/YYYY");
         const formattedEndDate = endDate.format("DD/MMM/YYYY");
-       
-        dispatch(countryWiseListReq({ idToken, query: `?start_date=${formattedStartDate}&end_date=${formattedEndDate}${accRange ? `&min_account_count=${accRange}` : ''}` }));
+
+        dispatch(countryWiseListReq({idToken, query: `?start_date=${formattedStartDate}&end_date=${formattedEndDate}${accRange ? `&max_account_count=${accRange}` : ""}`}));
       }
     } else {
       setIsValidRange(true);
-      dispatch(countryWiseListReq({ idToken , query:'' , dispatch }));
+      dispatch(countryWiseListReq({idToken, query: `${accRange ? `?max_account_count=${accRange}` : ""}`, dispatch}));
     }
   };
 
@@ -131,7 +130,6 @@ const CountryWiseOverviewTable = () => {
     },
   ]);
 
-
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
     setPageSize(updatedPageSize);
@@ -163,7 +161,6 @@ const CountryWiseOverviewTable = () => {
 
   const handleSearchInput = (value) => {
     const filteredData = countries?.filter((item) => item.label.toLowerCase().includes(value.toLowerCase()));
-    console.log("filteredData : ", filteredData);
     setFilteredCountries(filteredData);
   };
 
@@ -184,11 +181,10 @@ const CountryWiseOverviewTable = () => {
     };
   }, [filterListData]);
 
-
   useEffect(() => {
     console.log("Component rendered or state updated");
   }, [dates, idToken, accRange]);
-  
+
   function handleCountriesData(val = true) {
     const data = selectedCountries.map((item) => countriesLibrary[item]);
     if (val && selectedCountries && selectedCountries.length > 0) {

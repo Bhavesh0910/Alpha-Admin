@@ -752,7 +752,7 @@ const StageManager = () => {
             ),
           },
           {
-            title: "KYC Verified",
+            title: "Admin review",
             dataIndex: "is_kyc_verified",
             key: "is_kyc_verified",
             width: 100,
@@ -763,6 +763,15 @@ const StageManager = () => {
                 alt=""
               />
             ),
+          },
+          {
+            title: "Veriff",
+            dataIndex: "veriff_status",
+            key: "veriff_status",
+            width: 100,
+            render: (text) => {
+              return typeof text === "string" && text.length > 0 ? text.slice(0, 1).toUpperCase() + text.slice(1).toLowerCase() : "-";
+            },
           },
           // {
           //   title: "Payment",
@@ -1487,11 +1496,9 @@ const StageManager = () => {
             <Input.TextArea
               style={{height: "120px"}}
               maxLength={"255"}
-             
               value={editCommentToUpdate}
               onChange={(e) => setEditCommentToUpdate(e.target.value)}
               placeholder="Write your comment here.."
-           
             />
           </Form.Item>
         )}
@@ -1612,7 +1619,6 @@ function ExpandedRowData({record}) {
     setLoading(false);
   }
   const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
-  console.log("platform", platform);
 
   useEffect(() => {
     console.log("kkk");
@@ -1638,7 +1644,7 @@ function ExpandedRowData({record}) {
                 </div>
                 <div>
                   <div>Name</div>
-                  <p>{(nestedTableData?.user_id && nestedTableData?.user_id?.name) || (nestedTableData?.User_id && nestedTableData?.User_id?.name) || record?.name || "-"}</p>
+                  <p>{record?.username || "-"}</p>
                 </div>
                 <div className="date_time">
                   <div>Date (Created at)</div>
@@ -1688,9 +1694,9 @@ function ExpandedRowData({record}) {
                       <div>Stage 1 id</div>
                       <p
                         style={{cursor: "pointer"}}
-                        onClick={() => navigate(`/account-analysis/${nestedTableData?.login_id}/${platform}/${record?.User_id?.id}`)}
+                        onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.User_id?.id}`)}
                       >
-                        {(nestedTableData?.user_id && nestedTableData?.user_id?.stage1_id) || (nestedTableData?.User_id && nestedTableData?.User_id?.stage1_id) || record?.stage1_id || "-"}
+                        {record?.stage1_id || "-"}
                       </p>
                     </div>
                   </>
@@ -1710,7 +1716,7 @@ function ExpandedRowData({record}) {
                   </div>
                   <div
                     className="text"
-                    onClick={() => copyToClipboard(nestedTableData?.country)}
+                    onClick={() => copyToClipboard(record?.comment)}
                   >
                     {record?.comment || "-"}
                   </div>
@@ -1737,80 +1743,90 @@ function ExpandedRowData({record}) {
             <>
               {" "}
               <div className="expanded_detail_box">
-              <div className="payoutNestedTable">
-              <div>
-                <div>Name</div>
-                <p>{(nestedTableData?.user_id && nestedTableData?.user_id?.name) || "-"}</p>
-              </div>
-              <div>
-                <div>Martingle</div>
-                {/* <div>{nestedTableData?.contact}</div> */}
-                <button className={`${martingleStatus === "Success" ? "status_success" : "notButton"}`}>Success</button>
-              </div>
-              <div>
-                <div>Equity</div>
-                <p>{(nestedTableData && nestedTableData?.equity) || "-"}</p>
-              </div>
-              <div>
-                <div>Platform</div>
-                <p>{(nestedTableData && nestedTableData?.platform) || "-"}</p>
-              </div>
-              <div>
-                <strong>Country</strong>
-                <p onClick={() => copyToClipboard(nestedTableData?.user_id?.country)}>{(nestedTableData && nestedTableData?.user_id?.country) || "-"}</p>
-              </div>
-              <div>
-                <strong>Status</strong>
-                <p>{(nestedTableData && nestedTableData?.user_id?.status) || "-"}</p>
-              </div>
-              <div>
-                <div>Stage 1 id</div>
-                <p>{(nestedTableData?.user_id && nestedTableData?.user_id?.stage1_id) || (nestedTableData?.User_id && nestedTableData?.User_id?.stage1_id) || record?.stage1_id || "-"}</p>
-              </div>
-              <div>
-                <div>Stage 2 id</div>
-                <p>{(nestedTableData?.user_id && nestedTableData?.user_id?.stage2_id) || (nestedTableData?.User_id && nestedTableData?.User_id?.stage2_id) || record?.stage2_id || "-"}</p>
-              </div>
-              <div>
-                <div>Max Loss</div>
-                <p>{FormatUSD((nestedTableData && nestedTableData?.max_loss) ?? "-")}</p>
-              </div>
-              <div>
-                <div>Profit</div>
-                <p>{FormatUSD((nestedTableData && nestedTableData?.max_loss) ?? "-")}</p>
-              </div>
-              <div>
-                <div>Max Daily Loss</div>
-                <p>{FormatUSD((nestedTableData && nestedTableData?.max_daily_loss) ?? "-")}</p>
-              </div>
-              <div className="date_time">
-                <div>Date Joined</div>
-                <p>{moment(record?.user_id?.date_joined).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
-              </div>
-              <div className="date_time">
-                <div>Date (Created at)</div>
-                <p>{moment(record?.start_date).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
-              </div>
-              </div>
+                <div className="payoutNestedTable">
+                  <div>
+                    <div>Name</div>
+                    <p>{record?.user_id?.name || "-"}</p>
+                  </div>
+                  <div>
+                    <div>Martingle</div>
+                    {/* <div>{nestedTableData?.contact}</div> */}
+                    <button className={`${martingleStatus === "Success" ? "status_success" : "notButton"}`}>Success</button>
+                  </div>
+                  <div>
+                    <div>Equity</div>
+                    <p>{(nestedTableData && nestedTableData?.equity) || "-"}</p>
+                  </div>
+                  <div>
+                    <div>Platform</div>
+                    <p>{(nestedTableData && nestedTableData?.platform) || "-"}</p>
+                  </div>
+                  <div>
+                    <strong>Country</strong>
+                    <p onClick={() => copyToClipboard(nestedTableData?.user_id?.country)}>{(nestedTableData && nestedTableData?.user_id?.country) || "-"}</p>
+                  </div>
+                  <div>
+                    <strong>Status</strong>
+                    <p>{(nestedTableData && nestedTableData?.user_id?.status) || "-"}</p>
+                  </div>
+                  <div>
+                    <div>Stage 1 id</div>
+                    <p
+                      style={{cursor: "pointer"}}
+                      onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.user_id?.id}`)}
+                    >
+                      {record?.stage1_id || "-"}
+                    </p>
+                  </div>
+                  <div>
+                    <div>Stage 2 id</div>
+                    <p
+                      style={{cursor: "pointer"}}
+                      onClick={() => navigate(`/account-analysis/${record?.stage2_id}/${platform}/${record?.user_id?.id}`)}
+                    >
+                      {record?.stage2_id || "-"}
+                    </p>
+                  </div>
+                  <div>
+                    <div>Max Loss</div>
+                    <p>{FormatUSD((nestedTableData && nestedTableData?.max_loss) ?? "-")}</p>
+                  </div>
+                  <div>
+                    <div>Profit</div>
+                    <p>{FormatUSD((nestedTableData && nestedTableData?.max_loss) ?? "-")}</p>
+                  </div>
+                  <div>
+                    <div>Max Daily Loss</div>
+                    <p>{FormatUSD((nestedTableData && nestedTableData?.max_daily_loss) ?? "-")}</p>
+                  </div>
+                  <div className="date_time">
+                    <div>Date Joined</div>
+                    <p>{moment(record?.user_id?.date_joined).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
+                  </div>
+                  <div className="date_time">
+                    <div>Date (Created at)</div>
+                    <p>{moment(record?.start_date).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
+                  </div>
+                </div>
               </div>
               <div className="nestedPayoutRow2">
-              <div className="comment_box">
-                <div>
-                  Comment{" "}
-                  <img
-                    width={"15px"}
-                    src={addIcon}
-                    alt=""
-                    style={{cursor: "pointer"}}
-                    onClick={() => openEditModal(record?.comment, record)}
-                  />
+                <div className="comment_box">
+                  <div>
+                    Comment{" "}
+                    <img
+                      width={"15px"}
+                      src={addIcon}
+                      alt=""
+                      style={{cursor: "pointer"}}
+                      onClick={() => openEditModal(record?.comment, record)}
+                    />
+                  </div>
+                  <div className="text">{record?.comment || "-"}</div>
                 </div>
-                <div className="text">{record?.comment || "-"}</div>
-              </div>
-              <div className="reason_container">
-                <strong>Reason</strong>
-                <div className="text">{(nestedTableData && nestedTableData?.reason) || "-"}</div>
-              </div>
+                <div className="reason_container">
+                  <strong>Reason</strong>
+                  <div className="text">{(nestedTableData && nestedTableData?.reason) || "-"}</div>
+                </div>
               </div>
             </>
           )}
@@ -1858,57 +1874,93 @@ function ExpandedRowData({record}) {
                   </div>
                   <div>
                     <strong>Contact</strong>
-                    <p onClick={() => copyToClipboard(nestedTableData?.country)}>{(nestedTableData && nestedTableData?.contact) || "-"}</p>
+                    <p onClick={() => copyToClipboard(nestedTableData?.contact)}>{(nestedTableData && nestedTableData?.contact) || "-"}</p>
                   </div>
 
                   <div>
                     <strong>Type</strong>
-                    <p onClick={() => copyToClipboard(nestedTableData?.country)}>{(nestedTableData && nestedTableData?.type) || "-"}</p>
+                    <p onClick={() => copyToClipboard(nestedTableData?.type)}>{(nestedTableData && nestedTableData?.type) || "-"}</p>
                   </div>
 
                   {nestedTableData && nestedTableData?.type === "RISE" ? (
                     <>
                       <div>
                         <strong>Rise Email</strong>
-                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.rise_email || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.rise_email)}>{nestedTableData?.rise_email || "-"}</p>
                       </div>
                       <div>
                         <strong>Is Rise Verified</strong>
-                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData && nestedTableData?.is_rise_verified ? "Yes" : "No"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.is_rise_verified)}>{nestedTableData && nestedTableData?.is_rise_verified ? "Yes" : "No"}</p>
+                      </div>
+                      <div>
+                        <div>Stage 1 id</div>
+                        <p
+                          style={{cursor: "pointer"}}
+                          onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.user?.id}`)}
+                        >
+                          {record?.stage1_id || "-"}
+                        </p>
+                      </div>
+                      <div>
+                        <div>Stage 2 id</div>
+                        <p
+                          style={{cursor: "pointer"}}
+                          onClick={() => navigate(`/account-analysis/${record?.stage2_id}/${platform}/${record?.user?.id}`)}
+                        >
+                          {record?.stage2_id || "-"}
+                        </p>
                       </div>
                     </>
                   ) : nestedTableData && nestedTableData?.type === "WISE" ? (
                     <>
                       <div>
                         <strong>Wise Email</strong>
-                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.wise_email || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.wise_email)}>{nestedTableData?.wise_email || "-"}</p>
                       </div>
                       <div>
                         <strong>Is Wise Verified</strong>
-                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData && nestedTableData?.is_wise_verified ? "Yes" : "No"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.is_wise_verified)}>{nestedTableData && nestedTableData?.is_wise_verified ? "Yes" : "No"}</p>
+                      </div>
+                      <div>
+                        <div>Stage 1 id</div>
+                        <p
+                          style={{cursor: "pointer"}}
+                          onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.user?.id}`)}
+                        >
+                          {record?.stage1_id || "-"}
+                        </p>
+                      </div>
+                      <div>
+                        <div>Stage 2 id</div>
+                        <p
+                          style={{cursor: "pointer"}}
+                          onClick={() => navigate(`/account-analysis/${record?.stage2_id}/${platform}/${record?.user?.id}`)}
+                        >
+                          {record?.stage2_id || "-"}
+                        </p>
                       </div>
                     </>
                   ) : (
                     <>
                       <div>
                         <strong>Verification Type</strong>
-                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{(nestedTableData && nestedTableData?.verification_type) || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.verification_type)}>{(nestedTableData && nestedTableData?.verification_type) || "-"}</p>
                       </div>
                       <div>
                         <strong>Account Name</strong>
-                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.account_name || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.account_name)}>{nestedTableData?.account_name || "-"}</p>
                       </div>
                       <div>
                         <strong>Account Number</strong>
-                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.account_number || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.account_number)}>{nestedTableData?.account_number || "-"}</p>
                       </div>
                       <div>
                         <strong>Account Type</strong>
-                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.account_type || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.account_type)}>{nestedTableData?.account_type || "-"}</p>
                       </div>
                       <div>
                         <strong>City</strong>
-                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.city || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.city)}>{nestedTableData?.city || "-"}</p>
                       </div>
                       <div>
                         <strong>Country</strong>
@@ -1916,23 +1968,41 @@ function ExpandedRowData({record}) {
                       </div>
                       <div>
                         <strong>Address</strong>
-                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.address || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.address)}>{nestedTableData?.address || "-"}</p>
                       </div>
                       <div>
                         <strong>Postal Code</strong>
-                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.postal_code || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.postal_code)}>{nestedTableData?.postal_code || "-"}</p>
                       </div>
                       <div>
                         <strong>Contact</strong>
-                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.contact || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.contact)}>{nestedTableData?.contact || "-"}</p>
                       </div>
                       <div>
                         <strong>Swift Bic Code</strong>
-                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.swift_bic_code || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.swift_bic_code)}>{nestedTableData?.swift_bic_code || "-"}</p>
                       </div>
                       <div>
                         <strong>Payment Verification Status</strong>
-                        <p onClick={() => copyToClipboard(nestedTableData?.country)}>{nestedTableData?.payment_verification_status || "-"}</p>
+                        <p onClick={() => copyToClipboard(nestedTableData?.payment_verification_status)}>{nestedTableData?.payment_verification_status || "-"}</p>
+                      </div>
+                      <div>
+                        <div>Stage 1 id</div>
+                        <p
+                          style={{cursor: "pointer"}}
+                          onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.user?.id}`)}
+                        >
+                          {record?.stage1_id || "-"}
+                        </p>
+                      </div>
+                      <div>
+                        <div>Stage 2 id</div>
+                        <p
+                          style={{cursor: "pointer"}}
+                          onClick={() => navigate(`/account-analysis/${record?.stage2_id}/${platform}/${record?.user?.id}`)}
+                        >
+                          {record?.stage2_id || "-"}
+                        </p>
                       </div>
                     </>
                   )}
@@ -1951,7 +2021,7 @@ function ExpandedRowData({record}) {
                     </div>
                     <div
                       className="text"
-                      onClick={() => copyToClipboard(nestedTableData?.country)}
+                      onClick={() => copyToClipboard(record?.comment)}
                     >
                       {record?.comment || "-"}
                     </div>
@@ -1960,7 +2030,7 @@ function ExpandedRowData({record}) {
                     <strong>Reason</strong>
                     <div
                       className="text"
-                      onClick={() => copyToClipboard(nestedTableData?.country)}
+                      onClick={() => copyToClipboard(nestedTableData?.reason)}
                     >
                       {(nestedTableData && nestedTableData?.reason) || "-"}
                     </div>

@@ -173,6 +173,7 @@ const listSlice = createSlice({
         if (index !== -1) {
           state.tableData[index] = updatedUser;
         }
+        state.refetch = !state.refetch;
       })
       .addCase(toggleActiveUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -198,6 +199,17 @@ const listSlice = createSlice({
         state.refetch = !state.refetch;
       })
       .addCase(updateFlagReq.rejected, (state, action) => {
+        state.flagLoading = false;
+        state.error = action.payload || action.error.message;
+      })
+      .addCase(softBlockUser.pending, (state) => {
+        state.flagLoading = true;
+        state.error = null;
+      })
+      .addCase(softBlockUser.fulfilled, (state, action) => {
+        state.refetch = !state.refetch;
+      })
+      .addCase(softBlockUser.rejected, (state, action) => {
         state.flagLoading = false;
         state.error = action.payload || action.error.message;
       });
