@@ -8,7 +8,7 @@ import logoIcon from "../../../assets/icons/logo_blue_bg.svg";
 import {useNavigate} from "react-router-dom";
 import {validateEmail, validatePassword} from "../../../utils/helpers/string";
 import {useDispatch, useSelector} from "react-redux";
-import {authenticate, setAuthenticationStatus} from "../../../store/reducers/authSlice";
+import {authenticate, setAuthenticationStatus} from "../../../store/NewReducers/authSlice";
 import {alphaNewLogin} from "../../../utils/api/apis";
 import {returnErrors} from "../../../store/reducers/error";
 import {formatText} from "../../../utils/string";

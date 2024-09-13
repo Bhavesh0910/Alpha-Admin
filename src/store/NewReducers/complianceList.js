@@ -130,3 +130,27 @@ const complianceList = createSlice({
 });
 
 export default complianceList.reducer;
+
+async function updateKycApi(idToken, body) {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    };
+    let response = await axios.post(`${baseUrl}v2/update-kyc/`, body, config);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const updateKycStatus = createAsyncThunk("kyc/updateAdminStatus", async ({idToken, body, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await updateKycApi(idToken, body);
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error.response?.data?.detail || "Error while fetching Billing List!", 400));
+    return rejectWithValue(error.response.data);
+  }
+});

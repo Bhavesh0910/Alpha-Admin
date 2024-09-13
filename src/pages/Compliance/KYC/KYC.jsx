@@ -1,4 +1,4 @@
-import {Button, DatePicker, Select} from "antd";
+import {Button, DatePicker, Dropdown, Form, Input, Menu, Modal, Select} from "antd";
 import React, {useEffect, useMemo, useState} from "react";
 import {ReactComponent as DownloadToPC} from "../../../assets/icons/download_to_pc.svg";
 import "./KYC.scss";
@@ -8,10 +8,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import {getKycList} from "../../../store/NewReducers/complianceList";
+import {getKycList, updateKycStatus} from "../../../store/NewReducers/complianceList";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
+import {DownOutlined} from "@ant-design/icons";
+import {render} from "react-saga";
 const {Option} = Select;
 const {RangePicker} = DatePicker;
+
 const KYC = () => {
   const lookup = require("country-code-lookup");
   const {idToken, searchDates} = useSelector((state) => state.auth);
@@ -26,6 +29,11 @@ const KYC = () => {
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
 
+  const [kycUser, setKycUser] = useState(null);
+  const [kycModel, setKycModel] = useState(false);
+  const [kycUpdatedValue, setKycUpdatedValue] = useState(null);
+  const [comment, setComment] = useState(null);
+
   const {data, isLoading: accountsLoading, count} = useSelector((state) => state.compliance);
 
   console.log(data, "data");
@@ -38,7 +46,7 @@ const KYC = () => {
     }
 
     if (status && status !== "all") {
-      query += `&status=${status}`;
+      query += `&admin_status=${status}`;
     }
 
     if (searchText) {
@@ -71,6 +79,39 @@ const KYC = () => {
     setPageSize(updatedPageSize);
   }
 
+  const openKycUpdateModel = (updatedValue, record) => {
+    setKycModel(true);
+    setKycUser(record);
+    setKycUpdatedValue(updatedValue);
+  };
+
+  const statusMenuKyc = (key, record) => (
+    <Menu
+      className="menuCard"
+      onClick={(e) => openKycUpdateModel(e.key, record)}
+    >
+      <Menu.Item key="Pending">Pending</Menu.Item>
+      <Menu.Item key="Manual Approved">Manual Approved</Menu.Item>
+      <Menu.Item key="Approved">Approved</Menu.Item>
+      <Menu.Item key="Rejected">Rejected</Menu.Item>
+    </Menu>
+  );
+
+  function reset() {
+    setKycModel(false);
+    setKycUser(null);
+    setKycUpdatedValue(null);
+  }
+
+  function handleUpdateFlag() {
+    const formData = new FormData();
+    formData.append("status", kycUpdatedValue);
+    formData.append("email", kycUser?.email);
+    formData.append("description", comment);
+    dispatch(updateKycStatus({idToken, body: formData}));
+    // setFlagModel(false);
+    reset();
+  }
   const columns = useMemo(() => [
     {
       title: "Email ID",
@@ -83,6 +124,7 @@ const KYC = () => {
       dataIndex: "user",
       key: "user",
       width: 100,
+      render: (text, record) => (text ? text?.id : "-"),
     },
     {
       title: "Date",
@@ -92,8 +134,8 @@ const KYC = () => {
     },
     {
       title: "Sumsub Status",
-      dataIndex: "admin_status",
-      key: "admin_status",
+      dataIndex: "status",
+      key: "status",
       width: 100,
       render: (text) => (
         <div
@@ -105,15 +147,21 @@ const KYC = () => {
     },
     {
       title: "Admin Review",
-      dataIndex: "admin_review",
-      key: "admin_review",
+      dataIndex: "admin_status",
+      key: "admin_status",
       width: 100,
-      render: (text) =>
+      render: (text, row, index) =>
         text !== null ? (
           <div
             className={`adminStatus_indicator ${text === "Approved" ? "approved" : text === "Pending" ? "pending" : text === "in_progress" ? "in_progress" : text === "in_review" ? "in_review" : ""}`}
           >
             {text}
+            <Dropdown
+              overlay={() => statusMenuKyc(text?.status, row)}
+              trigger={["click"]}
+            >
+              <DownOutlined />
+            </Dropdown>
           </div>
         ) : (
           "-"
@@ -164,19 +212,6 @@ const KYC = () => {
     },
   ]);
 
-  const dummyData = [
-    {
-      key: "1",
-      emailId: "tanya.hill@example.com",
-      accountNumber: "2798",
-      date: "4/4/18",
-      sumsubStatus: "approved",
-      adminReview: "in_progress",
-      country: "United States",
-      contract: "icon", // This should be replaced with the actual path or identifier for the contract icon
-    },
-  ];
-
   function updateDateRange(dates) {
     if (dates) {
       setDates(dates.map((date) => date.format("DD MMM YYYY")));
@@ -186,89 +221,114 @@ const KYC = () => {
   }
 
   return (
-    <div className="kyc_container">
-      <div className="header_wrapper">
-        <div className="heading_box">
-          <h3>KYC</h3>{" "}
-          <RangePicker
-            // placeholder={dates}
-            onChange={updateDateRange}
-          />
-        </div>
-        <div className="table_header_filter">
-          <div className="search_box_wrapper search_box_wrapper">
-            <input
-              placeholder="Search by Email..."
-              className="search_input"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={(e) => {
-                console.log("e : ", e.key === "Enter");
-                if (e.key === "Enter") {
-                  console.log("Searching.....");
-                  handleSearch(e.target.value);
-                }
-              }}
+    <>
+      <div className="kyc_container">
+        <div className="header_wrapper">
+          <div className="heading_box">
+            <h3>KYC</h3>{" "}
+            <RangePicker
+              // placeholder={dates}
+              onChange={updateDateRange}
             />
-            <div
-              className="searchImg"
-              onClick={() => handleSearch(search)}
-            >
-              <img
-                src={searchIcon}
-                alt="searchIcon"
-              />
-            </div>
           </div>
-          <div className="filter_buttons">
-            <Button
-              className={status === "all" ? "active" : ""}
-              onClick={() => handleTabChange("all")}
-            >
-              All
-            </Button>
-            {/* <Button
+          <div className="table_header_filter">
+            <div className="search_box_wrapper search_box_wrapper">
+              <input
+                placeholder="Search by Email..."
+                className="search_input"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={(e) => {
+                  console.log("e : ", e.key === "Enter");
+                  if (e.key === "Enter") {
+                    console.log("Searching.....");
+                    handleSearch(e.target.value);
+                  }
+                }}
+              />
+              <div
+                className="searchImg"
+                onClick={() => handleSearch(search)}
+              >
+                <img
+                  src={searchIcon}
+                  alt="searchIcon"
+                />
+              </div>
+            </div>
+            <div className="filter_buttons">
+              <Button
+                className={status === "all" ? "active" : ""}
+                onClick={() => handleTabChange("all")}
+              >
+                All
+              </Button>
+              {/* <Button
               className={status === "new" ? "active" : ""}
               onClick={() => handleTabChange("new")}
             >
               New
             </Button> */}
-            <Button
-              className={status === "Approved" ? "active" : ""}
-              onClick={() => handleTabChange("Approved")}
-            >
-              Approved
-            </Button>
-            <Button
-              className={status === "Rejected" ? "active" : ""}
-              onClick={() => handleTabChange("Rejected")}
-            >
-              Rejected
-            </Button>
-            <Button
-              className={status === "Pending" ? "active" : ""}
-              onClick={() => handleTabChange("Pending")}
-            >
-              Pending
-            </Button>
+              <Button
+                className={status === "Approved" ? "active" : ""}
+                onClick={() => handleTabChange("Approved")}
+              >
+                Approved
+              </Button>
+              <Button
+                className={status === "Rejected" ? "active" : ""}
+                onClick={() => handleTabChange("Rejected")}
+              >
+                Rejected
+              </Button>
+              <Button
+                className={status === "Pending" ? "active" : ""}
+                onClick={() => handleTabChange("Pending")}
+              >
+                Pending
+              </Button>
+            </div>
           </div>
         </div>
+        {accountsLoading ? (
+          <LoaderOverlay />
+        ) : (
+          <AntTable
+            data={data || []}
+            columns={columns}
+            totalPages={Math.ceil(count / pageSize)}
+            totalItems={count}
+            pageSize={pageSize}
+            CurrentPageNo={pageNo}
+            setPageSize={setPageSize}
+            triggerChange={triggerChange}
+          />
+        )}
       </div>
-      {accountsLoading ? (
-        <LoaderOverlay />
-      ) : (
-        <AntTable
-          data={data || []}
-          columns={columns}
-          totalPages={Math.ceil(count / pageSize)}
-          totalItems={count}
-          pageSize={pageSize}
-          CurrentPageNo={pageNo}
-          setPageSize={setPageSize}
-          triggerChange={triggerChange}
-        />
-      )}
-    </div>
+      <Modal
+        title={"Flag User"}
+        open={kycModel}
+        className="reset"
+        onCancel={() => {
+          reset();
+          // setFlagModel(false);
+        }}
+        onOk={handleUpdateFlag}
+      >
+        <Form.Item
+          label="Reason"
+          value={comment}
+          className="reset"
+          onChange={(e) => setComment(e.target.value)}
+        >
+          <Input.TextArea
+            style={{height: "120px"}}
+            maxLength={"255"}
+            placeholder="Write your comment here.."
+          />
+        </Form.Item>
+      </Modal>
+    </>
   );
 };
 

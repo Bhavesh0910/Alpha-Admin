@@ -1,7 +1,7 @@
 import axios from "axios";
 import {retry} from "redux-saga/effects";
 import {returnErrors} from "../../store/reducers/error";
-import {setIsLoading} from "../../store/reducers/authSlice";
+import {setIsLoading} from "../../store/NewReducers/authSlice";
 
 //  Acg Futures Admin
 // export const baseUrl = "http://13.42.34.37/";

@@ -7,7 +7,7 @@ import profilePic from "../assets/icons/userProfilePic.svg";
 import {useNavigate, useLocation, Link} from "react-router-dom";
 import {ReactComponent as Logout} from "../assets/icons/logout.svg";
 import {clearPersistedData} from "../store/configureStore";
-import {setAuthenticationStatus} from "../store/reducers/authSlice";
+import {setAuthenticationStatus} from "../store/NewReducers/authSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {returnErrors} from "../store/reducers/error";
 import {deAuthenticateAll} from "../store/NewReducers/logout";

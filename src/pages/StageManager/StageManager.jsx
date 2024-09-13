@@ -56,6 +56,8 @@ const StageManager = () => {
 
   const [close, setClose] = useState(false);
 
+  const [paymentReference, setPaymentReference] = useState("");
+
   const [status, setStatus] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
@@ -194,14 +196,17 @@ const StageManager = () => {
   );
 
   const handleUpdateStatus = () => {
+    console.log("I amd here : ", updatedStatus, " ", paymentReference);
     const formData = new FormData();
     formData.append("status", updatedStatus);
+    let isPayoutUpdate;
+
+    if (location.pathname === "/support/payout") {
+      formData.append("id", userToUpdate?.id);
+      formData.append("payment_reference", paymentReference);
+      isPayoutUpdate = location.pathname === "/support/payout";
+    }
     let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
-    let isPayoutUpdate = location.pathname === "/support/payout";
-    // console.log("id : ", userId);
-    // console.log("updatedStatus : ", updatedStatus);
-    // console.log("formData : ", formData);
-    // console.log("isPayoutUpdate : ", isPayoutUpdate);
     dispatch(statusUpdateReq({idToken, body: formData, id: userId, isPayoutUpdate, updatedStatus, dispatch}));
     setIsModalVisible(false);
   };
@@ -209,12 +214,7 @@ const StageManager = () => {
   const handleEditComment = () => {
     const formData = new FormData();
     formData.append("comment", editCommentToUpdate);
-
     let userId = location.pathname === "/support/funded" ? userToUpdate?.login_id : userToUpdate?.id;
-
-    console.log(" I am editing comment");
-    console.log("======================================");
-
     dispatch(editCommentReq({idToken, body: formData, id: userId, stage: location.pathname, dispatch}));
     setIsModalVisible(false);
   };
@@ -270,7 +270,6 @@ const StageManager = () => {
     <Menu
       className="menuCard"
       onClick={(e) => openFlagUpdateModal(e.key, record)}
-      onMouseLeave={() => setClose(false)}
     >
       <Menu.Item key="Safe">Safe</Menu.Item>
       <Menu.Item key="Warning">Warning</Menu.Item>
@@ -287,11 +286,6 @@ const StageManager = () => {
     setFlagModel(false);
     reset();
   }
-
-  useEffect(() => {
-    console.log("Close : ", close);
-  }, [close]);
-
   const columns = useMemo(() => {
     switch (location?.pathname) {
       case "/support/stage-1":
@@ -1441,6 +1435,7 @@ const StageManager = () => {
           setEditCommentToUpdate(null);
           setuserToUpdate(null);
           setUpdatedContract(null);
+          setPaymentReference(null);
         }}
         onOk={modalAction === "Update Status" ? handleUpdateStatus : modalAction === "Edit" ? handleEditComment : modalAction === "Create Account" ? handleCreateAccount : handleContract}
         className="supportModel"
@@ -1458,18 +1453,45 @@ const StageManager = () => {
               placeholder="Write your comment here.."
             />
           </Form.Item>
+        ) : modalAction === "Update Status" && location.pathname === "/support/payout" ? (
+          <>
+            <Form.Item
+              className="lableWhite"
+              label="Comment"
+              style={{color: "white"}}
+            >
+              <Input.TextArea
+                value={paymentReference}
+                onChange={(e) => setPaymentReference(e.target.value)}
+                placeholder="Write your comment here.."
+              />
+            </Form.Item>
+            <Form.Item
+              className="lableWhite"
+              label="Payment Reference"
+              style={{color: "white"}}
+            >
+              <Input.TextArea
+                value={editCommentToUpdate}
+                onChange={(e) => setEditCommentToUpdate(e.target.value)}
+                placeholder="Write your comment here.."
+              />
+            </Form.Item>
+          </>
         ) : (
           <Form.Item
             className="lableWhite"
             label="Comment"
-            value={editCommentToUpdate}
-            onChange={(e) => setEditCommentToUpdate(e.target.value)}
             style={{color: "white"}}
           >
             <Input.TextArea
               style={{height: "120px"}}
               maxLength={"255"}
+             
+              value={editCommentToUpdate}
+              onChange={(e) => setEditCommentToUpdate(e.target.value)}
               placeholder="Write your comment here.."
+           
             />
           </Form.Item>
         )}
