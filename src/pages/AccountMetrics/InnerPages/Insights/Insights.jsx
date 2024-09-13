@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Insights.scss";
-import { Radio, Spin } from "antd";
+import { Empty, Radio, Spin } from "antd";
 import { fetchAccountInsights } from "../../../../store/NewReducers/amSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { formatValue } from "../../../../utils/helpers/string";
@@ -26,8 +26,6 @@ const Insights = ({ login_id, platform }) => {
 
 
 
-
-
   return (
     <div className="insights_main">
       {/* Tabination */}
@@ -47,81 +45,87 @@ const Insights = ({ login_id, platform }) => {
             <h2>Advanced Statistics</h2>
           </div>
 
-          <div className="insights_main_inner">
-            <div className="insights_main_left">
-              <div>
-                <p>Total Trades</p>
-                <p>{formatValue(accountInsights?.total_trades, 0)}</p>
-              </div>
-              <div>
-                <p>Long Trades</p>
-                <p>{formatValue(accountInsights?.Long_trade, 0)}</p>
-              </div>
-              <div>
-                <p>Short Trades</p>
-                <p>{formatValue(accountInsights?.short_trade, 0)}</p>
-              </div>
-              <div>
-                <p>Best Trade</p>
-                <p>{formatValue(accountInsights?.best_trade, 0)}</p>
-              </div>
-              <div>
-                <p>Worst Trade</p>
-                <p>{formatValue(accountInsights?.worst_trade, 0)}</p>
-              </div>
-              <div>
-                <p>Lots</p>
-                <p>{formatValue(accountInsights?.lots)}</p>
-              </div>
-              <div>
-                <p>Commission</p>
-                <p>{formatValue(accountInsights?.commission)}</p>
-              </div>
-              <div>
-                <p>Pips</p>
-                <p>{formatValue(accountInsights?.pips)}</p>
-              </div>
-            </div>
+          {!accountInsights ?
+            <Empty className="no_data" description="No Data Available" />
+            :
 
-            <div className="insights_main_right">
-              <div>
-                <p>Long Won</p>
-                <p>{formatValue(accountInsights?.long_won)}</p>
+
+            <div className="insights_main_inner">
+              <div className="insights_main_left">
+                <div>
+                  <p>Total Trades</p>
+                  <p>{formatValue(accountInsights?.total_trades, 0)}</p>
+                </div>
+                <div>
+                  <p>Long Trades</p>
+                  <p>{formatValue(accountInsights?.Long_trade, 0)}</p>
+                </div>
+                <div>
+                  <p>Short Trades</p>
+                  <p>{formatValue(accountInsights?.short_trade, 0)}</p>
+                </div>
+                <div>
+                  <p>Best Trade</p>
+                  <p>{formatValue(accountInsights?.best_trade, 0)}</p>
+                </div>
+                <div>
+                  <p>Worst Trade</p>
+                  <p>{formatValue(accountInsights?.worst_trade, 0)}</p>
+                </div>
+                <div>
+                  <p>Lots</p>
+                  <p>{formatValue(accountInsights?.lots)}</p>
+                </div>
+                <div>
+                  <p>Commission</p>
+                  <p>{formatValue(accountInsights?.commission)}</p>
+                </div>
+                <div>
+                  <p>Pips</p>
+                  <p>{formatValue(accountInsights?.pips)}</p>
+                </div>
               </div>
-              <div>
-                <p>Short Won</p>
-                <p>{formatValue(accountInsights?.short_won)}</p>
-              </div>
-              <div>
-                <p>Best Trade Pip</p>
-                <p>{formatValue(accountInsights?.best_trade_pip)}</p>
-              </div>
-              <div>
-                <p>Worst Trade Pip</p>
-                <p>{formatValue(accountInsights?.worst_trade_pip)}</p>
-              </div>
-              <div>
-                <p>Average Win</p>
-                <p>{formatValue(accountInsights?.average_win)}</p>
-              </div>
-              <div>
-                <p>Average Loss</p>
-                <p>{formatValue(accountInsights?.average_loss)}</p>
-              </div>
-              <div>
-                <p>Loss Ratio</p>
-                <p>{formatValue(accountInsights?.loss_ratio)}</p>
-              </div>
-              <div>
-                <p>Profit</p>
-                <p>{formatValue(accountInsights?.Profit)}</p>
-              </div>
-              <div>
-                <p>Average Trade Length</p>
-                <p>{formatValue(accountInsights?.average_trade_length)}</p>
+
+              <div className="insights_main_right">
+                <div>
+                  <p>Long Won</p>
+                  <p>{formatValue(accountInsights?.long_won)}</p>
+                </div>
+                <div>
+                  <p>Short Won</p>
+                  <p>{formatValue(accountInsights?.short_won)}</p>
+                </div>
+                <div>
+                  <p>Best Trade Pip</p>
+                  <p>{formatValue(accountInsights?.best_trade_pip)}</p>
+                </div>
+                <div>
+                  <p>Worst Trade Pip</p>
+                  <p>{formatValue(accountInsights?.worst_trade_pip)}</p>
+                </div>
+                <div>
+                  <p>Average Win</p>
+                  <p>{formatValue(accountInsights?.average_win)}</p>
+                </div>
+                <div>
+                  <p>Average Loss</p>
+                  <p>{formatValue(accountInsights?.average_loss)}</p>
+                </div>
+                <div>
+                  <p>Loss Ratio</p>
+                  <p>{formatValue(accountInsights?.loss_ratio)}</p>
+                </div>
+                <div>
+                  <p>Profit</p>
+                  <p>{formatValue(accountInsights?.Profit)}</p>
+                </div>
+                <div>
+                  <p>Average Trade Length</p>
+                  <p>{formatValue(accountInsights?.average_trade_length)}</p>
+                </div>
               </div>
             </div>
-          </div>
+          }
         </div>
       }
     </div>

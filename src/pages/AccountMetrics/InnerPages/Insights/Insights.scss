@@ -3,6 +3,14 @@
   flex-direction: column;
   gap: 20px;
 
+  .no_data{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
   .insights_main_container {
     display: flex;
     padding: 20px;
