@@ -214,7 +214,7 @@ async function statusUpdateApi(idToken, body, id, isPayoutUpdate, updatedStatus)
     let response;
 
     if (isPayoutUpdate) {
-      response = await axios.post(`${baseUrl}v2/update-payout-status/`, {id, status: updatedStatus}, config);
+      response = await axios.post(`${baseUrl}v2/update-payout-status/`, body, config);
     } else {
       response = await axios.patch(`${baseUrl}v2/support/case/history/${id}/`, body, config);
     }

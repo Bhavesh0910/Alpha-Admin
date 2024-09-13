@@ -83,6 +83,7 @@ const complianceList = createSlice({
     data: [],
     count: 1,
     bilingDetailsData: [],
+    refetch: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -125,8 +126,43 @@ const complianceList = createSlice({
       .addCase(getBillingDetailsReq.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
+      })
+      .addCase(updateKycStatus.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(updateKycStatus.fulfilled, (state, action) => {
+        state.refetch = !state.refetch;
+      })
+      .addCase(updateKycStatus.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
       });
   },
 });
 
 export default complianceList.reducer;
+
+async function updateKycApi(idToken, body) {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    };
+    let response = await axios.post(`${baseUrl}v2/update-kyc/`, body, config);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const updateKycStatus = createAsyncThunk("kyc/updateAdminStatus", async ({idToken, body, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await updateKycApi(idToken, body);
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error.response?.data?.detail || "Error while fetching Billing List!", 400));
+    return rejectWithValue(error.response.data);
+  }
+});

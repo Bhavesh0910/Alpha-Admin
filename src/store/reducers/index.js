@@ -2,7 +2,7 @@ import {combineReducers} from "redux";
 
 import accountReducer from "./accountSlice";
 import advReducer from "./advSlice";
-import authReducer from "./authSlice";
+import authReducer from "../NewReducers/authSlice";
 import compReducer from "../NewReducers/competitionSlice";
 import couponReducer from "./couponSlice";
 import errorAlertReducer from "./error";

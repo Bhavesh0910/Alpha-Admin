@@ -22,6 +22,7 @@ import {fetchFundingDetails} from "../../../store/NewReducers/fundingSlice";
 import {data} from "./../../../components/AffiliateMarketing/UserDetails/UserDetails";
 import {DownOutlined, UpOutlined} from "@ant-design/icons";
 import {updateFlagReq} from "../../../store/NewReducers/listSlice";
+import {refreshTokenReq} from "../../../store/NewReducers/authSlice";
 const {Title} = Typography;
 const {Option, OptGroup} = Select;
 const {RangePicker} = DatePicker;
@@ -42,7 +43,7 @@ function TraderOverview() {
   const [reason, setReason] = useState("");
 
   const [phase, setPhase] = useState("");
-  const {idToken, searchDates} = useSelector((state) => state.auth);
+  const {idToken, refreshToken, searchDates} = useSelector((state) => state.auth);
   const {data, isLoading: accountsLoading, totalItems, refresh} = useSelector((state) => state.accountList);
   const [Challenges, setChallenges] = useState(null);
   const [labels, setLabels] = useState([]);
@@ -98,7 +99,7 @@ function TraderOverview() {
         query = query + `&start_date=${dates[0]}&end_date=${dates[1]}`;
       }
       if (phase !== "") {
-        let phaseQuery = phase === "Free Trail" ? "&free_trial=1" : `&trading_type=${phase}`;
+        let phaseQuery = phase === "Free Trail" ? "&free_trial=1" : `&status=${phase}`;
         query = query + phaseQuery;
       }
       if (Challenges) {
@@ -355,8 +356,10 @@ function TraderOverview() {
         title: "Balance",
         dataIndex: "balance",
         key: "balance",
-        width: 120,
-        render: (startingBalance) => <span>{startingBalance ? "$" + parseFloat(startingBalance).toFixed(2).toLocaleString() : "-"}</span>,
+        width: 150,
+        render: (startingBalance) => {
+          return <span onClick={() => dispatch(refreshTokenReq(refreshToken))}>{startingBalance ? "$" + parseFloat(startingBalance).toFixed(2).toLocaleString() : "-"}</span>;
+        },
       },
       // {
       //   title: "Equity",
@@ -708,7 +711,7 @@ function TraderOverview() {
               {/* <Radio.Button value="Evalution/Funded">Evalution/Funded</Radio.Button> */}
               <Radio.Button value="Funded">Funded</Radio.Button>
               <Radio.Button value="Verification">Verification</Radio.Button>
-              <Radio.Button value="Evalution">Evalution</Radio.Button>
+              <Radio.Button value="Evaluation">Evalution</Radio.Button>
               <Radio.Button value="Free Trail">Free Trial</Radio.Button>
             </Radio.Group>
           </div>

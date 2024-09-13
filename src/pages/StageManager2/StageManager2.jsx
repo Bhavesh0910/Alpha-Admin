@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {generateContractRequest, getSupportTableDetailsNew} from "../../utils/api/apis";
 import comment from "../../assets/icons/comment.svg";
 import {returnErrors} from "../../store/reducers/error";
-import {setIsLoading} from "../../store/reducers/authSlice";
+import {setIsLoading} from "../../store/NewReducers/authSlice";
 import {returnMessages} from "../../store/reducers/message";
 import {toast} from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";

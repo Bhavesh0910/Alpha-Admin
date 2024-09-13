@@ -402,3 +402,11 @@
   margin-top: -5px;
   cursor: pointer;
 }
+
+.ant-form-item-row {
+  flex-direction: column;
+  align-items: flex-start;
+  .ant-form-item-control{
+    width: 100%;
+  }
+}
