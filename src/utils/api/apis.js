@@ -435,8 +435,8 @@ const traderAffiliateRefList = async (idToken, id , status = 'success') => {
 };
 
 
-export const getPushleadsChartData = async (idToken, id , code) => {
-  console.log(id , code)
+export const getPushleadsChartData = async (idToken, affiliateId) => {
+  console.log(affiliateId)
   try {
     const config = {
       headers: {
@@ -444,7 +444,7 @@ export const getPushleadsChartData = async (idToken, id , code) => {
       },
     
     };
-    const response = await axios.get(`${baseUrl}pushlead/?session=${id}&affiliate_code=${code}`, config);
+    const response = await axios.get(`${baseUrl}affiliate/v2/dashboard/?affiliate_id=${affiliateId}`, config);
     return response.data;
   } catch (error) {
     console.error("Error in getting trader ref list", error);
@@ -1327,6 +1327,7 @@ export const getPayoutDetails = async (idToken, query) => {
 };
 
 
+
 export const getTotatPayments = async (idToken , query) => {
   try {
     const response = await axios.get(`${baseUrl}total/payment-request/`, {
@@ -1336,7 +1337,22 @@ export const getTotatPayments = async (idToken , query) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching pass rate:", error);
+    console.error("Error fetching total payments:", error);
+    throw error;
+  }
+};
+
+
+export const getTotalMethod = async (idToken , query) => {
+  try {
+    const response = await axios.get(`${baseUrl}api/totalmethod/`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching total method:", error);
     throw error;
   }
 };

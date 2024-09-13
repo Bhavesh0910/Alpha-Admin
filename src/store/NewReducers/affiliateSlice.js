@@ -6,7 +6,9 @@ import {
   getAffiliateListV2,
   getCodelistV2,
   getExportHistory,
-  postAffiliateDetails
+  getPushleadsChartData,
+  postAffiliateDetails,
+  traderAffiliateRefList
 } from "../../utils/api/apis";
 import { returnErrors } from "../reducers/error";
 import { returnMessages } from "../reducers/message";
@@ -65,6 +67,35 @@ export const createAffiliateCode = createAsyncThunk(
     }
   }
 );
+
+export const fetchReferredList = createAsyncThunk(
+  "affiliate/fetchReferredList",
+  async ({ idToken, affiliateId, activeTab }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await traderAffiliateRefList(idToken, affiliateId, activeTab);
+      return response;
+    } catch (error) {
+      const msg = error.response?.data?.detail || "Error fetching referred list";
+      dispatch(returnErrors(msg, 400));
+      return rejectWithValue(msg);
+    }
+  }
+);
+
+export const fetchPushleadsChartData = createAsyncThunk(
+  "affiliate/fetchPushleadsChartData",
+  async ({ idToken, affiliateId }, { dispatch, rejectWithValue }) => {
+    try {
+      const data = await getPushleadsChartData(idToken, affiliateId);
+      return data;
+    } catch (error) {
+      const msg = error.response?.data?.detail || "Error fetching pushleads chart data";
+      dispatch(returnErrors(msg, 400));
+      return rejectWithValue(msg);
+    }
+  }
+);
+
 
 // Thunk for fetching code list
 export const fetchCodeList = createAsyncThunk(
@@ -136,7 +167,9 @@ const affiliateSlice = createSlice({
     codeData: [],
     newCodeListData: [],
     exportHistoryData: [], 
-    affiliateExportData: null, // Added state for affiliate export data
+    affiliateExportData: null,
+    referredList: [],
+    pushleadsChartData: null,
     currentPage: 1,
     totalPages: 1,
     isLoading: false,
@@ -227,6 +260,30 @@ const affiliateSlice = createSlice({
         state.affiliateExportData = action.payload;
       })
       .addCase(fetchAffExportData.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchReferredList.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchReferredList.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.referredList = action.payload;
+      })
+      .addCase(fetchReferredList.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchPushleadsChartData.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchPushleadsChartData.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.pushleadsChartData = action.payload;
+      })
+      .addCase(fetchPushleadsChartData.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

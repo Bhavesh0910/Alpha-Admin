@@ -39,8 +39,8 @@ const AffiliateMarketing = () => {
     setFilterData(newCodeData?.results);
   }, [newCodeData]);
 
-  const handleViewDetailsBtn = (id) => {
-    navigate('/affiliate-marketing/ref-list', { state: { id } });
+  const handleViewDetailsBtn = (id, code) => {
+    navigate('/affiliate-marketing/ref-list', { state: { id, code } });
   };
 
   function triggerChange(page, updatedPageSize) {
@@ -93,7 +93,7 @@ const AffiliateMarketing = () => {
       dataIndex: "email",
       render: (text, record) => (
         <div
-          onClick={() => handleViewDetailsBtn(record.id)}
+          onClick={() => handleViewDetailsBtn(record?.id , record?.code)}
           style={{ display: "flex", alignItems: "center", gap: "12px" }}
         >
           {category === "email" || category === "all"
@@ -119,6 +119,13 @@ const AffiliateMarketing = () => {
       render: (text) => text || "-",
     },
     {
+      title: "Code",
+      dataIndex: "code",
+      key: "code",
+      width: 150,
+      render: (text) => text || "-",
+    },
+    {
       title: "Coupon Discount",
       dataIndex: "coupon_discount",
       key: "coupon_discount",
@@ -132,7 +139,7 @@ const AffiliateMarketing = () => {
       render: (text, record) => (
         <button
           className="view_details_btn standard_button"
-          onClick={() => handleViewDetailsBtn(record.id)}
+          onClick={() => handleViewDetailsBtn(record.id , record?.code)}
         >
           View Details
         </button>

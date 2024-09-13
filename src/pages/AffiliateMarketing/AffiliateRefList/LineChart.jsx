@@ -1,8 +1,12 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
+import { Empty } from "antd";
 
 const LineChart = ({ data }) => {
-   
+  const seriesData = Array.isArray(data?.series) ? data.series : [];
+  const hasData = seriesData.length > 0;
+
+  // Define chart options
   const options = {
     chart: {
       type: "line",
@@ -11,33 +15,24 @@ const LineChart = ({ data }) => {
         show: false,
       },
     },
-    colors: ["#04D9FF"], 
+    colors: ["#04D9FF"],
     stroke: {
       curve: "smooth",
       width: 2,
     },
-    // markers: {
-    //   size: 4,
-    //   colors: ["#008000"],
-    //   strokeColors: "#fff",
-    //   strokeWidth: 2,
-    //   hover: {
-    //     size: 6,
-    //   },
-    // },
     xaxis: {
-      // categories: ["Aug 1", "Aug 2", "Aug 3", "Aug 4", "Aug 5", "Aug 6", "Aug 7", "Aug 8"],
+      categories: hasData ? seriesData[0].data.map((_, index) => index + 1) : [],
       labels: {
         style: {
           colors: "#000",
         },
-        rotate: 0,
+        rotate: -45,
         trim: true,
       },
     },
     yaxis: {
-      min: 0,
-      // max: 1200,
+      min: hasData ? Math.min(...seriesData[0].data) - 50 : 0,
+      max: hasData ? Math.max(...seriesData[0].data) + 50 : 100,
       labels: {
         style: {
           colors: "#000",
@@ -47,26 +42,34 @@ const LineChart = ({ data }) => {
     dataLabels: {
       enabled: false,
     },
-    grid: {
-      borderColor: "#e7e7e7",
-    },
-    fill: {
-      opacity: 1,
-    },
     legend: {
       show: false,
     },
+    grid: {
+      borderColor: '#e7e7e7',
+      strokeDashArray: 4,
+    },
   };
 
-    return (
-            <ReactApexChart 
-                options={options} 
-                series={data?.series || []} 
-                type="line" 
-                height={400} 
-                width={'100%'}
-            />
-    );
+  const series = hasData ? seriesData : [];
+
+  return (
+    <div className="chart" style={{ position: 'relative', height: '100%' }}>
+      {hasData ? (
+        <ReactApexChart
+          options={options}
+          series={series}
+          type="line"
+          height={400}
+          width={'100%'}
+        />
+      ) : (
+        <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Empty description="No Data Available" />
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default LineChart;

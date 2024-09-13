@@ -155,7 +155,6 @@ code {
 } */
 
 .ant-input {
-  resize: none !important;
   width: 100%;
   min-height: 44px;
   color: var(--primary-text-color);
@@ -359,16 +358,14 @@ input:-webkit-autofill:active {
   @media only screen and (max-width: 1280px) {
     min-width: fit-content;
   }
-  @media only screen and (max-width: 910px){
-    max-width: none !important;
-  }
+
   @media only screen and (max-width: 806px) {
-    // min-width: 100%;
-    // max-width: 100% !important;
+    min-width: 100%;
+    max-width: 100% !important;
     min-height: 40px;
   }
   @media only screen and (max-width: 440px) {
-    width: 100% !important;
+    width: 300px;
     margin-right: auto;
   }
   .left_side_box {
@@ -572,6 +569,7 @@ input:-webkit-autofill:active {
   background: var(--Main-Background, #f6fefe);
   width: 100%;
   max-width: 319px;
+  max-height: 45px;
 
   &:hover {
     background: var(--Main-Background, #f6fefe);

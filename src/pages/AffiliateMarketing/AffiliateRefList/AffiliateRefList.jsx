@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./AffiliateRefList.scss";
 import { DatePicker, Button, notification, Modal } from "antd";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import exportBtnIcon from "../../../assets/icons/export_btn_icon.svg";
 import dayjs from "dayjs";
@@ -9,50 +9,41 @@ import { useDispatch, useSelector } from "react-redux";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import LineChart from "./LineChart";
-import { traderAffiliateRefList } from "../../../utils/api/apis";
-import { fetchAffExportData } from "../../../store/NewReducers/affiliateSlice";
+import { fetchReferredList, fetchAffExportData, fetchPushleadsChartData } from "../../../store/NewReducers/affiliateSlice";
 import { returnErrors } from "../../../store/reducers/error";
 import { returnMessages } from "../../../store/reducers/message";
 import { CloseOutlined } from "@ant-design/icons";
 
 const { RangePicker } = DatePicker;
 
+
+
 const AffiliateRefList = () => {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [activeTab, setActiveTab] = useState("all");
     const [searchText, setSearchText] = useState("");
-    const [search, setSearch] = useState("");
     const [category, setCategory] = useState("all");
     const [pageSize, setPageSize] = useState(20);
     const [pageNo, setPageNo] = useState(1);
     const [dates, setDates] = useState(null);
     const [isModalVisible, setModalVisible] = useState(false);
     const [exportDates, setExportDates] = useState(null);
-    const [referredList, setReferredList] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isExportLoading, setIsExportLoading] = useState(false);
+    const [sessionId, setSessionId] = useState('');
 
     const { idToken } = useSelector((state) => state.auth);
-    const { isLoading: isExportLoadingState, affiliateExportData } = useSelector((state) => state.affiliate);
+    const { referredList, pushleadsChartData, affiliateExportData , isLoading, isExportLoading } = useSelector((state) => state.affiliate);
     const { state } = useLocation();
     const id = state?.id;
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
-            try {
-                const data = await traderAffiliateRefList(idToken, id, activeTab);
-                setReferredList(data);
-            } catch (error) {
-                console.error("Error fetching referred list:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
 
-        fetchData();
-    }, [id, activeTab, idToken]);
+
+    useEffect(() => {
+        if (id) {
+            dispatch(fetchReferredList({ idToken, affiliateId: id, activeTab }));
+            dispatch(fetchPushleadsChartData({ idToken, affiliateId: id }));
+        }
+    }, [id, activeTab, idToken, dispatch ]);
+
 
     const handleSearch = (value) => {
         setPageNo(1);
@@ -62,6 +53,7 @@ const AffiliateRefList = () => {
     const handleTabChange = (value) => {
         setPageNo(1);
         setActiveTab(value);
+        dispatch(fetchReferredList({ idToken, affiliateId: id, activeTab: value }));
     };
 
     const handleCategoryChange = (value) => {
@@ -89,16 +81,16 @@ const AffiliateRefList = () => {
     const handleExport = async () => {
         if (exportDates && exportDates.length === 2) {
             const [startDate, endDate] = exportDates;
-            setIsExportLoading(true);
             try {
-                const response = await dispatch(fetchAffExportData({ idToken, affiliateId: id, startDate, endDate }));
-                if (response?.data?.s3_file_url) {
-                    const s3_file_url = response.data.s3_file_url;
+                const response =  dispatch(fetchAffExportData({ idToken, affiliateId: id, startDate, endDate }));
+                if (affiliateExportData?.data?.s3_file_url) {
+                    const s3_file_url = affiliateExportData?.data?.s3_file_url;
                     const link = document.createElement("a");
                     link.href = s3_file_url;
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
+                    console.log(s3_file_url)
                     dispatch(returnMessages("Export Successful", 200));
                 } else {
                     console.error("Failed to fetch export data.");
@@ -107,7 +99,6 @@ const AffiliateRefList = () => {
                 console.error("Error exporting data:", error);
                 dispatch(returnErrors("Error exporting data", 400));
             } finally {
-                setIsExportLoading(false);
                 setModalVisible(false);
             }
         } else {
@@ -185,15 +176,15 @@ const AffiliateRefList = () => {
                         <input
                             placeholder="Search..."
                             className="search_input"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
                             onKeyDown={(e) => {
                                 if (e.key === "Enter") {
                                     handleSearch(e.target.value);
                                 }
                             }}
                         />
-                        <div className="searchImg" onClick={() => handleSearch(search)}>
+                        <div className="searchImg" onClick={() => handleSearch(searchText)}>
                             <img src={searchIcon} alt="searchIcon" />
                         </div>
                     </div>
@@ -244,14 +235,13 @@ const AffiliateRefList = () => {
             <div className="pushleads">
                 <div className="chart_wrapper">
                     <h3 className="chart_title">Pushleads</h3>
-                    <LineChart />
+                    <LineChart data={pushleadsChartData} />
                 </div>
                 <div className="ref_list_table">
                     <h3>Referred List</h3>    
                     <AntTable
                         columns={columns}
                         dataSource={referredList}
-                      
                     />
                 </div>
             </div>
