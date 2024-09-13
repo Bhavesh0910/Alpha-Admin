@@ -21,7 +21,7 @@ import {changeAccountStatusApi} from "../../../utils/apis/accountsApi";
 import {fetchFundingDetails} from "../../../store/NewReducers/fundingSlice";
 import {data} from "./../../../components/AffiliateMarketing/UserDetails/UserDetails";
 import {DownOutlined, UpOutlined} from "@ant-design/icons";
-import {updateFlagReq} from "../../../store/NewReducers/listSlice";
+import {softBlockUser, updateFlagReq} from "../../../store/NewReducers/listSlice";
 import {refreshTokenReq} from "../../../store/NewReducers/authSlice";
 const {Title} = Typography;
 const {Option, OptGroup} = Select;
@@ -64,6 +64,8 @@ function TraderOverview() {
   const [flagModal, setFlagModel] = useState(false);
   const [flagUpdatedValue, setFlagUpdatedValue] = useState(null);
   const [comment, setComment] = useState(null);
+
+  const [blockType, setBlockType] = useState("hard");
 
   const {refetch} = useSelector((state) => state.list);
 
@@ -459,7 +461,11 @@ function TraderOverview() {
   }
 
   const handleBlock = () => {
-    dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.user_id, note: reason}, dispatch}));
+    if (blockType === "hard") {
+      dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.user_id?.id, note: reason}, dispatch}));
+    } else {
+      dispatch(softBlockUser({id: selectedTrader?.user_id?.id, note: reason, idToken}));
+    }
     setIsModalVisible(false);
   };
 
@@ -469,8 +475,6 @@ function TraderOverview() {
   };
 
   const handleDelete = () => {
-    console.log("handleDelete");
-    console.log(platform, "plaform");
     dispatch(deleteAcount({idToken, body: {login_id: selectedTrader?.login_id}, platform, dispatch}));
     setIsModalVisible(false);
   };
@@ -482,31 +486,12 @@ function TraderOverview() {
   const handleChange = (value, options) => {
     setSelectedChallenges(value);
     const labels = options.map((option) => option.label);
-    console.log("Selected values:", value);
-    console.log("Selected labels:", labels);
   };
 
   const handleGroupClick = (groupValue) => {
     setExpandedGroup((prev) => (prev === groupValue ? null : groupValue));
   };
 
-  console.log(ChallengesOptions);
-  // const CustomOption = (props) => {
-  //   return (
-  //     <components.Option {...props} className="custom-option">
-  //       {props.data.label}
-  //     </components.Option>
-  //   );
-  // };
-
-  // const CustomMultiValueLabel = (props) => {
-  //   return (
-  //     <components.MultiValueLabel {...props} className="custom-multi-value-label">
-  //       {props.data.label}
-  //     </components.MultiValueLabel>
-  //   );
-  // };
-  console.log(`Trader Overview:`, data);
   return (
     <div className="trader-overview">
       <div className="mobile_headers">
@@ -840,6 +825,16 @@ function TraderOverview() {
           ]}
         >
           <div className="modal-content">
+            {action === "Block" && (
+              <Select
+                defaultValue="hard"
+                onChange={(value) => setBlockType(value)}
+              >
+                <Option value="hard">Hard Block</Option>
+                <Option value="soft">Soft Block</Option>
+              </Select>
+            )}
+
             <p className="modal-title">Write Your Reason</p>
             <textarea
               onChange={(e) => {

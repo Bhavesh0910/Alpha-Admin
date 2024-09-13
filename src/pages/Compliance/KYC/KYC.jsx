@@ -34,7 +34,7 @@ const KYC = () => {
   const [kycUpdatedValue, setKycUpdatedValue] = useState(null);
   const [comment, setComment] = useState(null);
 
-  const {data, isLoading: accountsLoading,refetch, count} = useSelector((state) => state.compliance);
+  const {data, isLoading: accountsLoading, refetch, count} = useSelector((state) => state.compliance);
 
   console.log(data, "data");
 
@@ -141,7 +141,7 @@ const KYC = () => {
         <div
           className={`sumsubStatus_indicator ${text === "Approved" ? "approved" : text === "Pending" ? "pending" : text === "in_progress" ? "in_progress" : text === "in_review" ? "in_review" : ""}`}
         >
-          {text}
+          {typeof text === "string" && text.length > 0 ? text.slice(0, 1).toUpperCase() + text.slice(1).toLowerCase() : "-"}
         </div>
       ),
     },
@@ -153,7 +153,21 @@ const KYC = () => {
       render: (text, row, index) =>
         text !== null ? (
           <div
-            className={`adminStatus_indicator ${text === "Approved" ? "approved" : text === "Pending" ? "pending" : text === "in_progress" ? "in_progress" : text === "in_review" ? "in_review" : ""}`}
+            className={`adminStatus_indicator ${
+              text === "Approved"
+                ? "approved"
+                : text === "Manual Approved"
+                ? "approved"
+                : text === "Rejected"
+                ? "rejected"
+                : text === "Pending"
+                ? "pending"
+                : text === "in_progress"
+                ? "in_progress"
+                : text === "in_review"
+                ? "in_review"
+                : ""
+            }`}
           >
             {text}
             <Dropdown
@@ -191,6 +205,38 @@ const KYC = () => {
           return <span>{"-"}</span>;
         }
       },
+    },
+    {
+      title: "Country based on Location",
+      dataIndex: "region",
+      key: "region",
+      width: 100,
+      render: (country) => {
+        console.log(country, "country");
+        const countryName = country;
+        const countryCode = lookup.byCountry(countryName);
+        if (countryCode) {
+          return (
+            <div className="country_name_wrapper">
+              <ReactCountryFlag
+                countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
+                svg={true}
+                aria-label={countryName}
+              />
+              <span>{countryName}</span>
+            </div>
+          );
+        } else {
+          return <span>{"-"}</span>;
+        }
+      },
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      width: 100,
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Contract",
@@ -263,12 +309,12 @@ const KYC = () => {
               >
                 All
               </Button>
-              {/* <Button
-              className={status === "new" ? "active" : ""}
-              onClick={() => handleTabChange("new")}
-            >
-              New
-            </Button> */}
+              <Button
+                className={status === "Manual Approved" ? "active" : ""}
+                onClick={() => handleTabChange("Manual Approved")}
+              >
+                Manual Approved
+              </Button>
               <Button
                 className={status === "Approved" ? "active" : ""}
                 onClick={() => handleTabChange("Approved")}
@@ -317,11 +363,11 @@ const KYC = () => {
       >
         <Form.Item
           label="Reason"
-          value={comment}
           className="reset"
-          onChange={(e) => setComment(e.target.value)}
         >
           <Input.TextArea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
             style={{height: "120px"}}
             maxLength={"255"}
             placeholder="Write your comment here.."
