@@ -102,11 +102,12 @@ const KYC = () => {
     setKycModel(false);
     setKycUser(null);
     setKycUpdatedValue(null);
+    setComment("");
   }
 
   function handleUpdateFlag() {
     const formData = new FormData();
-    formData.append("status", kycUpdatedValue);
+    formData.append("admin_status", kycUpdatedValue);
     formData.append("email", kycUser?.email);
     formData.append("description", comment);
     dispatch(updateKycStatus({idToken, body: formData}));

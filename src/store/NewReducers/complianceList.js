@@ -150,7 +150,7 @@ async function updateKycApi(idToken, body) {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    let response = await axios.post(`${baseUrl}v2/update-kyc/`, body, config);
+    let response = await axios.post(`${baseUrl}kyc/update/`, body, config);
     return response;
   } catch (error) {
     throw error;
