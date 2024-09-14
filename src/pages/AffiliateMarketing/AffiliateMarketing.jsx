@@ -172,8 +172,12 @@ const AffiliateMarketing = () => {
           <input
             placeholder="Search by Email..."
             className="search_input"
-            onKeyDown={(e) => setSearch(e.target.value)}
-          />
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch(e.target.value);
+              }
+            }}
+            />
           <div className="searchImg"            
            onClick={() => handleSearch(search)}
           >

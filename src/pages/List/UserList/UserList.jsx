@@ -27,6 +27,7 @@ const UserListTable = () => {
   const dispatch = useDispatch();
   const idToken = useSelector((state) => state.auth.idToken);
   const [searchText, setSearchText] = useState("");
+  const [search, setSearch] = useState("");
   const [active, setActive] = useState(true);
   const [authType, setAuthType] = useState(null);
   const [pageSize, setPageSize] = useState(20);
@@ -59,12 +60,11 @@ const UserListTable = () => {
     }
   }, [dispatch, idToken, searchText, pageNo, pageSize, authType, active, refetch]);
 
-  const handleSearch = (e) => {
-    if (e.key === "Enter") {
-      setSearchText(e.target.value);
-    }
+  const handleSearch = (value) => {
+    setPageNo(1);
+    setPageSize(20);
+    setSearchText(value);
   };
-
   const handleResetClick = () => {
     setSearchText("");
   };
@@ -363,9 +363,14 @@ const UserListTable = () => {
             <input
               placeholder="Search by email..."
               className="search_input"
-              onKeyDown={(e) => handleSearch(e)}
-            />
-            <div className="searchImg">
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch(e.target.value);
+                }
+              }}
+              />
+            <div className="searchImg" onClick={() => handleSearch(search)}>
               <img
                 src={searchIcon}
                 alt="searchIcon"

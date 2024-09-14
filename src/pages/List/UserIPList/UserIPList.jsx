@@ -17,6 +17,7 @@ const {Option} = Select;
 
 const UserIPList = () => {
   const [searchText, setSearchText] = useState("");
+  const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState("allowed");
   const [category, setCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,12 +44,11 @@ const UserIPList = () => {
     }
   }, [idToken, currentPage, searchText, activeTab]);
 
-  const handleSearch = (e) => {
-    if (e.key === "Enter") {
-      setSearchText(e.target.value);
-    }
+  const handleSearch = (value) => {
+    setPageNo(1);
+    setPageSize(20);
+    setSearchText(value);
   };
-
   const handleTabChange = (key) => {
     setActiveTab(key);
   };
@@ -204,9 +204,14 @@ const UserIPList = () => {
           <input
             placeholder="Search..."
             className="search_input"
-            onKeyDown={(e) => handleSearch(e)}
-          />
-          <div className="searchImg">
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch(e.target.value);
+              }
+            }}
+            />
+          <div className="searchImg" onClick={() => handleSearch(search)}>
             <img
               src={searchIcon}
               alt="searchIcon"

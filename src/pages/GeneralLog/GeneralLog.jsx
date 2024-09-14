@@ -82,26 +82,25 @@ const GeneralLog = () => {
     <div className="generalLog_container">
       <div className="header_wrapper">
         <h3> General Log</h3>
-               <input
-              placeholder="Search by category or email..."
+        
+        <div className="search_box_wrapper">
+            <input
+              placeholder="Search by category , email..."
               className="search_input"
-              value={search}
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleSearch(e.target.value);
                 }
               }}
-            />
-            <div
-              className="searchImg"
-              onClick={() => handleSearch(search)}
-            >
+              />
+            <div className="searchImg" onClick={() => handleSearch(search)}>
               <img
                 src={searchIcon}
                 alt="searchIcon"
               />
             </div>
+          </div>
       </div>
       {isLoading && <LoaderOverlay />}
       <AntTable
