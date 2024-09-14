@@ -87,8 +87,6 @@ function TraderOverview() {
   //   }
   // }, [fundingData]);
 
-  console.log(ChallengesOptions);
-
   const fetchTradersData = async (dates, pageNo, pageSize, searchText, status, phase, platform, Challenges) => {
     setIsLoading(true);
     try {
@@ -360,7 +358,7 @@ function TraderOverview() {
         key: "balance",
         width: 150,
         render: (startingBalance) => {
-          return <span onClick={() => dispatch(refreshTokenReq(refreshToken))}>{startingBalance ? "$" + parseFloat(startingBalance).toFixed(2).toLocaleString() : "-"}</span>;
+          return <span>{startingBalance ? "$" + parseFloat(startingBalance).toFixed(2).toLocaleString() : "-"}</span>;
         },
       },
       // {
