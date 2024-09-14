@@ -7,6 +7,7 @@ import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import { fetchCertificatesDetails } from "../../../store/NewReducers/amSlice";
 import certificateIcon from '../../../assets/icons/certificate.svg'
 import downloadIcon from '../../../assets/icons/download.svg'
+import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 function AllCertificates({ user_id }) {
   const dispatch = useDispatch();
   const { certificatesDetails, isLoading } = useSelector((state) => state.accountMetrics);
@@ -14,6 +15,8 @@ function AllCertificates({ user_id }) {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [certificateUrl, setCertificateUrl] = useState('');
+  const [pageNo, setPageNo] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
     dispatch(fetchCertificatesDetails({ user_id, idToken }));
@@ -68,6 +71,12 @@ function AllCertificates({ user_id }) {
     },
   ];
 
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
+
+
   return (
     <div className="all-certificates-wrapper">
       <div className="table_header_filter">
@@ -81,9 +90,16 @@ function AllCertificates({ user_id }) {
           <DatePicker />
         </div>
       </div>
+      {isLoading && <LoaderOverlay />}
       <AntTable
         columns={columns}
-        data={certificatesDetails}
+        data={certificatesDetails ?? []}
+        totalPages={Math.ceil(certificatesDetails?.length / pageSize)}
+        totalItems={certificatesDetails?.length}
+        pageSize={pageSize}
+        CurrentPageNo={pageNo}
+        setPageSize={setPageSize}
+        triggerChange={triggerChange}
       />
 
       <Modal
@@ -91,10 +107,11 @@ function AllCertificates({ user_id }) {
         footer={null}
         onCancel={handleCancel}
         width={800}
-        bodyStyle={{ textAlign: 'center' }}
+        className="custom-modal" 
+        style={{ textAlign: 'center'}}
       >
         <div className="certificate_modal" >
-          <img src={certificateUrl} alt="Certificate" style={{ maxWidth: '100%', maxHeight: '500px' }} />
+          <img src={certificateUrl} alt="Certificate" style={{ maxWidth: '100%', maxHeight: '500px', width:'100%' }} />
           <a
             href={certificateUrl}
             download
