@@ -2008,6 +2008,22 @@ function ExpandedRowData({record}) {
                   )}
                 </div>
                 <div className="nestedPayoutRow2">
+                  <div className="reason_container">
+                    <strong>{nestedTableData?.funded_accounts?.length > 0 ? "Previous Funded Accounts" : "Previous Funded Account"}</strong>
+                    {nestedTableData?.funded_accounts?.map((item) => {
+                      return (
+                        <div
+                          className="text"
+                          style={{cursor: "pointer"}}
+                          onClick={() => navigate(`/account-analysis/${item?.login_id}/${platform}/${record?.user?.id}`)}
+                        >
+                          {item?.login_id || "-"}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="nestedPayoutRow2">
                   <div className="comment_box">
                     <div>
                       Comment{" "}

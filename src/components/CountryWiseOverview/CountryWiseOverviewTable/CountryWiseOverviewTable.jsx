@@ -54,9 +54,7 @@ const CountryWiseOverviewTable = () => {
           description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
         });
         setDates(lastValidDates);
-        console.log("Here in IF COMP", dates);
       } else {
-        console.log("Here in ELSE COMP", dates);
         setIsValidRange(true);
         setLastValidDates([startDate, endDate]);
 
