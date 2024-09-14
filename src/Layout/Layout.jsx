@@ -30,6 +30,7 @@ import {ReactComponent as AdvanceIcon} from "../assets/icons/advance.svg";
 import {ReactComponent as MoreIcon} from "../assets/icons/more-adv.svg";
 import {ReactComponent as PassAndFailedIcon} from "../assets/icons/passandfail.svg";
 import {ReactComponent as DashIcon} from "../assets/icons/dash.svg";
+import {ReactComponent as CertificateIcon} from "../assets/icons/certificates.svg";
 
 const {Header, Sider, Content} = Layout;
 
@@ -208,6 +209,24 @@ const items = [
       },
     ],
   },
+  {
+    key: "19",
+    icon: <CertificateIcon />,
+    label: "Certificates",
+    link: "/certificates",
+    children: [
+      {
+        key: "19-1",
+        label: "All Certificates",
+        link: "/certificates/all-certificates",
+      },
+      {
+        key: "19-2",
+        label: "Create Certificates",
+        link: "/certificates/create-certificates",
+      },
+    ],
+  },
   // {
   //   key: "19",
   //   icon: <MoreIcon />,
@@ -355,7 +374,7 @@ const PageLayout = ({headerName, children}) => {
       case "/competitions/":
         return ["17"];
       case "/advance-statistics/withdrawal-status":
-        return ["18","18-1"];
+        return ["18", "18-1"];
       case "/advance-statistics/withdrawal-status":
         return ["18", "18-1"];
       case "/advance-statistics/withdrawal-details":
@@ -366,12 +385,19 @@ const PageLayout = ({headerName, children}) => {
         return ["18", "18-4"];
       case "/advance-statistics/payout":
         return ["18", "18-5"];
-      case "/advance-statistics/trading-pairs":
+      case "/certificates":
         return ["19"];
-      case "/advance-statistics/passed-and-failed":
-        return ["20"];
-      case "/advance-statistics/dash-stats":
-        return ["21"];
+      case "/certificates/all-certificates":
+        return ["19", "19-1"];
+      case "/certificates/create-certificates":
+        return ["19", "19-2"];
+      // case "/advance-statistics/trading-pairs":
+      //   return ["19"];
+      // case "/advance-statistics/passed-and-failed":
+      //   return ["20"];
+      // case "/advance-statistics/dash-stats":
+      //   return ["21"];
+
       default:
         return null;
     }

@@ -64,6 +64,9 @@ import OverView from "../pages/RiskManagement/NewPages/Overview/Overview";
 import TradingStats from "../pages/RiskManagement/NewPages/Trading stats/index";
 import TradingTagList from "../pages/RiskManagement/NewPages/TradingTagList";
 import NewRiskManagement from "../pages/RiskManagement/NewPages";
+import AllCertificates from "../pages/Certificates/AllCertificates";
+import CreateCertificates from "../pages/Certificates/CreateCertificates";
+import CreateCertificateViewLogs from "../pages/Certificates/CreateCertificates/Logs";
 
 function Router() {
   return (
@@ -401,6 +404,34 @@ function Router() {
             element={
               <PageLayout headerName="New Page">
                 <DashStatsExportHistory />
+              </PageLayout>
+            }
+          />
+
+          <Route
+            exact={true}
+            path="/certificates/all-certificates"
+            element={
+              <PageLayout headerName="All Certificates">
+                <AllCertificates/>
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/certificates/create-certificates"
+            element={
+              <PageLayout headerName="Create Certificates">
+                <CreateCertificates/>
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/certificates/create-certificates/view-logs"
+            element={
+              <PageLayout headerName="Create Certificates">
+                <CreateCertificateViewLogs/>
               </PageLayout>
             }
           />
