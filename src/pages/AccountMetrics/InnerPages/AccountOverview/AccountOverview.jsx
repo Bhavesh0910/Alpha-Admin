@@ -17,7 +17,8 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
     setPageNos(1);
     setCharts(e.target.value);
   };
-  
+
+
 
 
 
@@ -53,27 +54,27 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
             <button className="in_progress">{accountDetails?.progress}</button>
           </div>
           <div className="top_left_div_lower">
-          <div>
-            <p>Start Date</p>
-            <h3>{accountDetails?.start_date ? formatDate(accountDetails?.start_date) : '-'}</h3>
+            <div>
+              <p>Start Date</p>
+              <h3>{accountDetails?.start_date ? formatDate(accountDetails?.start_date) : '-'}</h3>
+            </div>
+            <div>
+              <p>End Date</p>
+              <h3>{accountDetails?.expiry_date ? formatDate(accountDetails?.expiry_date) : '-'}</h3>
+            </div>
+            <div>
+              <p>Account Size</p>
+              <h3>{formatValue(accountDetails?.challenge?.account_balance) ? dollarUS(accountDetails?.challenge?.account_balance) : "0"}</h3>
+            </div>
+            <div>
+              <p>Equity</p>
+              <h3>{formatValue(accountDetails?.equity) ? dollarUS(accountDetails?.equity) : "0"}</h3>
+            </div>
+            <div>
+              <p>No. of Trades</p>
+              <h3>{formatValue(overview?.calculated_data?.trades)}</h3>
+            </div>
           </div>
-          <div>
-            <p>End Date</p>
-            <h3>{accountDetails?.expiry_date ? formatDate(accountDetails?.expiry_date) : '-'}</h3>
-          </div>
-          <div>
-            <p>Account Size</p>
-            <h3>{formatValue(accountDetails?.challenge?.account_balance) ? dollarUS(accountDetails?.challenge?.account_balance) : "0"}</h3>
-          </div>
-          <div>
-            <p>Equity</p>
-            <h3>{formatValue(accountDetails?.equity) ? dollarUS(accountDetails?.equity) : "0"}</h3>
-          </div>
-          <div>
-            <p>No. of Trades</p>
-            <h3>{formatValue(overview?.calculated_data?.trades)}</h3>
-          </div>
-        </div>
         </div>
 
         <div className="top_right_div">
@@ -137,54 +138,54 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
               <h2>Statistic</h2>
             </div>
             <div className="bottom_main_left_satistic_inner">
-      <div className="bottom_main_left_satistic_inner_one">
-        <div>
-          <p>Equity</p>
-          <h3>{accountDetails?.equity ? dollarUS(accountDetails?.equity) : "0"}</h3>
-        </div>
-        <div>
-          <p>Balance</p>
-          <h3>{accountDetails?.challenge?.account_balance ? dollarUS(accountDetails?.challenge?.account_balance) : "0"}</h3>
-        </div>
-        <div>
-          <p>No. of trades</p>
-          <h3>{formatValue(overview?.calculated_data?.trades , 0)}</h3>
-        </div>
-        <div>
-          <p>Lots</p>
-          <h3>{formatValue(overview?.calculated_data?.lots)}</h3>
-        </div>
-        <div>
-          <p>Win rate</p>
-          <h3>{formatValue(statistics?.win_rate)}</h3>
-        </div>
-        <div>
-          <p>Highest</p>
-          <h3>{formatValue(overview?.calculated_data?.highest , 0)}</h3>
-        </div>
-      </div>
-      <div className="bottom_main_left_satistic_inner_two">
-        <div>
-          <p>Average profit</p>
-          <h3 style={{color:'#009017'}}> {statistics?.Average_profit ? "$" : '' }{formatValue(statistics?.Average_profit)}</h3>
-        </div>
-        <div>
-          <p>Average loss</p>
-          <h3 style={{color:'#F20000'}}>{statistics?.Average_loss ? "$" : '' }{formatValue(statistics?.Average_loss)}</h3>
-        </div>
-        <div>
-          <p>Average RRR</p>
-          <h3>{formatValue(statistics?.RRR)}</h3>
-        </div>
-        {/* <div>
+              <div className="bottom_main_left_satistic_inner_one">
+                <div>
+                  <p>Equity</p>
+                  <h3>{accountDetails?.equity ? dollarUS(accountDetails?.equity) : "0"}</h3>
+                </div>
+                <div>
+                  <p>Balance</p>
+                  <h3>{accountDetails?.balance ? dollarUS(accountDetails?.balance) : "0"}</h3>
+                </div>
+                <div>
+                  <p>No. of trades</p>
+                  <h3>{formatValue(overview?.calculated_data?.trades, 0)}</h3>
+                </div>
+                <div>
+                  <p>Lots</p>
+                  <h3>{formatValue(overview?.calculated_data?.lots)}</h3>
+                </div>
+                <div>
+                  <p>Win rate</p>
+                  <h3>{formatValue(statistics?.win_rate)}</h3>
+                </div>
+                <div>
+                  <p>Highest</p>
+                  <h3>{formatValue(overview?.calculated_data?.highest, 0)}</h3>
+                </div>
+              </div>
+              <div className="bottom_main_left_satistic_inner_two">
+                <div>
+                  <p>Average profit</p>
+                  <h3 style={{ color: '#009017' }}> {statistics?.Average_profit ? "$" : ''}{formatValue(statistics?.Average_profit)}</h3>
+                </div>
+                <div>
+                  <p>Average loss</p>
+                  <h3 style={{ color: '#F20000' }}>{statistics?.Average_loss ? "$" : ''}{formatValue(statistics?.Average_loss)}</h3>
+                </div>
+                <div>
+                  <p>Average RRR</p>
+                  <h3>{formatValue(statistics?.RRR)}</h3>
+                </div>
+                {/* <div>
           <p>Martingale Status</p>
           <button>{accountDetails?.martingale}</button>
         </div> */}
-        <div>
-          <p>Martingale Count</p>
-          <h3>{formatValue(accountDetails?.martingale_count , 0)}</h3>
-        </div>
-    </div>
+                <div>
+                  <p>Martingale Count</p>
+                  <h3>{formatValue(accountDetails?.martingale_count, 0)}</h3>
+                </div>
+              </div>
 
             </div>
             <div className="bottom_main_left_satistic_lower">
@@ -216,9 +217,11 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
                   </>
                 }
               </div>
-              <button className={`${objectives?.trading_days?.status === "In Progress" ? "status_in_progress" : objectives?.trading_days?.status === "Success" ? "status_green" : "status_red"}`}>
-                {objectives?.trading_days?.status}
-              </button>
+              {objectives?.trading_days &&
+                <button className={`${objectives?.trading_days?.status === "In Progress" ? "status_in_progress" : objectives?.trading_days?.status === "Success" ? "status_green" : "status_red"}`}>
+                  {objectives?.trading_days?.status}
+                </button>
+              }
             </div>
 
             <div className="bottom_main_right_inner_div">

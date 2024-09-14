@@ -9,11 +9,12 @@ import AccountOverview from "./InnerPages/AccountOverview/AccountOverview";
 import Insights from "./InnerPages/Insights/Insights";
 import TraderJournal from "./InnerPages/TraderJournal/TraderJournal";
 import Analysis from "./InnerPages/Analysis/Analysis";
-import { fetchAccountAnalysis, fetchAccountDetails, fetchAccountInsights, fetchObjectives, fetchPerformanceChart, fetchTradeJournal, fetchTradingAccountOverview } from "../../store/NewReducers/amSlice";
+import { fetchAccountAnalysis, fetchAccountDetails, fetchAccountInsights, fetchCertificatesDetails, fetchObjectives, fetchPerformanceChart, fetchTradeJournal, fetchTradingAccountOverview } from "../../store/NewReducers/amSlice";
 import { useDispatch, useSelector } from "react-redux";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 import ProfileDetails from "./InnerPages/ProfileDetails/ProfileDetails";
 import TransactionHistory from "./InnerPages/TransactionHistory/TransactionHistory";
+import AllCertificates from "../Certificates/AllCertificates";
 
 const AccountMetrics = () => {
   const [status, setStatus] = useState("");
@@ -41,6 +42,7 @@ const AccountMetrics = () => {
     // dispatch(fetchAccountInsights({ login_id , platform ,idToken }));
     // dispatch(fetchTradeJournal({ login_id , platform , idToken  }));
   }, [dispatch, login_id, platform, idToken]);
+
 
 
 
@@ -85,6 +87,7 @@ const AccountMetrics = () => {
             <Radio.Button value="Trader_Journal">Trade History</Radio.Button>
             <Radio.Button value="Analysis">Analysis</Radio.Button>
             <Radio.Button value="Transaction">Transaction History</Radio.Button>
+            <Radio.Button value="Certificate">Certificate</Radio.Button>
           </Radio.Group>
 
           {/* <Button
@@ -102,6 +105,8 @@ const AccountMetrics = () => {
         {status === "Trader_Journal" && <TraderJournal login_id={login_id} platform={platform} />}
         {status === "Analysis" && <Analysis login_id={login_id} platform={platform} />}
         {status === "Transaction" && <TransactionHistory />}
+        {status === "Certificate" && <AllCertificates user_id={user_id} /> }
+        
 
       </div>
     </>

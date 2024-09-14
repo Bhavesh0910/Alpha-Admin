@@ -65,7 +65,7 @@ const DrawdownChart = ({ drawdownData }) => {
           colors: "#8B8E93",
           fontSize: "12px",
         },
-        rotate: -20, 
+        rotate: -45, // Increased rotation for better readability
       },
       min: undefined,
       max: undefined,
@@ -150,7 +150,7 @@ const DrawdownChart = ({ drawdownData }) => {
           tickAmount: numberOfLabelsToShow,
           labels: {
             ...prevOptions.xaxis.labels,
-            rotate: -20,
+            rotate: -45, // Adjust rotation to prevent overlapping
           },
           min: dates[0],
           max: dates[dates.length - 1],

@@ -5,8 +5,6 @@ import { Empty } from "antd";
 
 const ProfitChart = ({ ProfitData }) => {
   const [series, setSeries] = useState([]);
-
-  console.log(ProfitData)
   const [options, setOptions] = useState({
     plotOptions: {
       bar: {
@@ -87,7 +85,11 @@ const ProfitChart = ({ ProfitData }) => {
         show: false,
       },
       labels: {
-        formatter: (value) => dollarUS(value?.toFixed(2)),
+        formatter: (value) => {
+          console.log(value)
+          if (value === 0) return "$0"; 
+          return dollarUS(value?.toFixed(2));
+        },
         style: {
           colors: "#8B8E93",
           fontSize: "12px",
@@ -159,22 +161,20 @@ const ProfitChart = ({ ProfitData }) => {
       const yAxisMin = Math.floor(minProfit / interval) * interval;
       const yAxisMax = Math.ceil(maxProfit / interval) * interval;
 
-      const numTicks = Math.min(6, Math.ceil((yAxisMax - yAxisMin) / interval) - 1);
+      const numTicks = Math.min(5, Math.ceil((yAxisMax - yAxisMin) / interval) - 1);
 
-      setSeries([
-        {
-          name: "Profit",
-          type: "line",
-          data: profit,
-        },
-      ]);
+      setSeries([{
+        name: "Profit",
+        type: "line",
+        data: profit,
+      }]);
 
       setOptions(prevOptions => ({
         ...prevOptions,
         xaxis: {
           ...prevOptions.xaxis,
           categories: dates,
-          tickAmount: 6, 
+          tickAmount: 6,
         },
         yaxis: {
           ...prevOptions.yaxis,
@@ -196,8 +196,8 @@ const ProfitChart = ({ ProfitData }) => {
         />
       ) : (
         <div style={{ textAlign: 'center', padding: '20px' }}>
-   <Empty description="No Data Available" />
-   </div>
+          <Empty description="No Data Available" />
+        </div>
       )}
     </div>
   );

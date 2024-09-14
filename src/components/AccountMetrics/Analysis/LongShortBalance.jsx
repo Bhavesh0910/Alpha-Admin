@@ -10,7 +10,12 @@ import averageProfit from "../../../assets/icons/averageProfit.svg";
 import RRR from "../../../assets/icons/RRR.svg";
 import { formatValue } from "../../../utils/helpers/string";
 
-const formatPercentage = (value) => `${(value * 100).toFixed(2)}%`;
+const formatPercentage = (value) => {
+  if (value === undefined || value === null || isNaN(value)) {
+    return '-'; 
+  }
+  return `${(value * 100).toFixed(2)}%`;
+};
 
 const formatCurrency = (value) => {
   if (value === undefined || value === null) return '-';

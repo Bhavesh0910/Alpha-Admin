@@ -43,7 +43,6 @@ export const getOrdinalSuffix = (rank) => {
 };
 
 
-
 export const formatValue = (value, fixed = true) => {
   if (typeof value === 'string') {
     return value;
@@ -55,12 +54,10 @@ export const formatValue = (value, fixed = true) => {
 
   const numValue = Number(value);
 
-  if (fixed) {
-    return numValue?.toFixed(2);
-  }
-  
-  return numValue;
+  return fixed ? numValue.toFixed(2) : numValue.toString();
+
 };
+
 
 
 // USD Formatter

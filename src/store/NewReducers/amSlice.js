@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { returnErrors } from '../reducers/error';
-import { getAccountDetails, getAccountInsights, getTradeJournal, getTradingAccountOverview, getObjectives, getPerformanceChart, getAccountAnalysis, getTransactionHistory, baseUrl } from '../../utils/api/apis';
+import { getAccountDetails, getAccountInsights, getTradeJournal, getTradingAccountOverview, getObjectives, getPerformanceChart, getAccountAnalysis, getTransactionHistory, baseUrl, getCertificatesDetails } from '../../utils/api/apis';
 import axios from 'axios';
 
 // Thunk for fetching trading account overview
@@ -142,6 +142,22 @@ export const getUserProfileData = createAsyncThunk(
   }
 );
 
+// Thunk for fetching certificate details
+export const fetchCertificatesDetails = createAsyncThunk(
+  'amSlice/fetchCertificatesDetails',
+  async ({ idToken, pageNumber, phase, search, user_id }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await getCertificatesDetails(idToken, pageNumber, phase, search, user_id);
+      return response.data; 
+    } catch (error) {
+      const msg = error.response?.data?.detail || 'Error fetching certificate details';
+      dispatch(returnErrors(msg, 400));
+      return rejectWithValue(msg);
+    }
+  }
+);
+
+
 
 const amSlice = createSlice({
   name: 'amSlice',
@@ -155,6 +171,7 @@ const amSlice = createSlice({
     accountAnalysis: null, 
     performanceChart: null,
     userProfileData: null,
+    certificatesDetails: null, 
     isLoading: false,
     error: null,
   },
@@ -267,6 +284,18 @@ const amSlice = createSlice({
         state.userProfileData = action.payload;
       })
       .addCase(getUserProfileData.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchCertificatesDetails.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchCertificatesDetails.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.certificatesDetails = action.payload; 
+      })
+      .addCase(fetchCertificatesDetails.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

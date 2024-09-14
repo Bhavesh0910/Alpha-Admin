@@ -223,7 +223,7 @@ export default listSlice.reducer;
 export const updateFlagReq = createAsyncThunk("list/updateFlagReq", async ({idToken, body, id}, {rejectWithValue, dispatch}) => {
   try {
     const response = await updateFlagReqApi(idToken, body, id);
-    dispatch(returnMessages("Status Changed Successfully"));
+    dispatch(returnMessages("Status Changed Successfully" , 200));
     console.log(response);
     return response.data; // Adjust based on your API response
   } catch (error) {

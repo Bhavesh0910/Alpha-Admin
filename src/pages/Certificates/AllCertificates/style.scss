@@ -4,6 +4,7 @@
   // padding: 20px;
   flex-direction: column;
   // align-items: flex-start;
+ 
   gap: 20px;
   .table_header_filter {
     display: flex;
@@ -38,4 +39,30 @@
       }
     }
   }
+}
+
+.certificate_modal{
+  position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.certificate_download_btn {
+  display: flex;
+  height: 51px;
+  padding: 13px 35px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  background: #04d9ff;
+  max-width: 190px;
+  color: #12181F;
+font-family: "Nunito Sans";
+font-size: 18px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
 }

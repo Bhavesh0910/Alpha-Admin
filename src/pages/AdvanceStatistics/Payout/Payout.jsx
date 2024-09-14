@@ -1,21 +1,23 @@
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./Payout.scss";
 import ArrowUpGreen from "../../../assets/icons/upArrowGreen.svg";
 import exportIcon from "../../../assets/icons/export_btn_icon.svg";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchPayoutDetails, fetchTotalPayments} from "../../../store/NewReducers/advanceStatistics";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPayoutDetails, fetchTotalMethod, fetchTotalPayments } from "../../../store/NewReducers/advanceStatistics";
 import moment from "moment";
-import {Button, DatePicker, Modal, notification} from "antd";
-import {CloseOutlined} from "@ant-design/icons";
-import {returnMessages} from "../../../store/reducers/message";
-import {exportDataReq} from "../../../store/NewReducers/exportSlice";
-import {returnErrors} from "../../../store/reducers/error";
+import { Button, DatePicker, Modal, notification, Spin } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
+import { returnMessages } from "../../../store/reducers/message";
+import { exportDataReq } from "../../../store/NewReducers/exportSlice";
+import { returnErrors } from "../../../store/reducers/error";
 import dayjs from "dayjs";
+import SplitChart from "./SplitChart";
+import { formatCurrency, formatValue } from "../../../utils/helpers/string";
 
-const {RangePicker} = DatePicker;
+const { RangePicker } = DatePicker;
 
 const Payout = () => {
   const [searchText, setSearchText] = useState("");
@@ -28,9 +30,9 @@ const Payout = () => {
   const [dates, setDates] = useState(null);
   const [exportDates, setExportDates] = useState(null);
 
-  const {payoutDetails, totalPayments, isLoading} = useSelector((state) => state.advanceStatistics);
-  const {idToken} = useSelector((state) => state.auth);
-  const {isLoading: isExportLoading} = useSelector((state) => state.export);
+  const { payoutDetails, totalPayments, totalMethod, isTotalMethodLoading, isLoading } = useSelector((state) => state.advanceStatistics);
+  const { idToken } = useSelector((state) => state.auth);
+  const { isLoading: isExportLoading } = useSelector((state) => state.export);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,8 +49,9 @@ const Payout = () => {
       query += `&start_date=${startDate}&end_date=${endDate}`;
     }
 
-    dispatch(fetchPayoutDetails({idToken, query}));
-    dispatch(fetchTotalPayments({idToken, query}));
+    dispatch(fetchPayoutDetails({ idToken, query }));
+    dispatch(fetchTotalPayments({ idToken, query }));
+    dispatch(fetchTotalMethod({ idToken, query }));
   }, [dispatch, idToken, pageNo, pageSize, searchText, dates]);
 
   const searchRef = useRef();
@@ -59,11 +62,11 @@ const Payout = () => {
   }
 
   const rangePresets = [
-    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
-    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
-    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
-    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
-    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]},
+    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
+    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
+    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
+    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
+    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] },
   ];
 
   const handleOpenModal = () => {
@@ -80,10 +83,10 @@ const Payout = () => {
       const [startDate, endDate] = exportDates;
       const url = `export/payout-details/?start_date=${startDate}&end_date=${endDate}`;
 
-      dispatch(exportDataReq({idToken, url}))
+      dispatch(exportDataReq({ idToken, url }))
         .unwrap()
         .then((response) => {
-          const {s3_file_url, filename} = response;
+          const { s3_file_url, filename } = response;
 
           const link = document.createElement("a");
           link.href = s3_file_url;
@@ -223,50 +226,99 @@ const Payout = () => {
     updateDateRange([today, tomorrow]);
   };
 
+
   return (
     <>
       {/* {isExportLoading && <LoaderOverlay />} */}
       <div className="payout_main">
         <div className="payout_header">
           <h2>Payout</h2>
+          <div className="payout_header_right">
+            <div className="export_btn">
+              <Button onClick={handleOpenModal}>
+                <img
+                  src={exportIcon}
+                  alt="export_btn_icon"
+                />
+                Export
+              </Button>
+              <Link
+                className="link"
+                to={"/advance-statistics/payout-export-history"}
+              >
+                View Export History
+              </Link>
+            </div>
+            <RangePicker
+              presets={rangePresets}
+              onChange={updateDateRange}
+            />
+          </div>
         </div>
         <div className="payout_lower_heading">
-          <div className="payout_lower_heading_left">
-            <h3>
-              Total New Payment Request <span>(Today)</span>
-            </h3>
-            <div className="payout_lower_heading_inner">
-              <h2>{totalPayments && totalPayments[0]?.new_request}</h2>
+          <div className="payout_infobox_wrapper">
+
+            <div className="payout_lower_heading_left">
+              <h3>
+                Total number of payouts Requested             </h3>
+              <div className="payout_lower_heading_inner">
+                <h2>{totalPayments &&  formatValue(totalPayments[0]?.new_request)}</h2>
+              </div>
             </div>
+
+
+            <div className="payout_lower_heading_left">
+              <h3>
+                total amount of payout approved       </h3>
+              <div className="payout_lower_heading_inner">
+                <h2>{totalPayments && totalPayments[0]?.total_approved_amount ? "$" : '' }{totalPayments && formatValue(totalPayments[0]?.total_approved_amount)}</h2>
+              </div>
+            </div>
+
+
+            {/* <div className="payout_lower_heading_left">
+              <h3>
+                Total New Payment Request <span>(Today)</span>
+              </h3>
+              <div className="payout_lower_heading_inner">
+                <h2>{totalPayments && totalPayments[0]?.new_request}</h2>
+              </div>
+            </div>
+
+
+            <div className="payout_lower_heading_left">
+              <h3>
+                Total New Payment Request <span>(Today)</span>
+              </h3>
+              <div className="payout_lower_heading_inner">
+                <h2>{totalPayments && totalPayments[0]?.new_request}</h2>
+              </div>
+            </div>
+
+
+            <div className="payout_lower_heading_left">
+              <h3>
+                Total New Payment Request <span>(Today)</span>
+              </h3>
+              <div className="payout_lower_heading_inner">
+                <h2>{totalPayments && totalPayments[0]?.new_request}</h2>
+              </div>
+            </div> */}
           </div>
 
-          <div className="export_btn">
-            <Button onClick={handleOpenModal}>
-              <img
-                src={exportIcon}
-                alt="export_btn_icon"
-              />
-              Export
-            </Button>
-            <Link
-              className="link"
-              to={"/advance-statistics/payout-export-history"}
-            >
-              View Export History
-            </Link>
-          </div>
+
         </div>
 
-        <RangePicker
-          presets={rangePresets}
-          onChange={updateDateRange}
-        />
+          <SplitChart loading={isTotalMethodLoading} data={totalMethod} />
+        
+
+
         <div className="payout_lower_heading_two">
           <div className="left">
             <h3>Eligible Payment List</h3>
           </div>
           <button
-            style={{cursor: "pointer"}}
+            style={{ cursor: "pointer" }}
             className="right"
             onClick={handleExpectedTomorrowClick}
           >
@@ -275,24 +327,23 @@ const Payout = () => {
         </div>
 
         <div>
-          {isLoading ? (
+          {isLoading &&
             <LoaderOverlay />
-          ) : (
-            <AntTable
-              data={payoutDetails?.results || []}
-              columns={columns}
-              totalPages={Math.ceil(payoutDetails?.count / pageSize)}
-              totalItems={payoutDetails?.count}
-              pageSize={pageSize}
-              CurrentPageNo={pageNo}
-              setPageSize={setPageSize}
-              triggerChange={triggerChange}
-              isExpandable={true}
-              ExpandedComp={ExpandedRowRender}
-              rowId="login_id"
-              scrollY={420}
-            />
-          )}
+          }
+          <AntTable
+            data={payoutDetails?.results || []}
+            columns={columns}
+            totalPages={Math.ceil(payoutDetails?.count / pageSize)}
+            totalItems={payoutDetails?.count}
+            pageSize={pageSize}
+            CurrentPageNo={pageNo}
+            setPageSize={setPageSize}
+            triggerChange={triggerChange}
+            isExpandable={true}
+            ExpandedComp={ExpandedRowRender}
+            rowId="login_id"
+            scrollY={420}
+          />
         </div>
 
         <Modal
@@ -301,17 +352,17 @@ const Payout = () => {
           onCancel={handleCloseModal}
           footer={null}
           className="export_modal"
-          closeIcon={<CloseOutlined style={{color: "#fff"}} />}
+          closeIcon={<CloseOutlined style={{ color: "#fff" }} />}
         >
           <div className="export_modal_wrapper">
             <RangePicker
               onChange={updateExportDateRange}
               autoFocus
               presets={rangePresets}
-              style={{width: "100%"}}
+              style={{ width: "100%" }}
             />
           </div>
-          <p style={{color: "#fff"}}>File will contain information of the date you’ve selected.</p>
+          <p style={{ color: "#fff" }}>File will contain information of the date you’ve selected.</p>
           <div className="btn_wrapper">
             <Button
               type="primary"
@@ -334,7 +385,7 @@ const Payout = () => {
 
 export default Payout;
 
-const ExpandedRowRender = ({record}) => {
+const ExpandedRowRender = ({ record }) => {
   return (
     <div className="expanded-row-content">
       <p>

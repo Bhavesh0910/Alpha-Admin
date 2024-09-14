@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import {returnErrors} from "../reducers/error";
-import {getDailyStats, getPassRate, getPassStageChart, getPayoutDetails, getTotatPayments, getWithdrawalsDetails, getWithdrawalsStatus} from "../../utils/api/apis";
+import {getDailyStats, getPassRate, getPassStageChart, getPayoutDetails, getTotalMethod, getTotatPayments, getWithdrawalsDetails, getWithdrawalsStatus} from "../../utils/api/apis";
 
 // Thunk for fetching withdrawals status with pagination
 export const fetchWithdrawalsStatus = createAsyncThunk("advanceStats/fetchWithdrawalsStatus", async ({idToken, query , activeTab}, {dispatch, rejectWithValue}) => {
@@ -89,6 +89,21 @@ export const fetchTotalPayments = createAsyncThunk(
   }
 );
 
+export const fetchTotalMethod = createAsyncThunk(
+  "advanceStats/fetchTotalMethod",
+  async ({ idToken, query }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await getTotalMethod(idToken, query);
+      return response;
+    } catch (error) {
+      const msg = error.response?.data?.detail || "Error fetching total method";
+      dispatch(returnErrors(msg, 400));
+      return rejectWithValue(msg);
+    }
+  }
+);
+
+
 // Thunk for fetching daily stats
 export const fetchDailyStats = createAsyncThunk("advanceStats/fetchDailyStats", async ({idToken, query}, {dispatch, rejectWithValue}) => {
   try {
@@ -113,6 +128,8 @@ const advanceStatisticsSlice = createSlice({
     stage2FailData: null,
     isLoadingStage1: null,
     totalPayments: null,
+    totalMethod: null,
+    isTotalMethodLoading: null,
     dailyStats: null,
     payoutDetails: null, 
     isLoading: false,
@@ -223,6 +240,18 @@ const advanceStatisticsSlice = createSlice({
       })
       .addCase(fetchTotalPayments.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchTotalMethod.pending, (state) => {
+        state.isTotalMethodLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchTotalMethod.fulfilled, (state, action) => {
+        state.isTotalMethodLoading = false;
+        state.totalMethod = action.payload;
+      })
+      .addCase(fetchTotalMethod.rejected, (state, action) => {
+        state.isTotalMethodLoading = false;
         state.error = action.payload;
       });
   },

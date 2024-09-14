@@ -21,7 +21,7 @@ const BalanceChart = ({ performanceChart }) => {
         style: {
           fontSize: '10px',
         },
-        formatter: (value) => dayjs(value).format("DD MMM YY, HH:mm"),
+        formatter: (value) => dayjs(value)?.format("DD MMM YY, HH:mm"),
       },
       tickAmount: 7,
     },
@@ -34,7 +34,7 @@ const BalanceChart = ({ performanceChart }) => {
       },
       tickAmount: 7,
       labels: {
-        formatter: (value) => "$" + value.toFixed(2),
+        formatter: (value) => "$" + value?.toFixed(2),
       },
     },
     title: {

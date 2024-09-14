@@ -15,6 +15,7 @@
       .header-select {
         .ant-select-selector {
           overflow: hidden !important;
+  
         }
       }
     }
@@ -495,4 +496,14 @@
   @media only screen and (max-width: 478px) {
     display: block;
   }
+}
+
+
+      
+.ant-select-multiple .ant-select-selection-overflow{
+  position: relative;
+  display: flex;
+  flex: auto;
+  flex-wrap: wrap;
+  max-width: 208px;
 }

@@ -304,9 +304,8 @@ const deleteSupportDetails = async (idToken, id) => {
     return error;
   }
 };
-
 //Certificates
-const getCertificatesDetails = async (idToken, pageNumber, phase, search) => {
+const getCertificatesDetails = async (idToken, pageNumber, phase, search , user_id) => {
   const params = {
     page: pageNumber,
     page_size: 21,
@@ -328,7 +327,7 @@ const getCertificatesDetails = async (idToken, pageNumber, phase, search) => {
   };
 
   try {
-    const response = await axios.get(`${baseUrl}certificate/admin/all/`, config);
+    const response = await axios.get(`${baseUrl}achievements/admin/certificates/list/${user_id}`, config);
     return response;
   } catch (error) {
     return error;
