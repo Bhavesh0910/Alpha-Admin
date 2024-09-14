@@ -478,6 +478,7 @@ const PageLayout = ({headerName, children}) => {
             alt="company_logo"
             onClick={() => navigate("/trader-overview")}
           />
+          <h1>{headerName}</h1>
           <Button
             type="primary"
             onClick={showDrawer}

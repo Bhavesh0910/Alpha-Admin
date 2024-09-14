@@ -694,7 +694,7 @@ function TraderOverview() {
               {/* <Radio.Button value="Evalution/Funded">Evalution/Funded</Radio.Button> */}
               <Radio.Button value="Funded">Funded</Radio.Button>
               <Radio.Button value="Verification">Verification</Radio.Button>
-              <Radio.Button value="Evaluation">Evalution</Radio.Button>
+              <Radio.Button value="Evaluation">Evaluation</Radio.Button>
               <Radio.Button value="Free Trail">Free Trial</Radio.Button>
             </Radio.Group>
           </div>

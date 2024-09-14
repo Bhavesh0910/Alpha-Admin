@@ -152,6 +152,15 @@
       background: var(--Brand, #04d9ff) !important;
       border: 0 !important;
     }
+    h1 {
+      color: var(--Text-white, #fff);
+      font-family: "Nunito Sans";
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: normal;
+      text-align: center;
+    }
   }
 }
 

@@ -953,3 +953,8 @@ html * {
 :where(.css-dev-only-do-not-override-m4timi).ant-select-dropdown .ant-select-item-group {
   color:#1e1e1e;
 }
+
+:where(.css-dev-only-do-not-override-m4timi).ant-select-single .ant-select-selector .ant-select-selection-search {
+  inset-inline-end:  none !important;
+  inset-inline-start: 5px !important;
+}
