@@ -241,7 +241,9 @@ export const country = [
   { country: "Zimbabwe", code: "263", iso: "ZW" },
 ];
 
-
+export function getCountryNameByCode (code){
+  return country.filter(item=>item.iso === code)
+}
 // export const country = [
 //   {
 //       "name": "Afghanistan",

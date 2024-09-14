@@ -11,6 +11,7 @@ import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import {getKycList, updateKycStatus} from "../../../store/NewReducers/complianceList";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import {DownOutlined} from "@ant-design/icons";
+import {getCountryNameByCode} from "../../../utils/constants/country.js";
 import {render} from "react-saga";
 const {Option} = Select;
 const {RangePicker} = DatePicker;
@@ -187,7 +188,6 @@ const KYC = () => {
       key: "country",
       width: 100,
       render: (country) => {
-        console.log(country, "country");
         const countryName = country;
         const countryCode = lookup.byCountry(countryName);
         if (countryCode) {
@@ -212,18 +212,17 @@ const KYC = () => {
       key: "region",
       width: 100,
       render: (country) => {
-        console.log(country, "country");
         const countryName = country;
         const countryCode = lookup.byCountry(countryName);
-        if (countryCode) {
+        if (country) {
           return (
             <div className="country_name_wrapper">
               <ReactCountryFlag
-                countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
+                countryCode={country.toUpperCase() === "UK" ? "GB" : country.toUpperCase()}
                 svg={true}
                 aria-label={countryName}
               />
-              <span>{countryName}</span>
+              <span>{getCountryNameByCode(country.toUpperCase()) && getCountryNameByCode(country.toUpperCase())[0]?.country}</span>
             </div>
           );
         } else {
@@ -238,24 +237,24 @@ const KYC = () => {
       width: 100,
       render: (text) => (text ? text : "-"),
     },
-    {
-      title: "Contract",
-      dataIndex: "contract",
-      key: "contract",
-      width: 100,
-      render: (text) =>
-        text !== null ? (
-          <a
-            style={{cursor: "pointer"}}
-            href={text}
-            target="_blank"
-          >
-            <DownloadToPC />
-          </a>
-        ) : (
-          "-"
-        ),
-    },
+    // {
+    //   title: "Contract",
+    //   dataIndex: "contract",
+    //   key: "contract",
+    //   width: 100,
+    //   render: (text) =>
+    //     text !== null ? (
+    //       <a
+    //         style={{cursor: "pointer"}}
+    //         href={text}
+    //         target="_blank"
+    //       >
+    //         <DownloadToPC />
+    //       </a>
+    //     ) : (
+    //       "-"
+    //     ),
+    // },
   ]);
 
   function updateDateRange(dates) {
