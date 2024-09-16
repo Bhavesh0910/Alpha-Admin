@@ -15,7 +15,7 @@ import { exportDataReq } from "../../../store/NewReducers/exportSlice";
 import { returnErrors } from "../../../store/reducers/error";
 import dayjs from "dayjs";
 import SplitChart from "./SplitChart";
-import { formatCurrency, formatValue } from "../../../utils/helpers/string";
+import { dollarUS, formatCurrency, formatValue } from "../../../utils/helpers/string";
 
 const { RangePicker } = DatePicker;
 
@@ -230,7 +230,11 @@ const Payout = () => {
   return (
     <>
       {/* {isExportLoading && <LoaderOverlay />} */}
+      {isLoading ?
+            <LoaderOverlay />
+          :
       <div className="payout_main">
+        
         <div className="payout_header">
           <h2>Payout</h2>
           <div className="payout_header_right">
@@ -262,7 +266,9 @@ const Payout = () => {
               <h3>
                 Total number of payouts Requested             </h3>
               <div className="payout_lower_heading_inner">
-                <h2>{totalPayments &&  formatValue(totalPayments[0]?.new_request)}</h2>
+                {!totalPayments ? <Spin /> :
+                  <h2>{totalPayments && formatValue(totalPayments[0]?.new_request , 0)}</h2>
+                }
               </div>
             </div>
 
@@ -271,7 +277,9 @@ const Payout = () => {
               <h3>
                 total amount of payout approved       </h3>
               <div className="payout_lower_heading_inner">
-                <h2>{totalPayments && totalPayments[0]?.total_approved_amount ? "$" : '' }{totalPayments && formatValue(totalPayments[0]?.total_approved_amount)}</h2>
+                {!totalPayments ? <Spin /> :
+                  <h2>{totalPayments && totalPayments[0]?.total_approved_amount ? dollarUS(totalPayments[0]?.total_approved_amount) : '-'}</h2>
+                }
               </div>
             </div>
 
@@ -309,8 +317,8 @@ const Payout = () => {
 
         </div>
 
-          <SplitChart loading={isTotalMethodLoading} data={totalMethod} />
-        
+        <SplitChart loading={isTotalMethodLoading} data={totalMethod} />
+
 
 
         <div className="payout_lower_heading_two">
@@ -327,9 +335,7 @@ const Payout = () => {
         </div>
 
         <div>
-          {isLoading &&
-            <LoaderOverlay />
-          }
+       
           <AntTable
             data={payoutDetails?.results || []}
             columns={columns}
@@ -344,7 +350,9 @@ const Payout = () => {
             rowId="login_id"
             scrollY={420}
           />
+
         </div>
+        
 
         <Modal
           title="Export"
@@ -379,6 +387,7 @@ const Payout = () => {
           </div>
         </Modal>
       </div>
+}
     </>
   );
 };

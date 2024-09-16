@@ -66,11 +66,13 @@ const CreateAffiliateCode = () => {
   };
 
   const handleSubmit = async () => {
-    setIsSpinner(true);
     if (couponData.code === "" || couponData.email === "") {
       alert("Please enter a Coupon Code and Email");
       return;
     }
+
+    setIsSpinner(true);
+
 
     // Create a new FormData object
     const formData = new FormData();
@@ -184,7 +186,6 @@ const CreateAffiliateCode = () => {
           <Button
             className="standard_button"
             onClick={handleSubmit}
-            loading={isSpinner}
           >
             {isSpinner ? "Creating..." : "Create"}
           </Button>

@@ -82,9 +82,19 @@ const CreateTradingAccount = () => {
     console.log("dataFundingAcc : ", data);
   }, [data]);
 
+
+
   const handleCreateTradingAccount = async () => {
-    setIsSpinner(true);
+   
     const {challenge, group, leverage, name, pwd, pwdInvestor, raw_spread, status, user, email, reason} = data;
+ 
+    if (!challenge || !leverage || !name || !pwd || !pwdInvestor || !raw_spread || !status || !user || !email || !reason) {
+      dispatch(returnErrors("Please fill all the fields.", 400));
+      return;
+    }
+    setIsSpinner(true);
+    console.log(data)
+
 
     let traderData = {};
     if (data?.platform === "MT5") {
