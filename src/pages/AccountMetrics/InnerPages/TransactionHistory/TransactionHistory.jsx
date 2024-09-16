@@ -5,6 +5,7 @@ import { fetchTransactionHistory } from '../../../../store/NewReducers/amSlice';
 import AntTable from '../../../../ReusableComponents/AntTable/AntTable';
 import dayjs from 'dayjs';
 import { dollarUS, formatValue } from '../../../../utils/helpers/string';
+import LoaderOverlay from '../../../../ReusableComponents/LoaderOverlay';
 
 function TransactionHistory({user_id}) {
     const [pageSize, setPageSize] = useState(20);
@@ -98,6 +99,7 @@ function TransactionHistory({user_id}) {
 
     return (
         <div className="transaction_history">
+            {isLoading && <LoaderOverlay />}
             <AntTable
                 columns={columns || []}
                 data={transactionHistory}
