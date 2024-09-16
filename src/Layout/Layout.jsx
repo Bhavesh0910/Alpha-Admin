@@ -215,11 +215,11 @@ const items = [
     label: "Certificates",
     link: "/certificates",
     children: [
-      {
-        key: "19-1",
-        label: "All Certificates",
-        link: "/certificates/all-certificates",
-      },
+      // {
+      //   key: "19-1",
+      //   label: "All Certificates",
+      //   link: "/certificates/all-certificates",
+      // },
       {
         key: "19-2",
         label: "Create Certificates",

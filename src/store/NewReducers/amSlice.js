@@ -81,9 +81,9 @@ export const fetchTradeJournal = createAsyncThunk(
 
 export const fetchTransactionHistory = createAsyncThunk(
   'amSlice/fetchTransactionHistory',
-  async ({ idToken }, { dispatch, rejectWithValue }) => {
+  async ({ idToken , user_id }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await getTransactionHistory(idToken);
+      const response = await getTransactionHistory(idToken , user_id);
       return response;
     } catch (error) {
       const msg = error.response?.data?.detail || 'Error fetching transaction history';

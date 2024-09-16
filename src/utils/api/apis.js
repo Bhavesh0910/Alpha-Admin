@@ -1216,9 +1216,10 @@ export const getTradeJournal = async (login_id, platform = "mt5", idToken) => {
   }
 };
 
-export const getTransactionHistory = async (idToken) => {
+export const getTransactionHistory = async (idToken , user_id) => {
   try {
-    const response = await axios.get(`${baseUrl}v2/transaction/history/`, {
+    const response = await axios.get(`${baseUrl}user/transactions/${user_id}/
+`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },

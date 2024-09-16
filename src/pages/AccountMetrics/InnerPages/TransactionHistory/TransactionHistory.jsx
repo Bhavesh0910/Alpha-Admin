@@ -5,8 +5,9 @@ import { fetchTransactionHistory } from '../../../../store/NewReducers/amSlice';
 import AntTable from '../../../../ReusableComponents/AntTable/AntTable';
 import dayjs from 'dayjs';
 import { dollarUS, formatValue } from '../../../../utils/helpers/string';
+import LoaderOverlay from '../../../../ReusableComponents/LoaderOverlay';
 
-function TransactionHistory() {
+function TransactionHistory({user_id}) {
     const [pageSize, setPageSize] = useState(20);
     const [pageNo, setPageNo] = useState(1);
     const idToken = useSelector((state) => state.auth.idToken);
@@ -14,7 +15,7 @@ function TransactionHistory() {
     const { transactionHistory, isLoading, error } = useSelector((state) => state.accountMetrics);
 
     useEffect(() => {
-        dispatch(fetchTransactionHistory({ idToken }));
+        dispatch(fetchTransactionHistory({ idToken , user_id }));
     }, [dispatch, idToken]);
 
     const columns = [
@@ -98,6 +99,7 @@ function TransactionHistory() {
 
     return (
         <div className="transaction_history">
+            {isLoading && <LoaderOverlay />}
             <AntTable
                 columns={columns || []}
                 data={transactionHistory}

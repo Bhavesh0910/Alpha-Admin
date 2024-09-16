@@ -1,12 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { returnErrors } from "../reducers/error";
 import { requestPayout, updateUserEmail } from "../../utils/api/apis";
+import { returnMessages } from "../reducers/message";
 
 export const updateUserEmailThunk = createAsyncThunk(
   "user/updateUserEmail",
   async ({ idToken, payload }, { dispatch, rejectWithValue }) => {
     try {
       const response = await updateUserEmail(idToken, payload);
+      dispatch(returnMessages("Email Updated Successfully", 200));
       return response.data;
     } catch (error) {
       const msg = error.response?.data?.detail || "Error updating user email";

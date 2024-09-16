@@ -319,7 +319,6 @@ const CreateTradingAccount = () => {
           <Button
             className="standard_button"
             onClick={handleCreateTradingAccount}
-            loading={isSpinner}
           >
             {isSpinner ? <CircularProgress size={24} /> : "Create Account"}
           </Button>
