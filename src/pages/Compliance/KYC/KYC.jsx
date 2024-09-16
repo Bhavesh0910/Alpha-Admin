@@ -135,6 +135,13 @@ const KYC = () => {
       width: 100,
     },
     {
+      title: "CID",
+      dataIndex: "device_id",
+      key: "description",
+      width: 100,
+      render: (text) => (text ? text : "-"),
+    },
+    {
       title: "Sumsub Status",
       dataIndex: "status",
       key: "status",
