@@ -6,7 +6,7 @@ import AntTable from '../../../../ReusableComponents/AntTable/AntTable';
 import dayjs from 'dayjs';
 import { dollarUS, formatValue } from '../../../../utils/helpers/string';
 
-function TransactionHistory() {
+function TransactionHistory({user_id}) {
     const [pageSize, setPageSize] = useState(20);
     const [pageNo, setPageNo] = useState(1);
     const idToken = useSelector((state) => state.auth.idToken);
@@ -14,7 +14,7 @@ function TransactionHistory() {
     const { transactionHistory, isLoading, error } = useSelector((state) => state.accountMetrics);
 
     useEffect(() => {
-        dispatch(fetchTransactionHistory({ idToken }));
+        dispatch(fetchTransactionHistory({ idToken , user_id }));
     }, [dispatch, idToken]);
 
     const columns = [

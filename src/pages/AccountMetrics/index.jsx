@@ -104,7 +104,7 @@ const AccountMetrics = () => {
         {status === "Profile" && <ProfileDetails id={user_id} /> }
         {status === "Trader_Journal" && <TraderJournal login_id={login_id} platform={platform} />}
         {status === "Analysis" && <Analysis login_id={login_id} platform={platform} />}
-        {status === "Transaction" && <TransactionHistory />}
+        {status === "Transaction" && <TransactionHistory user_id={user_id} />}
         {status === "Certificate" && <AllCertificates user_id={user_id} /> }
         
 
