@@ -3,10 +3,20 @@ import ReactApexChart from "react-apexcharts";
 import { Empty } from "antd";
 
 const LineChart = ({ data }) => {
-  const seriesData = Array.isArray(data?.series) ? data.series : [];
+  const seriesData = data?.click_stats || [];
+
+  const series = [
+    {
+      name: "Clicks",
+      data: seriesData.map(stat => ({
+        x: stat.created_day,  
+        y: stat.clicks       
+      }))
+    }
+  ];
+
   const hasData = seriesData.length > 0;
 
-  // Define chart options
   const options = {
     chart: {
       type: "line",
@@ -21,7 +31,7 @@ const LineChart = ({ data }) => {
       width: 2,
     },
     xaxis: {
-      categories: hasData ? seriesData[0].data.map((_, index) => index + 1) : [],
+      categories: hasData ? series[0].data.map(item => item.x) : [],
       labels: {
         style: {
           colors: "#000",
@@ -29,13 +39,15 @@ const LineChart = ({ data }) => {
         rotate: -45,
         trim: true,
       },
+      tickPlacement: 'between'
     },
     yaxis: {
-      min: hasData ? Math.min(...seriesData[0].data) - 50 : 0,
-      max: hasData ? Math.max(...seriesData[0].data) + 50 : 100,
       labels: {
         style: {
           colors: "#000",
+        },
+        formatter: (value) => {
+          return Number.isInteger(value) ? value : '';
         },
       },
     },
@@ -50,8 +62,6 @@ const LineChart = ({ data }) => {
       strokeDashArray: 4,
     },
   };
-
-  const series = hasData ? seriesData : [];
 
   return (
     <div className="chart" style={{ position: 'relative', height: '100%' }}>

@@ -127,6 +127,20 @@ const UserIPList = () => {
       render: (text) => text || "-",
     },
     {
+      title: "Device Id",
+      dataIndex: "device_id",
+      key: "deviceid",
+      width: 100,
+      render: (text) => text || "-",
+    },
+    {
+      title: "Event Type",
+      dataIndex: "event_type",
+      key: "event_type",
+      width: 100,
+      render: (text) => text || "-",
+    },
+    {
       title: "Region",
       dataIndex: "region",
       key: "region",

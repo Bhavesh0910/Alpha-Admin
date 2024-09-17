@@ -34,13 +34,14 @@ const AffiliateRefList = () => {
     const { referredList, pushleadsChartData, affiliateExportData , isLoading, isExportLoading } = useSelector((state) => state.affiliate);
     const { state } = useLocation();
     const id = state?.id;
+    const user_id = state?.user_id
 
 
 
     useEffect(() => {
         if (id) {
             dispatch(fetchReferredList({ idToken, affiliateId: id, activeTab }));
-            dispatch(fetchPushleadsChartData({ idToken, affiliateId: id }));
+            dispatch(fetchPushleadsChartData({ idToken, user_id: user_id }));
         }
     }, [id, activeTab, idToken, dispatch ]);
 

@@ -84,9 +84,9 @@ export const fetchReferredList = createAsyncThunk(
 
 export const fetchPushleadsChartData = createAsyncThunk(
   "affiliate/fetchPushleadsChartData",
-  async ({ idToken, affiliateId }, { dispatch, rejectWithValue }) => {
+  async ({ idToken, user_id }, { dispatch, rejectWithValue }) => {
     try {
-      const data = await getPushleadsChartData(idToken, affiliateId);
+      const data = await getPushleadsChartData(idToken, user_id);
       return data;
     } catch (error) {
       const msg = error.response?.data?.detail || "Error fetching pushleads chart data";

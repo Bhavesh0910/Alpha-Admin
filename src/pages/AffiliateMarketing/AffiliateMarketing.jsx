@@ -40,8 +40,8 @@ const AffiliateMarketing = () => {
     setFilterData(newCodeData?.results);
   }, [newCodeData]);
 
-  const handleViewDetailsBtn = (id, code) => {
-    navigate('/affiliate-marketing/ref-list', { state: { id, code } });
+  const handleViewDetailsBtn = (id, code , user_id) => {
+    navigate('/affiliate-marketing/ref-list', { state: { id, code , user_id } });
   };
 
   function triggerChange(page, updatedPageSize) {
@@ -73,7 +73,7 @@ const AffiliateMarketing = () => {
       title: "Name",
       dataIndex: "name",
       render: (text, record) => (
-        <div onClick={() => handleViewDetailsBtn(record.id)}>
+        <div onClick={() => handleViewDetailsBtn(record.id , record.user_id)}>
           {category === "name" || category === "all"
             ? highlightText(
               text
@@ -94,7 +94,7 @@ const AffiliateMarketing = () => {
       dataIndex: "email",
       render: (text, record) => (
         <div
-          onClick={() => handleViewDetailsBtn(record?.id, record?.code)}
+          onClick={() => handleViewDetailsBtn(record?.id, record?.code , record?.user_id)}
           style={{ display: "flex", alignItems: "center", gap: "12px" }}
         >
           {category === "email" || category === "all"
@@ -140,7 +140,7 @@ const AffiliateMarketing = () => {
       render: (text, record) => (
         <button
           className="view_details_btn standard_button"
-          onClick={() => handleViewDetailsBtn(record.id, record?.code)}
+          onClick={() => handleViewDetailsBtn(record.id, record?.code , record?.user_id)}
         >
           View Details
         </button>
@@ -177,6 +177,7 @@ const AffiliateMarketing = () => {
                 handleSearch(e.target.value);
               }
             }}
+            onChange={(e) => setSearch(e.target.value)}
             />
           <div className="searchImg"            
            onClick={() => handleSearch(search)}

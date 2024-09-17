@@ -434,8 +434,7 @@ const traderAffiliateRefList = async (idToken, id , status = 'success') => {
 };
 
 
-export const getPushleadsChartData = async (idToken, affiliateId) => {
-  console.log(affiliateId)
+export const getPushleadsChartData = async (idToken, user_id) => {
   try {
     const config = {
       headers: {
@@ -443,7 +442,7 @@ export const getPushleadsChartData = async (idToken, affiliateId) => {
       },
     
     };
-    const response = await axios.get(`${baseUrl}affiliate/v2/dashboard/?affiliate_id=${affiliateId}`, config);
+    const response = await axios.get(`${baseUrl}affiliate/v2/dashboard/?affiliate_id=${user_id}`, config);
     return response.data;
   } catch (error) {
     console.error("Error in getting trader ref list", error);

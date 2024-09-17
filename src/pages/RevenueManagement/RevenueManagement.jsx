@@ -5,7 +5,7 @@ import StatisticChart from "../../components/RevenueManagement/StatisticChart/St
 import FundedAccGraph from "../../components/RevenueManagement/FundedAccGraph/FundedAccGraph";
 import PayoutPaymentTable from "../../components/RevenueManagement/PayoutPaymentTable/PayoutPaymentTable";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import {Button, DatePicker} from "antd";
+import {Button, DatePicker, notification} from "antd";
 import dayjs from "dayjs";
 import {payoutPaymentReq, payoutStatsReq, qualifiedAccountReq, statsReq} from "../../store/NewReducers/revenueMangement";
 import {useDispatch, useSelector} from "react-redux";
@@ -20,6 +20,10 @@ const RevenueManagement = () => {
   const {idToken} = useSelector((state) => state.auth);
   const {barDataLoader, chartDataLoader, statsDataLoader} = useSelector((state) => state.revenue);
   const {isLoading} = useSelector((state) => state.payment);
+  const [defaultDates, setDefaultDates] = useState([dayjs().subtract(1, "month"), dayjs()]);
+
+  const [isValidRange, setIsValidRange] = useState(true);
+  const [lastValidRange, setLastValidRange] = useState({ startDate: dayjs().subtract(1, "month"), endDate: dayjs() });
 
   const dispatch = useDispatch();
 
@@ -52,12 +56,36 @@ const RevenueManagement = () => {
   };
 
   const onRangeChange = (dates) => {
-    if (dates) {
-      setDates(dates.map((date) => date.format("YYYY-MM-DD")));
-    } else {
-      setDates(null);
-    }
-  };
+      setPageNo(1); 
+  
+      if (dates && dates.length === 2) {
+        const [startDate, endDate] = dates;
+  
+        if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
+          notification.error({
+            message: 'Invalid Date Range',
+            description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
+          });
+  
+          if (lastValidRange) {
+            setDefaultDates([lastValidRange.startDate, lastValidRange.endDate]);
+            return;
+          }
+  
+          setDefaultDates(null);
+          setIsValidRange(false);
+          return;
+        }
+  
+        setDates(dates);
+        setLastValidRange({ startDate, endDate });
+        setDefaultDates(dates); 
+        setIsValidRange(true);
+      } else {
+        setDates(null);
+        setDefaultDates(null); 
+      }
+    };
 
   const rangePresets = [
     {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
@@ -72,7 +100,8 @@ const RevenueManagement = () => {
       <div className="header_wrapper">
         <RangePicker
           presets={rangePresets}
-          onChange={onRangeChange}
+          value={defaultDates} 
+            onChange={onRangeChange}
         />
       </div>
       {(barDataLoader || chartDataLoader || statsDataLoader || isLoading) && <LoaderOverlay />}
