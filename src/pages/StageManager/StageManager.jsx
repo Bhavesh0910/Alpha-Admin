@@ -1,4 +1,4 @@
-import {Button, DatePicker, Dropdown, Menu, Select, Modal, Form, Input, Table} from "antd";
+import {Button, DatePicker, Dropdown, Menu, Select, Modal, Form, Input, Table, notification} from "antd";
 import moment from "moment";
 import React, {useEffect, useMemo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -114,14 +114,37 @@ const StageManager = () => {
     dispatch(supportListReq({idToken, query, url, dispatch}));
   }
 
-  function updateDateRange(dates) {
-    setPageNo(1);
-    if (dates) {
+  const updateDateRange = (dates) => {
+    setPageNo(1); 
+
+    if (dates && dates.length === 2) {
+      const [startDate, endDate] = dates;
+
+      if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
+        notification.error({
+          message: 'Invalid Date Range',
+          description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
+        });
+
+        if (lastValidRange) {
+          setDefaultDates([lastValidRange.startDate, lastValidRange.endDate]);
+          return;
+        }
+
+        setDefaultDates(null);
+        setIsValidRange(false);
+        return;
+      }
+
       setDates(dates);
+      setLastValidRange({ startDate, endDate });
+      setDefaultDates(dates); 
+      setIsValidRange(true);
     } else {
       setDates(null);
+      setDefaultDates(null); 
     }
-  }
+  };
 
   const handleSearch = (value) => {
     setPageNo(1);
@@ -1327,6 +1350,15 @@ const StageManager = () => {
     viewLogsLink = "/support/payout/payout-view-logs";
   }
 
+  
+
+
+  const [defaultDates, setDefaultDates] = useState();
+
+  const [isValidRange, setIsValidRange] = useState(true);
+  const [lastValidRange, setLastValidRange] = useState({ startDate: null, endDate: null });
+
+
   return (
     <div className="stageManager_container">
       <div className="header_wrapper">
@@ -1334,9 +1366,9 @@ const StageManager = () => {
 
         <div className="supportFilterParent">
           <RangePicker
-            value={dates ? [dayjs(dates[0], "YYYY-MM-DD"), dayjs(dates[0], "YYYY-MM-DD")] : null}
-            onChange={updateDateRange}
+            value={defaultDates} // Use value prop to control the picker
             autoFocus
+            onChange={updateDateRange}
             // presets={rangePresets}
           />
           <Button
