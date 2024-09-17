@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from "react";
 import "./TraderOverview.scss";
-import {Table, DatePicker, Button, Card, Radio, Select, Typography, Modal, Cascader, Tag, Dropdown, Menu, Form, Input} from "antd";
+import {Table, DatePicker, Button, Card, Radio, Select, Typography, Modal, Cascader, Tag, Dropdown, Menu, Form, Input, notification} from "antd";
 
 import {Link, useNavigate} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
@@ -55,7 +55,6 @@ function TraderOverview() {
   const {fundingData} = useSelector((state) => state.funding);
 
   const [dates, setDates] = useState(null);
-  const defaultDates = [dayjs().subtract(7, "day"), dayjs()];
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedChallenges, setSelectedChallenges] = useState([]);
   const [showChallenges, setShowChallenges] = useState(false);
@@ -68,6 +67,14 @@ function TraderOverview() {
   const [blockType, setBlockType] = useState("hard");
 
   const {refetch} = useSelector((state) => state.list);
+
+
+  
+  const [defaultDates, setDefaultDates] = useState();
+
+  const [isValidRange, setIsValidRange] = useState(true);
+  const [lastValidRange, setLastValidRange] = useState({ startDate: null, endDate: null });
+
 
   useEffect(() => {
     dispatch(fetchFundingDetails(idToken));
@@ -96,7 +103,7 @@ function TraderOverview() {
         query = query + `&search=${searchText}`;
       }
       if (dates) {
-        query = query + `&start_date=${dates[0]}&end_date=${dates[1]}`;
+        query = query + `&start_date=${dates[0].format('DD/MMM/YYYY')}&end_date=${dates[1].format('DD/MMM/YYYY')}`;
       }
       if (phase !== "") {
         let phaseQuery = phase === "Free Trail" ? "&free_trial=1" : `&status=${phase}`;
@@ -127,14 +134,37 @@ function TraderOverview() {
 
   const navigate = useNavigate();
 
-  function updateDateRange(dates) {
-    setPageNo(1);
-    if (dates) {
-      setDates(dates.map((date) => date.format("DD MMM YYYY")));
+  const updateDateRange = (dates) => {
+    setPageNo(1); 
+
+    if (dates && dates.length === 2) {
+      const [startDate, endDate] = dates;
+
+      if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
+        notification.error({
+          message: 'Invalid Date Range',
+          description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
+        });
+
+        if (lastValidRange) {
+          setDefaultDates([lastValidRange.startDate, lastValidRange.endDate]);
+          return;
+        }
+
+        setDefaultDates(null);
+        setIsValidRange(false);
+        return;
+      }
+
+      setDates(dates);
+      setLastValidRange({ startDate, endDate });
+      setDefaultDates(dates); 
+      setIsValidRange(true);
     } else {
       setDates(null);
+      setDefaultDates(null); 
     }
-  }
+  };
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
@@ -677,9 +707,8 @@ function TraderOverview() {
           </div>{" "}
           <div>
             <RangePicker
-              // placeholder={['Start Date', 'End Date']}
-              // defaultValue={defaultDates}
-              onChange={updateDateRange}
+            value={defaultDates} 
+            onChange={updateDateRange}
             />
           </div>
         </div>

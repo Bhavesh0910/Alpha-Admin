@@ -1,24 +1,24 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./Payment.scss";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
-import {DatePicker, Button, Select, Tooltip, notification, Card, Dropdown, Menu, Modal, Form, Input} from "antd";
-import {Link, useNavigate} from "react-router-dom";
+import { DatePicker, Button, Select, Tooltip, notification, Card, Dropdown, Menu, Modal, Form, Input } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import editIcon from "../../assets/icons/edit_icon_gray.svg";
 import exportBtnIcon from "../../assets/icons/export_btn_icon.svg";
 import verifiedIcon from "../../assets/icons/verified_green_circleIcon.svg";
 import notVerifiedIcon from "../../assets/icons/notverified_red_circleIcon.svg";
-import {ReactComponent as CopyButton} from "../../assets/icons/copyButtonGray.svg";
+import { ReactComponent as CopyButton } from "../../assets/icons/copyButtonGray.svg";
 import dayjs from "dayjs";
-import {paymentExportsReq, paymentListReq, selectedEmail, updatePaymentStatusReq} from "../../store/NewReducers/payment";
-import {useDispatch, useSelector} from "react-redux";
+import { paymentExportsReq, paymentListReq, selectedEmail, updatePaymentStatusReq } from "../../store/NewReducers/payment";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import {DownOutlined} from "@ant-design/icons";
-import {returnErrors} from "../../store/reducers/error";
-import {returnMessages} from "../../store/reducers/message";
-const {Option} = Select;
-const {RangePicker} = DatePicker;
+import { DownOutlined } from "@ant-design/icons";
+import { returnErrors } from "../../store/reducers/error";
+import { returnMessages } from "../../store/reducers/message";
+const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -28,13 +28,12 @@ const Payment = () => {
   const [category, setCategory] = useState("all");
 
   const dispatch = useDispatch();
-  const {idToken, searchDates} = useSelector((state) => state.auth);
-  const {paymentData, isLoading} = useSelector((state) => state.payment);
+  const { idToken, searchDates } = useSelector((state) => state.auth);
+  const { paymentData, isLoading } = useSelector((state) => state.payment);
 
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
   const [dates, setDates] = useState();
-  const defaultDates = [dayjs().subtract(7, "day"), dayjs()];
 
   const [statusModelVisible, setStatusModelVisible] = useState(false);
   const [modalAction, setModalAction] = useState("");
@@ -42,6 +41,11 @@ const Payment = () => {
   const [updatedStatus, setUpdatedStatus] = useState(null);
 
   const [editCommentToUpdate, setEditCommentToUpdate] = useState(null);
+
+  const [defaultDates, setDefaultDates] = useState();
+
+  const [isValidRange, setIsValidRange] = useState(true);
+  const [lastValidRange, setLastValidRange] = useState({ startDate: null, endDate: null});
 
   const columns = useMemo(
     () => [
@@ -67,7 +71,7 @@ const Payment = () => {
                     <Button
                       icon={<CopyButton />}
                       size="small"
-                      style={{marginLeft: 8}}
+                      style={{ marginLeft: 8 }}
                       onClick={() => {
                         navigator.clipboard.writeText(text);
                         notification.success({
@@ -100,7 +104,7 @@ const Payment = () => {
                   <Button
                     icon={<CopyButton />}
                     size="small"
-                    style={{marginLeft: 8}}
+                    style={{ marginLeft: 8 }}
                     onClick={() => {
                       navigator.clipboard.writeText(text);
                       notification.success({
@@ -266,9 +270,9 @@ const Payment = () => {
   );
 
   const handleUpdateStatus = () => {
-    let body = {payment_id: userToUpdate?.transaction_id};
+    let body = { payment_id: userToUpdate?.transaction_id };
     console.log(idToken);
-    dispatch(updatePaymentStatusReq({idToken, body, dispatch}));
+    dispatch(updatePaymentStatusReq({ idToken, body, dispatch }));
     setStatusModelVisible(false);
   };
 
@@ -291,10 +295,12 @@ const Payment = () => {
       query = query + `&search=${searchText}`;
     }
     if (dates) {
-      query = query + `&start_date=${dates[0]}&end_date=${dates[1]}`;
+      let startDate = dates[0]?.format("DD/MMM/YYYY")
+      let endDate = dates[1]?.format("DD/MMM/YYYY")
+      query = query + `&start_date=${startDate}&end_date=${endDate}`;
     }
 
-    dispatch(paymentListReq({idToken, query, dispatch}));
+    dispatch(paymentListReq({ idToken, query, dispatch }));
   }
 
   const handleSearch = (value) => {
@@ -318,21 +324,46 @@ const Payment = () => {
     setPageSize(updatedPageSize);
   }
 
-  function updateDateRange(dates) {
+  const updateDateRange = (dates) => {
     setPageNo(1);
-    if (dates) {
-      setDates(dates.map((date) => date.format("DD MMM YYYY")));
+
+    if (dates && dates.length === 2) {
+      const [startDate, endDate] = dates;
+
+      if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
+        notification.error({
+          message: 'Invalid Date Range',
+          description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
+        });
+
+        if (lastValidRange) {
+          setDefaultDates([lastValidRange.startDate, lastValidRange.endDate]);
+          return;
+        }
+
+        setDefaultDates(null);
+        setIsValidRange(false);
+        return;
+      }
+
+      setDates(dates);
+      setLastValidRange({ startDate, endDate });
+      setDefaultDates(dates);
+      setIsValidRange(true);
     } else {
       setDates(null);
+      setDefaultDates(null);
     }
-  }
+  };
+
+
 
   const rangePresets = [
-    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
-    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
-    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
-    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
-    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]}, // Assuming "All time" covers a very long period
+    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
+    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
+    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
+    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
+    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] }, // Assuming "All time" covers a very long period
   ];
 
   const [isModalVisible, setModalVisible] = useState(false);
@@ -340,7 +371,7 @@ const Payment = () => {
   const handleCloseModal = () => {
     setModalVisible(true);
   };
-  const {exportLink} = useSelector((state) => state.payment);
+  const { exportLink } = useSelector((state) => state.payment);
 
   return (
     <div className="payment_container">
@@ -407,10 +438,8 @@ const Payment = () => {
             </div>
             <div className="paymentDateRange">
               <RangePicker
-                // placeholder={dates}
-                //  defaultValue={defaultDates}
+                value={defaultDates}
                 onChange={updateDateRange}
-                autoFocus
                 presets={rangePresets}
               />
             </div>
@@ -426,7 +455,7 @@ const Payment = () => {
           </Button>
           <Link
             to={"/payments/payments-export-history"}
-            style={{color: "white"}}
+            style={{ color: "white" }}
           >
             View Export History
           </Link>
@@ -488,18 +517,18 @@ const Payment = () => {
 
 export default Payment;
 
-const CalendarModal = ({idToken, exportLink, status, handleCloseModal, setModalVisible}) => {
+const CalendarModal = ({ idToken, exportLink, status, handleCloseModal, setModalVisible }) => {
   const dispatch = useDispatch();
 
   const [dates, setDates] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const rangePresets = [
-    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
-    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
-    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
-    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
-    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]},
+    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
+    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
+    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
+    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
+    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] },
   ];
 
   const onRangeChange = (dates) => {
@@ -517,10 +546,10 @@ const CalendarModal = ({idToken, exportLink, status, handleCloseModal, setModalV
       const [startDate, endDate] = dates;
       let query = `?start_date=${startDate}&end_date=${endDate}&status=${status === "all" ? "" : status === "paid" ? 1 : 0}`;
 
-      dispatch(paymentExportsReq({idToken, query, dispatch}))
+      dispatch(paymentExportsReq({ idToken, query, dispatch }))
         .unwrap()
         .then((response) => {
-          const {s3_file_url, filename} = response;
+          const { s3_file_url, filename } = response;
 
           const link = document.createElement("a");
           link.href = s3_file_url;
@@ -581,7 +610,7 @@ const CalendarModal = ({idToken, exportLink, status, handleCloseModal, setModalV
   );
 };
 
-export const ExpandableRow = ({record}) => {
+export const ExpandableRow = ({ record }) => {
   return (
     <div className="paymentNestedTable">
       <div>
@@ -615,7 +644,7 @@ export const ExpandableRow = ({record}) => {
                 <Button
                   icon={<CopyButton />}
                   size="small"
-                  style={{marginLeft: 8}}
+                  style={{ marginLeft: 8 }}
                   onClick={() => {
                     navigator.clipboard.writeText(record?.promo_code);
                     notification.success({
@@ -643,7 +672,7 @@ export const ExpandableRow = ({record}) => {
                 <Button
                   icon={<CopyButton />}
                   size="small"
-                  style={{marginLeft: 8}}
+                  style={{ marginLeft: 8 }}
                   onClick={() => {
                     navigator.clipboard.writeText(record?.transaction_id);
                     notification.success({
