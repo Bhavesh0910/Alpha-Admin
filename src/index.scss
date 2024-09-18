@@ -561,6 +561,9 @@ input:-webkit-autofill:active {
   }
 }
 
+.ant-table-wrapper .ant-table-cell-scrollbar:not([rowspan]){
+  box-shadow: none !important;
+}
 .searchImg{
   cursor: pointer;
 }

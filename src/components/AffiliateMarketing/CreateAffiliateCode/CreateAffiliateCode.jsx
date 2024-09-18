@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Breadcrumb, Button, Input, Select, Spin} from "antd";
+import {Breadcrumb, Button, Input, notification, Select, Spin} from "antd";
 import {ReactComponent as PercentageIcon} from "../../../assets/icons/precentage_icon_white.svg";
 import "./CreateAffiliateCode.scss";
 import {Link, useNavigate} from "react-router-dom";
@@ -67,14 +67,13 @@ const CreateAffiliateCode = () => {
 
   const handleSubmit = async () => {
     if (couponData.code === "" || couponData.email === "") {
-      alert("Please enter a Coupon Code and Email");
+      notification.warning({message:"Please enter Coupon Code and Email"});
       return;
     }
 
     setIsSpinner(true);
 
 
-    // Create a new FormData object
     const formData = new FormData();
     formData.append("email", couponData.email);
     formData.append("code", couponData.code);
@@ -102,7 +101,7 @@ const CreateAffiliateCode = () => {
           <Breadcrumb.Item>Create Affiliate Code</Breadcrumb.Item>
         </Breadcrumb>
         <Button
-          onClick={() => navigate("/affiliate-marketing/affiliateMarketing-logs")}
+          onClick={() => navigate("affiliate-marketing/logs")}
           className="view_logs__btn standard_button"
         >
           View Logs

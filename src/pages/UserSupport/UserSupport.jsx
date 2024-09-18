@@ -72,32 +72,44 @@ const UserSupport = () => {
 
   const handleSubmit = () => {
     if (activeTab === "change_email") {
-      const formData = new FormData();
-      formData.append("cur_email", currentEmail);
-      formData.append("pwd", currentPassword);
-      formData.append("new_email", newEmail);
-      // const emailPayload = {
-      //   cur_email: currentEmail,
-      //   pwd: currentPassword,
-      //   new_email: newEmail,
-      // };
-      // console.log(emailPayload)
-      dispatch(updateUserEmailThunk({idToken, payload: formData}));
+        const formData = new FormData();
+        formData.append("cur_email", currentEmail);
+        formData.append("pwd", currentPassword);
+        formData.append("new_email", newEmail);
+
+        dispatch(updateUserEmailThunk({ idToken, payload: formData }))
+            .unwrap() 
+            .then(() => {
+                setCurrentEmail('');
+                setCurrentPassword('');
+                setNewEmail('');
+            })
+            .catch((error) => {
+                console.error("Failed to update email:", error);
+            });
+
     } else if (activeTab === "request_payout") {
-      const formData = new FormData();
-      formData.append("login_id", loginId);
-      formData.append("amount", amount);
-      formData.append("reason", reason);
-      // const payoutPayload = {
-      //   login_id: loginId,
-      //   amount: amount,
-      //   reason: reason,
-      // };
-      // console.log(payoutPayload)
-      dispatch(requestPayoutThunk({idToken, payload: formData}));
+        const formData = new FormData();
+        formData.append("login_id", loginId);
+        formData.append("amount", amount);
+        formData.append("reason", reason);
+
+        dispatch(requestPayoutThunk({ idToken, payload: formData }))
+            .unwrap() 
+            .then(() => {
+                // Resetting form fields
+                setLoginId('');
+                setAmount('');
+                setReason('');
+            })
+            .catch((error) => {
+                // Handle error if needed
+                console.error("Failed to request payout:", error);
+            });
     }
+
     setIsModalVisible(false);
-  };
+};
 
   return (
     <div className="userSupport_container">
