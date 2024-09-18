@@ -1,4 +1,4 @@
-import {Button, DatePicker, Dropdown, Menu, Select, Modal, Form, Input, Table, notification} from "antd";
+import {Button, DatePicker, Dropdown, Menu, Select, Modal, Form, Input, Table, Alert, Tag, notification} from "antd";
 import moment from "moment";
 import React, {useEffect, useMemo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -30,6 +30,7 @@ import {baseUrl} from "../../utils/api/apis";
 import {returnErrors} from "../../store/reducers/error";
 import downloadIcon from "../../assets/icons/download_to_pc.svg";
 import {copyToClipboard} from "../../utils/utilityFunctions";
+import {data} from "./../AffiliateMarketing/AffiliateRefList/AffiliateRefList";
 const {RangePicker} = DatePicker;
 
 const {Option} = Select;
@@ -58,6 +59,10 @@ const StageManager = () => {
 
   const [paymentReference, setPaymentReference] = useState("");
 
+  const [reason, setReason] = useState("");
+  const [showWarning, setShowWarning] = useState(false);
+
+  const [maxReasonChar, setMaxReasonChar] = useState(false);
   const [status, setStatus] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
@@ -1488,11 +1493,33 @@ const StageManager = () => {
           >
             <Input.TextArea
               style={{height: "120px"}}
-              maxLength={"255"}
+              maxLength={255}
               value={editCommentToUpdate}
-              onChange={(e) => setEditCommentToUpdate(e.target.value)}
+              // onChange={(e) => setEditCommentToUpdate(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value.length <= 255) {
+                  setEditCommentToUpdate(e.target.value);
+                  setShowWarning(false);
+                }
+                if (e.target.value.length === 255) {
+                  console.log("warning....");
+                  setShowWarning(true);
+                }
+                if (e.target.value.length === 256) {
+                  console.log("warning....");
+                  setMaxReasonChar(true);
+                }
+              }}
               placeholder="Write your comment here.."
             />
+            {showWarning && (
+              <Alert
+                message="Comment cannot exceed 255 characters."
+                type="warning"
+                showIcon
+                className="warning"
+              />
+            )}
           </Form.Item>
         ) : modalAction === "Update Status" && location.pathname === "/support/payout" ? (
           <>
@@ -1503,9 +1530,32 @@ const StageManager = () => {
             >
               <Input.TextArea
                 value={paymentReference}
-                onChange={(e) => setPaymentReference(e.target.value)}
+                // onChange={(e) => setPaymentReference(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value.length <= 255) {
+                    setPaymentReference(e.target.value);
+                    setShowWarning(false);
+                  }
+                  if (e.target.value.length === 255) {
+                    console.log("warning....");
+                    setShowWarning(true);
+                  }
+                  if (e.target.value.length === 256) {
+                    console.log("warning....");
+                    setMaxReasonChar(true);
+                  }
+                }}
+                maxLength={255}
                 placeholder="Write your comment here.."
               />
+              {showWarning && (
+                <Alert
+                  message="Comment cannot exceed 255 characters."
+                  type="warning"
+                  showIcon
+                  className="warning"
+                />
+              )}
             </Form.Item>
             <Form.Item
               className="lableWhite"
@@ -1514,9 +1564,32 @@ const StageManager = () => {
             >
               <Input.TextArea
                 value={editCommentToUpdate}
-                onChange={(e) => setEditCommentToUpdate(e.target.value)}
+                // onChange={(e) => setEditCommentToUpdate(e.target.value)}
                 placeholder="Write your comment here.."
+                onChange={(e) => {
+                  if (e.target.value.length <= 255) {
+                    setEditCommentToUpdate(e.target.value);
+                    setShowWarning(false);
+                  }
+                  if (e.target.value.length === 255) {
+                    console.log("warning....");
+                    setShowWarning(true);
+                  }
+                  if (e.target.value.length === 256) {
+                    console.log("warning....");
+                    setMaxReasonChar(true);
+                  }
+                }}
+                maxLength={255}
               />
+              {showWarning && (
+                <Alert
+                  message="Comment cannot exceed 255 characters."
+                  type="warning"
+                  showIcon
+                  className="warning"
+                />
+              )}
             </Form.Item>
           </>
         ) : (
@@ -1527,11 +1600,33 @@ const StageManager = () => {
           >
             <Input.TextArea
               style={{height: "120px"}}
-              maxLength={"255"}
               value={editCommentToUpdate}
-              onChange={(e) => setEditCommentToUpdate(e.target.value)}
+              // onChange={(e) => setEditCommentToUpdate(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value.length <= 255) {
+                  setEditCommentToUpdate(e.target.value);
+                  setShowWarning(false);
+                }
+                if (e.target.value.length === 255) {
+                  console.log("warning....");
+                  setShowWarning(true);
+                }
+                if (e.target.value.length === 256) {
+                  console.log("warning....");
+                  setMaxReasonChar(true);
+                }
+              }}
+              maxLength={255}
               placeholder="Write your comment here.."
             />
+            {showWarning && (
+              <Alert
+                message="Comment cannot exceed 255 characters."
+                type="warning"
+                showIcon
+                className="warning"
+              />
+            )}
           </Form.Item>
         )}
       </Modal>
@@ -1549,13 +1644,35 @@ const StageManager = () => {
           label="Reason"
           value={comment}
           className="reset"
-          onChange={(e) => setComment(e.target.value)}
+          // onChange={(e) => setComment(e.target.value)}
         >
           <Input.TextArea
             style={{height: "120px"}}
-            maxLength={"255"}
+            onChange={(e) => {
+              if (e.target.value.length <= 255) {
+                setComment(e.target.value);
+                setShowWarning(false);
+              }
+              if (e.target.value.length === 255) {
+                console.log("warning....");
+                setShowWarning(true);
+              }
+              if (e.target.value.length === 256) {
+                console.log("warning....");
+                setMaxReasonChar(true);
+              }
+            }}
+            maxLength={255}
             placeholder="Write your comment here.."
           />
+          {showWarning && (
+            <Alert
+              message="Comment cannot exceed 255 characters."
+              type="warning"
+              showIcon
+              className="warning"
+            />
+          )}
         </Form.Item>
       </Modal>
     </div>
@@ -1571,12 +1688,18 @@ function ExpandedRowData({record}) {
   const {nestedTableData, isLoading} = useSelector((state) => state.support);
   const [contract, setContract] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [reason, setReason] = useState("");
+  const [showWarning, setShowWarning] = useState(false);
 
+  const [maxReasonChar, setMaxReasonChar] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalAction, setModalAction] = useState("");
   const [userToUpdate, setuserToUpdate] = useState(null);
   const [editCommentToUpdate, setEditCommentToUpdate] = useState(null);
   const [updatedContract, setUpdatedContract] = useState(null);
+  const [payoutModalVisible, setPayoutModalVisible] = useState(false);
+  const [evaluationModalVisible, setEvaluationModalVisible] = useState(false);
+  const [fundedModalVisible, setFundedModalVisible] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -1659,6 +1782,151 @@ function ExpandedRowData({record}) {
       dispatch(nestedTableDataReq({idToken, url, flag: false, dispatch}));
     }
   }, [url]);
+
+  function handlePayoutModal(text) {
+    setPayoutModalVisible(true);
+  }
+  function handleEvaluationModal(text) {
+    setEvaluationModalVisible(true);
+  }
+  function handleFundedModal(text) {
+    setFundedModalVisible(true);
+  }
+  const payoutColumns = [
+    {
+      title: "Payout",
+      dataIndex: "key",
+      key: "payout",
+      width: 100,
+      render: (text, record, index) => index + 1,
+    },
+    {
+      title: "Account Number",
+      dataIndex: "account_number",
+      key: "account_number",
+      width: 100,
+      render: (text) => (text ? text : "-"),
+    },
+    {
+      title: "Challenge Name",
+      dataIndex: "challenge",
+      key: "challenge",
+      width: 100,
+      render: (text) => (text ? text : "-"),
+    },
+    {
+      title: "Payout Amount",
+      dataIndex: "amount",
+      key: "amount",
+      width: 100,
+      render: (text) => (text ? `$${text}` : "-"),
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      width: 100,
+      render: (status) => <Tag color={status === "Approved" ? "green" : "volcano"}>{status ? status : "-"}</Tag>,
+    },
+    {
+      title: "Date",
+      dataIndex: "created_at",
+      key: "created_at",
+      width: 100,
+      render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+    },
+  ];
+  const evaluationColumns = [
+    {
+      title: "Evaluation",
+      dataIndex: "key",
+      key: "evaluation",
+      width: 100,
+      render: (text, record, index) => index + 1,
+    },
+    {
+      title: "Login ID",
+      dataIndex: "login_id",
+      key: "login_id",
+      width: 100,
+      render: (text) => (text ? text : "-"),
+    },
+    {
+      title: "Is Active",
+      dataIndex: "is_Active",
+      key: "is_Active",
+      width: 100,
+      render: (text) => (text ? text : "-"),
+    },
+
+    {
+      title: "Progress",
+      dataIndex: "progress",
+      key: "progress",
+      width: 100,
+      render: (status) => <Tag color={status === "Success" ? "green" : "volcano"}>{status ? status : "-"}</Tag>,
+    },
+    {
+      title: "Start Date",
+      dataIndex: "start_date",
+      key: "start_date",
+      width: 100,
+      render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+    },
+    {
+      title: "Expiry Date",
+      dataIndex: "expiry_date",
+      key: "expiry_date",
+      width: 100,
+      render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+    },
+  ];
+  const fundedColumns = [
+    {
+      title: "Funded",
+      dataIndex: "key",
+      key: "funded",
+      width: 100,
+      render: (text, record, index) => index + 1,
+    },
+    {
+      title: "Login ID",
+      dataIndex: "login_id",
+      key: "login_id",
+      width: 100,
+      render: (text) => (text ? text : "-"),
+    },
+    {
+      title: "Is Active",
+      dataIndex: "is_Active",
+      key: "is_Active",
+      width: 100,
+      render: (text) => (text ? text : "-"),
+    },
+
+    // {
+    //   title: "Progress",
+    //   dataIndex: "progress",
+    //   key: "progress",
+    //   width: 100,
+    //   render: (status) => <Tag color={status === "Success" ? "green" : "volcano"}>{status? status:'-'}</Tag>,
+    // },
+    {
+      title: "Start Date",
+      dataIndex: "start_date",
+      key: "start_date",
+      width: 100,
+      render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+    },
+    {
+      title: "Expiry Date",
+      dataIndex: "expiry_date",
+      key: "expiry_date",
+      width: 100,
+      render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+    },
+  ];
+
   return (
     <>
       {loading && <LoaderOverlay />}
@@ -2038,7 +2306,53 @@ function ExpandedRowData({record}) {
                       </div>
                     </>
                   )}
+                  <div>
+                    <div>Payout History</div>
+                    <p>
+                      {nestedTableData?.user_payouts ? (
+                        <Button
+                          className="view_settlements_btn standard_button"
+                          onClick={() => handlePayoutModal(record)}
+                        >
+                          View
+                        </Button>
+                      ) : (
+                        "-"
+                      )}
+                    </p>
+                  </div>
+                  <div>
+                    <div>Evaluation History</div>
+                    <p>
+                      {nestedTableData?.evaluation_accounts ? (
+                        <Button
+                          className="view_settlements_btn standard_button"
+                          onClick={() => handleEvaluationModal(record)}
+                        >
+                          View
+                        </Button>
+                      ) : (
+                        "-"
+                      )}
+                    </p>
+                  </div>
+                  <div>
+                    <div>Funded History</div>
+                    <p>
+                      {nestedTableData?.funded_accounts ? (
+                        <Button
+                          className="view_settlements_btn standard_button"
+                          onClick={() => handleFundedModal(record)}
+                        >
+                          View
+                        </Button>
+                      ) : (
+                        "-"
+                      )}
+                    </p>
+                  </div>
                 </div>
+
                 <div className="nestedPayoutRow2">
                   <div className="reason_container">
                     <strong>{nestedTableData?.funded_accounts?.length > 0 ? "Previous Funded Accounts" : "Previous Funded Account"}</strong>
@@ -2098,6 +2412,84 @@ function ExpandedRowData({record}) {
           )}
 
           <Modal
+            className="settlement_details"
+            footer={[
+              <Button
+                key="ok"
+                type="primary"
+                className="go_back_btn"
+                onClick={() => setPayoutModalVisible(false)}
+              >
+                Go Back
+              </Button>,
+            ]}
+            title={<h3>{"Payout History"}</h3>}
+            open={payoutModalVisible}
+            onOk={() => setPayoutModalVisible(false)}
+            onCancel={() => setPayoutModalVisible(false)}
+            cancelButtonProps={false}
+          >
+            <div className="settlement_details_container">
+              <AntTable
+                columns={payoutColumns}
+                data={nestedTableData?.user_payouts}
+                serverSide={false}
+              />
+            </div>
+          </Modal>
+          <Modal
+            className="settlement_details"
+            footer={[
+              <Button
+                key="ok"
+                type="primary"
+                className="go_back_btn"
+                onClick={() => setEvaluationModalVisible(false)}
+              >
+                Go Back
+              </Button>,
+            ]}
+            title={<h3>{"Evaluation History"}</h3>}
+            open={evaluationModalVisible}
+            onOk={() => setEvaluationModalVisible(false)}
+            onCancel={() => setEvaluationModalVisible(false)}
+            cancelButtonProps={false}
+          >
+            <div className="settlement_details_container">
+              <AntTable
+                columns={evaluationColumns}
+                data={nestedTableData?.evaluation_accounts}
+                serverSide={false}
+              />
+            </div>
+          </Modal>
+          <Modal
+            className="settlement_details"
+            footer={[
+              <Button
+                key="ok"
+                type="primary"
+                className="go_back_btn"
+                onClick={() => setFundedModalVisible(false)}
+              >
+                Go Back
+              </Button>,
+            ]}
+            title={<h3>{"Funded History"}</h3>}
+            open={fundedModalVisible}
+            onOk={() => setFundedModalVisible(false)}
+            onCancel={() => setFundedModalVisible(false)}
+            cancelButtonProps={false}
+          >
+            <div className="settlement_details_container">
+              <AntTable
+                columns={fundedColumns}
+                data={nestedTableData?.funded_accounts}
+                serverSide={false}
+              />
+            </div>
+          </Modal>
+          <Modal
             title={modalAction}
             open={isModalVisible}
             onCancel={() => {
@@ -2116,25 +2508,69 @@ function ExpandedRowData({record}) {
               >
                 <Input.TextArea
                   style={{height: "120px"}}
-                  maxLength={"255"}
                   value={editCommentToUpdate}
-                  onChange={(e) => setEditCommentToUpdate(e.target.value)}
+                  // onChange={(e) => setEditCommentToUpdate(e.target.value)}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 255) {
+                      setEditCommentToUpdate(e.target.value);
+                      setShowWarning(false);
+                    }
+                    if (e.target.value.length === 255) {
+                      console.log("warning....");
+                      setShowWarning(true);
+                    }
+                    if (e.target.value.length === 256) {
+                      console.log("warning....");
+                      setMaxReasonChar(true);
+                    }
+                  }}
+                  maxLength={255}
                   placeholder="Write your comment here.."
                 />
+                {showWarning && (
+                  <Alert
+                    message="Comment cannot exceed 255 characters."
+                    type="warning"
+                    showIcon
+                    className="warning"
+                  />
+                )}
               </Form.Item>
             ) : (
               <Form.Item
                 className="lableWhite"
                 label="Comment"
                 value={editCommentToUpdate}
-                onChange={(e) => setEditCommentToUpdate(e.target.value)}
+                // onChange={(e) => setEditCommentToUpdate(e.target.value)}
                 style={{color: "white"}}
               >
                 <Input.TextArea
                   style={{height: "120px"}}
-                  maxLength={"255"}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 255) {
+                      setEditCommentToUpdate(e.target.value);
+                      setShowWarning(false);
+                    }
+                    if (e.target.value.length === 255) {
+                      console.log("warning....");
+                      setShowWarning(true);
+                    }
+                    if (e.target.value.length === 256) {
+                      console.log("warning....");
+                      setMaxReasonChar(true);
+                    }
+                  }}
+                  maxLength={255}
                   placeholder="Write your comment here.."
                 />
+                {showWarning && (
+                  <Alert
+                    message="Comment cannot exceed 255 characters."
+                    type="warning"
+                    showIcon
+                    className="warning"
+                  />
+                )}
               </Form.Item>
             )}
           </Modal>

@@ -1,23 +1,23 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import "./UserList.scss";
-import { Table, Input, Select, Button, Modal, Tooltip, message, Radio, Form, Input as AntInput, Dropdown, Menu } from "antd";
+import {Table, Input, Select, Button, Modal, Tooltip, message, Radio, Form, Input as AntInput, Dropdown, Menu, Alert} from "antd";
 import moment from "moment";
-import { CopyOutlined, DownOutlined, ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import {CopyOutlined, DownOutlined, ExclamationCircleOutlined, PlusOutlined} from "@ant-design/icons";
+import {useDispatch, useSelector} from "react-redux";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { fetchUserList, softBlockUser, toggleActiveUser, updateFlagReq, updateUser } from "../../../store/NewReducers/listSlice";
+import {fetchUserList, softBlockUser, toggleActiveUser, updateFlagReq, updateUser} from "../../../store/NewReducers/listSlice";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import { returnMessages } from "../../../store/reducers/message";
+import {returnMessages} from "../../../store/reducers/message";
 import ReactCountryFlag from "react-country-flag";
-import { useNavigate } from "react-router-dom";
-import blockIcon from '../../../assets/icons/block.svg';
-import unblockIcon from '../../../assets/icons/unblock.svg';
-import editIcon from '../../../assets/icons/edit.svg';
+import {useNavigate} from "react-router-dom";
+import blockIcon from "../../../assets/icons/block.svg";
+import unblockIcon from "../../../assets/icons/unblock.svg";
+import editIcon from "../../../assets/icons/edit.svg";
 
-const { confirm } = Modal;
-const { Option } = Select;
+const {confirm} = Modal;
+const {Option} = Select;
 
 const UserListTable = () => {
   const lookup = require("country-code-lookup");
@@ -36,14 +36,18 @@ const UserListTable = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [blockModalVisible, setBlockModalVisible] = useState(false);
-  const [blockType, setBlockType] = useState('hard');
+  const [blockType, setBlockType] = useState("hard");
   const [flagUser, setFlagUser] = useState(null);
   const [flagModal, setFlagModel] = useState(false);
   const [flagUpdatedValue, setFlagUpdatedValue] = useState(null);
   const [comment, setComment] = useState(null);
 
-  const { tableData, currentPage, totalPages, totalItems, isLoading, flagLoading, refetch } = useSelector((state) => state.list);
-  const { msg, title, status } = useSelector((state) => state.message);
+  // const [reason, setReason] = useState("");
+  const [showWarning, setShowWarning] = useState(false);
+
+  const [maxReasonChar, setMaxReasonChar] = useState(false);
+  const {tableData, currentPage, totalPages, totalItems, isLoading, flagLoading, refetch} = useSelector((state) => state.list);
+  const {msg, title, status} = useSelector((state) => state.message);
 
   useEffect(() => {
     if (idToken) {
@@ -74,16 +78,16 @@ const UserListTable = () => {
   };
 
   const handleBlockUser = async () => {
-    if (blockType === 'hard') {
-      await dispatch(toggleActiveUser({ id: selectedUser.id, note: 'Hard blocking user', idToken })).unwrap();
+    if (blockType === "hard") {
+      await dispatch(toggleActiveUser({id: selectedUser.id, note: "Hard blocking user", idToken})).unwrap();
       await dispatch(returnMessages("User blocked successfully.", "success"));
-    } else if (blockType === 'soft') {
-      await dispatch(softBlockUser({ id: selectedUser.id, note: 'Soft blocking user', idToken })).unwrap();
+    } else if (blockType === "soft") {
+      await dispatch(softBlockUser({id: selectedUser.id, note: "Soft blocking user", idToken})).unwrap();
       await dispatch(returnMessages("User blocked successfully.", "success"));
     }
 
     setBlockModalVisible(false);
-    dispatch(fetchUserList({ idToken, searchText, pageNo, pageSize, authType, active }));
+    dispatch(fetchUserList({idToken, searchText, pageNo, pageSize, authType, active}));
   };
 
   const handleStatusChange = (user) => {
@@ -92,7 +96,7 @@ const UserListTable = () => {
       setBlockModalVisible(true);
     } else {
       confirm({
-        className: 'confirm_modal',
+        className: "confirm_modal",
         title: `Are you sure you want to unblock this user?`,
         icon: <ExclamationCircleOutlined />,
         okText: "Yes",
@@ -101,12 +105,12 @@ const UserListTable = () => {
         onOk: async () => {
           try {
             if (user?.soft_blocked) {
-              await dispatch(softBlockUser({ id: user.id, note: 'Unblocking user', idToken })).unwrap();
+              await dispatch(softBlockUser({id: user.id, note: "Unblocking user", idToken})).unwrap();
             } else {
-              await dispatch(toggleActiveUser({ id: user.id, note: 'Unblocking user', idToken })).unwrap();
+              await dispatch(toggleActiveUser({id: user.id, note: "Unblocking user", idToken})).unwrap();
             }
             dispatch(returnMessages("User unblocked successfully.", "success"));
-            dispatch(fetchUserList({ idToken, searchText, pageNo, pageSize, authType, active }));
+            dispatch(fetchUserList({idToken, searchText, pageNo, pageSize, authType, active}));
           } catch (error) {
             dispatch(returnMessages("Error unblocking user.", "error"));
           }
@@ -137,7 +141,7 @@ const UserListTable = () => {
     const formData = new FormData();
     formData.append("status", flagUpdatedValue);
     formData.append("notes", comment);
-    dispatch(updateFlagReq({ idToken, body: formData, id: flagUser?.id }));
+    dispatch(updateFlagReq({idToken, body: formData, id: flagUser?.id}));
     setFlagModel(false);
     reset();
   }
@@ -177,9 +181,9 @@ const UserListTable = () => {
         ...values,
       };
 
-      dispatch(updateUser({ payload, idToken, dispatch }));
-      dispatch(fetchUserList({ idToken, searchText: '', pageNo: 1, pageSize, authType, active }));
-      setSearchText('')
+      dispatch(updateUser({payload, idToken, dispatch}));
+      dispatch(fetchUserList({idToken, searchText: "", pageNo: 1, pageSize, authType, active}));
+      setSearchText("");
 
       setIsModalVisible(false);
     } catch (error) {
@@ -214,7 +218,7 @@ const UserListTable = () => {
     </Menu>
   );
 
-  const columns = useMemo(()=>[
+  const columns = useMemo(() => [
     {
       title: "Flag",
       dataIndex: "status",
@@ -241,7 +245,7 @@ const UserListTable = () => {
             <Tooltip title="Copy email">
               <Button
                 type="link"
-                icon={<CopyOutlined style={{ color: "#04D9FF" }} />}
+                icon={<CopyOutlined style={{color: "#04D9FF"}} />}
                 onClick={() => message.success("Copied email")}
                 disabled={!text}
               />
@@ -308,37 +312,50 @@ const UserListTable = () => {
             onClick={() => handleStatusChange(record)}
             disabled={record.is_active === undefined}
           >
-            {record.is_active && !record.soft_blocked ? 
-              <img src={blockIcon} alt="Block" /> 
-              : !record.is_active || record?.soft_blocked ? 
-              <img src={unblockIcon} alt="Unblock" /> 
-              : "-"}
+            {record.is_active && !record.soft_blocked ? (
+              <img
+                src={blockIcon}
+                alt="Block"
+              />
+            ) : !record.is_active || record?.soft_blocked ? (
+              <img
+                src={unblockIcon}
+                alt="Unblock"
+              />
+            ) : (
+              "-"
+            )}
           </div>
           <div
             title="Edit"
             onClick={() => handleEditClick(record)}
-            style={{ cursor: 'pointer' }}
+            style={{cursor: "pointer"}}
           >
-            <img src={editIcon} alt="Edit" />
+            <img
+              src={editIcon}
+              alt="Edit"
+            />
           </div>
         </div>
       ),
     },
   ]);
-  
 
-  const handleExpand = (record) => {
-  };
+  const handleExpand = (record) => {};
 
   console.log(tableData);
-  const ExpandedRowRender = ({ record }) => {
+  const ExpandedRowRender = ({record}) => {
     return (
       <div className="expanded-row-content">
         <div>
-          <p><strong>Name: </strong> {record.full_name || "-"}</p>
+          <p>
+            <strong>Name: </strong> {record.full_name || "-"}
+          </p>
         </div>
         <div>
-          <p><strong>Date Joined: </strong> {record.date_joined ? moment(record.date_joined).format("ll") : "-"}</p>
+          <p>
+            <strong>Date Joined: </strong> {record.date_joined ? moment(record.date_joined).format("ll") : "-"}
+          </p>
         </div>
       </div>
     );
@@ -369,8 +386,11 @@ const UserListTable = () => {
                   handleSearch(e.target.value);
                 }
               }}
-              />
-            <div className="searchImg" onClick={() => handleSearch(search)}>
+            />
+            <div
+              className="searchImg"
+              onClick={() => handleSearch(search)}
+            >
               <img
                 src={searchIcon}
                 alt="searchIcon"
@@ -419,7 +439,7 @@ const UserListTable = () => {
             <Form.Item
               name="full_name"
               label="Full Name"
-              rules={[{ required: true, message: "Please input the full name" }]}
+              rules={[{required: true, message: "Please input the full name"}]}
             >
               <AntInput placeholder="Enter full name" />
             </Form.Item>
@@ -427,8 +447,8 @@ const UserListTable = () => {
               name="Email"
               label="Email"
               rules={[
-                { required: true, message: "Please input the email" },
-                { type: "email", message: "Please enter a valid email" },
+                {required: true, message: "Please input the email"},
+                {type: "email", message: "Please enter a valid email"},
               ]}
             >
               <AntInput placeholder="Enter email" />
@@ -468,9 +488,35 @@ const UserListTable = () => {
           label="Reason"
           value={comment}
           className="reset"
-          onChange={(e) => setComment(e.target.value)}
+          // onChange={(e) => setComment(e.target.value)}
         >
-          <Input.TextArea placeholder="Write your comment here.." />
+          <Input.TextArea
+            placeholder="Write your comment here.."
+            maxLength={255}
+            onChange={(e) => {
+              if (e.target.value.length <= 255) {
+                setComment(e.target.value);
+                setShowWarning(false);
+              }
+              if (e.target.value.length === 255) {
+                console.log("warning....");
+                setShowWarning(true);
+              }
+              if (e.target.value.length === 256) {
+                console.log("warning....");
+                setMaxReasonChar(true);
+              }
+            }}
+    
+          />
+          {showWarning && (
+            <Alert
+              message="Comment cannot exceed 255 characters."
+              type="warning"
+              showIcon
+              className="warning"
+            />
+          )}
         </Form.Item>
       </Modal>
 
@@ -490,7 +536,6 @@ const UserListTable = () => {
           </Select>
         </Form.Item>
       </Modal>
-
     </div>
   );
 };
