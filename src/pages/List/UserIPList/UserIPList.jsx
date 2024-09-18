@@ -31,8 +31,6 @@ const UserIPList = () => {
 
   const {ipLogsData, isLoading, isBlockLoading, error} = useSelector((state) => state.list);
 
-  const [pageNo, setPageNo] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
 
   const fetch = () => {
     dispatch(fetchIpLogs({idToken, search: searchText, blocked: activeTab === "blocked" ? "True" : "False", currentPage}));
@@ -45,10 +43,10 @@ const UserIPList = () => {
   }, [idToken, currentPage, searchText, activeTab]);
 
   const handleSearch = (value) => {
-    setPageNo(1);
-    setPageSize(20);
     setSearchText(value);
+    setCurrentPage(1);  
   };
+
   const handleTabChange = (key) => {
     setActiveTab(key);
   };
@@ -188,10 +186,7 @@ const UserIPList = () => {
     },
   ]);
 
-  function triggerChange(page, updatedPageSize) {
-    setPageNo(page);
-    setPageSize(updatedPageSize);
-  }
+
 
   return (
     <div className="list_container">
@@ -237,15 +232,14 @@ const UserIPList = () => {
       <AntTable
         data={ipLogsData?.results}
         columns={columns}
-        totalPages={Math.ceil(ipLogsData?.count / pageSize)}
+        totalPages={Math.ceil(ipLogsData?.count / 20)}
         totalItems={ipLogsData?.count}
-        pageSize={pageSize}
-        CurrentPageNo={pageNo}
-        setPageSize={setPageSize}
-        triggerChange={triggerChange}
+        pageSize={20}
+        CurrentPageNo={currentPage}
+        setPageSize={() => {}}
+        triggerChange={setCurrentPage} 
         scrollY={400}
       />
-
       <Modal
         title={`${action} Account`}
         visible={isModalVisible}

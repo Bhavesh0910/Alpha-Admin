@@ -15,7 +15,7 @@ import { exportDataReq } from "../../../store/NewReducers/exportSlice";
 import { returnErrors } from "../../../store/reducers/error";
 import dayjs from "dayjs";
 import SplitChart from "./SplitChart";
-import { dollarUS, formatCurrency, formatValue } from "../../../utils/helpers/string";
+import { formatCurrency, formatValue } from "../../../utils/helpers/string";
 
 const { RangePicker } = DatePicker;
 
@@ -29,29 +29,51 @@ const Payout = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [dates, setDates] = useState(null);
   const [exportDates, setExportDates] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); 
 
-  const { payoutDetails, totalPayments, totalMethod, isTotalMethodLoading, isLoading } = useSelector((state) => state.advanceStatistics);
+  const { payoutDetails, totalPayments, totalMethod, isTotalMethodLoading } = useSelector((state) => state.advanceStatistics);
   const { idToken } = useSelector((state) => state.auth);
   const { isLoading: isExportLoading } = useSelector((state) => state.export);
+
+  const [defaultDates, setDefaultDates] = useState();
+
+  const [isValidRange, setIsValidRange] = useState(true);
+  const [lastValidRange, setLastValidRange] = useState({ startDate: null, endDate: null});
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
+    const fetchData = async () => {
+      setIsLoading(true);
+      let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
 
-    if (searchText) {
-      query = query + `&search=${searchText}`;
-    }
+      if (searchText) {
+        query += `&search=${searchText}`;
+      }
 
-    if (dates && dates.length === 2) {
-      const [startDate, endDate] = dates;
-      query += `&start_date=${startDate}&end_date=${endDate}`;
-    }
+      if (dates && dates.length === 2) {
+        const [startDate, endDate] = dates;
+        query += `&start_date=${startDate}&end_date=${endDate}`;
+      }
 
-    dispatch(fetchPayoutDetails({ idToken, query }));
-    dispatch(fetchTotalPayments({ idToken, query }));
-    dispatch(fetchTotalMethod({ idToken, query }));
+      try {
+        await Promise.all([
+          dispatch(fetchPayoutDetails({ idToken, query })),
+          dispatch(fetchTotalPayments({ idToken, query })),
+          dispatch(fetchTotalMethod({ idToken, query })),
+        ]);
+      } catch (error) {
+        notification.error({
+          message: "Data Fetch Error",
+          description: "There was an error fetching data. Please try again.",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, [dispatch, idToken, pageNo, pageSize, searchText, dates]);
 
   const searchRef = useRef();
@@ -213,10 +235,33 @@ const Payout = () => {
 
   const updateDateRange = (dates) => {
     setPageNo(1);
-    if (dates) {
-      setDates(dates.map((date) => date.format("DD/MMM/YYYY")));
+
+    if (dates && dates.length === 2) {
+      const [startDate, endDate] = dates;
+
+      if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
+        notification.error({
+          message: 'Invalid Date Range',
+          description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
+        });
+
+        if (lastValidRange) {
+          setDefaultDates([lastValidRange.startDate, lastValidRange.endDate]);
+          return;
+        }
+
+        setDefaultDates(null);
+        setIsValidRange(false);
+        return;
+      }
+
+      setDates(dates);
+      setLastValidRange({ startDate, endDate });
+      setDefaultDates(dates);
+      setIsValidRange(true);
     } else {
-      setDates([]);
+      setDates(null);
+      setDefaultDates(null);
     }
   };
 
@@ -231,60 +276,61 @@ const Payout = () => {
     <>
       {/* {isExportLoading && <LoaderOverlay />} */}
       {isLoading ?
-            <LoaderOverlay />
-          :
-      <div className="payout_main">
-        
-        <div className="payout_header">
-          <h2>Payout</h2>
-          <div className="payout_header_right">
-            <div className="export_btn">
-              <Button onClick={handleOpenModal}>
-                <img
-                  src={exportIcon}
-                  alt="export_btn_icon"
-                />
-                Export
-              </Button>
-              <Link
-                className="link"
-                to={"/advance-statistics/payout-export-history"}
-              >
-                View Export History
-              </Link>
+        <LoaderOverlay />
+        :
+        <div className="payout_main">
+
+          <div className="payout_header">
+            <h2>Payout</h2>
+            <div className="payout_header_right">
+              <div className="export_btn">
+                <Button onClick={handleOpenModal}>
+                  <img
+                    src={exportIcon}
+                    alt="export_btn_icon"
+                  />
+                  Export
+                </Button>
+                <Link
+                  className="link"
+                  to={"/advance-statistics/payout-export-history"}
+                >
+                  View Export History
+                </Link>
+              </div>
+              <RangePicker
+                presets={rangePresets}
+                value={defaultDates}
+                onChange={updateDateRange}
+              />
             </div>
-            <RangePicker
-              presets={rangePresets}
-              onChange={updateDateRange}
-            />
           </div>
-        </div>
-        <div className="payout_lower_heading">
-          <div className="payout_infobox_wrapper">
+          <div className="payout_lower_heading">
+            <div className="payout_infobox_wrapper">
 
-            <div className="payout_lower_heading_left">
-              <h3>
-                Total number of payouts Requested             </h3>
-              <div className="payout_lower_heading_inner">
-                {!totalPayments ? <Spin /> :
-                  <h2>{totalPayments && formatValue(totalPayments[0]?.new_request , 0)}</h2>
-                }
+              <div className="payout_lower_heading_left">
+                <h3>
+                  Total number of payouts Requested             </h3>
+                <div className="payout_lower_heading_inner">
+                  {!totalPayments ? <Spin /> :
+                    <h2>{totalPayments && formatValue(totalPayments[0]?.new_request)}</h2>
+                  }
+                </div>
               </div>
-            </div>
 
 
-            <div className="payout_lower_heading_left">
-              <h3>
-                total amount of payout approved       </h3>
-              <div className="payout_lower_heading_inner">
-                {!totalPayments ? <Spin /> :
-                  <h2>{totalPayments && totalPayments[0]?.total_approved_amount ? dollarUS(totalPayments[0]?.total_approved_amount) : '-'}</h2>
-                }
+              <div className="payout_lower_heading_left">
+                <h3>
+                  total amount of payout approved       </h3>
+                <div className="payout_lower_heading_inner">
+                  {!totalPayments ? <Spin /> :
+                    <h2>{totalPayments && totalPayments[0]?.total_approved_amount ? "$" : ''}{totalPayments && formatValue(totalPayments[0]?.total_approved_amount)}</h2>
+                  }
+                </div>
               </div>
-            </div>
 
 
-            {/* <div className="payout_lower_heading_left">
+              {/* <div className="payout_lower_heading_left">
               <h3>
                 Total New Payment Request <span>(Today)</span>
               </h3>
@@ -312,82 +358,82 @@ const Payout = () => {
                 <h2>{totalPayments && totalPayments[0]?.new_request}</h2>
               </div>
             </div> */}
+            </div>
+
+
           </div>
 
-
-        </div>
-
-        <SplitChart loading={isTotalMethodLoading} data={totalMethod} />
+          <SplitChart loading={isTotalMethodLoading} data={totalMethod} />
 
 
 
-        <div className="payout_lower_heading_two">
-          <div className="left">
-            <h3>Eligible Payment List</h3>
-          </div>
-          <button
-            style={{ cursor: "pointer" }}
-            className="right"
-            onClick={handleExpectedTomorrowClick}
-          >
-            Expected Tomorrow
-          </button>
-        </div>
-
-        <div>
-       
-          <AntTable
-            data={payoutDetails?.results || []}
-            columns={columns}
-            totalPages={Math.ceil(payoutDetails?.count / pageSize)}
-            totalItems={payoutDetails?.count}
-            pageSize={pageSize}
-            CurrentPageNo={pageNo}
-            setPageSize={setPageSize}
-            triggerChange={triggerChange}
-            isExpandable={true}
-            ExpandedComp={ExpandedRowRender}
-            rowId="login_id"
-            scrollY={420}
-          />
-
-        </div>
-        
-
-        <Modal
-          title="Export"
-          visible={isModalVisible}
-          onCancel={handleCloseModal}
-          footer={null}
-          className="export_modal"
-          closeIcon={<CloseOutlined style={{ color: "#fff" }} />}
-        >
-          <div className="export_modal_wrapper">
-            <RangePicker
-              onChange={updateExportDateRange}
-              autoFocus
-              presets={rangePresets}
-              style={{ width: "100%" }}
-            />
-          </div>
-          <p style={{ color: "#fff" }}>File will contain information of the date you’ve selected.</p>
-          <div className="btn_wrapper">
-            <Button
-              type="primary"
-              onClick={handleExport}
-              style={{
-                backgroundColor: "#1890ff",
-                borderColor: "#1890ff",
-                color: "#fff",
-              }}
-              loading={isExportLoading}
+          <div className="payout_lower_heading_two">
+            <div className="left">
+              <h3>Eligible Payment List</h3>
+            </div>
+            <button
+              style={{ cursor: "pointer" }}
+              className="right"
+              onClick={handleExpectedTomorrowClick}
             >
-              Export
-            </Button>
+              Expected Tomorrow
+            </button>
           </div>
-        </Modal>
-      </div>
-}
+
+          <div>
+
+            <AntTable
+              data={payoutDetails?.results || []}
+              columns={columns}
+              totalPages={Math.ceil(payoutDetails?.count / pageSize)}
+              totalItems={payoutDetails?.count}
+              pageSize={pageSize}
+              CurrentPageNo={pageNo}
+              setPageSize={setPageSize}
+              triggerChange={triggerChange}
+              isExpandable={true}
+              ExpandedComp={ExpandedRowRender}
+              rowId="login_id"
+              scrollY={420}
+            />
+
+          </div>
+
+
+          <Modal
+            title="Export"
+            visible={isModalVisible}
+            onCancel={handleCloseModal}
+            footer={null}
+            className="export_modal"
+            closeIcon={<CloseOutlined style={{ color: "#fff" }} />}
+          >
+            <div className="export_modal_wrapper">
+              <RangePicker
+                onChange={updateExportDateRange}
+                autoFocus
+                presets={rangePresets}
+                style={{ width: "100%" }}
+              />
+            </div>
+            <p style={{ color: "#fff" }}>File will contain information of the date you’ve selected.</p>
+            <div className="btn_wrapper">
+              <Button
+                type="primary"
+                onClick={handleExport}
+                style={{
+                  backgroundColor: "#1890ff",
+                  borderColor: "#1890ff",
+                  color: "#fff",
+                }}
+                loading={isExportLoading}
+              >
+                Export
+              </Button>
+            </div>
+          </Modal>
+        </div>
+      }
     </>
   );
 };

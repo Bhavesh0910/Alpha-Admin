@@ -52,6 +52,8 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
           <div className="top_left_div_buttons">
             <button>{accountDetails?.status}</button>
             <button className="in_progress">{accountDetails?.progress}</button>
+            {/* <button>{accountDetails?.group}</button>
+            <button>{accountDetails?.challenge?.name}</button> */}
           </div>
           <div className="top_left_div_lower">
             <div>
@@ -73,6 +75,16 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
             <div>
               <p>No. of Trades</p>
               <h3>{formatValue(overview?.calculated_data?.trades)}</h3>
+            </div>
+            <div className="top_row_2">
+            <div>
+              <p>Group</p>
+              <h3>{accountDetails?.group ? accountDetails?.group?.replace(/\\/g, " ") : '-'}</h3>
+            </div>
+            <div>
+              <p>Challenge Name</p>
+              <h3>{accountDetails?.challenge?.name ? accountDetails?.challenge?.name : "-"}</h3>
+            </div>
             </div>
           </div>
         </div>

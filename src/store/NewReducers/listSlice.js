@@ -126,8 +126,6 @@ const listSlice = createSlice({
 
         state.isLoading = false;
         state.tableData = action.payload?.results;
-        state.totalPages = Math.ceil(action.payload?.count / 21);
-        state.totalItems = action.payload?.count;
       })
       .addCase(fetchUserList.rejected, (state, action) => {
         state.isLoading = false;
@@ -140,8 +138,6 @@ const listSlice = createSlice({
       .addCase(fetchIpLogs.fulfilled, (state, action) => {
         state.isLoading = false;
         state.ipLogsData = action.payload;
-        state.totalPages = Math.ceil(action.payload.count / 21);
-        state.totalItems = action.payload.count;
       })
       .addCase(fetchIpLogs.rejected, (state, action) => {
         state.isLoading = false;

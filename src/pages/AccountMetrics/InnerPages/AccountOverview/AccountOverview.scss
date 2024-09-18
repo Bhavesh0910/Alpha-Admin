@@ -136,6 +136,15 @@
           }
         }
 
+        .top_row_2{
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 20px;
+          flex: 0 !important;
+          flex-wrap: wrap;
+        }
+
         .top_left_div_lower {
           display: flex;
           padding: 20px;
