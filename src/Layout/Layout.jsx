@@ -58,6 +58,14 @@ const items = [
     icon: <TraderOverviewIcon />,
     label: "Trader Overview",
     link: "/trader-overview",
+    // children:[
+    //   {
+    //     key:"4-1",
+    //     // label:"View logs",
+    //     link:"/trader-overview/view-logs"
+    //   }
+    // ]
+
   },
   // {
   //   key: "5",
@@ -341,31 +349,61 @@ const PageLayout = ({headerName, children}) => {
         return "3";
       case "/trader-overview":
         return "4";
+      case "/trader-overview/view-logs":
+        return "4";
       case "/stage-manager":
         return "5";
       case "/support/stage-1":
         return "6-1";
+      case "/support/stage-1/logs":
+        return "6-1";
       case "/support/stage-2":
+        return "6-2";
+      case "/support/stage-2/logs":
         return "6-2";
       case "/support/funded":
         return "6-3";
+      case "/funded/funded-view-logs":
+        return "6-3";
       case "/support/payout":
+        return "6-4";
+      case "/support/payout/payout-view-logs":
         return "6-4";
       case "/funding-evaluation":
         return "7-1";
       case "/payments":
         return ["8"];
+      case "/payments/payments-view-logs":
+        return ["8"];
+      case "/payments/payments-export-history":
+        return ["8"];
       case "/affiliate-marketing":
+        return ["9"];
+      case "/affiliate-marketing/logs":
+        return ["9"];
+      case "/affiliate-marketing/create-affiliate-code":
+        return ["9"];
+      case "/affiliate-marketing/affiliateMarketing-logs":
         return ["9"];
       case "/user-support":
         return ["10"];
+      case "/user-support/changeEmail-logs":
+        return ["10"];
       case "/coupon":
+        return ["13"];
+      case "/coupon/coupon-logs":
+        return ["13"];
+      case "/coupon/create-coupon":
         return ["13"];
       case "/general-log":
         return ["14"];
       case "/list/user-ip-list":
         return ["15", "15-2"];
+      case "/list/user-ip-list/user-ip-logs":
+        return ["15", "15-2"];
       case "/list/user-list":
+        return ["15", "15-1"];
+      case "/list/user-list/user-logs":
         return ["15", "15-1"];
       case "/compliance/kyc":
         return ["16", "16-1"];
@@ -373,23 +411,35 @@ const PageLayout = ({headerName, children}) => {
         return ["16", "16-2"];
       case "/competitions/":
         return ["17"];
+      case "/competitions/competition-list-logs":
+        return ["17"];
+      case "/competitions/create-competition":
+        return ["17"];
       case "/advance-statistics/withdrawal-status":
         return ["18", "18-1"];
-      case "/advance-statistics/withdrawal-status":
+      case "/advance-statistics/withdrawal-status/export-history":
         return ["18", "18-1"];
       case "/advance-statistics/withdrawal-details":
         return ["18", "18-2"];
       case "/advance-statistics/pass-rates":
         return ["18", "18-3"];
+      case "/advance-statistics/export-history":
+        return ["18", "18-3"];
       case "/advance-statistics/daily-stats":
         return ["18", "18-4"];
+      case "/advance-statistics/daily-stats/export-history":
+        return ["18", "18-4"];
       case "/advance-statistics/payout":
+        return ["18", "18-5"];
+      case "/advance-statistics/payout-export-history":
         return ["18", "18-5"];
       case "/certificates":
         return ["19"];
       case "/certificates/all-certificates":
         return ["19", "19-1"];
       case "/certificates/create-certificates":
+        return ["19", "19-2"];
+      case "/certificates/create-certificates/view-logs":
         return ["19", "19-2"];
       // case "/advance-statistics/trading-pairs":
       //   return ["19"];

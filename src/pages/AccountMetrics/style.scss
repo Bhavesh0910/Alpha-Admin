@@ -21,4 +21,22 @@
     align-items: center;
     gap: 10px;
   }
+
+  .StatusFilters{
+    @media(max-width:990px){
+      display: none;
+    }
+  }
+  .mobileFilters{
+    display: none;
+    @media (max-width:990px){
+      display: inline;
+    }
+  }
+  .ant-radio-button-wrapper{
+    >span{
+      text-wrap: wrap;
+    }
+  }
 }
+// 1095

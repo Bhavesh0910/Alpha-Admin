@@ -20,9 +20,9 @@ export const fetchUserList = createAsyncThunk("list/fetchUserList", async ({idTo
 export const fetchIpLogs = createAsyncThunk("list/fetchIpLogs", async ({idToken, search, currentPage}, {dispatch, rejectWithValue}) => {
   try {
     const response = await ipLogsReq(idToken, search, currentPage);
-    if (response?.status < 399) {
-      return response?.data;
-    }
+    // if (response?.status < 399) {
+    return response?.data;
+    // }
   } catch (error) {
     const msg = "Error fetching IP logs";
     dispatch(returnErrors(error?.response?.data?.detail || msg, 400));
@@ -35,12 +35,11 @@ export const blockOrUnblockIp = createAsyncThunk("list/blockOrUnblockIp", async 
     const response = await axios.post(`${baseUrl}block-ip/`, {user_email, reason}, {headers: {Authorization: `Bearer ${idToken}`}});
     if (response?.status < 399) {
       dispatch(returnMessages(block ? "Blocked Successfully" : "Unblocked Successfully"));
-      console.log(response) 
-      return response.data
+      console.log(response);
+      return response.data;
     } else {
       return rejectWithValue("Error from server");
-    }      
-    
+    }
   } catch (error) {
     const msg = "Error blocking/unblocking IP";
     dispatch(returnErrors(error?.response?.data?.detail || msg, 400));
@@ -75,26 +74,21 @@ export const toggleActiveUser = createAsyncThunk("list/toggleActiveUser", async 
   }
 });
 
-export const softBlockUser = createAsyncThunk(
-  "list/softBlockUser",
-  async ({ id, note = "", idToken }, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await softBlockUserApi(idToken, id, note);
-      if (response?.status < 399) {
-        dispatch(returnMessages(note === 'Soft blocking user' ? "User Soft Blocked Successfully" : "User Unblocked Successfully"));
-        return { id, note }; 
-      } else {
-        return rejectWithValue("Error from server");
-      }
-    } catch (error) {
-      const msg = "Error soft blocking/unblocking user";
-      dispatch(returnErrors(error?.response?.data?.detail || msg, 400));
-      return rejectWithValue(msg);
+export const softBlockUser = createAsyncThunk("list/softBlockUser", async ({id, note = "", idToken}, {dispatch, rejectWithValue}) => {
+  try {
+    const response = await softBlockUserApi(idToken, id, note);
+    if (response?.status < 399) {
+      dispatch(returnMessages(note === "Soft blocking user" ? "User Soft Blocked Successfully" : "User Unblocked Successfully"));
+      return {id, note};
+    } else {
+      return rejectWithValue("Error from server");
     }
+  } catch (error) {
+    const msg = "Error soft blocking/unblocking user";
+    dispatch(returnErrors(error?.response?.data?.detail || msg, 400));
+    return rejectWithValue(msg);
   }
-);
-
-
+});
 
 const listSlice = createSlice({
   name: "list",
@@ -108,7 +102,7 @@ const listSlice = createSlice({
     isLoading: false,
     error: null,
     flagLoading: false,
-    refetch:false
+    refetch: false,
   },
   reducers: {
     setPage: (state, action) => {
@@ -138,9 +132,11 @@ const listSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchIpLogs.fulfilled, (state, action) => {
+        console.table("action.payload : ", action.payload);
+
         state.isLoading = false;
         state.ipLogsData = action.payload;
-        state.totalPages = Math.ceil(action.payload.count / 21);
+        state.totalPages = Math.ceil(action.payload?.count / 20);
         state.totalItems = action.payload.count;
       })
       .addCase(fetchIpLogs.rejected, (state, action) => {
@@ -148,19 +144,18 @@ const listSlice = createSlice({
         state.error = action.payload || action.error.message;
       })
       .addCase(blockOrUnblockIp.pending, (state) => {
-        state.isBlockLoading = true; 
+        state.isBlockLoading = true;
         state.error = null;
       })
       .addCase(blockOrUnblockIp.fulfilled, (state, action) => {
-        state.isBlockLoading = false; 
+        state.isBlockLoading = false;
         const {id, block} = action.payload;
-   
       })
       .addCase(blockOrUnblockIp.rejected, (state, action) => {
         state.isBlockLoading = false;
         state.error = action.payload || action.error.message;
       })
-      
+
       .addCase(toggleActiveUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -207,6 +202,7 @@ const listSlice = createSlice({
         state.error = null;
       })
       .addCase(softBlockUser.fulfilled, (state, action) => {
+        // state.flagLoading = false;
         state.refetch = !state.refetch;
       })
       .addCase(softBlockUser.rejected, (state, action) => {
@@ -223,7 +219,7 @@ export default listSlice.reducer;
 export const updateFlagReq = createAsyncThunk("list/updateFlagReq", async ({idToken, body, id}, {rejectWithValue, dispatch}) => {
   try {
     const response = await updateFlagReqApi(idToken, body, id);
-    dispatch(returnMessages("Status Changed Successfully" , 200));
+    dispatch(returnMessages("Status Changed Successfully", 200));
     console.log(response);
     return response.data; // Adjust based on your API response
   } catch (error) {

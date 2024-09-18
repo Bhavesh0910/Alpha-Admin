@@ -1,4 +1,4 @@
-import {Button, message, Modal, Select, Tooltip} from "antd";
+import {Alert, Button, message, Modal, Select, Tooltip} from "antd";
 import "./UserIPList.scss";
 import React, {useEffect, useMemo, useState} from "react";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
@@ -29,6 +29,9 @@ const UserIPList = () => {
   const [reason, setReason] = useState("");
   const [selectedRecord, setSelectedRecord] = useState(null);
 
+  const [showWarning, setShowWarning] = useState(false);
+
+  const [maxReasonChar, setMaxReasonChar] = useState(false);
   const {ipLogsData, isLoading, isBlockLoading, error} = useSelector((state) => state.list);
 
   const [pageNo, setPageNo] = useState(1);
@@ -103,7 +106,7 @@ const UserIPList = () => {
             <Tooltip title="Copy user">
               <Button
                 type="link"
-                icon={<CopyOutlined style={{ color: "#04D9FF" }} />}
+                icon={<CopyOutlined style={{color: "#04D9FF"}} />}
                 onClick={() => message.success("Copied user")}
                 disabled={!text}
               />
@@ -224,8 +227,11 @@ const UserIPList = () => {
                 handleSearch(e.target.value);
               }
             }}
-            />
-          <div className="searchImg" onClick={() => handleSearch(search)}>
+          />
+          <div
+            className="searchImg"
+            onClick={() => handleSearch(search)}
+          >
             <img
               src={searchIcon}
               alt="searchIcon"
@@ -279,11 +285,34 @@ const UserIPList = () => {
         <div className="modal-content">
           <p className="modal-title">Write Your Reason</p>
           <textarea
+            // onChange={(e) => {
+            //   setReason(e.target.value);
+            // }}
+            maxLength={255}
             onChange={(e) => {
-              setReason(e.target.value);
+              if (e.target.value.length <= 255) {
+                setReason(e.target.value);
+                setShowWarning(false);
+              }
+              if (e.target.value.length === 255) {
+                // console.log("warning....");
+                setShowWarning(true);
+              }
+              if (e.target.value.length === 256) {
+                // console.log("warning....");
+                setMaxReasonChar(true);
+              }
             }}
             placeholder="Write your reason here.."
           ></textarea>
+          {showWarning && (
+            <Alert
+              message="Comment cannot exceed 255 characters."
+              type="warning"
+              showIcon
+              className="warning"
+            />
+          )}
         </div>
       </Modal>
     </div>

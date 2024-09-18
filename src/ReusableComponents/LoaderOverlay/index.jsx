@@ -11,7 +11,7 @@ function LoaderOverlay({desc}) {
           speed="1.75"
           color="#04d9ff"
         ></l-bouncy>
-        {<h1>{desc} </h1> ? <h1 style={{color: "#ffffff"}}>Loading...</h1> : ""}
+        {<h1>{desc} </h1> ? <h1 style={{color: "#25CCF7"}}>Loading...</h1> : ""}
       </div>
     </>
   );

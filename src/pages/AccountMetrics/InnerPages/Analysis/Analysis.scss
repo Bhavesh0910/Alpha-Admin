@@ -1,44 +1,59 @@
 .account_metrics_analysis {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 
- 
-    .standard_heading {
-        color: var(--Text, #1E1E1E);
-        font-family: "Nunito Sans";
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: normal;
-    }
+  .standard_heading {
+    color: var(--Text, #1e1e1e);
+    font-family: "Nunito Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
 
-    .analysis_box {
-        padding: 20px;
-        border-radius: var(--table-box, 20px);
-        background: var(--white, #FFF);
+  .analysis_box {
+    padding: 20px;
+    border-radius: var(--table-box, 20px);
+    background: var(--white, #fff);
+  }
+  .ant-radio-group {
+    gap: none !important;
+    // overflow: auto;
+
+    // /* Custom scrollbar */
+    // scrollbar-width: thin;
+    // scrollbar-color: #04D9FF transparent; /* thumb color, track color */
+  }
+
+  .ant-radio-group::-webkit-scrollbar {
+    width: 6px; /* width of the scrollbar */
+  }
+
+  .ant-radio-group::-webkit-scrollbar-track {
+    background: transparent; /* color of the track */
+  }
+
+  .ant-radio-group::-webkit-scrollbar-thumb {
+    background-color: #04d9ff; /* color of the scrollbar thumb */
+    border-radius: 3px; /* roundness of the thumb */
+    border: 1px solid #04d9ff; /* border around the thumb */
+  }
+
+  .ant-radio-button-wrapper {
+    > span {
+      text-wrap: wrap;
     }
-    .ant-radio-group {
-    
-        overflow: auto;
-      
-        /* Custom scrollbar */
-        scrollbar-width: thin;
-        scrollbar-color: #04D9FF transparent; /* thumb color, track color */
-      }
-      
-      .ant-radio-group::-webkit-scrollbar {
-        width: 6px; /* width of the scrollbar */
-      }
-      
-      .ant-radio-group::-webkit-scrollbar-track {
-        background: transparent; /* color of the track */
-      }
-      
-      .ant-radio-group::-webkit-scrollbar-thumb {
-        background-color: #04D9FF; /* color of the scrollbar thumb */
-        border-radius: 3px; /* roundness of the thumb */
-        border: 1px solid #04D9FF; /* border around the thumb */
-      }
-      
+  }
+  .selectedViewFilters {
+    @media (max-width: 1095px) {
+      display: none;
+    }
+  }
+  .mobileFilters {
+    display: none;
+    @media (max-width: 1095px) {
+      display: inline;
+    }
+  }
 }

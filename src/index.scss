@@ -962,3 +962,7 @@ html * {
   inset-inline-end:  none !important;
   inset-inline-start: 5px !important;
 }
+
+textarea:where(.css-dev-only-do-not-override-m4timi).ant-input{
+  resize: none;
+}

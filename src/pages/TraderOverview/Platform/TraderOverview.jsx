@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from "react";
 import "./TraderOverview.scss";
-import {Table, DatePicker, Button, Card, Radio, Select, Typography, Modal, Cascader, Tag, Dropdown, Menu, Form, Input, notification} from "antd";
+import {Table, DatePicker, Button, Card, Radio, Select, Typography, Modal, Cascader, Tag, Dropdown, Menu, Form, Input, Alert, notification} from "antd";
 
 import {Link, useNavigate} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
@@ -42,6 +42,9 @@ function TraderOverview() {
   const [action, setAction] = useState(null);
   const [reason, setReason] = useState("");
 
+  const [showWarning, setShowWarning] = useState(false);
+
+  const [maxReasonChar, setMaxReasonChar] = useState(false);
   const [phase, setPhase] = useState("");
   const {idToken, refreshToken, searchDates} = useSelector((state) => state.auth);
   const {data, isLoading: accountsLoading, totalItems, refresh} = useSelector((state) => state.accountList);
@@ -93,6 +96,10 @@ function TraderOverview() {
   //     setChallengesOptions(fundingEvu);
   //   }
   // }, [fundingData]);
+
+  useEffect(() => {
+    console.log("reason :", reason);
+  }, [reason]);
 
   const fetchTradersData = async (dates, pageNo, pageSize, searchText, status, phase, platform, Challenges) => {
     setIsLoading(true);
@@ -495,20 +502,25 @@ function TraderOverview() {
       dispatch(softBlockUser({id: selectedTrader?.user_id?.id, note: reason, idToken}));
     }
     setIsModalVisible(false);
+    setReason("");
   };
 
   const handleUnBlock = () => {
     dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.user_id, note: reason}, dispatch}));
     setIsModalVisible(false);
+    setReason("");
   };
 
   const handleDelete = () => {
     dispatch(deleteAcount({idToken, body: {login_id: selectedTrader?.login_id}, platform, dispatch}));
     setIsModalVisible(false);
+    setReason("");
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setReason("");
+    setComment("");
   };
 
   const handleChange = (value, options) => {
@@ -864,11 +876,33 @@ function TraderOverview() {
 
             <p className="modal-title">Write Your Reason</p>
             <textarea
+              maxLength={255}
+              value={reason}
               onChange={(e) => {
-                setReason(e.target.value);
+                // setReason(e.target.value);
+                if (e.target.value.length <= 255) {
+                  setReason(e.target.value);
+                  setShowWarning(false);
+                }
+                if (e.target.value.length === 255) {
+                  console.log("warning....");
+                  setShowWarning(true);
+                }
+                if (e.target.value.length === 256) {
+                  console.log("warning....");
+                  setMaxReasonChar(true);
+                }
               }}
               placeholder="Write your reason here.."
             ></textarea>
+            {showWarning && (
+              <Alert
+                message="Comment cannot exceed 255 characters."
+                type="warning"
+                showIcon
+                className="warning"
+              />
+            )}
           </div>
         </Modal>
         <Modal
@@ -888,9 +922,31 @@ function TraderOverview() {
           >
             <Input.TextArea
               value={comment}
-              onChange={(e) => setComment(e.target.value)}
+              maxLength={255}
+              onChange={(e) => {
+                if (e.target.value.length <= 255) {
+                  setComment(e.target.value);
+                  setShowWarning(false);
+                }
+                if (e.target.value.length === 255) {
+                  console.log("warning....");
+                  setShowWarning(true);
+                }
+                if (e.target.value.length === 256) {
+                  console.log("warning....");
+                  setMaxReasonChar(true);
+                }
+              }}
               placeholder="Write your comment here.."
             />
+            {showWarning && (
+              <Alert
+                message="Comment cannot exceed 255 characters."
+                type="warning"
+                showIcon
+                className="warning"
+              />
+            )}
           </Form.Item>
         </Modal>
       </Card>
