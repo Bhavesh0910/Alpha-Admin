@@ -26,7 +26,7 @@ const SuccessModal = () => {
   }, [title, msg, status]);
 
   return msg && status ? (
-    <div className="success-modal-overlay">
+    <div className="success-modal-overlay" onClick={(e)=>handleClose(e)}>
       <div className="success_modal_wrapper">
         <div className="success_modal_container_top">
           <div className="success-modal-icon">
@@ -36,7 +36,7 @@ const SuccessModal = () => {
             />
           </div>
         </div>
-        <div className="success-modal-container">
+        <div className="success-modal-container" onClick={(e)=>e.stopPropagation()}>
           <div className="success_modal_container_bottom">
             <h1 className="modal-name">Success</h1>
             <p className="modal-description">{msg}</p>
