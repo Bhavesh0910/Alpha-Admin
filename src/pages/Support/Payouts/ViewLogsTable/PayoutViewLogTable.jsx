@@ -64,7 +64,7 @@ const PayoutViewLogTable = () => {
           separator=">"
           items={[
             {
-              title: <Link to="/support/payout/">Payout</Link>,
+              title: <Link to="/support/payout">Payout</Link>,
             },
             {
               title: <Link to="#">Log</Link>,

@@ -88,7 +88,7 @@ const PaymentExportHistory = () => {
           separator=">"
           items={[
             {
-              title: <Link to="/payments/">Payments</Link>,
+              title: <Link to="/payments">Payments</Link>,
             },
             {
               title: <Link to="">Export History</Link>,

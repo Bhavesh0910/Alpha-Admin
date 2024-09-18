@@ -6,6 +6,7 @@ import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import "./PaymentLogs.scss";
 import moment from "moment";
 import { logsListReq } from "../../../store/NewReducers/logsSlice";
+import { Link } from 'react-router-dom';
 
 const PaymentLogs = () => {
   const { idToken } = useSelector((state) => state.auth); 
@@ -92,10 +93,10 @@ const PaymentLogs = () => {
           separator=">"
           items={[
             {
-              title: <a href="/payments/">Payments</a>,
+              title: <Link to="/payments">Payments</Link>,
             },
             {
-              title: <a href="#">Log</a>,
+              title: <Link to="#">Log</Link>,
             },
           ]}
         />

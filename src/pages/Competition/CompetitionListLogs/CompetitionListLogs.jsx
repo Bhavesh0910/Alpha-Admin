@@ -5,6 +5,7 @@ import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import {logsListReq} from "../../../store/NewReducers/logsSlice";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const CompetitionListLogs = () => {
   const {idToken} = useSelector((state) => state.auth);
@@ -118,10 +119,10 @@ const CompetitionListLogs = () => {
           separator=">"
           items={[
             {
-              title: <a href="/competitions">Competition List</a>,
+              title: <Link to="/competitions">Competition List</Link>,
             },
             {
-              title: <a href="#">Log</a>,
+              title: <Link to="#">Log</Link>,
             },
           ]}
         />
