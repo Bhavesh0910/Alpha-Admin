@@ -390,10 +390,10 @@ const UserListTable = () => {
       </div>
       {(isLoading || flagLoading) && <LoaderOverlay />}
       <AntTable
-        data={tableData}
+        data={tableData?.results}
         columns={columns}
-        totalPages={Math.ceil(totalItems / pageSize)}
-        totalItems={totalItems}
+        totalPages={Math.ceil(tableData?.count / pageSize)}
+        totalItems={tableData?.count}
         pageSize={pageSize}
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}

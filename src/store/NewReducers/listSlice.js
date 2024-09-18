@@ -125,7 +125,7 @@ const listSlice = createSlice({
         console.log("action", action);
 
         state.isLoading = false;
-        state.tableData = action.payload?.results;
+        state.tableData = action.payload;
       })
       .addCase(fetchUserList.rejected, (state, action) => {
         state.isLoading = false;
