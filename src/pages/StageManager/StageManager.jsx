@@ -120,14 +120,14 @@ const StageManager = () => {
   }
 
   const updateDateRange = (dates) => {
-    setPageNo(1); 
+    setPageNo(1);
 
     if (dates && dates.length === 2) {
       const [startDate, endDate] = dates;
 
       if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
         notification.error({
-          message: 'Invalid Date Range',
+          message: "Invalid Date Range",
           description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
         });
 
@@ -142,12 +142,12 @@ const StageManager = () => {
       }
 
       setDates(dates);
-      setLastValidRange({ startDate, endDate });
-      setDefaultDates(dates); 
+      setLastValidRange({startDate, endDate});
+      setDefaultDates(dates);
       setIsValidRange(true);
     } else {
       setDates(null);
-      setDefaultDates(null); 
+      setDefaultDates(null);
     }
   };
 
@@ -352,12 +352,14 @@ const StageManager = () => {
             render: (text, record) => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
-                <div
+                <a
+                  href={`/account-analysis/${record?.account_id}/${platform}/${record?.User_id?.id}`}
+                  target="_blank"
                   style={{cursor: "pointer"}}
-                  onClick={() => navigate(`/account-analysis/${record?.account_id}/${platform}/${record?.User_id?.id}`)}
+                  // onClick={() => navigate(`/account-analysis/${record?.account_id}/${platform}/${record?.User_id?.id}`)}
                 >
                   {text ? text : "-"}
-                </div>
+                </a>
               );
             },
           },
@@ -611,12 +613,14 @@ const StageManager = () => {
             render: (text, record) => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
-                <div
+                <a
+                  href={`/account-analysis/${record?.account_id}/${platform}/${record?.User_id?.id}`}
+                  target="_blank"
                   style={{cursor: "pointer"}}
-                  onClick={() => navigate(`/account-analysis/${record?.account_id}/${platform}/${record?.User_id?.id}`)}
+                  // onClick={() => navigate(`/account-analysis/${record?.account_id}/${platform}/${record?.User_id?.id}`)}
                 >
                   {text ? text : "-"}
-                </div>
+                </a>
               );
             },
           },
@@ -966,12 +970,14 @@ const StageManager = () => {
             render: (text, record) => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
-                <div
+                <a
+                  href={`/account-analysis/${record?.login_id}/${platform}/${record?.user_id?.id}`}
+                  target="_blank"
                   style={{cursor: "pointer"}}
-                  onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record?.user_id?.id}`)}
+                  // onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record?.user_id?.id}`)}
                 >
                   {text ? text : "-"}
-                </div>
+                </a>
               );
             },
           },
@@ -1137,12 +1143,14 @@ const StageManager = () => {
             render: (text, record) => {
               const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
               return (
-                <div
+                <a
+                  href={`/account-analysis/${record?.login_id}/${platform}/${record?.user?.id}`}
+                  target="_blank"
                   style={{cursor: "pointer"}}
-                  onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record?.user?.id}`)}
+                  // onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record?.user?.id}`)}
                 >
                   {text ? text : "-"}
-                </div>
+                </a>
               );
             },
           },
@@ -1355,14 +1363,10 @@ const StageManager = () => {
     viewLogsLink = "/support/payout/payout-view-logs";
   }
 
-  
-
-
   const [defaultDates, setDefaultDates] = useState();
 
   const [isValidRange, setIsValidRange] = useState(true);
-  const [lastValidRange, setLastValidRange] = useState({ startDate: null, endDate: null });
-
+  const [lastValidRange, setLastValidRange] = useState({startDate: null, endDate: null});
 
   return (
     <div className="stageManager_container">
@@ -1697,9 +1701,9 @@ function ExpandedRowData({record}) {
   const [userToUpdate, setuserToUpdate] = useState(null);
   const [editCommentToUpdate, setEditCommentToUpdate] = useState(null);
   const [updatedContract, setUpdatedContract] = useState(null);
-  const [payoutModalVisible, setPayoutModalVisible] = useState(false);
-  const [evaluationModalVisible, setEvaluationModalVisible] = useState(false);
-  const [fundedModalVisible, setFundedModalVisible] = useState(false);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -1721,6 +1725,8 @@ function ExpandedRowData({record}) {
         break;
     }
   }, [record]);
+
+  console.log("nestedtabledata ; ", nestedTableData?.user_payouts);
 
   useEffect(() => {
     let flag = location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2" ? true : false;
@@ -1776,157 +1782,473 @@ function ExpandedRowData({record}) {
   const platform = record?.platform === "dxtrader" ? "dxtrader" : record?.platform === "ctrader" ? "ctrader-accounts" : "trader-accounts";
 
   useEffect(() => {
-    console.log("kkk");
+    // console.log("kkk");
     if (location.pathname === "/support/funded") {
       setUrl(`v2/get/funded/details/${record.login_id}/`);
       dispatch(nestedTableDataReq({idToken, url, flag: false, dispatch}));
     }
   }, [url]);
 
-  function handlePayoutModal(text) {
-    setPayoutModalVisible(true);
+  function handleModal(text) {
+    setModalVisible(true);
+    setSelectedButton(text);
   }
-  function handleEvaluationModal(text) {
-    setEvaluationModalVisible(true);
-  }
-  function handleFundedModal(text) {
-    setFundedModalVisible(true);
-  }
-  const payoutColumns = [
-    {
-      title: "Payout",
-      dataIndex: "key",
-      key: "payout",
-      width: 100,
-      render: (text, record, index) => index + 1,
-    },
-    {
-      title: "Account Number",
-      dataIndex: "account_number",
-      key: "account_number",
-      width: 100,
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Challenge Name",
-      dataIndex: "challenge",
-      key: "challenge",
-      width: 100,
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Payout Amount",
-      dataIndex: "amount",
-      key: "amount",
-      width: 100,
-      render: (text) => (text ? `$${text}` : "-"),
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      width: 100,
-      render: (status) => <Tag color={status === "Approved" ? "green" : "volcano"}>{status ? status : "-"}</Tag>,
-    },
-    {
-      title: "Date",
-      dataIndex: "created_at",
-      key: "created_at",
-      width: 100,
-      render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
-    },
-  ];
-  const evaluationColumns = [
-    {
-      title: "Evaluation",
-      dataIndex: "key",
-      key: "evaluation",
-      width: 100,
-      render: (text, record, index) => index + 1,
-    },
-    {
-      title: "Login ID",
-      dataIndex: "login_id",
-      key: "login_id",
-      width: 100,
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Is Active",
-      dataIndex: "is_Active",
-      key: "is_Active",
-      width: 100,
-      render: (text) => (text ? text : "-"),
-    },
 
-    {
-      title: "Progress",
-      dataIndex: "progress",
-      key: "progress",
-      width: 100,
-      render: (status) => <Tag color={status === "Success" ? "green" : "volcano"}>{status ? status : "-"}</Tag>,
-    },
-    {
-      title: "Start Date",
-      dataIndex: "start_date",
-      key: "start_date",
-      width: 100,
-      render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
-    },
-    {
-      title: "Expiry Date",
-      dataIndex: "expiry_date",
-      key: "expiry_date",
-      width: 100,
-      render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
-    },
-  ];
-  const fundedColumns = [
-    {
-      title: "Funded",
-      dataIndex: "key",
-      key: "funded",
-      width: 100,
-      render: (text, record, index) => index + 1,
-    },
-    {
-      title: "Login ID",
-      dataIndex: "login_id",
-      key: "login_id",
-      width: 100,
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Is Active",
-      dataIndex: "is_Active",
-      key: "is_Active",
-      width: 100,
-      render: (text) => (text ? text : "-"),
-    },
+  //   {
+  //     title: "Payout",
+  //     dataIndex: "key",
+  //     key: "payout",
+  //     width: 100,
+  //     render: (text, record, index) => index + 1,
+  //   },
+  //   {
+  //     title: "Account Number",
+  //     dataIndex: "account_number",
+  //     key: "account_number",
+  //     width: 100,
+  //     render: (text, record) =>
+  //       text ? (
+  //         <a
+  //           href={`/account-analysis/${record?.login_id}/${platform}/${nestedTableData?.user_id}`}
+  //           target="_blank"
+  //           style={{cursor: "pointer"}}
+  //         >
+  //           {text}
+  //         </a>
+  //       ) : (
+  //         "-"
+  //       ),
+  //   },
+  //   {
+  //     title: "Challenge Name",
+  //     dataIndex: "challenge",
+  //     key: "challenge",
+  //     width: 100,
+  //     render: (text) => (text ? text : "-"),
+  //   },
+  //   {
+  //     title: "Payout Amount",
+  //     dataIndex: "amount",
+  //     key: "amount",
+  //     width: 100,
+  //     render: (text) => (text ? `$${text}` : "-"),
+  //   },
+  //   {
+  //     title: "Status",
+  //     dataIndex: "status",
+  //     key: "status",
+  //     width: 100,
+  //     render: (status) => <Tag color={status === "Approved" ? "green" : "volcano"}>{status ? status : "-"}</Tag>,
+  //   },
+  //   {
+  //     title: "Date",
+  //     dataIndex: "created_at",
+  //     key: "created_at",
+  //     width: 100,
+  //     render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+  //   },
+  // ];
+  // const evaluationColumns = [
+  //   {
+  //     title: "Evaluation",
+  //     dataIndex: "key",
+  //     key: "evaluation",
+  //     width: 100,
+  //     render: (text, record, index) => index + 1,
+  //   },
+  //   {
+  //     title: "Login ID",
+  //     dataIndex: "login_id",
+  //     key: "login_id",
+  //     width: 100,
+  //     render: (text, record) =>
+  //       text ? (
+  //         <a
+  //           href={`/account-analysis/${record?.login_id}/${platform}/${nestedTableData?.user_id}`}
+  //           target="_blank"
+  //           style={{cursor: "pointer"}}
+  //         >
+  //           {text}
+  //         </a>
+  //       ) : (
+  //         "-"
+  //       ),
+  //   },
+  //   {
+  //     title: "Is Active",
+  //     dataIndex: "is_Active",
+  //     key: "is_Active",
+  //     width: 100,
+  //     render: (text) => (text ? text : "-"),
+  //   },
 
-    // {
-    //   title: "Progress",
-    //   dataIndex: "progress",
-    //   key: "progress",
-    //   width: 100,
-    //   render: (status) => <Tag color={status === "Success" ? "green" : "volcano"}>{status? status:'-'}</Tag>,
-    // },
-    {
-      title: "Start Date",
-      dataIndex: "start_date",
-      key: "start_date",
-      width: 100,
-      render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
-    },
-    {
-      title: "Expiry Date",
-      dataIndex: "expiry_date",
-      key: "expiry_date",
-      width: 100,
-      render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
-    },
-  ];
+  //   {
+  //     title: "Progress",
+  //     dataIndex: "progress",
+  //     key: "progress",
+  //     width: 100,
+  //     render: (status) => <Tag color={status === "Success" ? "green" : "volcano"}>{status ? status : "-"}</Tag>,
+  //   },
+  //   {
+  //     title: "Start Date",
+  //     dataIndex: "start_date",
+  //     key: "start_date",
+  //     width: 100,
+  //     render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+  //   },
+  //   {
+  //     title: "Expiry Date",
+  //     dataIndex: "expiry_date",
+  //     key: "expiry_date",
+  //     width: 100,
+  //     render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+  //   },
+  // ];
+  // const fundedColumns = [
+  //   {
+  //     title: "Funded",
+  //     dataIndex: "key",
+  //     key: "funded",
+  //     width: 100,
+  //     render: (text, record, index) => index + 1,
+  //   },
+  //   {
+  //     title: "Login ID",
+  //     dataIndex: "login_id",
+  //     key: "login_id",
+  //     width: 100,
+  //     render: (text, record) =>
+  //       text ? (
+  //         <a
+  //           href={`/account-analysis/${record?.login_id}/${platform}/${nestedTableData?.user_id}`}
+  //           target="_blank"
+  //           style={{cursor: "pointer"}}
+  //         >
+  //           {text}
+  //         </a>
+  //       ) : (
+  //         "-"
+  //       ),
+  //   },
+  //   {
+  //     title: "Is Active",
+  //     dataIndex: "is_Active",
+  //     key: "is_Active",
+  //     width: 100,
+  //     render: (text) => (text ? text : "-"),
+  //   },
 
+  //   // {
+  //   //   title: "Progress",
+  //   //   dataIndex: "progress",
+  //   //   key: "progress",
+  //   //   width: 100,
+  //   //   render: (status) => <Tag color={status === "Success" ? "green" : "volcano"}>{status? status:'-'}</Tag>,
+  //   // },
+  //   {
+  //     title: "Start Date",
+  //     dataIndex: "start_date",
+  //     key: "start_date",
+  //     width: 100,
+  //     render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+  //   },
+  //   {
+  //     title: "Expiry Date",
+  //     dataIndex: "expiry_date",
+  //     key: "expiry_date",
+  //     width: 100,
+  //     render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+  //   },
+  // ];
+  // const verificationColumns = [
+  //   {
+  //     title: "Verification",
+  //     dataIndex: "key",
+  //     key: "verification",
+  //     width: 100,
+  //     render: (text, record, index) => index + 1,
+  //   },
+  //   {
+  //     title: "Login ID",
+  //     dataIndex: "login_id",
+  //     key: "login_id",
+  //     width: 100,
+  //     render: (text, record) =>
+  //       text ? (
+  //         <a
+  //           href={`/account-analysis/${record?.login_id}/${platform}/${nestedTableData?.user_id}`}
+  //           target="_blank"
+  //           style={{cursor: "pointer"}}
+  //         >
+  //           {text}
+  //         </a>
+  //       ) : (
+  //         "-"
+  //       ),
+  //   },
+  //   {
+  //     title: "Is Active",
+  //     dataIndex: "is_Active",
+  //     key: "is_Active",
+  //     width: 100,
+  //     render: (text) => (text ? text : "-"),
+  //   },
+
+  //   {
+  //     title: "Progress",
+  //     dataIndex: "progress",
+  //     key: "progress",
+  //     width: 100,
+  //     render: (status) => <Tag color={status === "Success" ? "green" : "volcano"}>{status ? status : "-"}</Tag>,
+  //   },
+  //   {
+  //     title: "Start Date",
+  //     dataIndex: "start_date",
+  //     key: "start_date",
+  //     width: 100,
+  //     render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+  //   },
+  //   {
+  //     title: "Expiry Date",
+  //     dataIndex: "expiry_date",
+  //     key: "expiry_date",
+  //     width: 100,
+  //     render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+  //   },
+  // ];
+  const columns = useMemo(() => {
+    switch (selectedButton) {
+      case "Payout":
+        return [
+          {
+            title: "Index",
+            dataIndex: "key",
+            key: "index",
+            width: 100,
+            render: (text, record, index) => index + 1,
+          },
+          {
+            title: "Account Number",
+            dataIndex: "account_number",
+            key: "account_number",
+            width: 100,
+            render: (text, record) =>
+              text ? (
+                <a
+                  href={`/account-analysis/${record?.login_id}/${platform}/${nestedTableData?.user_id}`}
+                  target="_blank"
+                  style={{cursor: "pointer"}}
+                >
+                  {text}
+                </a>
+              ) : (
+                "-"
+              ),
+          },
+          {
+            title: "Challenge Name",
+            dataIndex: "challenge",
+            key: "challenge",
+            width: 100,
+            render: (text) => (text ? text : "-"),
+          },
+          {
+            title: "Payout Amount",
+            dataIndex: "amount",
+            key: "amount",
+            width: 100,
+            render: (text) => (text ? `$${text}` : "-"),
+          },
+          {
+            title: "Status",
+            dataIndex: "status",
+            key: "status",
+            width: 100,
+            render: (status) => <Tag color={status === "Approved" ? "green" : "volcano"}>{status ? status : "-"}</Tag>,
+          },
+          {
+            title: "Date",
+            dataIndex: "created_at",
+            key: "created_at",
+            width: 100,
+            render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+          },
+        ];
+
+      case "Evaluation":
+        return [
+          {
+            title: "Index",
+            dataIndex: "key",
+            key: "index",
+            width: 100,
+            render: (text, record, index) => index + 1,
+          },
+          {
+            title: "Login ID",
+            dataIndex: "login_id",
+            key: "login_id",
+            width: 100,
+            render: (text, record) =>
+              text ? (
+                <a
+                  href={`/account-analysis/${record?.login_id}/${platform}/${nestedTableData?.user_id}`}
+                  target="_blank"
+                  style={{cursor: "pointer"}}
+                >
+                  {text}
+                </a>
+              ) : (
+                "-"
+              ),
+          },
+          {
+            title: "Is Active",
+            dataIndex: "is_Active",
+            key: "is_Active",
+            width: 100,
+            render: (text) => (text ? text : "-"),
+          },
+
+          {
+            title: "Progress",
+            dataIndex: "progress",
+            key: "progress",
+            width: 100,
+            render: (status) => <Tag color={status === "Success" ? "green" : "volcano"}>{status ? status : "-"}</Tag>,
+          },
+          {
+            title: "Start Date",
+            dataIndex: "start_date",
+            key: "start_date",
+            width: 100,
+            render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+          },
+          {
+            title: "Expiry Date",
+            dataIndex: "expiry_date",
+            key: "expiry_date",
+            width: 100,
+            render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+          },
+        ];
+
+      case "Funded":
+        return [
+          {
+            title: "Index",
+            dataIndex: "key",
+            key: "index",
+            width: 100,
+            render: (text, record, index) => index + 1,
+          },
+          {
+            title: "Login ID",
+            dataIndex: "login_id",
+            key: "login_id",
+            width: 100,
+            render: (text, record) =>
+              text ? (
+                <a
+                  href={`/account-analysis/${record?.login_id}/${platform}/${nestedTableData?.user_id}`}
+                  target="_blank"
+                  style={{cursor: "pointer"}}
+                >
+                  {text}
+                </a>
+              ) : (
+                "-"
+              ),
+          },
+          {
+            title: "Is Active",
+            dataIndex: "is_Active",
+            key: "is_Active",
+            width: 100,
+            render: (text) => (text ? text : "-"),
+          },
+
+          // {
+          //   title: "Progress",
+          //   dataIndex: "progress",
+          //   key: "progress",
+          //   width: 100,
+          //   render: (status) => <Tag color={status === "Success" ? "green" : "volcano"}>{status? status:'-'}</Tag>,
+          // },
+          {
+            title: "Start Date",
+            dataIndex: "start_date",
+            key: "start_date",
+            width: 100,
+            render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+          },
+          {
+            title: "Expiry Date",
+            dataIndex: "expiry_date",
+            key: "expiry_date",
+            width: 100,
+            render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+          },
+        ];
+      case "Verification":
+        return [
+          {
+            title: "Index",
+            dataIndex: "key",
+            key: "index",
+            width: 100,
+            render: (text, record, index) => index + 1,
+          },
+          {
+            title: "Login ID",
+            dataIndex: "login_id",
+            key: "login_id",
+            width: 100,
+            render: (text, record) =>
+              text ? (
+                <a
+                  href={`/account-analysis/${record?.login_id}/${platform}/${nestedTableData?.user_id}`}
+                  target="_blank"
+                  style={{cursor: "pointer"}}
+                >
+                  {text}
+                </a>
+              ) : (
+                "-"
+              ),
+          },
+          {
+            title: "Is Active",
+            dataIndex: "is_Active",
+            key: "is_Active",
+            width: 100,
+            render: (text) => (text ? text : "-"),
+          },
+
+          {
+            title: "Progress",
+            dataIndex: "progress",
+            key: "progress",
+            width: 100,
+            render: (status) => <Tag color={status === "Success" ? "green" : "volcano"}>{status ? status : "-"}</Tag>,
+          },
+          {
+            title: "Start Date",
+            dataIndex: "start_date",
+            key: "start_date",
+            width: 100,
+            render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+          },
+          {
+            title: "Expiry Date",
+            dataIndex: "expiry_date",
+            key: "expiry_date",
+            width: 100,
+            render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
+          },
+        ];
+    }
+  }, [selectedButton]);
   return (
     <>
       {loading && <LoaderOverlay />}
@@ -1992,11 +2314,15 @@ function ExpandedRowData({record}) {
                   <>
                     <div>
                       <div>Stage 1 id</div>
-                      <p
-                        style={{cursor: "pointer"}}
-                        onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.User_id?.id}`)}
-                      >
-                        {record?.stage1_id || "-"}
+                      <p>
+                        <a
+                          href={`/account-analysis/${record?.stage1_id}/${platform}/${record?.User_id?.id}`}
+                          target="_blank"
+                          style={{cursor: "pointer"}}
+                          // onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.User_id?.id}`)}
+                        >
+                          {record?.stage1_id || "-"}
+                        </a>
                       </p>
                     </div>
                   </>
@@ -2071,20 +2397,28 @@ function ExpandedRowData({record}) {
                   </div>
                   <div>
                     <div>Stage 1 id</div>
-                    <p
-                      style={{cursor: "pointer"}}
-                      onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.user_id?.id}`)}
-                    >
-                      {record?.stage1_id || "-"}
+                    <p>
+                      <a
+                        href={`/account-analysis/${record?.stage1_id}/${platform}/${record?.user_id?.id}`}
+                        target="_blank"
+                        style={{cursor: "pointer"}}
+                        // onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.user_id?.id}`)}
+                      >
+                        {record?.stage1_id || "-"}
+                      </a>
                     </p>
                   </div>
                   <div>
                     <div>Stage 2 id</div>
-                    <p
-                      style={{cursor: "pointer"}}
-                      onClick={() => navigate(`/account-analysis/${record?.stage2_id}/${platform}/${record?.user_id?.id}`)}
-                    >
-                      {record?.stage2_id || "-"}
+                    <p>
+                      <a
+                        href={`/account-analysis/${record?.stage2_id}/${platform}/${record?.user_id?.id}`}
+                        target="_blank"
+                        style={{cursor: "pointer"}}
+                        // onClick={() => navigate(`/account-analysis/${record?.stage2_id}/${platform}/${record?.user_id?.id}`)}
+                      >
+                        {record?.stage2_id || "-"}
+                      </a>
                     </p>
                   </div>
                   <div>
@@ -2194,20 +2528,28 @@ function ExpandedRowData({record}) {
                       </div>
                       <div>
                         <div>Stage 1 id</div>
-                        <p
-                          style={{cursor: "pointer"}}
-                          onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.user?.id}`)}
-                        >
-                          {record?.stage1_id || "-"}
+                        <p>
+                          <a
+                            href={`/account-analysis/${record?.stage1_id}/${platform}/${record?.user?.id}`}
+                            target="_blank"
+                            style={{cursor: "pointer"}}
+                            // onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.user?.id}`)}
+                          >
+                            {record?.stage1_id || "-"}
+                          </a>
                         </p>
                       </div>
                       <div>
                         <div>Stage 2 id</div>
-                        <p
-                          style={{cursor: "pointer"}}
-                          onClick={() => navigate(`/account-analysis/${record?.stage2_id}/${platform}/${record?.user?.id}`)}
-                        >
-                          {record?.stage2_id || "-"}
+                        <p>
+                          <a
+                            href={`/account-analysis/${record?.stage2_id}/${platform}/${record?.user?.id}`}
+                            target="_blank"
+                            style={{cursor: "pointer"}}
+                            // onClick={() => navigate(`/account-analysis/${record?.stage2_id}/${platform}/${record?.user?.id}`)}
+                          >
+                            {record?.stage2_id || "-"}
+                          </a>
                         </p>
                       </div>
                     </>
@@ -2223,20 +2565,28 @@ function ExpandedRowData({record}) {
                       </div>
                       <div>
                         <div>Stage 1 id</div>
-                        <p
-                          style={{cursor: "pointer"}}
-                          onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.user?.id}`)}
-                        >
-                          {record?.stage1_id || "-"}
+                        <p>
+                          <a
+                            href={`/account-analysis/${record?.stage1_id}/${platform}/${record?.user?.id}`}
+                            target="_blank"
+                            style={{cursor: "pointer"}}
+                            // onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.user?.id}`)}
+                          >
+                            {record?.stage1_id || "-"}
+                          </a>
                         </p>
                       </div>
                       <div>
                         <div>Stage 2 id</div>
-                        <p
-                          style={{cursor: "pointer"}}
-                          onClick={() => navigate(`/account-analysis/${record?.stage2_id}/${platform}/${record?.user?.id}`)}
-                        >
-                          {record?.stage2_id || "-"}
+                        <p>
+                          <a
+                            href={`/account-analysis/${record?.stage2_id}/${platform}/${record?.user?.id}`}
+                            target="_blank"
+                            style={{cursor: "pointer"}}
+                            // onClick={() => navigate(`/account-analysis/${record?.stage2_id}/${platform}/${record?.user?.id}`)}
+                          >
+                            {record?.stage2_id || "-"}
+                          </a>
                         </p>
                       </div>
                     </>
@@ -2288,20 +2638,28 @@ function ExpandedRowData({record}) {
                       </div>
                       <div>
                         <div>Stage 1 id</div>
-                        <p
-                          style={{cursor: "pointer"}}
-                          onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.user?.id}`)}
-                        >
-                          {record?.stage1_id || "-"}
+                        <p>
+                          <a
+                            href={`/account-analysis/${record?.stage1_id}/${platform}/${record?.user?.id}`}
+                            target="_blank"
+                            style={{cursor: "pointer"}}
+                            // onClick={() => navigate(`/account-analysis/${record?.stage1_id}/${platform}/${record?.user?.id}`)}
+                          >
+                            {record?.stage1_id || "-"}
+                          </a>
                         </p>
                       </div>
                       <div>
                         <div>Stage 2 id</div>
-                        <p
-                          style={{cursor: "pointer"}}
-                          onClick={() => navigate(`/account-analysis/${record?.stage2_id}/${platform}/${record?.user?.id}`)}
-                        >
-                          {record?.stage2_id || "-"}
+                        <p>
+                          <a
+                            href={`/account-analysis/${record?.stage2_id}/${platform}/${record?.user?.id}`}
+                            target="_blank"
+                            style={{cursor: "pointer"}}
+                            // onClick={() => navigate(`/account-analysis/${record?.stage2_id}/${platform}/${record?.user?.id}`)}
+                          >
+                            {record?.stage2_id || "-"}
+                          </a>
                         </p>
                       </div>
                     </>
@@ -2312,7 +2670,8 @@ function ExpandedRowData({record}) {
                       {nestedTableData?.user_payouts ? (
                         <Button
                           className="view_settlements_btn standard_button"
-                          onClick={() => handlePayoutModal(record)}
+                          // onClick={() => handlePayoutModal(record)}
+                          onClick={() => handleModal("Payout")}
                         >
                           View
                         </Button>
@@ -2327,7 +2686,24 @@ function ExpandedRowData({record}) {
                       {nestedTableData?.evaluation_accounts ? (
                         <Button
                           className="view_settlements_btn standard_button"
-                          onClick={() => handleEvaluationModal(record)}
+                          // onClick={() => handleEvaluationModal(record)}
+                          onClick={() => handleModal("Evaluation")}
+                        >
+                          View
+                        </Button>
+                      ) : (
+                        "-"
+                      )}
+                    </p>
+                  </div>
+                  <div>
+                    <div>Verification Accounts</div>
+                    <p>
+                      {nestedTableData?.verification_accounts ? (
+                        <Button
+                          className="view_settlements_btn standard_button"
+                          // onClick={() => handleVerificationModal(record)}
+                          onClick={() => handleModal("Verification")}
                         >
                           View
                         </Button>
@@ -2342,7 +2718,8 @@ function ExpandedRowData({record}) {
                       {nestedTableData?.funded_accounts ? (
                         <Button
                           className="view_settlements_btn standard_button"
-                          onClick={() => handleFundedModal(record)}
+                          // onClick={() => handleFundedModal(record)}
+                          onClick={() => handleModal("Funded")}
                         >
                           View
                         </Button>
@@ -2353,7 +2730,7 @@ function ExpandedRowData({record}) {
                   </div>
                 </div>
 
-                <div className="nestedPayoutRow2">
+                {/* <div className="nestedPayoutRow2">
                   <div className="reason_container">
                     <strong>{nestedTableData?.funded_accounts?.length > 0 ? "Previous Funded Accounts" : "Previous Funded Account"}</strong>
                     {nestedTableData?.funded_accounts?.map((item) => {
@@ -2368,7 +2745,7 @@ function ExpandedRowData({record}) {
                       );
                     })}
                   </div>
-                </div>
+                </div> */}
                 <div className="nestedPayoutRow2">
                   <div className="comment_box">
                     <div>
@@ -2418,73 +2795,29 @@ function ExpandedRowData({record}) {
                 key="ok"
                 type="primary"
                 className="go_back_btn"
-                onClick={() => setPayoutModalVisible(false)}
+                onClick={() => setModalVisible(false)}
               >
                 Go Back
               </Button>,
             ]}
-            title={<h3>{"Payout History"}</h3>}
-            open={payoutModalVisible}
-            onOk={() => setPayoutModalVisible(false)}
-            onCancel={() => setPayoutModalVisible(false)}
+            title={<h3>{`${selectedButton === "Payout" ? "Payout" : selectedButton === "Evaluation" ? "Evaluation" : selectedButton === "Funded" ? "Funded" : "Verification Accounts"} History`}</h3>}
+            open={modalVisible}
+            onOk={() => setModalVisible(false)}
+            onCancel={() => setModalVisible(false)}
             cancelButtonProps={false}
           >
             <div className="settlement_details_container">
               <AntTable
-                columns={payoutColumns}
-                data={nestedTableData?.user_payouts}
-                serverSide={false}
-              />
-            </div>
-          </Modal>
-          <Modal
-            className="settlement_details"
-            footer={[
-              <Button
-                key="ok"
-                type="primary"
-                className="go_back_btn"
-                onClick={() => setEvaluationModalVisible(false)}
-              >
-                Go Back
-              </Button>,
-            ]}
-            title={<h3>{"Evaluation History"}</h3>}
-            open={evaluationModalVisible}
-            onOk={() => setEvaluationModalVisible(false)}
-            onCancel={() => setEvaluationModalVisible(false)}
-            cancelButtonProps={false}
-          >
-            <div className="settlement_details_container">
-              <AntTable
-                columns={evaluationColumns}
-                data={nestedTableData?.evaluation_accounts}
-                serverSide={false}
-              />
-            </div>
-          </Modal>
-          <Modal
-            className="settlement_details"
-            footer={[
-              <Button
-                key="ok"
-                type="primary"
-                className="go_back_btn"
-                onClick={() => setFundedModalVisible(false)}
-              >
-                Go Back
-              </Button>,
-            ]}
-            title={<h3>{"Funded History"}</h3>}
-            open={fundedModalVisible}
-            onOk={() => setFundedModalVisible(false)}
-            onCancel={() => setFundedModalVisible(false)}
-            cancelButtonProps={false}
-          >
-            <div className="settlement_details_container">
-              <AntTable
-                columns={fundedColumns}
-                data={nestedTableData?.funded_accounts}
+                columns={columns || []}
+                data={
+                  selectedButton === "Payout"
+                    ? nestedTableData?.user_payouts
+                    : selectedButton === "Evaluation"
+                    ? nestedTableData?.evaluation_accounts
+                    : selectedButton === "Funded"
+                    ? nestedTableData?.funded_accounts
+                    : nestedTableData?.verification_accounts
+                }
                 serverSide={false}
               />
             </div>

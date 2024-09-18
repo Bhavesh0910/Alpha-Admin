@@ -24,7 +24,7 @@ const ErrorModal = () => {
   }, [title, msg, status]);
 
   return msg && status ? (
-    <div className="error-modal-overlay">
+    <div className="error-modal-overlay" onClick={()=>handleClose()}>
       <div className="error_modal_wrapper">
         <div className="error_modal_container_top">
           <div className="error_icon">
@@ -34,7 +34,7 @@ const ErrorModal = () => {
             />
           </div>
         </div>
-        <div className="error-modal-container">
+        <div className="error-modal-container" onClick={(e)=>e.stopPropagation()}>
           <div className="error_modal_container_bottom">
             <h1>Error</h1>
             <p> {msg}</p>
