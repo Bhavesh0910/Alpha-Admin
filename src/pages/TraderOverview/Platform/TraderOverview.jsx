@@ -4,7 +4,7 @@ import {Table, DatePicker, Button, Card, Radio, Select, Typography, Modal, Casca
 
 import {Link, useNavigate} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
-import {getAllTradersRequest} from "../../../utils/api/apis";
+import {baseUrl, getAllTradersRequest} from "../../../utils/api/apis";
 import {getAccountList, getAccountListSuccess} from "../../../store/reducers/accountSlice";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
@@ -362,12 +362,13 @@ function TraderOverview() {
         width: 100,
         render: (text, record) =>
           text ? (
-            <div
+            <a href={`/account-analysis/${record?.login_id}/${platform}/${record.user_id?.id}`}
+            target="_blank"
               style={{cursor: "pointer"}}
-              onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record.user_id?.id}`)}
+              // onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record.user_id?.id}`)}
             >
               {text}
-            </div>
+            </a>
           ) : (
             "-"
           ),
