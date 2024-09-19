@@ -21,6 +21,7 @@ export const fetchIpLogs = createAsyncThunk("list/fetchIpLogs", async ({idToken,
   try {
     const response = await ipLogsReq(idToken, search, currentPage);
     // if (response?.status < 399) {
+    console.log("response ; ", response);
     return response?.data;
     // }
   } catch (error) {
@@ -34,8 +35,7 @@ export const blockOrUnblockIp = createAsyncThunk("list/blockOrUnblockIp", async 
   try {
     const response = await axios.post(`${baseUrl}block-ip/`, {user_email, reason}, {headers: {Authorization: `Bearer ${idToken}`}});
     if (response?.status < 399) {
-      dispatch(returnMessages(block ? "Blocked Successfully" : "Unblocked Successfully"));
-      console.log(response);
+      dispatch(returnMessages(response?.data?.detail || "Action performed Successfully!", 200));
       return response.data;
     } else {
       return rejectWithValue("Error from server");
@@ -159,11 +159,11 @@ const listSlice = createSlice({
       .addCase(toggleActiveUser.fulfilled, (state, action) => {
         state.isLoading = false;
         // Assuming the API returns the updated user data
-        const updatedUser = action.payload;
-        const index = state.tableData.findIndex((user) => user.id === updatedUser.id);
-        if (index !== -1) {
-          state.tableData[index] = updatedUser;
-        }
+        // const updatedUser = action.payload;
+        // const index = state.tableData?.findIndex((user) => user?.id === updatedUser?.id);
+        // if (index !== -1) {
+        //   state.tableData[index] = updatedUser;
+        // }
         state.refetch = !state.refetch;
       })
       .addCase(toggleActiveUser.rejected, (state, action) => {
@@ -198,7 +198,7 @@ const listSlice = createSlice({
         state.error = null;
       })
       .addCase(softBlockUser.fulfilled, (state, action) => {
-        // state.flagLoading = false;
+        state.flagLoading = false;
         state.refetch = !state.refetch;
       })
       .addCase(softBlockUser.rejected, (state, action) => {

@@ -1,23 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import "./TraderOverview.scss";
-import {
-  Table,
-  DatePicker,
-  Button,
-  Card,
-  Radio,
-  Select,
-  Typography,
-  Modal,
-  Cascader,
-  Tag,
-  Dropdown,
-  Menu,
-  Form,
-  Input,
-  Alert,
-  notification,
-} from "antd";
+import {Table, DatePicker, Button, Card, Radio, Select, Typography, Modal, Cascader, Tag, Dropdown, Menu, Form, Input, Alert, notification} from "antd";
 
 import {Link, useNavigate} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
@@ -26,31 +9,23 @@ import {getAccountList, getAccountListSuccess} from "../../../store/reducers/acc
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import {
-  setDefaultLoginId,
-  accountList,
-  changeAccountStatus,
-  deleteAcount,
-} from "../../../store/NewReducers/accountList";
-import { clearPersistedData } from "../../../store/configureStore";
+import {setDefaultLoginId, accountList, changeAccountStatus, deleteAcount, reinstateAccount} from "../../../store/NewReducers/accountList";
+import {clearPersistedData} from "../../../store/configureStore";
 import dayjs from "dayjs";
 import blockIcon from "../../../assets/icons/block.svg";
 import unblockIcon from "../../../assets/icons/unblock.svg";
 import deleteIcon from "../../../assets/icons/delete.svg";
-import { formatDate } from "fullcalendar/index.js";
+import {formatDate} from "fullcalendar/index.js";
 import ReactCountryFlag from "react-country-flag";
-import { changeAccountStatusApi } from "../../../utils/apis/accountsApi";
-import { fetchFundingDetails } from "../../../store/NewReducers/fundingSlice";
-import { data } from "./../../../components/AffiliateMarketing/UserDetails/UserDetails";
-import { DownOutlined, UpOutlined } from "@ant-design/icons";
-import {
-  softBlockUser,
-  updateFlagReq,
-} from "../../../store/NewReducers/listSlice";
-import { refreshTokenReq } from "../../../store/NewReducers/authSlice";
-const { Title } = Typography;
-const { Option, OptGroup } = Select;
-const { RangePicker } = DatePicker;
+import {changeAccountStatusApi} from "../../../utils/apis/accountsApi";
+import {fetchFundingDetails} from "../../../store/NewReducers/fundingSlice";
+import {data} from "./../../../components/AffiliateMarketing/UserDetails/UserDetails";
+import {DownOutlined, UpOutlined} from "@ant-design/icons";
+import {softBlockUser, updateFlagReq} from "../../../store/NewReducers/listSlice";
+import {refreshTokenReq} from "../../../store/NewReducers/authSlice";
+const {Title} = Typography;
+const {Option, OptGroup} = Select;
+const {RangePicker} = DatePicker;
 
 function TraderOverview() {
   const lookup = require("country-code-lookup");
@@ -71,12 +46,8 @@ function TraderOverview() {
 
   const [maxReasonChar, setMaxReasonChar] = useState(false);
   const [phase, setPhase] = useState("");
-  const { idToken, refreshToken, searchDates } = useSelector(
-    (state) => state.auth
-  );
-  const { data, isLoading: accountsLoading, totalItems, refresh } = useSelector(
-    (state) => state.accountList
-  );
+  const {idToken, refreshToken, searchDates} = useSelector((state) => state.auth);
+  const {data, isLoading: accountsLoading, totalItems, refresh} = useSelector((state) => state.accountList);
   const [Challenges, setChallenges] = useState(null);
   const [labels, setLabels] = useState([]);
   const [count, setCount] = useState(0);
@@ -84,7 +55,7 @@ function TraderOverview() {
 
   const [expandedGroup, setExpandedGroup] = useState(null);
   const [ChallengesOptions, setChallengesOptions] = useState([]);
-  const { fundingData } = useSelector((state) => state.funding);
+  const {fundingData} = useSelector((state) => state.funding);
 
   const [dates, setDates] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -98,7 +69,7 @@ function TraderOverview() {
 
   const [blockType, setBlockType] = useState("hard");
 
-  const { refetch } = useSelector((state) => state.list);
+  const {refetch} = useSelector((state) => state.list);
 
   const [defaultDates, setDefaultDates] = useState();
 
@@ -112,29 +83,8 @@ function TraderOverview() {
     dispatch(fetchFundingDetails(idToken));
   }, []);
   useEffect(() => {
-    fetchTradersData(
-      dates,
-      pageNo,
-      pageSize,
-      searchText,
-      status,
-      phase,
-      platform,
-      Challenges
-    );
-  }, [
-    idToken,
-    dates,
-    pageNo,
-    pageSize,
-    searchText,
-    status,
-    phase,
-    platform,
-    refresh,
-    Challenges,
-    refetch,
-  ]);
+    fetchTradersData(dates, pageNo, pageSize, searchText, status, phase, platform, Challenges);
+  }, [idToken, dates, pageNo, pageSize, searchText, status, phase, platform, refresh, Challenges, refetch]);
 
   // useEffect(() => {
   //   if (fundingData) {
@@ -151,35 +101,19 @@ function TraderOverview() {
     console.log("reason :", reason);
   }, [reason]);
 
-  const fetchTradersData = async (
-    dates,
-    pageNo,
-    pageSize,
-    searchText,
-    status,
-    phase,
-    platform,
-    Challenges
-  ) => {
+  const fetchTradersData = async (dates, pageNo, pageSize, searchText, status, phase, platform, Challenges) => {
     setIsLoading(true);
     try {
-      let query = `?page=${pageNo ? pageNo : 1}&page_size=${
-        pageSize ? pageSize : ""
-      }&is_active=${status === "active" ? 1 : status === "inactive" ? 0 : ""}`;
+      let query = `?page=${pageNo ? pageNo : 1}&page_size=${pageSize ? pageSize : ""}&is_active=${status === "active" ? 1 : status === "inactive" ? 0 : ""}`;
 
       if (searchText) {
         query = query + `&search=${searchText}`;
       }
       if (dates) {
-        query =
-          query +
-          `&start_date=${dates[0].format(
-            "DD/MMM/YYYY"
-          )}&end_date=${dates[1].format("DD/MMM/YYYY")}`;
+        query = query + `&start_date=${dates[0].format("DD/MMM/YYYY")}&end_date=${dates[1].format("DD/MMM/YYYY")}`;
       }
       if (phase !== "") {
-        let phaseQuery =
-          phase === "Free Trail" ? "&free_trial=1" : `&status=${phase}`;
+        let phaseQuery = phase === "Free Trail" ? "&free_trial=1" : `&status=${phase}`;
         query = query + phaseQuery;
       }
       if (Challenges) {
@@ -196,7 +130,7 @@ function TraderOverview() {
           platform,
           query,
           dispatch,
-        })
+        }),
       );
     } catch (error) {
       console.error("Error fetching traders data:", error);
@@ -216,11 +150,7 @@ function TraderOverview() {
       if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
         notification.error({
           message: "Invalid Date Range",
-          description: `The selected date range (${startDate.format(
-            "DD/MMM/YYYY"
-          )} - ${endDate.format(
-            "DD/MMM/YYYY"
-          )}) contains future dates. Please select a valid range.`,
+          description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
         });
 
         if (lastValidRange) {
@@ -234,7 +164,7 @@ function TraderOverview() {
       }
 
       setDates(dates);
-      setLastValidRange({ startDate, endDate });
+      setLastValidRange({startDate, endDate});
       setDefaultDates(dates);
       setIsValidRange(true);
     } else {
@@ -259,8 +189,7 @@ function TraderOverview() {
   };
 
   useEffect(() => {
-    const data =
-      fundingData && typeof fundingData === "object" ? fundingData : {};
+    const data = fundingData && typeof fundingData === "object" ? fundingData : {};
 
     const formattedOptions = Object.keys(data).map((key) => ({
       label: key,
@@ -289,12 +218,7 @@ function TraderOverview() {
     setSearchText("");
     setDates(null);
     setPhase("");
-    const data =
-      value === "MT5"
-        ? "trader-accounts"
-        : value === "C-traders"
-        ? "ctrader-accounts"
-        : "dxtraders";
+    const data = value === "MT5" ? "trader-accounts" : value === "C-traders" ? "ctrader-accounts" : "dxtraders";
     setPlatform(data);
   };
 
@@ -327,12 +251,15 @@ function TraderOverview() {
       <>
         {parts.map((part, index) =>
           regex.test(part) ? (
-            <span key={index} className="highlight">
+            <span
+              key={index}
+              className="highlight"
+            >
               {part}
             </span>
           ) : (
             part
-          )
+          ),
         )}
       </>
     );
@@ -358,7 +285,7 @@ function TraderOverview() {
   };
 
   const statusMenu = (key, record) => {
-    const { status } = record?.user_id;
+    const {status} = record?.user_id;
 
     return (
       <Menu
@@ -368,21 +295,20 @@ function TraderOverview() {
         <Menu.Item
           key="Safe"
           style={{
-            display:
-              status !== "Warning" && status !== "Blacklisted" ? "none" : "",
+            display: status !== "Warning" && status !== "Blacklisted" ? "none" : "",
           }}
         >
           Safe
         </Menu.Item>
         <Menu.Item
           key="Warning"
-          style={{ display: status === "Warning" ? "none" : "" }}
+          style={{display: status === "Warning" ? "none" : ""}}
         >
           Warning
         </Menu.Item>
         <Menu.Item
           key="Blacklisted"
-          style={{ display: status === "Blacklisted" ? "none" : "" }}
+          style={{display: status === "Blacklisted" ? "none" : ""}}
         >
           Blacklisted
         </Menu.Item>
@@ -394,12 +320,49 @@ function TraderOverview() {
     const formData = new FormData();
     formData.append("status", flagUpdatedValue);
     formData.append("notes", comment);
-    dispatch(
-      updateFlagReq({ idToken, body: formData, id: flagUser?.user_id?.id })
-    );
+    dispatch(updateFlagReq({idToken, body: formData, id: flagUser?.user_id?.id}));
     setFlagModel(false);
     reset();
   }
+
+  const userAction = (key, record) => (
+    <Menu
+      className="menuCard"
+      onClick={(e) => handleAction(e.key, record)}
+    >
+      {!record?.user_id?.soft_blocked || record?.user_id?.soft_blocked === null ? (
+        <Menu.Item
+          onClick={() => setBlockType("Soft")}
+          key="Block"
+        >
+          Soft block
+        </Menu.Item>
+      ) : (
+        <Menu.Item
+          onClick={() => setBlockType("Soft")}
+          key="UnBlock"
+        >
+          Soft Unblock
+        </Menu.Item>
+      )}
+
+      {record?.user_is_active ? (
+        <Menu.Item
+          onClick={() => setBlockType("Hard")}
+          key="Block"
+        >
+          Hard block
+        </Menu.Item>
+      ) : (
+        <Menu.Item
+          onClick={() => setBlockType("Hard")}
+          key="UnBlock"
+        >
+          Hard Unblock
+        </Menu.Item>
+      )}
+    </Menu>
+  );
 
   const columns = useMemo(
     () => [
@@ -419,9 +382,7 @@ function TraderOverview() {
           };
           return (
             <div className="flagContainer">
-              <p
-                className={`flag ${getStatusColor(record?.user_id?.status)}`}
-              ></p>
+              <p className={`flag ${getStatusColor(record?.user_id?.status)}`}></p>
               <Dropdown
                 overlay={() => statusMenu(text, record)}
                 trigger={["click"]}
@@ -437,15 +398,13 @@ function TraderOverview() {
         dataIndex: "country",
         key: "country",
         width: 200,
-        render: (country, { record }) => {
+        render: (country, {record}) => {
           const countryName = (country !== "undefined" ? country : null) || "-";
           const countryCode = lookup.byCountry(countryName);
           return countryCode ? (
             <div className="country_name_wrapper">
               <ReactCountryFlag
-                countryCode={
-                  countryCode.internet === "UK" ? "GB" : countryCode.internet
-                }
+                countryCode={countryCode.internet === "UK" ? "GB" : countryCode.internet}
                 svg={true}
                 aria-label={countryName}
               />
@@ -463,8 +422,9 @@ function TraderOverview() {
         width: 100,
         render: (text, record) =>
           text ? (
-            <a href={`/account-analysis/${record?.login_id}/${platform}/${record.user_id?.id}`}
-            target="_blank"
+            <a
+              href={`/account-analysis/${record?.login_id}/${platform}/${record.user_id?.id}`}
+              target="_blank"
               style={{cursor: "pointer"}}
               // onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record.user_id?.id}`)}
             >
@@ -482,12 +442,8 @@ function TraderOverview() {
         render: (text, record) =>
           text ? (
             <div
-              style={{ cursor: "pointer" }}
-              onClick={() =>
-                navigate(
-                  `/account-analysis/${record?.login_id}/${platform}/${record.user_id?.id}`
-                )
-              }
+              style={{cursor: "pointer"}}
+              onClick={() => navigate(`/account-analysis/${record?.login_id}/${platform}/${record.user_id?.id}`)}
             >
               {text}
             </div>
@@ -501,13 +457,7 @@ function TraderOverview() {
         key: "balance",
         width: 150,
         render: (startingBalance) => {
-          return (
-            <span>
-              {startingBalance
-                ? "$" + parseFloat(startingBalance).toFixed(2).toLocaleString()
-                : "-"}
-            </span>
-          );
+          return <span>{startingBalance ? "$" + parseFloat(startingBalance).toFixed(2).toLocaleString() : "-"}</span>;
         },
       },
       // {
@@ -529,33 +479,21 @@ function TraderOverview() {
         dataIndex: "start_date",
         key: "start_date",
         width: 100,
-        render: (startDate) => (
-          <span>{startDate ? formatDate(startDate) : "-"}</span>
-        ),
+        render: (startDate) => <span>{startDate ? formatDate(startDate) : "-"}</span>,
       },
       {
         title: "End Date",
         dataIndex: "expiry_date",
         key: "expiry_date",
         width: 100,
-        render: (expiryDate) => (
-          <span>{expiryDate ? formatDate(expiryDate) : "-"}</span>
-        ),
+        render: (expiryDate) => <span>{expiryDate ? formatDate(expiryDate) : "-"}</span>,
       },
       {
         title: "Trader Type",
         dataIndex: "status",
         key: "status",
         width: 100,
-        render: (text) => (
-          <p
-            className={`status_text ${
-              text === "Evaluation" ? "evaluation" : "free_trial"
-            }`}
-          >
-            {highlightText(text || "-", searchText)}
-          </p>
-        ),
+        render: (text) => <p className={`status_text ${text === "Evaluation" ? "evaluation" : "free_trial"}`}>{highlightText(text || "-", searchText)}</p>,
       },
       {
         title: "Status",
@@ -569,55 +507,81 @@ function TraderOverview() {
         dataIndex: "action",
         key: "action",
         width: 100,
-        render: (_, record) => (
-          <div className="btn-wrapper">
-            {record.user_is_active ? (
-              <div
-                style={{ cursor: "pointer" }}
-                title="Block"
-                onClick={() => handleAction("Block", record)}
+        render: (text, record) => (
+          <div
+            className="btn-wrapper"
+            style={{width: "10rem"}}
+          >
+            {/* {record?.user_is_active ? ( */}
+            <>
+              <Dropdown
+                overlay={() => userAction(text, record)}
+                trigger={["click"]}
               >
-                <img src={blockIcon} alt="" />
-              </div>
-            ) : (
+                <img
+                  src={record?.user_is_active ? blockIcon : unblockIcon}
+                  alt="blockIcon"
+                />
+                {/* </div> */}
+              </Dropdown>
+              {/* <div
+                  style={{cursor: "pointer"}}
+                  title="Block"
+                  onClick={() => handleAction("Block", record)}
+                >
+                  <img
+                    src={blockIcon}
+                    alt=""
+                  />
+                </div> */}
+            </>
+            {/* ) : ( */}
+            {record?.is_disqualified === true && (
               <div
-                style={{ cursor: "pointer" }}
-                title="Unblock"
-                onClick={() => handleAction("UnBlock", record)}
+                style={{cursor: "pointer"}}
+                title="Reinstate"
+                onClick={() => handleAction("Reinstate", record)}
               >
-                <img src={unblockIcon} alt="" />
+                <img
+                  src={unblockIcon}
+                  alt="Unblock Icon"
+                />
               </div>
             )}
+            {/* )} */}
             <div
-              style={{ cursor: "pointer" }}
+              style={{cursor: "pointer"}}
               title="Delete"
               onClick={() => handleAction("Delete", record)}
               danger
             >
-              <img src={deleteIcon} alt="" />
+              <img
+                src={deleteIcon}
+                alt=""
+              />
             </div>
           </div>
         ),
       },
     ],
-    [navigate, platform, searchText]
+    [navigate, platform, searchText],
   );
 
   function handleAction(action, record) {
+    console.log("Action : ", action);
     setAction(action);
     setSelectedTrader(record);
     setIsModalVisible(true);
-    console.log(action, record, "here");
   }
 
   const handleBlock = () => {
-    if (blockType === "hard") {
+    if (blockType === "Hard") {
       dispatch(
         changeAccountStatus({
           idToken,
-          body: { id: selectedTrader?.user_id?.id, note: reason },
+          body: {id: selectedTrader?.user_id?.id, note: reason},
           dispatch,
-        })
+        }),
       );
     } else {
       dispatch(
@@ -625,7 +589,7 @@ function TraderOverview() {
           id: selectedTrader?.user_id?.id,
           note: reason,
           idToken,
-        })
+        }),
       );
     }
     setIsModalVisible(false);
@@ -633,13 +597,20 @@ function TraderOverview() {
   };
 
   const handleUnBlock = () => {
-    dispatch(
-      changeAccountStatus({
-        idToken,
-        body: { id: selectedTrader?.user_id, note: reason },
-        dispatch,
-      })
-    );
+    console.log("In unblockingg", blockType);
+    if (blockType === "Hard") {
+      console.log("In unblockingg");
+      dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.user_id?.id, note: reason}, dispatch}));
+    } else {
+      dispatch(
+        softBlockUser({
+          id: selectedTrader?.user_id?.id,
+          note: reason,
+          idToken,
+        }),
+      );
+    }
+
     setIsModalVisible(false);
     setReason("");
   };
@@ -648,10 +619,24 @@ function TraderOverview() {
     dispatch(
       deleteAcount({
         idToken,
-        body: { login_id: selectedTrader?.login_id },
+        body: {login_id: selectedTrader?.login_id},
         platform,
         dispatch,
-      })
+      }),
+    );
+    setIsModalVisible(false);
+    setReason("");
+  };
+
+  const handleReinstate = () => {
+    const body = new FormData();
+    body.append("login_id", selectedTrader?.login_id);
+    dispatch(
+      reinstateAccount({
+        idToken,
+        body,
+        dispatch,
+      }),
     );
     setIsModalVisible(false);
     setReason("");
@@ -679,15 +664,16 @@ function TraderOverview() {
       </div>
       <div className="trader-overview-header">
         <div className="trader-overview-header-right tabs_wrapper">
-          <Radio.Group value={status} onChange={onChangeActive}>
+          <Radio.Group
+            value={status}
+            onChange={onChangeActive}
+          >
             <Radio.Button value="">All</Radio.Button>
             <Radio.Button value="active">Active</Radio.Button>
             <Radio.Button value="inactive">Inactive</Radio.Button>
           </Radio.Group>
           <Button
-            onClick={() =>
-              navigate(`/trader-overview/view-logs?platform=${platform}`)
-            }
+            onClick={() => navigate(`/trader-overview/view-logs?platform=${platform}`)}
             className="view_logs__btn standard_button"
           >
             View Logs
@@ -695,7 +681,11 @@ function TraderOverview() {
         </div>
         <div className="trader-overview-header-left">
           <div className="trader-overview-header-left_inner">
-            <Title className="title" style={{ fontstatus: "14px" }} level={5}>
+            <Title
+              className="title"
+              style={{fontstatus: "14px"}}
+              level={5}
+            >
               Platform
             </Title>
             <Select
@@ -709,14 +699,18 @@ function TraderOverview() {
           </div>
 
           <div className="trader-overview-header-left_inner">
-            <Title className="title" style={{ fontSize: "14px" }} level={5}>
+            <Title
+              className="title"
+              style={{fontSize: "14px"}}
+              level={5}
+            >
               Challenges
             </Title>
 
             <Select
               mode="multiple"
               tagRender={(props) => {
-                const { label, value, closable, onClose } = props;
+                const {label, value, closable, onClose} = props;
                 return (
                   <Tag
                     closable={closable}
@@ -742,7 +736,7 @@ function TraderOverview() {
                 }
               }}
               className="header-select widthFitContent"
-              style={{ width: 300 }}
+              style={{width: 300}}
             >
               {ChallengesOptions.map((option) => (
                 <OptGroup
@@ -751,12 +745,7 @@ function TraderOverview() {
                       className="label"
                       onClick={() => handleGroupClick(option.value)}
                     >
-                      {option.label}{" "}
-                      {expandedGroup !== option.value ? (
-                        <DownOutlined style={{ fontSize: "14px" }} />
-                      ) : (
-                        <UpOutlined style={{ fontSize: "14px" }} />
-                      )}
+                      {option.label} {expandedGroup !== option.value ? <DownOutlined style={{fontSize: "14px"}} /> : <UpOutlined style={{fontSize: "14px"}} />}
                     </div>
                   }
                   key={option.value}
@@ -843,18 +832,30 @@ function TraderOverview() {
                 }}
               />
             </div>
-            <div className="searchImg" onClick={() => handleSearch(search)}>
-              <img src={searchIcon} alt="searchIcon" />
+            <div
+              className="searchImg"
+              onClick={() => handleSearch(search)}
+            >
+              <img
+                src={searchIcon}
+                alt="searchIcon"
+              />
             </div>
           </div>{" "}
           <div>
-            <RangePicker value={defaultDates} onChange={updateDateRange} />
+            <RangePicker
+              value={defaultDates}
+              onChange={updateDateRange}
+            />
           </div>
         </div>
 
         <div className="trader_overview_row2_groupB">
           <div className="phase_filters">
-            <Radio.Group value={phase} onChange={onChangePhase}>
+            <Radio.Group
+              value={phase}
+              onChange={onChangePhase}
+            >
               <Radio.Button value="">All</Radio.Button>
               {/* <Radio.Button value="Evalution/Funded">Evalution/Funded</Radio.Button> */}
               <Radio.Button value="Funded">Funded</Radio.Button>
@@ -865,19 +866,34 @@ function TraderOverview() {
           </div>
           <div className="mobileFilter">
             <Select placeholder="Select a filter">
-              <Option key={"all"} value={"all"}>
+              <Option
+                key={"all"}
+                value={"all"}
+              >
                 All
               </Option>
-              <Option key={"Funded"} value={"Funded"}>
+              <Option
+                key={"Funded"}
+                value={"Funded"}
+              >
                 Funded
               </Option>
-              <Option key={"Verification"} value={"Verification"}>
+              <Option
+                key={"Verification"}
+                value={"Verification"}
+              >
                 Verification
               </Option>
-              <Option key={"Evalution"} value={"Evalution"}>
+              <Option
+                key={"Evalution"}
+                value={"Evalution"}
+              >
                 Funded
               </Option>
-              <Option key={"Free Trial"} value={"Free Trial"}>
+              <Option
+                key={"Free Trial"}
+                value={"Free Trial"}
+              >
                 Free Trial
               </Option>
             </Select>
@@ -946,7 +962,7 @@ function TraderOverview() {
         )}
 
         <Modal
-          title={`${action} Account`}
+          title={`${action !== "Reinstate" && action !== "Delete" ? blockType : ""} ${action} Account`}
           visible={isModalVisible}
           onCancel={handleCancel}
           centered
@@ -965,25 +981,15 @@ function TraderOverview() {
                 key="block"
                 type="primary"
                 danger
-                onClick={
-                  action === "Block"
-                    ? handleBlock
-                    : action === "UnBlock"
-                    ? handleUnBlock
-                    : handleDelete
-                }
+                onClick={action === "Block" ? handleBlock : action === "UnBlock" ? handleUnBlock : action === "Reinstate" ? handleReinstate : handleDelete}
               >
-                {action === "Block"
-                  ? "Block"
-                  : action === "UnBlock"
-                  ? "UnBlock"
-                  : "Delete"}
+                {action === "Block" ? "Block" : action === "UnBlock" ? "UnBlock" : action === "Reinstate" ? "Reinstate" : "Delete"}
               </Button>
             </div>,
           ]}
         >
           <div className="modal-content">
-            {action === "Block" && (
+            {/* {action === "Block" && (
               <Select
                 defaultValue="hard"
                 onChange={(value) => setBlockType(value)}
@@ -991,7 +997,7 @@ function TraderOverview() {
                 <Option value="hard">Hard Block</Option>
                 <Option value="soft">Soft Block</Option>
               </Select>
-            )}
+            )} */}
 
             <p className="modal-title">Write Your Reason</p>
             <textarea
@@ -1034,7 +1040,11 @@ function TraderOverview() {
           }}
           onOk={handleUpdateFlag}
         >
-          <Form.Item label="Reason" value={comment} className="reset">
+          <Form.Item
+            label="Reason"
+            value={comment}
+            className="reset"
+          >
             <Input.TextArea
               value={comment}
               maxLength={255}
@@ -1071,7 +1081,7 @@ function TraderOverview() {
 
 export default TraderOverview;
 
-const ExpandableRow = ({ record }) => {
+const ExpandableRow = ({record}) => {
   return (
     <>
       <div className="NestedTable">

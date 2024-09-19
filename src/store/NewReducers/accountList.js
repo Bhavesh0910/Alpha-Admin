@@ -2,6 +2,8 @@ import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import {accountListReq, changeAccountStatusApi, deleteAcountApi} from "../../utils/apis/accountsApi";
 import {returnErrors} from "../reducers/error";
 import {returnMessages} from "../reducers/message";
+import axios from "axios";
+import { baseUrl } from "../../utils/api/apis";
 
 export const changeAccountStatus = createAsyncThunk("accounts/changeAccountStatus", async ({idToken, body, dispatch}, {rejectWithValue}) => {
   try {
@@ -10,7 +12,20 @@ export const changeAccountStatus = createAsyncThunk("accounts/changeAccountStatu
     dispatch(traderListRefresh());
     return response;
   } catch (error) {
-    dispatch(returnErrors(error.response.data.details || "Action Failed, Try again!", 400));
+    dispatch(returnErrors(error.response.data.detail || "Action Failed, Try again!", 400));
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const reinstateAccount = createAsyncThunk("accounts/reinstateAccount", async ({idToken, body, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await reinstateAccountApi(idToken, body);
+    console.log(response);
+    dispatch(returnMessages(response?.message || "Action Performed SuccessFully!", 200));
+    dispatch(traderListRefresh());
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error?.response?.data.detail || "Action Failed, Try again!", 400));
     return rejectWithValue(error.response.data);
   }
 });
@@ -23,7 +38,7 @@ export const deleteAcount = createAsyncThunk("accounts/deleteAcount", async ({id
     dispatch(traderListRefresh());
     return response;
   } catch (error) {
-    dispatch(returnErrors(error.response.data.details || "Action Failed, Try again!", 400));
+    dispatch(returnErrors(error.response.data.detail || "Action Failed, Try again!", 400));
     return rejectWithValue(error.response.data);
   }
 });
@@ -35,7 +50,7 @@ export const accountList = createAsyncThunk("accounts/fetchAccountList", async (
     const response = await accountListReq(idToken, query, platform);
     return response;
   } catch (error) {
-    dispatch(returnErrors(error.response.data.details || "Error Fetching Accounts, Try again!", 400));
+    dispatch(returnErrors(error.response.data.detail || "Error Fetching Accounts, Try again!", 400));
     return rejectWithValue(error.response.data);
   }
 });
@@ -48,7 +63,7 @@ const accountSlice = createSlice({
     data: [],
     login_id: null,
     totalItems: 1,
-    refresh:false
+    refresh: false,
   },
   reducers: {
     resetAccountList: (state) => {
@@ -107,6 +122,18 @@ const accountSlice = createSlice({
       .addCase(deleteAcount.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
+      })
+      .addCase(reinstateAccount.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(reinstateAccount.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.refresh = !state.refresh;
+      })
+      .addCase(reinstateAccount.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
       });
   },
 });
@@ -114,3 +141,18 @@ const accountSlice = createSlice({
 // Export the async thunk and any reducers if needed
 export const {resetAccountList, setDefaultLoginId, setLoginList, traderListRefresh} = accountSlice.actions;
 export default accountSlice.reducer;
+
+const reinstateAccountApi = async (idToken, body) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    };
+    const response = await axios.post(`${baseUrl}v2/account/reinstate/`, body, config);
+    return response.data;
+  } catch (error) {
+    console.error("Error during accountList request:", error);
+    throw error; // Re-throw the error so it can be handled by the caller
+  }
+};

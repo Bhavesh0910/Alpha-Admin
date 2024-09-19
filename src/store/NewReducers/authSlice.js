@@ -37,6 +37,7 @@ const initialState = {
   refreshToken: null,
   isLoading: false,
   searchDates: [dayjs().subtract(7, "day").format("YYYY-MM-DD"), dayjs().format("YYYY-MM-DD")],
+  refreshCount: 0,
 };
 
 const authSlice = createSlice({
@@ -52,6 +53,9 @@ const authSlice = createSlice({
       state.idToken = null;
       state.refreshToken = null;
       state.isLoading = false;
+    },
+    incrementRefreshCount: (state, action) => {
+      state.refreshCount = action.payload;
     },
     setAuthenticationStatus: (state, action) => {
       //
@@ -78,5 +82,5 @@ const authSlice = createSlice({
   },
 });
 
-export const {authenticate, deAuthenticate, setAuthenticationStatus, setIsLoading, setDatesMethod} = authSlice.actions;
+export const {authenticate, deAuthenticate,incrementRefreshCount, setAuthenticationStatus, setIsLoading, setDatesMethod} = authSlice.actions;
 export default authSlice.reducer;
