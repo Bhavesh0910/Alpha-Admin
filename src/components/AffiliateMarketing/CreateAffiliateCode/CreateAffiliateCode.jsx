@@ -101,7 +101,7 @@ const CreateAffiliateCode = () => {
           <Breadcrumb.Item>Create Affiliate Code</Breadcrumb.Item>
         </Breadcrumb>
         <Button
-          onClick={() => navigate("affiliate-marketing/logs")}
+          onClick={() => navigate("/affiliate-marketing/logs")}
           className="view_logs__btn standard_button"
         >
           View Logs
