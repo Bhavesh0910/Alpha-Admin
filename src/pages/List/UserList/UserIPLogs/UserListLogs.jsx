@@ -8,6 +8,7 @@ import { logsListReq } from "../../../../store/NewReducers/logsSlice";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import { Link } from "react-router-dom";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -69,10 +70,10 @@ const UserListLogs = () => {
           separator=">"
           items={[
             {
-              title: <a href="/list/user-list/">User List</a>,
+              title: <Link to="/list/user-list">User List</Link>,
             },
             {
-              title: <a href="#">Log</a>,
+              title: <Link to="#">Log</Link>,
             },
           ]}
         />

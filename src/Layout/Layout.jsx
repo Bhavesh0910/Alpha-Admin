@@ -409,7 +409,7 @@ const PageLayout = ({headerName, children}) => {
         return ["16", "16-1"];
       case "/compliance/billing":
         return ["16", "16-2"];
-      case "/competitions/":
+      case "/competitions":
         return ["17"];
       case "/competitions/competition-list-logs":
         return ["17"];

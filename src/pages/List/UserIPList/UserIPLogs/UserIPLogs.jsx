@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AntTable from "../../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../../ReusableComponents/LoaderOverlay";
 import { logsListReq } from "../../../../store/NewReducers/logsSlice";
+import { Link } from "react-router-dom";
 
 const UserIPLogs = () => {
   const { idToken } = useSelector((state) => state.auth);
@@ -59,10 +60,10 @@ const UserIPLogs = () => {
           separator=">"
           items={[
             {
-              title: <a href="/list/user-ip-list/">IP List</a>,
+              title: <Link to="/list/user-ip-list">IP List</Link>,
             },
             {
-              title: <a href="#">Log</a>,
+              title: <Link to="#">Log</Link>,
             },
           ]}
         />
