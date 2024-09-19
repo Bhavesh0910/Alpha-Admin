@@ -140,3 +140,20 @@
     }
   }
 }
+
+
+.coupon_select{
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  margin-top: 10px;
+  .ant-select .ant-select-selector {
+    border-radius: 6px 0 0 6px !important;
+    max-width: 150px !important;
+  }
+  .coupon_amount , .coupon_percentage{
+    border: 1px solid var(--Stroke, #686868) ;
+    border-radius: 0 6px 6px 0 !important;
+
+  }
+}

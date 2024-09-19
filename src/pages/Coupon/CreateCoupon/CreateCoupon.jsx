@@ -27,6 +27,7 @@ const CreateCoupon = () => {
   const [isMulti, setIsMulti] = useState(false);
   const [challenges, setChallenges] = useState({});
   const timeoutRef = useRef(null);
+  const [couponValue, setCouponValue] = useState("Coupon Amount"); 
 
   const { idToken } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -196,8 +197,55 @@ const CreateCoupon = () => {
               />
             </div>
           </div>
-          <div className="bottomSection">
-            <div className="form_input_box">
+          <div className="bottomSection">   
+            <div>     
+            <label htmlFor="coupon_value">Coupon Value</label>
+            <div className="coupon_select">
+          <div className="form_input_box" style={{maxWidth: '160px'}}>
+              <Select
+                className="category_dropdown"
+                defaultValue="Coupon Amount"
+                onChange={setCouponValue} 
+              >
+                <Option value="Coupon Amount">Coupon Amount</Option>
+                <Option value="Coupon Discount">Coupon Percent</Option>
+              </Select>
+            </div>
+            <div className="form_input_box" style={{width:'100%'}}>
+              {couponValue === "Coupon Discount" ? (
+                <>
+                  <Input
+                    type="number"
+                    className="coupon_percentage"
+                    id="coupon_percentage"
+                    placeholder="Enter Coupon Percentage"
+                    prefix={<PercentageIcon />}
+                    value={percent}
+                    onChange={(e) => {
+                      if (e.target.value < 100) {
+                        setPercent(Number(e.target.value));
+                      }
+                    }}
+                    required
+                  />
+                </>
+              ) : (
+                <>
+                  <Input
+                  className="coupon_amount"
+                    type="number"
+                    id="coupon_amount"
+                    placeholder="Enter Coupon Amount"
+                    value={couponAmount}
+                    onChange={(e) => setCouponAmount(e.target.value)}
+                    required
+                  />
+                </>
+              )}
+            </div>
+            </div>
+            </div>
+            {/* <div className="form_input_box">
               <label htmlFor="coupon_amount">Coupon Amount</label>
               <Input
                 id="coupon_amount"
@@ -215,7 +263,7 @@ const CreateCoupon = () => {
                 value={percent}
                 onChange={(e) => setPercent(Number(e.target.value))}
               />
-            </div>
+            </div> */}
             <div className="form_input_box">
               <label htmlFor="challenge_id">Challenge</label>
               <Select

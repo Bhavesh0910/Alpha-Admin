@@ -243,7 +243,7 @@ const KYC = () => {
       dataIndex: "description",
       key: "description",
       width: 100,
-      render: (text) => (text ? text : "-"),
+      render: (text) => <p style={{maxWidth:'250px'}}>{(text ? text : "-")}</p>,
     },
     // {
     //   title: "Contract",

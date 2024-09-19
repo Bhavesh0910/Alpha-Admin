@@ -80,8 +80,8 @@ const UserSupport = () => {
         dispatch(updateUserEmailThunk({ idToken, payload: formData }))
             .unwrap() 
             .then(() => {
-                setCurrentEmail('');
-                setCurrentPassword('');
+                // setCurrentEmail('');
+                // setCurrentPassword('');
                 setNewEmail('');
             })
             .catch((error) => {

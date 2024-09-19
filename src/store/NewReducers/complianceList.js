@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 import {baseUrl} from "../../utils/api/apis";
 import {returnErrors} from "../reducers/error";
+import { returnMessages } from "../reducers/message";
 
 async function getBillingDetailsApi(idToken, email) {
   try {
@@ -157,9 +158,10 @@ async function updateKycApi(idToken, body) {
   }
 }
 
-export const updateKycStatus = createAsyncThunk("kyc/updateAdminStatus", async ({idToken, body, dispatch}, {rejectWithValue}) => {
+export const updateKycStatus = createAsyncThunk("kyc/updateAdminStatus", async ({idToken, body}, {rejectWithValue , dispatch}) => {
   try {
     const response = await updateKycApi(idToken, body);
+    dispatch(returnMessages("Status Changed Successfully" , 200));
     return response;
   } catch (error) {
     dispatch(returnErrors(error.response?.data?.detail || "Error while fetching Billing List!", 400));
