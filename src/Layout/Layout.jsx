@@ -235,6 +235,12 @@ const items = [
       },
     ],
   },
+  {
+    key: "20",
+    icon: <CompetitionIcon />,
+    label: "Permissions",
+    link: "/permissions/",
+  },
   // {
   //   key: "19",
   //   icon: <MoreIcon />,

@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
 import RiskManagement from "../pages/RiskManagement";
 
@@ -67,6 +67,7 @@ import NewRiskManagement from "../pages/RiskManagement/NewPages";
 import AllCertificates from "../pages/Certificates/AllCertificates";
 import CreateCertificates from "../pages/Certificates/CreateCertificates";
 import CreateCertificateViewLogs from "../pages/Certificates/CreateCertificates/Logs";
+import Permissions from "../pages/Permissions/Permissions";
 
 function Router() {
   return (
@@ -155,6 +156,7 @@ function Router() {
               </PageLayout>
             }
           />
+
 
           <Route
             exact={true}
@@ -413,7 +415,7 @@ function Router() {
             path="/certificates/all-certificates"
             element={
               <PageLayout headerName="All Certificates">
-                <AllCertificates/>
+                <AllCertificates />
               </PageLayout>
             }
           />
@@ -422,7 +424,7 @@ function Router() {
             path="/certificates/create-certificates"
             element={
               <PageLayout headerName="Create Certificates">
-                <CreateCertificates/>
+                <CreateCertificates />
               </PageLayout>
             }
           />
@@ -431,7 +433,7 @@ function Router() {
             path="/certificates/create-certificates/view-logs"
             element={
               <PageLayout headerName="Create Certificates">
-                <CreateCertificateViewLogs/>
+                <CreateCertificateViewLogs />
               </PageLayout>
             }
           />
@@ -737,6 +739,17 @@ function Router() {
 
           <Route
             exact={true}
+            path="/permissions"
+            element={
+              <PageLayout headerName="Permissions">
+                <Permissions />
+              </PageLayout>
+            }
+          />
+
+
+          <Route
+            exact={true}
             path="/user-profile"
             element={
               <PageLayout headerName="User Profile">
@@ -744,6 +757,8 @@ function Router() {
               </PageLayout>
             }
           />
+
+
         </Route>
       </Routes>
     </BrowserRouter>
