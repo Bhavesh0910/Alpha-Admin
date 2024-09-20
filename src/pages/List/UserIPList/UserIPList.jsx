@@ -65,6 +65,7 @@ const UserIPList = () => {
   };
 
   const handleBlock = async () => {
+    console.log("Action : ",action)
     if (selectedRecord && reason) {
       try {
         dispatch(
@@ -75,9 +76,9 @@ const UserIPList = () => {
             block: action === "Block",
           }),
         ).unwrap();
-        dispatch(returnMessages(`${action ? "Blocked" : "Unblocked"} Successfully`, 200));
+        // dispatch(returnMessages(`${action ? "Blocked" : "Unblocked"} Successfully`, 200));
         setIsModalVisible(false);
-        dispatch(fetchIpLogs({idToken, search: "", blocked: activeTab === "blocked" ? "True" : "False", currentPage}));
+        dispatch(fetchIpLogs({idToken, search: search, blocked: activeTab === "blocked" ? "True" : "False", currentPage}));
       } catch (error) {}
     } else {
       message.error("Please provide a reason");
@@ -161,7 +162,7 @@ const UserIPList = () => {
       width: 100,
       render: (_, record) => (
         <div className="action_wrapper">
-          {record.blocked ? (
+          {record?.blocked ? (
             <div
               title="Unblock"
               className=""

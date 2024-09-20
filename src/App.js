@@ -8,7 +8,7 @@ import {returnErrors} from "./store/reducers/error";
 import {clearPersistedData} from "./store/configureStore";
 import {deAuthenticateAll} from "./store/NewReducers/logout";
 import axios from "axios";
-import {refreshTokenReq} from "./store/NewReducers/authSlice";
+import {incrementRefreshCount, refreshTokenReq} from "./store/NewReducers/authSlice";
 import {v4 as uuidv4} from "uuid";
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
   }
   const dispatch = useDispatch();
 
-  const {refreshToken} = useSelector((state) => state.auth);
+  const {refreshToken, refreshCount} = useSelector((state) => state.auth);
 
   useEffect(() => {
     handleCreateUUID();
@@ -34,13 +34,19 @@ function App() {
       return response;
     },
     (error) => {
+      console.log("error : ",error)
       if (error?.response?.status === 403 || error?.response?.status === 401) {
         // if (error?.response?.status === 401) {
         if (error?.response?.data?.detail === "invalid-auth-token") {
-          dispatch(refreshTokenReq(refreshToken));
-          deAuthenticateAll(dispatch);
-          clearPersistedData();
-          window.location.reload();
+          if (refreshCount >= 12) {
+            deAuthenticateAll(dispatch);
+            clearPersistedData();
+            dispatch(incrementRefreshCount(0));
+          } else {
+            dispatch(refreshTokenReq(refreshToken));
+            dispatch(incrementRefreshCount(refreshCount + 1));
+            // window.location.reload();
+          }
           return Promise.reject(error);
         }
       }

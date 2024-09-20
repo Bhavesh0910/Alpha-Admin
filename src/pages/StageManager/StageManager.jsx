@@ -1478,7 +1478,7 @@ const StageManager = () => {
         />
       </div>
       <Modal
-        title={modalAction}
+        title={(modalAction === "Contract" && updatedStatus === "Rejected" ? "Reject" : "Approve") + " " + modalAction}
         open={isModalVisible}
         onCancel={() => {
           setIsModalVisible(false);

@@ -4,14 +4,14 @@ import axios from "axios";
 import {PURGE} from "redux-persist";
 import {returnErrors} from "../reducers/error";
 
-async function updatePaymentStatusApi(idToken, body) {
+async function updatePaymentStatusApi(idToken, body, id) {
   try {
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const res = axios.post(`${baseUrl}payments/cronjob/status/`, body, config);
+    const res = axios.patch(`${baseUrl}payments/admin/transaction/${id}/`, body, config);
     return res;
   } catch (error) {
     throw error;
@@ -54,7 +54,6 @@ async function paymentExportsApi(idToken, query) {
       },
     };
 
-   
     const res = axios.get(`${baseUrl}export/payments/${query}`, config);
     return res;
   } catch (error) {
@@ -62,11 +61,11 @@ async function paymentExportsApi(idToken, query) {
   }
 }
 
-export const updatePaymentStatusReq = createAsyncThunk("payment/updateStatus", async ({idToken, body, dispatch}, {rejectWithValue}) => {
+export const updatePaymentStatusReq = createAsyncThunk("payment/updateStatus", async ({idToken, body, id, dispatch}, {rejectWithValue}) => {
   try {
     console.log(idToken);
 
-    const response = await updatePaymentStatusApi(idToken, body);
+    const response = await updatePaymentStatusApi(idToken, body, id);
     return response;
   } catch (error) {
     dispatch(returnErrors(error?.response?.data?.detail || "Error while fetching Payment List!", 400));
@@ -96,9 +95,9 @@ export const paymentHistoryReq = createAsyncThunk("payoutList/history", async ({
 
 export const paymentExportsReq = createAsyncThunk("payoutList/exports", async ({idToken, query, dispatch}, {rejectWithValue}) => {
   try {
-    const response = await paymentExportsApi(idToken , query)
+    const response = await paymentExportsApi(idToken, query);
     // .then((response) => {
-      // window.open(response?.data?.s3_file_url, "_blank");
+    // window.open(response?.data?.s3_file_url, "_blank");
     // });
     return response;
   } catch (error) {
@@ -120,6 +119,7 @@ const paymentSlice = createSlice({
     exportHistoryData: [],
     exportLink: "",
     payoutData: [],
+    refetch: false,
   },
   reducers: {
     resetPayout: (state) => {
@@ -173,7 +173,7 @@ const paymentSlice = createSlice({
       })
       .addCase(paymentExportsReq.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.exportHistoryData = action.payload.data
+        state.exportHistoryData = action.payload.data;
         console.log(action.payload?.data);
         state.exportLink = action.payload?.data; // Update state with fetched data
       })
@@ -188,11 +188,23 @@ const paymentSlice = createSlice({
       })
       .addCase(payoutListReq.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log("Paypout paylaod .. ",action.payload);
+        console.log("Paypout paylaod .. ", action.payload);
         state.payoutData = action.payload?.data?.data; // Update state with fetched data
         state.count = action.payload?.data?.data?.count; // Update state with fetched data
       })
       .addCase(payoutListReq.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(updatePaymentStatusReq.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(updatePaymentStatusReq.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.refetch = !state.refetch;
+      })
+      .addCase(updatePaymentStatusReq.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });
