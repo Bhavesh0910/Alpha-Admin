@@ -148,6 +148,7 @@ td {
 
   .ant-pagination-options {
     margin-left: auto !important;
+   
   }
 }
 
@@ -259,6 +260,7 @@ td {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-direction: row-reverse;
 
     @media only screen and (max-width: 705px) {
       justify-content: center !important;
@@ -266,7 +268,7 @@ td {
     }
 
     @media only screen and (max-width: 500px) {
-      flex-direction: column !important;
+      flex-direction: column-reverse !important;
     }
 
     .ant-pagination-options-quick-jumper {

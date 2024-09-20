@@ -507,3 +507,7 @@
   flex-wrap: wrap;
   max-width: 208px;
 }
+
+.ant-dropdown{
+  z-index: 0 !important;
+}

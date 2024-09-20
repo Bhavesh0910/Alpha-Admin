@@ -288,9 +288,11 @@ function TraderOverview() {
     const {status} = record?.user_id;
 
     return (
-      <Menu
+      <div className="" style={{position:"relative", zIndex:"0"}}>
+         <Menu
         className="menuCard"
         onClick={(e) => openStatusUpdateModal(e.key, record)}
+     
       >
         <Menu.Item
           key="Safe"
@@ -313,6 +315,8 @@ function TraderOverview() {
           Blacklisted
         </Menu.Item>
       </Menu>
+      </div>
+     
     );
   };
 
@@ -381,7 +385,7 @@ function TraderOverview() {
             }
           };
           return (
-            <div className="flagContainer">
+            <div className="flagContainer"    style={{position:"relative", zIndex:"0"}}>
               <p className={`flag ${getStatusColor(record?.user_id?.status)}`}></p>
               <Dropdown
                 overlay={() => statusMenu(text, record)}
