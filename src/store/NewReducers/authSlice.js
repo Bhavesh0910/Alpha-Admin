@@ -20,11 +20,7 @@ export const refreshTokenReq = createAsyncThunk("auth/refreshToken", async (refr
 
 export const hitRefreshTokenApi = async (refreshToken) => {
   try {
-    const response = await axios.get(`${baseUrl}get/refreshtoken/`, {
-      headers: {
-        refresh_token: `${refreshToken}`,
-      },
-    });
+    const response = await axios.post(`${baseUrl}get/refreshtoken/`, {refresh_token: refreshToken});
     return response;
   } catch (error) {
     throw error;
@@ -82,5 +78,5 @@ const authSlice = createSlice({
   },
 });
 
-export const {authenticate, deAuthenticate,incrementRefreshCount, setAuthenticationStatus, setIsLoading, setDatesMethod} = authSlice.actions;
+export const {authenticate, deAuthenticate, incrementRefreshCount, setAuthenticationStatus, setIsLoading, setDatesMethod} = authSlice.actions;
 export default authSlice.reducer;
