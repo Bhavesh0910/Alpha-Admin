@@ -30,7 +30,7 @@ const RevenueManagement = () => {
   useEffect(() => {
     let query = null;
     if (datesStastics) {
-      query = `?start_date=${datesStastics[0]}&end_date=${datesStastics[1]}`;
+      query = `?start_date=${datesStastics[0].format("DD/MMM/YYYY")}&end_date=${datesStastics[1].format("DD/MMM/YYYY")}`;
     }
     dispatch(payoutStatsReq({idToken, dispatch, query}));
   }, [idToken, datesStastics]);
@@ -38,7 +38,7 @@ const RevenueManagement = () => {
   useEffect(() => {
     let query = null;
     if (datesRevenue) {
-      query = `?start_date=${datesRevenue[0]}&end_date=${datesRevenue[1]}`;
+      query = `?start_date=${datesRevenue[0].format("DD/MMM/YYYY")}&end_date=${datesRevenue[1].format("DD/MMM/YYYY")}`;
     }
     dispatch(qualifiedAccountReq({idToken, dispatch, query}));
   }, [idToken, datesRevenue]);
@@ -46,7 +46,7 @@ const RevenueManagement = () => {
   useEffect(() => {
     let query = null;
     if (dates) {
-      query = `?start_date=${dates[0]}&end_date=${dates[1]}`;
+      query = `?start_date=${dates[0].format("DD/MMM/YYYY")}&end_date=${dates[1].format("DD/MMM/YYYY")}`;
     }
     dispatch(statsReq({idToken, dispatch, query}));
   }, [idToken, dates]);

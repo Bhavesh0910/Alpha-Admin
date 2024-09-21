@@ -74,7 +74,7 @@ const UserSupport = () => {
     if (activeTab === "change_email") {
         const formData = new FormData();
         formData.append("cur_email", currentEmail);
-        formData.append("pwd", currentPassword);
+        // formData.append("pwd", currentPassword);
         formData.append("new_email", newEmail);
 
         dispatch(updateUserEmailThunk({ idToken, payload: formData }))
@@ -235,7 +235,7 @@ const ChangeEmail = ({handleOnInputChange, emailOpts, isLoading, currentEmail, s
             ))}
           </Select>
         </div>
-        <div className="form_input_box">
+        {/* <div className="form_input_box">
           <label htmlFor="current_password">Current Password</label>
           <Input.Password
             required
@@ -245,7 +245,7 @@ const ChangeEmail = ({handleOnInputChange, emailOpts, isLoading, currentEmail, s
             onChange={(e) => setCurrentPassword(e.target.value)}
             iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
           />
-        </div>
+        </div> */}
         <div className="form_input_box">
           <label htmlFor="new_email">New Email</label>
           <Input
