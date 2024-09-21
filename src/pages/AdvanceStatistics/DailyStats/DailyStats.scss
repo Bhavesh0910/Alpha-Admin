@@ -41,7 +41,16 @@ background: var(--Canvas-BG, #161D26) !important;
   .daily_stats{
     .ant-table-thead >tr>th{
       text-wrap: nowrap !important;
+      color: var(--Text, #1E1E1E);
+font-family: "Nunito Sans";
+font-size: 14px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
     } 
+    .ant-table-thead > tr:first-child th{
+      border-bottom: 1px solid #CFCFCF !important;
+    }
   }
 
 .withdrawal_status_container {
