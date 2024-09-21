@@ -7,7 +7,6 @@ import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPayoutDetails, fetchTotalMethod, fetchTotalPayments } from "../../../store/NewReducers/advanceStatistics";
-import moment from "moment";
 import { Button, DatePicker, Modal, notification, Spin } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { returnMessages } from "../../../store/reducers/message";
@@ -53,8 +52,9 @@ const Payout = () => {
       }
 
       if (dates && dates.length === 2) {
-        const [startDate, endDate] = dates;
-        query += `&start_date=${startDate}&end_date=${endDate}`;
+        let startDate = dates[0]?.format("DD/MMM/YYYY");
+        let endDate = dates[1]?.format("DD/MMM/YYYY"); 
+         query += `&start_date=${startDate}&end_date=${endDate}`;
       }
 
       try {
@@ -214,20 +214,20 @@ const Payout = () => {
       title: "Start Date",
       dataIndex: "start_date",
       key: "start_date",
-      render: (text) => moment(text).format("DD-MMM-YYYY") || "-",
+      render: (text) => dayjs(text)?.format("DD-MMM-YYYY") || "-",
     },
     {
       title: "Next Payout Date",
       dataIndex: "next_payout_date",
       key: "next_payout_date",
-      render: (text) => moment(text).format("DD-MMM-YYYY") || "-",
+      render: (text) => dayjs(text)?.format("DD-MMM-YYYY") || "-",
     },
   ]);
 
   const updateExportDateRange = (dates) => {
     setPageNo(1);
     if (dates) {
-      setExportDates(dates.map((date) => date.format("DD/MMM/YYYY")));
+      setExportDates(dates.map((date) => date?.format("DD/MMM/YYYY")));
     } else {
       setExportDates([]);
     }
@@ -238,8 +238,9 @@ const Payout = () => {
 
     if (dates && dates.length === 2) {
       const [startDate, endDate] = dates;
+      const dayAfterTomorrow = dayjs().add(2, "day");
 
-      if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
+      if (endDate.isAfter(dayAfterTomorrow) || startDate.isAfter(dayAfterTomorrow)) {
         notification.error({
           message: 'Invalid Date Range',
           description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
