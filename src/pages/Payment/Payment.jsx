@@ -166,52 +166,52 @@ const Payment = () => {
         key: "payment_platform_status",
         width: 180,
       },
-      // {
-      //   title: "Promo",
-      //   dataIndex: "promo_code",
-      //   key: "promo_code",
-      //   width: 50,
-      //   render: (text) => (
-      //     <>
-      //       {text ? (
-      //         <div className="copy_text_btn">
-      //           <a href={`mailto:${text}`}>{text}</a>
-      //           <Tooltip title="Copy Promo">
-      //             <Button
-      //               icon={<CopyButton />}
-      //               size="small"
-      //               style={{marginLeft: 8}}
-      //               onClick={() => {
-      //                 navigator.clipboard.writeText(text);
-      //                 notification.success({
-      //                   message: "Promo copied to clipboard",
-      //                   placement: "topRight",
-      //                 });
-      //               }}
-      //               className="copy_btn"
-      //             />
-      //           </Tooltip>
-      //         </div>
-      //       ) : (
-      //         "-"
-      //       )}
-      //     </>
-      //   ),
-      // },
+      {
+        title: "Promo",
+        dataIndex: "promo_code",
+        key: "promo_code",
+        width: 50,
+        render: (text) => (
+          <>
+            {text ? (
+              <div className="copy_text_btn">
+                <div href={`mailto:${text}`}>{text}</div>
+                <Tooltip title="Copy Promo">
+                  <Button
+                    icon={<CopyButton />}
+                    size="small"
+                    style={{marginLeft: 8}}
+                    onClick={() => {
+                      navigator.clipboard.writeText(text);
+                      notification.success({
+                        message: "Promo copied to clipboard",
+                        placement: "topRight",
+                      });
+                    }}
+                    className="copy_btn"
+                  />
+                </Tooltip>
+              </div>
+            ) : (
+              "-"
+            )}
+          </>
+        ),
+      },
       {
         title: "Amount",
         dataIndex: "amount",
         key: "amount",
         width: 150,
-        render: (amount) => <span>{amount ? `$${amount / 100}` : "-"}</span>,
+        render: (amount) => (amount ? <span>{amount ? `$${amount / 100}` : "-"}</span> : "-"),
       },
-      // {
-      //   title: "Date",
-      //   dataIndex: "created_at",
-      //   key: "created_at",
-      //   width: 150,
-      //   render: (text) => moment(text).format("YYYY-MM-DD"),
-      // },
+      {
+        title: "Date",
+        dataIndex: "created_at",
+        key: "created_at",
+        width: 150,
+        render: (text) => (text ? moment(text).format("YYYY-MM-DD") : "-"),
+      },
       {
         title: "Login ID",
         dataIndex: "account_login_id",
@@ -628,15 +628,15 @@ export const ExpandableRow = ({record}) => {
         <div>Login id</div>
         <p>{record.account_login_id || "-"}</p>
       </div> */}
-      <div>
+      {/* <div>
         <div>Date</div>
         <p>{record?.created_at ? moment(record.created_at).format("YYYY-MM-DD") : "-"}</p>
-      </div>
+      </div> */}
       <div>
         <div>Challenge</div>
         <p>{record?.challenge_name || "-"}</p>
       </div>
-      <div>
+      {/* <div>
         <div>Promo Code</div>
         <p>
           {record.promo_code ? (
@@ -662,7 +662,7 @@ export const ExpandableRow = ({record}) => {
             "-"
           )}
         </p>
-      </div>
+      </div> */}
       <div>
         <div>Transaction ID</div>
         <p>

@@ -517,8 +517,13 @@ function TraderOverview() {
             style={{width: "10rem"}}
           >
             {/* {record?.user_is_active ? ( */}
-            <>
+            <div
+              style={{cursor: "pointer"}}
+              title={`${record?.user_is_active ? "Block" : "Unblock"}`}
+              onClick={() => handleAction("Block", record)}
+            >
               <Dropdown
+                title="Block"
                 overlay={() => userAction(text, record)}
                 trigger={["click"]}
               >
@@ -538,7 +543,7 @@ function TraderOverview() {
                     alt=""
                   />
                 </div> */}
-            </>
+            </div>
             {/* ) : ( */}
             {record?.is_disqualified === true && (
               <div
