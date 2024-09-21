@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, {useEffect, useState, useRef} from "react";
 import "./CreateCoupon.scss";
-import { Breadcrumb, Button, Checkbox, DatePicker, Input, Select } from "antd";
-import { ReactComponent as PercentageIcon } from "../../../assets/icons/precentage_icon_white.svg";
+import {Breadcrumb, Button, Checkbox, DatePicker, Input, Select} from "antd";
+import {ReactComponent as PercentageIcon} from "../../../assets/icons/precentage_icon_white.svg";
 import dayjs from "dayjs";
-import { useDispatch, useSelector } from "react-redux";
-import { createCoupon } from "../../../store/NewReducers/Coupons";
-import { Link } from "react-router-dom";
-import { returnErrors } from "../../../store/reducers/error";
-import { UserSearchReq, getChallenges } from "../../../utils/api/apis";
+import {useDispatch, useSelector} from "react-redux";
+import {createCoupon} from "../../../store/NewReducers/Coupons";
+import {Link} from "react-router-dom";
+import {returnErrors} from "../../../store/reducers/error";
+import {UserSearchReq, getChallenges} from "../../../utils/api/apis";
 
-const { Option } = Select;
+const {Option} = Select;
 
 const CreateCoupon = () => {
   const [category, setCategory] = useState();
@@ -21,15 +21,15 @@ const CreateCoupon = () => {
   const [users, setUsers] = useState([]);
   const [emails, setEmails] = useState([]);
   const [couponAmount, setCouponAmount] = useState("");
-  const [percent, setPercent] = useState();
+  const [percent, setPercent] = useState(0);
   const [isActivate, setIsActivate] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
   const [isMulti, setIsMulti] = useState(false);
   const [challenges, setChallenges] = useState({});
   const timeoutRef = useRef(null);
-  const [couponValue, setCouponValue] = useState("Coupon Amount"); 
+  const [couponValue, setCouponValue] = useState("Coupon Amount");
 
-  const { idToken } = useSelector((state) => state.auth);
+  const {idToken} = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -124,9 +124,7 @@ const CreateCoupon = () => {
 
   const handleChange = (values) => {
     console.log(values, "valuess");
-    const selectedLabels = options
-      .filter((option) => values.includes(option.value))
-      .map((option) => option.label);
+    const selectedLabels = options.filter((option) => values.includes(option.value)).map((option) => option.label);
     setEmails(selectedLabels);
   };
 
@@ -137,18 +135,16 @@ const CreateCoupon = () => {
       Coupon_user: users,
       coupon_amount: couponAmount,
       coupon_percent: percent,
-      challenge: category,  
+      challenge: category,
       coupon_expiry: date,
       public: isPublic,
       is_active: isActivate,
       multi_use: isMulti,
-
     };
-
 
     console.log("Here...");
     console.log(idToken, couponData, dispatch);
-    dispatch(createCoupon({ idToken, couponData, dispatch }));
+    dispatch(createCoupon({idToken, couponData, dispatch}));
   };
 
   const Loading = () => {
@@ -169,7 +165,10 @@ const CreateCoupon = () => {
         ]}
       />
       <div className="createCouponModal_wrapper">
-        <form className="createCouponForm" onSubmit={handleFormSubmit}>
+        <form
+          className="createCouponForm"
+          onSubmit={handleFormSubmit}
+        >
           <div className="topSection">
             <div className="form_input_box">
               <label htmlFor="coupon_code">Coupon Code</label>
@@ -197,53 +196,60 @@ const CreateCoupon = () => {
               />
             </div>
           </div>
-          <div className="bottomSection">   
-            <div>     
-            <label htmlFor="coupon_value">Coupon Value</label>
-            <div className="coupon_select">
-          <div className="form_input_box" style={{maxWidth: '160px'}}>
-              <Select
-                className="category_dropdown"
-                defaultValue="Coupon Amount"
-                onChange={setCouponValue} 
-              >
-                <Option value="Coupon Amount">Coupon Amount</Option>
-                <Option value="Coupon Discount">Coupon Percent</Option>
-              </Select>
-            </div>
-            <div className="form_input_box" style={{width:'100%'}}>
-              {couponValue === "Coupon Discount" ? (
-                <>
-                  <Input
-                    type="number"
-                    className="coupon_percentage"
-                    id="coupon_percentage"
-                    placeholder="Enter Coupon Percentage"
-                    prefix={<PercentageIcon />}
-                    value={percent}
-                    onChange={(e) => {
-                      if (e.target.value < 100) {
-                        setPercent(Number(e.target.value));
-                      }
-                    }}
-                    required
-                  />
-                </>
-              ) : (
-                <>
-                  <Input
-                  className="coupon_amount"
-                    type="number"
-                    id="coupon_amount"
-                    placeholder="Enter Coupon Amount"
-                    value={couponAmount}
-                    onChange={(e) => setCouponAmount(e.target.value)}
-                    required
-                  />
-                </>
-              )}
-            </div>
-            </div>
+          <div className="bottomSection">
+            <div>
+              <label htmlFor="coupon_value">Coupon Value</label>
+              <div className="coupon_select">
+                <div
+                  className="form_input_box"
+                  style={{maxWidth: "160px"}}
+                >
+                  <Select
+                    className="category_dropdown"
+                    defaultValue="Coupon Amount"
+                    onChange={setCouponValue}
+                  >
+                    <Option value="Coupon Amount">Coupon Amount</Option>
+                    <Option value="Coupon Discount">Coupon Percent</Option>
+                  </Select>
+                </div>
+                <div
+                  className="form_input_box"
+                  style={{width: "100%"}}
+                >
+                  {couponValue === "Coupon Discount" ? (
+                    <>
+                      <Input
+                        type="number"
+                        className="coupon_percentage"
+                        id="coupon_percentage"
+                        placeholder="Enter Coupon Percentage"
+                        prefix={<PercentageIcon />}
+                        value={percent}
+                        onChange={(e) => {
+                          const value = Number(e.target.value);
+                          if (value >= 0 && value < 100) {
+                            setPercent(value);
+                          }
+                        }}
+                        required
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Input
+                        className="coupon_amount"
+                        type="number"
+                        id="coupon_amount"
+                        placeholder="Enter Coupon Amount"
+                        value={couponAmount}
+                        onChange={(e) => setCouponAmount(e.target.value)}
+                        required
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
             </div>
             {/* <div className="form_input_box">
               <label htmlFor="coupon_amount">Coupon Amount</label>
@@ -276,7 +282,10 @@ const CreateCoupon = () => {
                 {Object.keys(challenges).map((category) => (
                   <React.Fragment key={category}>
                     {challenges[category].map((challenge) => (
-                      <Option key={challenge.id} value={challenge.id}>
+                      <Option
+                        key={challenge.id}
+                        value={challenge.id}
+                      >
                         {challenge.name}
                       </Option>
                     ))}
@@ -290,24 +299,37 @@ const CreateCoupon = () => {
                 format="YYYY-MM-DD HH:mm:ss"
                 disabledDate={disabledDate}
                 disabledTime={disabledDateTime}
-                showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
+                showTime={{defaultValue: dayjs("00:00:00", "HH:mm:ss")}}
                 onChange={(value) => setDate(value ? value.format("YYYY-MM-DD") : null)}
               />
             </div>
           </div>
           <div className="footerSection">
             <div className="status_checkbox_wrapper">
-              <Checkbox checked={isActivate} onChange={(e) => setIsActivate(e.target.checked)}>
+              <Checkbox
+                checked={isActivate}
+                onChange={(e) => setIsActivate(e.target.checked)}
+              >
                 Is Activate
               </Checkbox>
-              <Checkbox checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)}>
+              <Checkbox
+                checked={isPublic}
+                onChange={(e) => setIsPublic(e.target.checked)}
+              >
                 Is Public
               </Checkbox>
-              <Checkbox checked={isMulti} onChange={(e) => setIsMulti(e.target.checked)}>
-                 Multi Use?
+              <Checkbox
+                checked={isMulti}
+                onChange={(e) => setIsMulti(e.target.checked)}
+              >
+                Multi Use?
               </Checkbox>
             </div>
-            <Button type="primary" htmlType="submit" className="save_changes_btn">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="save_changes_btn"
+            >
               Save Changes
             </Button>
           </div>
