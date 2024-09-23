@@ -288,35 +288,36 @@ function TraderOverview() {
     const {status} = record?.user_id;
 
     return (
-      <div className="" style={{position:"relative", zIndex:"0"}}>
-         <Menu
-        className="menuCard"
-        onClick={(e) => openStatusUpdateModal(e.key, record)}
-     
+      <div
+        className=""
+        style={{position: "relative", zIndex: "0"}}
       >
-        <Menu.Item
-          key="Safe"
-          style={{
-            display: status !== "Warning" && status !== "Blacklisted" ? "none" : "",
-          }}
+        <Menu
+          className="menuCard"
+          onClick={(e) => openStatusUpdateModal(e.key, record)}
         >
-          Safe
-        </Menu.Item>
-        <Menu.Item
-          key="Warning"
-          style={{display: status === "Warning" ? "none" : ""}}
-        >
-          Warning
-        </Menu.Item>
-        <Menu.Item
-          key="Blacklisted"
-          style={{display: status === "Blacklisted" ? "none" : ""}}
-        >
-          Blacklisted
-        </Menu.Item>
-      </Menu>
+          <Menu.Item
+            key="Safe"
+            style={{
+              display: status !== "Warning" && status !== "Blacklisted" ? "none" : "",
+            }}
+          >
+            Safe
+          </Menu.Item>
+          <Menu.Item
+            key="Warning"
+            style={{display: status === "Warning" ? "none" : ""}}
+          >
+            Warning
+          </Menu.Item>
+          <Menu.Item
+            key="Blacklisted"
+            style={{display: status === "Blacklisted" ? "none" : ""}}
+          >
+            Blacklisted
+          </Menu.Item>
+        </Menu>
       </div>
-     
     );
   };
 
@@ -336,14 +337,20 @@ function TraderOverview() {
     >
       {!record?.user_id?.soft_blocked || record?.user_id?.soft_blocked === null ? (
         <Menu.Item
-          onClick={() => setBlockType("Soft")}
+          onClick={() => {
+            setBlockType("Soft");
+            setIsModalVisible(true);
+          }}
           key="Block"
         >
           Soft block
         </Menu.Item>
       ) : (
         <Menu.Item
-          onClick={() => setBlockType("Soft")}
+          onClick={() => {
+            setBlockType("Soft");
+            setIsModalVisible(true);
+          }}
           key="UnBlock"
         >
           Soft Unblock
@@ -352,14 +359,20 @@ function TraderOverview() {
 
       {record?.user_is_active ? (
         <Menu.Item
-          onClick={() => setBlockType("Hard")}
+          onClick={() => {
+            setBlockType("Hard");
+            setIsModalVisible(true);
+          }}
           key="Block"
         >
           Hard block
         </Menu.Item>
       ) : (
         <Menu.Item
-          onClick={() => setBlockType("Hard")}
+          onClick={() => {
+            setBlockType("Hard");
+            setIsModalVisible(true);
+          }}
           key="UnBlock"
         >
           Hard Unblock
@@ -385,7 +398,10 @@ function TraderOverview() {
             }
           };
           return (
-            <div className="flagContainer"    style={{position:"relative", zIndex:"0"}}>
+            <div
+              className="flagContainer"
+              style={{position: "relative", zIndex: "0"}}
+            >
               <p className={`flag ${getStatusColor(record?.user_id?.status)}`}></p>
               <Dropdown
                 overlay={() => statusMenu(text, record)}
@@ -520,7 +536,7 @@ function TraderOverview() {
             <div
               style={{cursor: "pointer"}}
               title={`${record?.user_is_active ? "Block" : "Unblock"}`}
-              onClick={() => handleAction("Block", record)}
+              // onClick={() => handleAction("Block", record)}
             >
               <Dropdown
                 title="Block"
@@ -580,7 +596,7 @@ function TraderOverview() {
     console.log("Action : ", action);
     setAction(action);
     setSelectedTrader(record);
-    setIsModalVisible(true);
+    (action === "Reinstate" && setIsModalVisible(true)) || (action === "Delete" && setIsModalVisible(true));
   }
 
   const handleBlock = () => {
