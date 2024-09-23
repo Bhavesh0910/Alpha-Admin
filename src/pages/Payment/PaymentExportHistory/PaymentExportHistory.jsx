@@ -21,8 +21,8 @@ const PaymentExportHistory = () => {
   const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
-    const query = `?page=${pageNo}&page_size=${pageSize}`;
-    const url = `v3/admin/export-history/`;
+    const query = `?page=${pageNo}&page_size=${pageSize}&type=Payment Data`;
+    const url = `v3/admin/export-history/${query}`;
     dispatch(fetchExportHistoryReq({idToken, url, query, dispatch}));
   }, [dispatch, idToken, pageNo]);
 
@@ -34,7 +34,7 @@ const PaymentExportHistory = () => {
     }
   };
 
-  const columns =useMemo(()=> [
+  const columns = useMemo(() => [
     {
       title: "Created By",
       dataIndex: "created_by",

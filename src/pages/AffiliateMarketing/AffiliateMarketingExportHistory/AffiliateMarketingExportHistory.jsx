@@ -12,7 +12,7 @@ import dayjs from "dayjs";
 import downloadIcon from "../../../assets/icons/download_to_pc.svg";
 
 const AffiliateMarketingExportHistory = () => {
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(10);
   const [pageNo, setPageNo] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,13 +20,15 @@ const AffiliateMarketingExportHistory = () => {
   const {idToken} = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(fetchExportHistory({idToken, pageNo, pageSize}));
+    const query = `?page=${pageNo}&page_size=${pageSize}&type=Affiliate Data`;
+    const url = `v3/admin/export-history/${query}`;
+    dispatch(fetchExportHistory({idToken, url}));
   }, [dispatch, pageNo, pageSize, idToken]);
 
   const {exportHistoryData, isLoading, error} = useSelector((state) => state.affiliate);
   console.log(exportHistoryData);
 
-  const columns = useMemo(()=>[
+  const columns = useMemo(() => [
     {
       title: "Created By",
       dataIndex: "created_by",
@@ -79,8 +81,10 @@ const AffiliateMarketingExportHistory = () => {
 
   return (
     <div className="table-wrapper viewLogs_table aff_export">
- 
-      <div style={{marginBottom:'20px'}} className="breadcrumb_wrapper">
+      <div
+        style={{marginBottom: "20px"}}
+        className="breadcrumb_wrapper"
+      >
         <Breadcrumb separator=">">
           <Breadcrumb.Item>
             <a href="/affiliate-marketing/">Affiliate List</a>
