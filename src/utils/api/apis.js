@@ -114,7 +114,7 @@ const updateUserAddress = async (idToken, data) => {
   return output;
 };
 
-const updateUserDetailsRequest = async ({updatedData, idToken , id}) => {
+const updateUserDetailsRequest = async ({updatedData, idToken, id}) => {
   let config = {
     headers: {
       Authorization: `Bearer ${idToken}`,
@@ -122,7 +122,7 @@ const updateUserDetailsRequest = async ({updatedData, idToken , id}) => {
   };
   let output;
 
-  console.log(updatedData)
+  console.log(updatedData);
   await axios
     .patch(`${baseUrl}v2/admin/user-profile/${id}`, updatedData, config)
     .then((res) => {
@@ -305,7 +305,7 @@ const deleteSupportDetails = async (idToken, id) => {
   }
 };
 //Certificates
-const getCertificatesDetails = async (idToken, pageNumber, phase, search , user_id) => {
+const getCertificatesDetails = async (idToken, pageNumber, phase, search, user_id) => {
   const params = {
     page: pageNumber,
     page_size: 21,
@@ -415,7 +415,7 @@ const getSearchTradersRequest = async (idToken, competition, search) => {
 };
 
 //affiliate
-const traderAffiliateRefList = async (idToken, id , status = 'success') => {
+const traderAffiliateRefList = async (idToken, id, status = "success") => {
   try {
     const config = {
       headers: {
@@ -433,14 +433,12 @@ const traderAffiliateRefList = async (idToken, id , status = 'success') => {
   }
 };
 
-
 export const getPushleadsChartData = async (idToken, user_id) => {
   try {
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
-    
     };
     const response = await axios.get(`${baseUrl}affiliate/v2/dashboard/?affiliate_id=${user_id}`, config);
     return response.data;
@@ -449,7 +447,6 @@ export const getPushleadsChartData = async (idToken, user_id) => {
     throw error;
   }
 };
-
 
 export async function fetchAffiliateExport(idToken, affiliateId) {
   try {
@@ -554,8 +551,8 @@ const getAffiliateListV2 = async (idToken, pageNo, pageSize, search) => {
   }
 };
 
-export async function getExportHistory(idToken, pageNo = 1, pageSize = 20) {
-  const url = `${baseUrl}v3/admin/export-history/?page=${pageNo}&page_size=${pageSize}`;
+export async function getExportHistory(idToken, urls) {
+  const url = `${baseUrl}${urls}`;
 
   try {
     const response = await axios.get(url, {
@@ -922,7 +919,7 @@ export const softBlockUserApi = async (idToken, userId, note) => {
 
   const payload = new FormData();
   payload.append("id", userId);
-  payload.append("note", note); 
+  payload.append("note", note);
 
   try {
     const response = await axios.post(`${baseUrl}soft-block/user/`, payload, config);
@@ -1019,21 +1016,20 @@ export const getStageChart = async (idToken, stage, startDate, endDate) => {
   }
 };
 
-
-export const getPassStageChart = async (idToken, stage, startDate, endDate , filter_type) => {
+export const getPassStageChart = async (idToken, stage, startDate, endDate, filter_type) => {
   try {
     // const response = await axios.get(`${baseUrl}v2/account-overview/stage-${stage}-chart/?start_date=${startDate}&end_date=${endDate}`, {
-      const params = {};
-  if (filter_type) {
-    params.filter_type = filter_type;
-  }
+    const params = {};
+    if (filter_type) {
+      params.filter_type = filter_type;
+    }
 
     let response;
     let config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
-      params: params
+      params: params,
     };
 
     if (startDate && endDate) {
@@ -1215,14 +1211,17 @@ export const getTradeJournal = async (login_id, platform = "mt5", idToken) => {
   }
 };
 
-export const getTransactionHistory = async (idToken , user_id) => {
+export const getTransactionHistory = async (idToken, user_id) => {
   try {
-    const response = await axios.get(`${baseUrl}user/transactions/${user_id}/
-`, {
-      headers: {
-        Authorization: `Bearer ${idToken}`,
+    const response = await axios.get(
+      `${baseUrl}user/transactions/${user_id}/
+`,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
       },
-    });
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching transaction history:", error);
@@ -1263,7 +1262,7 @@ export const getPerformanceChart = async (login_id, platform, idToken) => {
 
 //advance
 
-export const getWithdrawalsStatus = async (idToken, query , activeTab) => {
+export const getWithdrawalsStatus = async (idToken, query, activeTab) => {
   const params = {};
   if (activeTab && activeTab !== "All") {
     params.status = activeTab;
@@ -1274,7 +1273,7 @@ export const getWithdrawalsStatus = async (idToken, query , activeTab) => {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
-      params: params
+      params: params,
     });
     return response.data;
   } catch (error) {
@@ -1325,9 +1324,7 @@ export const getPayoutDetails = async (idToken, query) => {
   }
 };
 
-
-
-export const getTotatPayments = async (idToken , query) => {
+export const getTotatPayments = async (idToken, query) => {
   try {
     const response = await axios.get(`${baseUrl}total/payment-request/`, {
       headers: {
@@ -1341,8 +1338,7 @@ export const getTotatPayments = async (idToken , query) => {
   }
 };
 
-
-export const getTotalMethod = async (idToken , query) => {
+export const getTotalMethod = async (idToken, query) => {
   try {
     const response = await axios.get(`${baseUrl}api/totalmethod/`, {
       headers: {

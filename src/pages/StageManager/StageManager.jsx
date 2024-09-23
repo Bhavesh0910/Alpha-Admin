@@ -69,6 +69,8 @@ const StageManager = () => {
   const [dates, setDates] = useState(null);
   const {idToken} = useSelector((state) => state.auth);
   const {count, data, isLoading, stageStatusOptions, refetch} = useSelector((state) => state.support);
+  const {refetch: listRefetch} = useSelector((state) => state.list);
+  const [specialCount, setSpecialCount] = useState(0);
   const [fetchUpdate, setFetchUpdate] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState(false);
   const location = useLocation();
@@ -80,7 +82,7 @@ const StageManager = () => {
       : ["New", "In Progress", "Flagged", "Dissmissed", "Rejected", "Approved"];
   useEffect(() => {
     fetchStageList(idToken, pageNo, pageSize, searchText, status, dates);
-  }, [searchText, pageNo, pageSize, status, idToken, dates, fetchUpdate, refetch]);
+  }, [searchText, pageNo, pageSize, status, idToken, dates, refetch, fetchUpdate, listRefetch]);
 
   useEffect(() => {
     // console.log("Indirect Update ");
@@ -90,7 +92,10 @@ const StageManager = () => {
     setSearchText("");
     setSearch("");
     setStatus("all");
-    setFetchUpdate((prev) => !prev);
+    if (specialCount > 0) {
+      setFetchUpdate((prev) => !prev);
+    }
+    setSpecialCount((prev) => prev + 1);
     // console.log(window.onload)
   }, [location.pathname]);
 
