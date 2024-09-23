@@ -227,7 +227,7 @@
 
 .paymentNestedTable{
   display: grid;
-  grid-template-columns: repeat(3,auto);
+  grid-template-columns: repeat(4,auto);
   gap: 40px;
   p {
     color: var(--Brand-2, #12181f);

@@ -113,61 +113,17 @@ const Payment = () => {
           </>
         ),
       },
-      // {
-      //   title: "Transaction ID",
-      //   dataIndex: "transaction_id",
-      //   key: "transaction_id",
-      //   width: 200,
-      //   render: (text) => (
-      //     <>
-      //       {text ? (
-      //         <div className="copy_text_btn">
-      //           <a href={`mailto:${text}`}>{text}</a>
-      //           <Tooltip title="Copy Transaction ID">
-      //             <Button
-      //               icon={<CopyButton />}
-      //               size="small"
-      //               style={{marginLeft: 8}}
-      //               onClick={() => {
-      //                 navigator.clipboard.writeText(text);
-      //                 notification.success({
-      //                   message: "Transaction ID copied to clipboard",
-      //                   placement: "topRight",
-      //                 });
-      //               }}
-      //               className="copy_btn"
-      //             />
-      //           </Tooltip>
-      //         </div>
-      //       ) : (
-      //         "-"
-      //       )}
-      //     </>
-      //   ),
-      // },
       {
-        title: "Payment Status",
-        dataIndex: "payment_status",
-        key: "payment_status",
-        width: 120,
-      },
-      {
-        title: "Payment Platform Status",
-        dataIndex: "payment_platform_status",
-        key: "payment_platform_status",
-        width: 180,
-      },
-      {
-        title: "Promo",
-        dataIndex: "promo_code",
-        key: "promo_code",
-        width: 50,
+        title: "Transaction ID",
+        dataIndex: "transaction_id",
+        key: "transaction_id",
+        width: 200,
         render: (text) => (
           <>
             {text ? (
               <div className="copy_text_btn">
-                <div href={`mailto:${text}`}>{text}</div>
-                <Tooltip title="Copy Promo">
+                <a href={`mailto:${text}`}>{text}</a>
+                <Tooltip title="Copy Transaction ID">
                   <Button
                     icon={<CopyButton />}
                     size="small"
@@ -175,7 +131,7 @@ const Payment = () => {
                     onClick={() => {
                       navigator.clipboard.writeText(text);
                       notification.success({
-                        message: "Promo copied to clipboard",
+                        message: "Transaction ID copied to clipboard",
                         placement: "topRight",
                       });
                     }}
@@ -189,6 +145,50 @@ const Payment = () => {
           </>
         ),
       },
+      {
+        title: "Payment Status",
+        dataIndex: "payment_status",
+        key: "payment_status",
+        width: 120,
+      },
+      // {
+      //   title: "Payment Platform Status",
+      //   dataIndex: "payment_platform_status",
+      //   key: "payment_platform_status",
+      //   width: 180,
+      // },
+      // {
+      //   title: "Promo",
+      //   dataIndex: "promo_code",
+      //   key: "promo_code",
+      //   width: 50,
+      //   render: (text) => (
+      //     <>
+      //       {text ? (
+      //         <div className="copy_text_btn">
+      //           <div href={`mailto:${text}`}>{text}</div>
+      //           <Tooltip title="Copy Promo">
+      //             <Button
+      //               icon={<CopyButton />}
+      //               size="small"
+      //               style={{marginLeft: 8}}
+      //               onClick={() => {
+      //                 navigator.clipboard.writeText(text);
+      //                 notification.success({
+      //                   message: "Promo copied to clipboard",
+      //                   placement: "topRight",
+      //                 });
+      //               }}
+      //               className="copy_btn"
+      //             />
+      //           </Tooltip>
+      //         </div>
+      //       ) : (
+      //         "-"
+      //       )}
+      //     </>
+      //   ),
+      // },
       {
         title: "Amount",
         dataIndex: "amount",
@@ -610,11 +610,11 @@ export const ExpandableRow = ({ record }) => {
         <div>Name</div>
         <p>{record?.name || "-"}</p>
       </div>
-      {/* 
       <div>
-        <div>Amount</div>
-        <p>{record.amount || "-"}</p>
+        <div>Payment Platform Status</div>
+        <p>{record?.payment_platform_status || "-"}</p>
       </div>
+      {/* 
       <div>
         <div>Login id</div>
         <p>{record.account_login_id || "-"}</p>
@@ -627,7 +627,7 @@ export const ExpandableRow = ({ record }) => {
         <div>Challenge</div>
         <p>{record?.challenge_name || "-"}</p>
       </div>
-      {/* <div>
+      <div>
         <div>Promo Code</div>
         <p>
           {record.promo_code ? (
@@ -653,8 +653,8 @@ export const ExpandableRow = ({ record }) => {
             "-"
           )}
         </p>
-      </div> */}
-      <div>
+      </div>
+      {/* <div>
         <div>Transaction ID</div>
         <p>
           {" "}
@@ -681,7 +681,7 @@ export const ExpandableRow = ({ record }) => {
             "-"
           )}
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };
