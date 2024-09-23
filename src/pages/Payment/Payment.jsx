@@ -1,24 +1,25 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./Payment.scss";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
-import {DatePicker, Button, Select, Tooltip, notification, Card, Dropdown, Menu, Modal, Form, Input} from "antd";
-import {Link, useNavigate} from "react-router-dom";
+import { DatePicker, Button, Select, Tooltip, notification, Card, Dropdown, Menu, Modal, Form, Input, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import searchIcon from "../../assets/icons/searchIcon.svg";
 import editIcon from "../../assets/icons/edit_icon_gray.svg";
 import exportBtnIcon from "../../assets/icons/export_btn_icon.svg";
 import verifiedIcon from "../../assets/icons/verified_green_circleIcon.svg";
 import notVerifiedIcon from "../../assets/icons/notverified_red_circleIcon.svg";
-import {ReactComponent as CopyButton} from "../../assets/icons/copyButtonGray.svg";
+import { ReactComponent as CopyButton } from "../../assets/icons/copyButtonGray.svg";
 import dayjs from "dayjs";
-import {paymentExportsReq, paymentListReq, selectedEmail, updatePaymentStatusReq} from "../../store/NewReducers/payment";
-import {useDispatch, useSelector} from "react-redux";
+import { paymentExportsReq, paymentListReq, selectedEmail, updatePaymentStatusReq } from "../../store/NewReducers/payment";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import {DownOutlined} from "@ant-design/icons";
-import {returnErrors} from "../../store/reducers/error";
-import {returnMessages} from "../../store/reducers/message";
-const {Option} = Select;
-const {RangePicker} = DatePicker;
+import { CopyOutlined, DownOutlined } from "@ant-design/icons";
+import { returnErrors } from "../../store/reducers/error";
+import { returnMessages } from "../../store/reducers/message";
+import CopyToClipboard from "react-copy-to-clipboard";
+const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -28,8 +29,8 @@ const Payment = () => {
   const [category, setCategory] = useState("all");
 
   const dispatch = useDispatch();
-  const {idToken, searchDates} = useSelector((state) => state.auth);
-  const {paymentData, isLoading, refetch} = useSelector((state) => state.payment);
+  const { idToken, searchDates } = useSelector((state) => state.auth);
+  const { paymentData, isLoading, refetch } = useSelector((state) => state.payment);
 
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
@@ -45,7 +46,7 @@ const Payment = () => {
   const [defaultDates, setDefaultDates] = useState();
 
   const [isValidRange, setIsValidRange] = useState(true);
-  const [lastValidRange, setLastValidRange] = useState({startDate: null, endDate: null});
+  const [lastValidRange, setLastValidRange] = useState({ startDate: null, endDate: null });
 
   const columns = useMemo(
     () => [
@@ -67,21 +68,16 @@ const Payment = () => {
               {text ? (
                 <>
                   <a href={`mailto:${text}`}>{text}</a>
-                  <Tooltip title="Copy Email">
-                    <Button
-                      icon={<CopyButton />}
-                      size="small"
-                      style={{marginLeft: 8}}
-                      onClick={() => {
-                        navigator.clipboard.writeText(text);
-                        notification.success({
-                          message: "Email copied to clipboard",
-                          placement: "topRight",
-                        });
-                      }}
-                      className="copy_btn"
-                    />
-                  </Tooltip>
+                  <CopyToClipboard text={text || "-"}>
+                    <Tooltip title="Copy email">
+                      <Button
+                        type="link"
+                        icon={<CopyOutlined style={{ color: "#04D9FF" }} />}
+                        onClick={() => message.success("Copied email")}
+                        disabled={!text}
+                      />
+                    </Tooltip>
+                  </CopyToClipboard>
                 </>
               ) : (
                 "-"
@@ -100,21 +96,16 @@ const Payment = () => {
             {text ? (
               <div className="copy_text_btn">
                 <div>{text}</div>
-                <Tooltip title="Copy Payment ID">
-                  <Button
-                    icon={<CopyButton />}
-                    size="small"
-                    style={{marginLeft: 8}}
-                    onClick={() => {
-                      navigator.clipboard.writeText(text);
-                      notification.success({
-                        message: "Payment ID copied to clipboard",
-                        placement: "topRight",
-                      });
-                    }}
-                    className="copy_btn"
-                  />
-                </Tooltip>
+                <CopyToClipboard text={text || "-"}>
+                  <Tooltip title="Copy payment id">
+                    <Button
+                      type="link"
+                      icon={<CopyOutlined style={{ color: "#04D9FF" }} />}
+                      onClick={() => message.success("Copied payment id")}
+                      disabled={!text}
+                    />
+                  </Tooltip>
+                </CopyToClipboard>
               </div>
             ) : (
               "-"
@@ -180,7 +171,7 @@ const Payment = () => {
                   <Button
                     icon={<CopyButton />}
                     size="small"
-                    style={{marginLeft: 8}}
+                    style={{ marginLeft: 8 }}
                     onClick={() => {
                       navigator.clipboard.writeText(text);
                       notification.success({
@@ -274,9 +265,9 @@ const Payment = () => {
   );
 
   const handleUpdateStatus = () => {
-    let body = {payment_status: updatedStatus};
+    let body = { payment_status: updatedStatus };
     console.log("id : ", userToUpdate?.id);
-    dispatch(updatePaymentStatusReq({idToken, body, id: userToUpdate?.id, dispatch}));
+    dispatch(updatePaymentStatusReq({ idToken, body, id: userToUpdate?.id, dispatch }));
     setStatusModelVisible(false);
   };
 
@@ -304,7 +295,7 @@ const Payment = () => {
       query = query + `&start_date=${startDate}&end_date=${endDate}`;
     }
 
-    dispatch(paymentListReq({idToken, query, dispatch}));
+    dispatch(paymentListReq({ idToken, query, dispatch }));
   }
 
   const handleSearch = (value) => {
@@ -351,7 +342,7 @@ const Payment = () => {
       }
 
       setDates(dates);
-      setLastValidRange({startDate, endDate});
+      setLastValidRange({ startDate, endDate });
       setDefaultDates(dates);
       setIsValidRange(true);
     } else {
@@ -361,11 +352,11 @@ const Payment = () => {
   };
 
   const rangePresets = [
-    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
-    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
-    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
-    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
-    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]}, // Assuming "All time" covers a very long period
+    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
+    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
+    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
+    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
+    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] }, // Assuming "All time" covers a very long period
   ];
 
   const [isModalVisible, setModalVisible] = useState(false);
@@ -373,7 +364,7 @@ const Payment = () => {
   const handleCloseModal = () => {
     setModalVisible(true);
   };
-  const {exportLink} = useSelector((state) => state.payment);
+  const { exportLink } = useSelector((state) => state.payment);
 
   return (
     <div className="payment_container">
@@ -457,7 +448,7 @@ const Payment = () => {
           </Button>
           <Link
             to={"/payments/payments-export-history"}
-            style={{color: "white"}}
+            style={{ color: "white" }}
           >
             View Export History
           </Link>
@@ -519,18 +510,18 @@ const Payment = () => {
 
 export default Payment;
 
-const CalendarModal = ({idToken, exportLink, status, handleCloseModal, setModalVisible}) => {
+const CalendarModal = ({ idToken, exportLink, status, handleCloseModal, setModalVisible }) => {
   const dispatch = useDispatch();
 
   const [dates, setDates] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const rangePresets = [
-    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
-    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
-    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
-    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
-    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]},
+    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
+    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
+    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
+    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
+    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] },
   ];
 
   const onRangeChange = (dates) => {
@@ -548,10 +539,10 @@ const CalendarModal = ({idToken, exportLink, status, handleCloseModal, setModalV
       const [startDate, endDate] = dates;
       let query = `?start_date=${startDate}&end_date=${endDate}&status=${status === "all" ? "" : status === "paid" ? 1 : 0}`;
 
-      dispatch(paymentExportsReq({idToken, query, dispatch}))
+      dispatch(paymentExportsReq({ idToken, query, dispatch }))
         .unwrap()
         .then((response) => {
-          const {s3_file_url, filename} = response;
+          const { s3_file_url, filename } = response;
 
           const link = document.createElement("a");
           link.href = s3_file_url;
@@ -612,7 +603,7 @@ const CalendarModal = ({idToken, exportLink, status, handleCloseModal, setModalV
   );
 };
 
-export const ExpandableRow = ({record}) => {
+export const ExpandableRow = ({ record }) => {
   return (
     <div className="paymentNestedTable">
       <div>
@@ -674,7 +665,7 @@ export const ExpandableRow = ({record}) => {
                 <Button
                   icon={<CopyButton />}
                   size="small"
-                  style={{marginLeft: 8}}
+                  style={{ marginLeft: 8 }}
                   onClick={() => {
                     navigator.clipboard.writeText(record?.transaction_id);
                     notification.success({

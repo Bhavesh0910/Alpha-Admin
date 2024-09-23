@@ -1,41 +1,42 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./StatisticChart.scss";
 import ReactApexChart from "react-apexcharts";
-import {DatePicker, Select} from "antd";
-import {useSelector} from "react-redux";
+import { DatePicker, notification } from "antd";
+import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 
-const {RangePicker} = DatePicker;
+const { RangePicker } = DatePicker;
 
-const StatisticChart = ({setDates, rangePresets}) => {
-  const {chartData} = useSelector((state) => state.revenue);
-  const [data, setData] = useState({payoutRequested: [], payoutApproved: [], dates: []});
+const StatisticChart = ({ setDates, rangePresets  , dates}) => {
+  const { chartData } = useSelector((state) => state.revenue);
+  const [defaultDates, setDefaultDates] = useState([dayjs().subtract(1, "month"), dayjs()]);
+  const [isValidRange, setIsValidRange] = useState(true);
+  const [lastValidRange, setLastValidRange] = useState({ startDate: dayjs().subtract(1, "month"), endDate: dayjs() });
+
+  const [data, setData] = useState({
+    payoutRequested: [],
+    payoutApproved: [],
+    dates: [],
+  });
 
   useEffect(() => {
     if (chartData) {
-      let payoutReq = [];
-      let payoutApp = [];
-      let dates = [];
-      payoutReq = chartData?.map((item) => {
-        return item?.total_payment_amount;
-      });
-      payoutApp = chartData?.map((item) => {
-        return item?.paid_profit_shares;
-      });
-      dates = chartData?.map((item) => {
-        return item?.date;
-      });
-      setData({payoutRequested: payoutReq || [], payoutApproved: payoutApp || [], dates: dates || []});
+      const payoutReq = chartData.map((item) => item.total_payment_amount || 0);
+      const payoutApp = chartData.map((item) => item.paid_profit_shares || 0);
+      const dates = chartData.map((item) => item.date || "");
+
+      setData({ payoutRequested: payoutReq, payoutApproved: payoutApp, dates });
     }
   }, [chartData]);
+
   const series = [
     {
       name: "Payout Requested",
-      data: data?.payoutRequested || [],
+      data: data.payoutRequested,
     },
     {
-      name: "Total amount paid in profit share",
-      data: data?.payoutApproved || [],
+      name: "Total Amount Paid in Profit Share",
+      data: data.payoutApproved,
     },
   ];
 
@@ -43,44 +44,28 @@ const StatisticChart = ({setDates, rangePresets}) => {
     chart: {
       height: 350,
       type: "area",
-      toolbar: {
-        show: false,
-      },
+      toolbar: { show: false },
       background: "#fff",
     },
     colors: ["#FF7F00", "#4CAF50"],
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      curve: "smooth",
-    },
+    dataLabels: { enabled: false },
+    stroke: { curve: "smooth" },
     xaxis: {
       type: "datetime",
-      categories: data?.dates,
-      labels: {
-        style: {
-          colors: "#1E1E1E",
-        },
-      },
+      categories: data.dates,
+      labels: { style: { colors: "#1E1E1E" } },
     },
     yaxis: {
       labels: {
-        style: {
-          colors: "#1E1E1E",
-        },
+        style: { colors: "#1E1E1E" },
         formatter: (val) => `$${val}`,
       },
     },
     tooltip: {
-      x: {
-        format: "dd/MM/yy",
-      },
+      x: { format: "dd/MM/yy" },
     },
     legend: {
-      labels: {
-        colors: "#1E1E1E",
-      },
+      labels: { colors: "#1E1E1E" },
     },
     grid: {
       show: true,
@@ -88,13 +73,38 @@ const StatisticChart = ({setDates, rangePresets}) => {
     },
   };
 
-  function handleDateChange(dates) {
-    if (dates) {
-      setDates(dates?.map((item) => item.format("YYYY-MM-DD")));
+
+  const onRangeChange = (dates) => {
+
+    if (dates && dates.length === 2) {
+      const [startDate, endDate] = dates;
+
+      if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
+        notification.error({
+          message: 'Invalid Date Range',
+          description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
+        });
+
+        if (lastValidRange) {
+          setDefaultDates([lastValidRange.startDate, lastValidRange.endDate]);
+          return;
+        }
+
+        setDefaultDates(null);
+        setIsValidRange(false);
+        return;
+      }
+
+      setDates(dates);
+      setLastValidRange({ startDate, endDate });
+      setDefaultDates(dates); 
+      setIsValidRange(true);
     } else {
       setDates(null);
+      setDefaultDates(null); 
     }
-  }
+  };
+
 
   return (
     <div className="statisticChart_wrapper">
@@ -103,7 +113,7 @@ const StatisticChart = ({setDates, rangePresets}) => {
         <div className="chotaCalendar">
           <RangePicker
             presets={rangePresets}
-            onChange={handleDateChange}
+            onChange={onRangeChange} 
           />
         </div>
       </div>

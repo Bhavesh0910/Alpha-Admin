@@ -2,12 +2,16 @@ import React, {useEffect, useState} from "react";
 import "./FundedAccGraph.scss";
 import ReactApexChart from "react-apexcharts";
 import {useSelector} from "react-redux";
-import {DatePicker} from "antd";
+import {DatePicker, notification} from "antd";
+import dayjs from "dayjs";
 const {RangePicker} = DatePicker;
 
-const FundedAccGraph = ({setDates, rangePresets}) => {
+const FundedAccGraph = ({setDates, rangePresets , dates}) => {
   const {barData} = useSelector((state) => state.revenue);
   const [mainData, setMainData] = useState({dates: [], fundedCount: []});
+  const [defaultDates, setDefaultDates] = useState([dayjs().subtract(1, "month"), dayjs()]);
+  const [isValidRange, setIsValidRange] = useState(true);
+  const [lastValidRange, setLastValidRange] = useState({ startDate: dayjs().subtract(1, "month"), endDate: dayjs() });
 
   useEffect(() => {
     if (barData?.data && barData?.data.length > 0) {
@@ -27,6 +31,7 @@ const FundedAccGraph = ({setDates, rangePresets}) => {
       setMainData({dates: monthNames, fundedCount: data});
     }
   }, [barData?.data]);
+
 
   const options = {
     chart: {
@@ -107,13 +112,36 @@ const FundedAccGraph = ({setDates, rangePresets}) => {
     },
   ];
 
-  function handleDateChange(dates) {
-    if (dates) {
-      setDates(dates?.map((item) => item.format("YYYY-MM-DD")));
+  const onRangeChange = (dates) => {
+
+    if (dates && dates.length === 2) {
+      const [startDate, endDate] = dates;
+
+      if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
+        notification.error({
+          message: 'Invalid Date Range',
+          description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
+        });
+
+        if (lastValidRange) {
+          setDefaultDates([lastValidRange.startDate, lastValidRange.endDate]);
+          return;
+        }
+
+        setDefaultDates(null);
+        setIsValidRange(false);
+        return;
+      }
+
+      setDates(dates);
+      setLastValidRange({ startDate, endDate });
+      setDefaultDates(dates); 
+      setIsValidRange(true);
     } else {
       setDates(null);
+      setDefaultDates(null); 
     }
-  }
+  };
 
   return (
     <div className="fundedAccGraph_wrapper">
@@ -121,7 +149,7 @@ const FundedAccGraph = ({setDates, rangePresets}) => {
         <h3>No. of Funded Accounts</h3>
         <div className="chotaCalendar">
           <RangePicker
-            onChange={handleDateChange}
+            onChange={onRangeChange}
             presets={rangePresets}
           />
         </div>

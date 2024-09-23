@@ -30,15 +30,19 @@ const RevenueManagement = () => {
   useEffect(() => {
     let query = null;
     if (datesStastics) {
-      query = `?start_date=${datesStastics[0].format("DD/MMM/YYYY")}&end_date=${datesStastics[1].format("DD/MMM/YYYY")}`;
+      query = `?start_date=${datesStastics[0].format("YYYY-MM-DD")}&end_date=${datesStastics[1].format("YYYY-MM-DD")}`;
     }
     dispatch(payoutStatsReq({idToken, dispatch, query}));
   }, [idToken, datesStastics]);
 
+
+  console.log(datesRevenue)
+
+  
   useEffect(() => {
     let query = null;
     if (datesRevenue) {
-      query = `?start_date=${datesRevenue[0].format("DD/MMM/YYYY")}&end_date=${datesRevenue[1].format("DD/MMM/YYYY")}`;
+      query = `?start_date=${datesRevenue[0].format("YYYY-MM-DD")}&end_date=${datesRevenue[1].format("YYYY-MM-DD")}`;
     }
     dispatch(qualifiedAccountReq({idToken, dispatch, query}));
   }, [idToken, datesRevenue]);
@@ -111,9 +115,11 @@ const RevenueManagement = () => {
       <div className="row2_box">
         <StatisticChart
           setDates={setDatesStastics}
+          dates={datesStastics}
           rangePresets={rangePresets}
         />
         <FundedAccGraph
+        dates={datesRevenue}
           setDates={setDatesRevenue}
           rangePresets={rangePresets}
         />

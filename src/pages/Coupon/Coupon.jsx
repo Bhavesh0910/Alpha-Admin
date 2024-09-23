@@ -119,7 +119,7 @@ const Coupon = () => {
       dataIndex: "multi_use",
       key: "multi_use",
       width: 100,
-      render: (text) => <div className="coupon_status_container">{text === true ? "No" : "Yes"}</div>,
+      render: (text) => <div className="coupon_status_container">{text === true ? "Yes" : "No"}</div>,
     },
     {
       title: "Status",

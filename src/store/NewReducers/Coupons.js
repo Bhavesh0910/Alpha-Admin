@@ -6,9 +6,10 @@ import {returnErrors} from "../reducers/error";
 import { returnMessages } from "../reducers/message";
 
 // Define the async thunk for account list
-export const createCoupon = createAsyncThunk("coupon/create", async ({idToken, couponData, dispatch}, {rejectWithValue}) => {
+export const createCoupon = createAsyncThunk("coupon/create", async ({idToken, couponData}, {rejectWithValue , dispatch}) => {
   try {
     const response = await createCouponReq(idToken, couponData);
+    dispatch(returnMessages("Coupon created Successfully", 200));
     return response;
   } catch (error) {
     console.log("Error : ", error);
@@ -27,7 +28,8 @@ export const editCoupon = createAsyncThunk("couponsList/edit", async ({idToken, 
     dispatch(returnMessages("Coupon Updated Successfully", 200));
     return response?.data;
   } catch (error) {
-    const errorMessage = error.response?.data?.detail || "An error occurred while editing coupon";
+    console.log(error.response)
+    const errorMessage = error.response?.data?.coupon_name || "An error occurred while editing coupon";
     const statusCode = error.response?.status || 400;
     console.error("API Error:", errorMessage);
 
