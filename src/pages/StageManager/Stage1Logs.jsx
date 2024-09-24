@@ -1,16 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Breadcrumb, Card } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useEffect, useMemo, useState} from "react";
+import {Breadcrumb, Card} from "antd";
+import {useDispatch, useSelector} from "react-redux";
 import "../Funded/FundedLogs/FundedLogs.scss";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
-import { logsListReq } from "../../store/NewReducers/logsSlice";
+import {logsListReq} from "../../store/NewReducers/logsSlice";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import { Link } from "react-router-dom";
-
+import {Link} from "react-router-dom";
 
 const Stage1Logs = () => {
-  const { idToken } = useSelector((state) => state.auth);
-  const { fundedLogData, count, isLoading } = useSelector((state) => state.logs);
+  const {idToken} = useSelector((state) => state.auth);
+  const {fundedLogData, count, isLoading} = useSelector((state) => state.logs);
 
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -18,73 +17,73 @@ const Stage1Logs = () => {
 
   useEffect(() => {
     const baseurl = "v3/stage-log/list/?stage=stage1";
-    const query = `&page=${pageNo}&page_size=${pageSize}`;
+    const query = `&category=STAGE_1&page=${pageNo}&page_size=${pageSize}`;
     const url = baseurl + query;
-    dispatch(logsListReq({ idToken, url, key: "stage1LogsData", dispatch }));
+    dispatch(logsListReq({idToken, url, key: "stage1LogsData", dispatch}));
   }, [pageNo, pageSize, idToken, dispatch]);
 
-  const columns = useMemo(()=>[
+  const columns = useMemo(() => [
     {
       title: "Admin Email ID",
       dataIndex: "admin_email",
       key: "admin_email",
-      width:100,
+      width: 100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Date and Time",
       dataIndex: "date_time",
       key: "date_time",
-      width:100,
+      width: 100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Account No.",
       dataIndex: "account_no",
       key: "account_no",
-      width:100,
+      width: 100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Password",
       dataIndex: "password",
       key: "password",
-      width:100,
+      width: 100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      width:100,
+      width: 100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Raw Spread",
       dataIndex: "raw_spread",
       key: "raw_spread",
-      width:100,
+      width: 100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Funding Evaluation",
       dataIndex: "funding_evaluation",
       key: "funding_evaluation",
-      width:100,
+      width: 100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Account Balance",
       dataIndex: "account_balance",
       key: "account_balance",
-      width:100,
+      width: 100,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Stage",
       dataIndex: "stage",
       key: "stage",
-      width:100,
+      width: 100,
       render: (text) => (
         <div className="stage_status_wrapper">
           <p className={text === "funded" ? "funded" : ""}>{text}</p>

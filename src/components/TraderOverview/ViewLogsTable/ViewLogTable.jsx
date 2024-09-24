@@ -1,47 +1,61 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Breadcrumb, Card } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useEffect, useMemo, useState} from "react";
+import {Breadcrumb, Card} from "antd";
+import {useDispatch, useSelector} from "react-redux";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import "./ViewLogTable.scss";
-import { logsListReq } from "../../../store/NewReducers/logsSlice";
-import { Link, useLocation } from "react-router-dom";
+import {logsListReq} from "../../../store/NewReducers/logsSlice";
+import {Link, useLocation} from "react-router-dom";
 
 const ViewLogTable = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { idToken } = useSelector((state) => state.auth);
-  const { logData, count, isLoading } = useSelector((state) => state.logs);
+  const {idToken} = useSelector((state) => state.auth);
+  const {logData, count, isLoading} = useSelector((state) => state.logs);
 
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
   const queryParams = new URLSearchParams(location.search);
-  const platform = queryParams.get('platform') || 'MT5'; 
-   console.log(platform)
+  const platform = queryParams.get("platform") || "MT5";
+  console.log("platform", platform);
 
+  // let displayPlatform;
+  // switch (platform) {
+  //   case "trader-accounts":
+  //     displayPlatform = "MT5";
+  //     break;
+  //   case "ctrader-accounts":
+  //     displayPlatform = "CTrader";
+  //     break;
+  //   case "dxtraders":
+  //     displayPlatform = "DxTrader";
+  //     break;
+  //   default:
+  //     displayPlatform = "mt5";
+  // }
   let displayPlatform;
-  switch(platform) {
-    case 'trader-accounts':
-      displayPlatform = 'MT5';
+  switch (platform) {
+    case "trader-accounts":
+      displayPlatform = "MT5_ACCOUNT";
       break;
-    case 'ctrader-accounts':
-      displayPlatform = 'CTrader';
+    case "ctrader-accounts":
+      displayPlatform = "CTRADER_ACCOUNT";
       break;
-    case 'dxtraders':
-      displayPlatform = 'DxTrader';
+    case "dxtraders":
+      displayPlatform = "DXTRADE_ACCOUNT";
       break;
     default:
-      displayPlatform = 'mt5';
+      displayPlatform = "mt5";
   }
   useEffect(() => {
     const baseurl = `v3/Trader-log/list/`;
-    const query = `?platform=${displayPlatform}&page=${pageNo}&page_size=${pageSize}`;
+    const query = `?category=${displayPlatform}&page=${pageNo}&page_size=${pageSize}`;
     const url = baseurl + query;
-    dispatch(logsListReq({ idToken, url, key: "logData", dispatch }));
+    dispatch(logsListReq({idToken, url, key: "logData", dispatch}));
   }, [pageNo, pageSize, idToken, platform, dispatch]);
 
-  const columns = useMemo(()=>[
+  const columns = useMemo(() => [
     {
       title: "Admin Email ID",
       dataIndex: "admin_email",

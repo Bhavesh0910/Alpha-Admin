@@ -1,14 +1,14 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Breadcrumb, Card } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useEffect, useMemo, useState} from "react";
+import {Breadcrumb, Card} from "antd";
+import {useDispatch, useSelector} from "react-redux";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import moment from "moment";
-import { logsListReq } from "../../../store/NewReducers/logsSlice";
+import {logsListReq} from "../../../store/NewReducers/logsSlice";
 
 const ChangeEmailLogs = () => {
-  const { idToken } = useSelector((state) => state.auth);
-  const { changeEmailLogData, count, isLoading, isError } = useSelector((state) => state.logs);
+  const {idToken} = useSelector((state) => state.auth);
+  const {changeEmailLogData, count, isLoading, isError} = useSelector((state) => state.logs);
 
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -16,14 +16,14 @@ const ChangeEmailLogs = () => {
 
   useEffect(() => {
     const baseUrl = "v3/change-email-log/list/";
-    const query = `?page=${pageNo}&page_size=${pageSize}`;
+    const query = `?page=${pageNo}&page_size=${pageSize}&category=USER`;
     const url = baseUrl + query;
     if (idToken) {
-      dispatch(logsListReq({ idToken, url, key: "changeEmailLogData", dispatch }));
+      dispatch(logsListReq({idToken, url, key: "changeEmailLogData", dispatch}));
     }
   }, [pageNo, pageSize, idToken, dispatch]);
 
-  const columns = useMemo(()=>[
+  const columns = useMemo(() => [
     {
       title: "Admin Email ID",
       dataIndex: "admin_email",
@@ -77,19 +77,18 @@ const ChangeEmailLogs = () => {
       </div>
       {isLoading ? (
         <LoaderOverlay />
-      )
-        : (
-          <AntTable
-            columns={columns}
-            data={changeEmailLogData || []}
-            totalPages={Math.ceil(count / pageSize)}
-            totalItems={count}
-            pageSize={pageSize}
-            CurrentPageNo={pageNo}
-            setPageSize={setPageSize}
-            triggerChange={triggerChange}
-          />
-        )}
+      ) : (
+        <AntTable
+          columns={columns}
+          data={changeEmailLogData || []}
+          totalPages={Math.ceil(count / pageSize)}
+          totalItems={count}
+          pageSize={pageSize}
+          CurrentPageNo={pageNo}
+          setPageSize={setPageSize}
+          triggerChange={triggerChange}
+        />
+      )}
     </div>
   );
 };

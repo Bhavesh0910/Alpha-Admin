@@ -5,7 +5,7 @@ import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import {logsListReq} from "../../../store/NewReducers/logsSlice";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const CompetitionListLogs = () => {
   const {idToken} = useSelector((state) => state.auth);
@@ -17,7 +17,7 @@ const CompetitionListLogs = () => {
 
   useEffect(() => {
     const baseurl = "v3/competition-log/list/";
-    const query = `?page=${pageNo}&page_size=${pageSize}`;
+    const query = `?page=${pageNo}&page_size=${pageSize}&category=COMPETITION`;
     const url = baseurl + query;
     dispatch(logsListReq({idToken, url, key: "competitionLogData", dispatch}));
   }, [pageNo, pageSize, idToken, dispatch]);

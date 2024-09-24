@@ -176,7 +176,7 @@ const CreateCoupon = () => {
                 id="coupon_code"
                 placeholder="Enter Coupon Code"
                 value={code}
-                onChange={(e) => setCode(e.target.value)}
+                onChange={(e) => setCode(e.target.value?.toUpperCase())}
               />
             </div>
             <div className="form_input_box">
@@ -193,6 +193,7 @@ const CreateCoupon = () => {
                 }}
                 notFoundContent={isLoading ? <Loading /> : null}
                 options={options}
+                filterOption={false}
               />
             </div>
           </div>

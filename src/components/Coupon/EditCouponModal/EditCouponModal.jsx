@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./EditCouponModal.scss";
 import crossIcon from "../../../assets/icons/cross_icon_white.svg";
-import { Button, Checkbox, DatePicker, Input, Select, Spin } from "antd";
-import { ReactComponent as PercentageIcon } from "../../../assets/icons/precentage_icon_white.svg";
+import {Button, Checkbox, DatePicker, Input, Select, Spin} from "antd";
+import {ReactComponent as PercentageIcon} from "../../../assets/icons/precentage_icon_white.svg";
 import dayjs from "dayjs";
-import { editCoupon } from "../../../store/NewReducers/Coupons";
-import { useDispatch } from "react-redux";
-import { returnErrors } from "../../../store/reducers/error";
-import { getChallenges, UserSearchReq } from "../../../utils/api/apis";
+import {editCoupon} from "../../../store/NewReducers/Coupons";
+import {useDispatch} from "react-redux";
+import {returnErrors} from "../../../store/reducers/error";
+import {getChallenges, UserSearchReq} from "../../../utils/api/apis";
 
-const { Option } = Select;
+const {Option} = Select;
 
-const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => {
+const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
   const [category, setCategory] = useState("Alpha Pro 5K");
   const [editedData, setEditedData] = useState(editCouponData || {});
   const [challenges, setChallenges] = useState([]);
-  const [emailOpts, setEmailOpts] = useState([]); 
-  const [isLoading, setIsLoading] = useState(false); 
+  const [emailOpts, setEmailOpts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
       }
       if (editCouponData.Coupon_user) {
         // Convert user objects to email values for internal state
-        const selectedUserEmails = editCouponData.Coupon_user.map(user => user.profile__Email);
+        const selectedUserEmails = editCouponData.Coupon_user.map((user) => user.profile__Email);
         handleInputChange("Coupon_users", selectedUserEmails);
       }
     }
@@ -54,9 +54,9 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
       setIsLoading(false);
       if (response?.status < 399) {
         const userArray = response?.data?.results?.map((item) => ({
-          label: item?.email, 
-          value: item?.email, 
-          id: item?.id, 
+          label: item?.email,
+          value: item?.email,
+          id: item?.id,
         }));
         setEmailOpts(userArray);
       }
@@ -67,7 +67,7 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
   };
 
   const handleInputChange = (field, value) => {
-    setEditedData((prev) => ({ ...prev, [field]: value }));
+    setEditedData((prev) => ({...prev, [field]: value}));
   };
 
   const handleCloseButton = () => {
@@ -89,9 +89,7 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
 
     // Map email values to user IDs for payload
     const selectedUserEmails = editedData?.Coupon_users || [];
-    const selectedUserIds = emailOpts
-      .filter(option => selectedUserEmails.includes(option.value))
-      .map(option => option.id); // Convert emails to IDs
+    const selectedUserIds = emailOpts.filter((option) => selectedUserEmails.includes(option.value)).map((option) => option.id); // Convert emails to IDs
 
     const updatedFields = {
       coupon_id: id,
@@ -107,7 +105,7 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
     };
 
     try {
-      dispatch(editCoupon({ idToken, id, body: updatedFields, dispatch }));
+      dispatch(editCoupon({idToken, id, body: updatedFields, dispatch}));
       handleCloseButton();
     } catch (error) {
       dispatch(returnErrors(error?.response?.data?.detail || "Action Failed! Try Again.", error?.response?.status || 400));
@@ -115,11 +113,22 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
   };
 
   return (
-    <div className="editCouponModal_container" onClick={handleCloseButton}>
-      <div className="editCouponModal_wrapper" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="editCouponModal_container"
+      onClick={handleCloseButton}
+    >
+      <div
+        className="editCouponModal_wrapper"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="header_wrapper">
           <h3>Edit Coupon</h3>
-          <img style={{ cursor: "pointer" }} onClick={handleCloseButton} src={crossIcon} alt="cross_icon" />
+          <img
+            style={{cursor: "pointer"}}
+            onClick={handleCloseButton}
+            src={crossIcon}
+            alt="cross_icon"
+          />
         </div>
         <form className="editCouponForm">
           <div className="topSection">
@@ -129,7 +138,7 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
                 id="coupon_name"
                 value={editedData?.coupon_name || ""}
                 placeholder="Enter Coupon Code"
-                onChange={(e) => handleInputChange("coupon_name", e.target.value)}
+                onChange={(e) => handleInputChange("coupon_name", e.target.value.toUpperCase())}
               />
             </div>
             <div className="form_input_box">
@@ -143,10 +152,13 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
                 onSearch={fetchUsers} // Fetch users on search input
                 showSearch
                 filterOption={false}
-                tagRender={({ label }) => <div>{label}</div>} // Display email
+                tagRender={({label}) => <div>{label}</div>} // Display email
               >
                 {isLoading && (
-                  <Spin size="small" style={{ marginLeft: 8 }} />
+                  <Spin
+                    size="small"
+                    style={{marginLeft: 8}}
+                  />
                 )}
               </Select>
             </div>
@@ -181,7 +193,10 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
                 {Object.keys(challenges).map((category) => (
                   <React.Fragment key={category}>
                     {challenges[category].map((challenge) => (
-                      <Option key={challenge.id} value={challenge.id}>
+                      <Option
+                        key={challenge.id}
+                        value={challenge.id}
+                      >
                         {challenge.name}
                       </Option>
                     ))}
@@ -195,7 +210,7 @@ const EditCouponModal = ({ editCouponData, idToken, setIsEditModalVisible }) => 
                 format="YYYY-MM-DD"
                 disabledDate={(current) => current && current < dayjs().endOf("day")}
                 placeholder="Select Expiry Date"
-                showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
+                showTime={{defaultValue: dayjs("00:00:00", "HH:mm:ss")}}
                 value={editedData?.coupon_expiry ? dayjs(editedData.coupon_expiry) : null}
                 onChange={handleDateChange}
               />

@@ -406,6 +406,7 @@ function TraderOverview() {
               <Dropdown
                 overlay={() => statusMenu(text, record)}
                 trigger={["click"]}
+                getPopupContainer={(triggerNode) => triggerNode.closest(".ant-table-body")}
               >
                 <DownOutlined />
               </Dropdown>

@@ -3,6 +3,11 @@
   flex-direction: column;
   gap: 20px;
 
+  .ant-table-thead {
+    position: relative;
+    z-index: 1;
+  }
+
   .trader-overview-header-left {
   }
 
@@ -15,7 +20,6 @@
       .header-select {
         .ant-select-selector {
           overflow: hidden !important;
-  
         }
       }
     }
@@ -483,7 +487,6 @@
     font-size: 16px;
     color: #000;
   }
-
 }
 .phase_filters {
   @media only screen and (max-width: 478px) {
@@ -498,16 +501,14 @@
   }
 }
 
-
-      
-.ant-select-multiple .ant-select-selection-overflow{
+.ant-select-multiple .ant-select-selection-overflow {
   position: relative;
   display: flex;
   flex: auto;
   flex-wrap: wrap;
-  max-width: 208px;
+  // max-width: 208px;
 }
 
-.ant-dropdown{
+.ant-dropdown {
   z-index: 0 !important;
 }

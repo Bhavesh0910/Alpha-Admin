@@ -18,14 +18,14 @@ const AffiliateLogs = () => {
 
   useEffect(() => {
     const baseUrl = "v3/affiliate-log/list/";
-    const query = `?page=${pageNo}&page_size=${pageSize}`;
+    const query = `?page=${pageNo}&page_size=${pageSize}&category=AFFILIATE`;
     const url = baseUrl + query;
     if (idToken) {
       dispatch(logsListReq({idToken, url, key: "affiliateLogData", dispatch}));
     }
   }, [pageNo, pageSize, idToken, dispatch]);
 
-  const columns =useMemo(()=> [
+  const columns = useMemo(() => [
     {
       title: "Admin Email ID",
       dataIndex: "admin_email",

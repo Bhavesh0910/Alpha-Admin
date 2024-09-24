@@ -7,7 +7,7 @@ import {useSelector} from "react-redux";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
 const CountryWiseOverview = () => {
-  const {listData, isCountrySelectedFlag,filterListData, isLoading} = useSelector((state) => state.countryWise);
+  const {listData, isCountrySelectedFlag, filterListData, isLoading} = useSelector((state) => state.countryWise);
   const [chartData, setChartData] = useState({series: [[], []], labels: [[], []], amounts: [[], []]});
   const [totalData, setTotalData] = useState({totalPayment: 0, totalPayout: 0});
 
@@ -28,17 +28,17 @@ const CountryWiseOverview = () => {
       let topNPayments;
       let topNPayouts;
       if (listData.length > inputVal) {
-        topNPayments = getTopNFields(listData, "payment_total_amount");
-        topNPayouts = getTopNFields(listData, "payout_total_amount");
+        topNPayments = getTopNFields(listData, "total_payments");
+        topNPayouts = getTopNFields(listData, "total_payouts");
       } else {
-        topNPayments = getTopNFields(listData, "payment_total_amount", false);
-        topNPayouts = getTopNFields(listData, "payout_total_amount", false);
+        topNPayments = getTopNFields(listData, "total_payments", false);
+        topNPayouts = getTopNFields(listData, "total_payouts", false);
       }
 
       const total = filterListData.reduce(
         (acc, item) => {
-          acc.totalPayment += item.payment_total_amount || 0;
-          acc.totalPayout += item.payout_total_amount || 0;
+          acc.totalPayment += item.total_payments || 0;
+          acc.totalPayout += item.total_payouts || 0;
           return acc;
         },
         {
@@ -49,14 +49,14 @@ const CountryWiseOverview = () => {
 
       const paymentPercentages = topNPayments.map((item) => ({
         country: item.country,
-        percentage: ((item.payment_total_amount / total.totalPayment) * 100).toFixed(2),
-        paymentAmount: item.payment_total_amount?.toFixed(2),
+        percentage: ((item.total_payments / total.totalPayment) * 100).toFixed(2),
+        paymentAmount: item.total_payments?.toFixed(2),
       }));
 
       const payoutPercentages = topNPayouts.map((item) => ({
         country: item.country,
-        percentage: ((item?.payout_total_amount / total.totalPayout) * 100).toFixed(2),
-        payoutAmount: item?.payout_total_amount?.toFixed(2),
+        percentage: ((item?.total_payouts / total.totalPayout) * 100).toFixed(2),
+        payoutAmount: item?.total_payouts?.toFixed(2),
       }));
 
       const topPaymentPercentageSum = paymentPercentages.reduce((sum, item) => sum + parseFloat(item.percentage), 0);

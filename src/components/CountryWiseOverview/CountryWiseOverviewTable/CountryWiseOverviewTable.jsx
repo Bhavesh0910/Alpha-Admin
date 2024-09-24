@@ -37,11 +37,13 @@ const CountryWiseOverviewTable = () => {
     }
   };
 
+  console.log("listData", listData);
+
   useEffect(() => {
     if (idToken) {
       fetchCountryWiseData();
     }
-    console.log("I am here")
+    console.log("I am here");
   }, [idToken, dates, accRange]);
 
   const fetchCountryWiseData = () => {
@@ -69,6 +71,12 @@ const CountryWiseOverviewTable = () => {
     }
   };
 
+  useEffect(() => {
+    if (dates) {
+      handleCountriesData();
+    }
+  }, [dates, countries]);
+
   const columns = useMemo(() => [
     {
       title: "Country",
@@ -79,49 +87,63 @@ const CountryWiseOverviewTable = () => {
     },
     {
       title: "No. Of Payment",
-      dataIndex: "payment_total_count",
+      dataIndex: "no_of_payments",
       key: "totalPayments",
       width: 95,
       render: (text) => (text === 0 ? 0 : text ? text : "-"),
     },
     {
       title: "Total Payments($)",
-      dataIndex: "payment_total_amount",
+      dataIndex: "total_payments",
       key: "totalPayments",
       width: 95,
       render: (text) => (text === 0 ? 0 : text ? Number(text).toFixed(2) : "-"),
     },
     {
       title: "Total Payouts($)",
-      dataIndex: "payout_total_amount",
+      dataIndex: "total_payouts",
       key: "totalPayouts",
       width: 95,
       render: (text) => (text === 0 ? 0 : text ? Number(text).toFixed(2) : "-"),
     },
     {
       title: "No. of Payouts",
-      dataIndex: "payout_total_count",
+      dataIndex: "no_of_payouts",
       key: "totalPayouts",
       width: 95,
       render: (text) => (text === 0 ? 0 : text ? text : "-"),
     },
     {
-      title: "Total No. of Accounts",
-      dataIndex: "total_no_of_account",
+      title: "Total users",
+      dataIndex: "total_users",
       key: "totalPayouts",
       width: 95,
       render: (text) => (text === 0 ? 0 : text ? text : "-"),
     },
     {
       title: "Total No. of Violations",
-      dataIndex: "total_no_of_violations",
+      dataIndex: "total_violations",
       key: "totalPayouts",
       width: 95,
       render: (text) => (text === 0 ? 0 : text ? text : "-"),
     },
     {
       title: "Total No. of Breached Accounts",
-      dataIndex: "total_no_breaches",
+      dataIndex: "total_breaches",
+      key: "totalPayouts",
+      width: 95,
+      render: (text) => (text === 0 ? 0 : text ? text : "-"),
+    },
+    {
+      title: "Percent Payments",
+      dataIndex: "percent_payments",
+      key: "totalPayouts",
+      width: 95,
+      render: (text) => (text === 0 ? 0 : text ? text : "-"),
+    },
+    {
+      title: "Percent Payouts",
+      dataIndex: "percent_payouts",
       key: "totalPayouts",
       width: 95,
       render: (text) => (text === 0 ? 0 : text ? text : "-"),
@@ -167,10 +189,15 @@ const CountryWiseOverviewTable = () => {
     filterListData.forEach((item) => {
       data[item.country] = {
         country: item.country,
-        payout_total_amount: item.payout_total_amount,
-        payout_total_count: item.payout_total_count,
-        payment_total_amount: item.payment_total_amount,
-        payment_total_count: item.payment_total_count,
+        total_payouts: item.total_payouts,
+        no_of_payouts: item.no_of_payouts,
+        total_payments: item.total_payments,
+        no_of_payments: item.no_of_payments,
+        total_users: item.total_users,
+        total_breaches: item.total_breaches,
+        total_violations: item.total_violations,
+        percent_payments: item.percent_payments,
+        percent_payouts: item.percent_payouts,
       };
     });
     setCountriesLibrary(data);
@@ -255,12 +282,7 @@ const CountryWiseOverviewTable = () => {
       <AntTable
         data={listData || []}
         columns={columns}
-        totalPages={Math.ceil(listData?.length / pageSize)}
-        totalItems={listData?.length}
-        pageSize={pageSize}
-        CurrentPageNo={pageNo}
-        setPageSize={setPageSize}
-        triggerChange={triggerChange}
+        serverSide={false}
       />
     </div>
   );
