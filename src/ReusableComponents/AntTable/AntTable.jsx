@@ -8,7 +8,7 @@ const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460, column
     if (serverSide) {
       return {current: CurrentPageNo, pageSize, total: totalItems};
     } else {
-      return {current: 1, pageSize: 10, total: data.length};
+      return {current: 1, pageSize: 10, total: data?.length};
     }
   });
 
@@ -43,7 +43,7 @@ const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460, column
       setPagination((prev) => ({
         ...prev,
         current: 1,
-        total: data.length,
+        total: data?.length,
       }));
     }
   }, [totalItems]);
