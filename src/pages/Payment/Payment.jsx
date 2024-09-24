@@ -72,7 +72,7 @@ const Payment = () => {
                     <Tooltip title="Copy email">
                       <Button
                         type="link"
-                        icon={<CopyOutlined style={{ color: "#04D9FF" }} />}
+                        icon={<CopyButton />}
                         onClick={() => message.success("Copied email")}
                         disabled={!text}
                       />
@@ -100,7 +100,7 @@ const Payment = () => {
                   <Tooltip title="Copy payment id">
                     <Button
                       type="link"
-                      icon={<CopyOutlined style={{ color: "#04D9FF" }} />}
+                      icon={<CopyButton />}
                       onClick={() => message.success("Copied payment id")}
                       disabled={!text}
                     />

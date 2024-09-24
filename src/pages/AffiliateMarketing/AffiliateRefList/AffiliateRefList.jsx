@@ -40,7 +40,7 @@ const AffiliateRefList = () => {
 
     useEffect(() => {
         if (id) {
-            dispatch(fetchReferredList({ idToken, affiliateId: id, activeTab }));
+            dispatch(fetchReferredList({ idToken, affiliateId: user_id, activeTab }));
             dispatch(fetchPushleadsChartData({ idToken, user_id: user_id }));
         }
     }, [id, activeTab, idToken, dispatch ]);
@@ -129,43 +129,44 @@ const AffiliateRefList = () => {
     const columns = [
         {
             title: "Referred Trader",
-            dataIndex: "referredTrader",
-            key: "referredTrader",
+            dataIndex: "id",
+            key: "id",
+            render: (text) => text ? `${text}` : "-",
         },
         {
-            title: "Paid Amount",
-            dataIndex: "paidAmount",
-            key: "paidAmount",
-            render: (text) => `$${text}`,
+            title: "Email",
+            dataIndex: "profile__Email",
+            key: "profile__Email",
+            render: (text) => text ? `${text}` : "-",
         },
-        {
-            title: "Commission Amount",
-            dataIndex: "commissionAmount",
-            key: "commissionAmount",
-            render: (text) => `$${text}`,
-        },
-        {
-            title: "Percentage",
-            dataIndex: "percentage",
-            key: "percentage",
-            render: (text) => `${text}%`,
-        },
-        {
-            title: "Created At",
-            dataIndex: "createdAt",
-            key: "createdAt",
-            render: (text) => new Date(text).toLocaleDateString(),
-        },
-        {
-            title: "Payment ID",
-            dataIndex: "paymentId",
-            key: "paymentId",
-        },
-        {
-            title: "Status",
-            dataIndex: "status",
-            key: "status",
-        },
+        // {
+        //     title: "Commission Amount",
+        //     dataIndex: "commissionAmount",
+        //     key: "commissionAmount",
+        //     render: (text) => `$${text}`,
+        // },
+        // {
+        //     title: "Percentage",
+        //     dataIndex: "percentage",
+        //     key: "percentage",
+        //     render: (text) => `${text}%`,
+        // },
+        // {
+        //     title: "Created At",
+        //     dataIndex: "createdAt",
+        //     key: "createdAt",
+        //     render: (text) => new Date(text).toLocaleDateString(),
+        // },
+        // {
+        //     title: "Payment ID",
+        //     dataIndex: "paymentId",
+        //     key: "paymentId",
+        // },
+        // {
+        //     title: "Status",
+        //     dataIndex: "status",
+        //     key: "status",
+        // },
     ];
 
     return (
@@ -241,8 +242,9 @@ const AffiliateRefList = () => {
                 <div className="ref_list_table">
                     <h3>Referred List</h3>    
                     <AntTable
-                        columns={columns}
-                        dataSource={referredList}
+                        columns={columns || []}
+                        data={referredList || []}
+                        serverSide={false}
                     />
                 </div>
             </div>
