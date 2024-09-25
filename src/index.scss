@@ -174,7 +174,6 @@ code {
   &::placeholder {
     color: #1e1e1e !important;
   }
-  
 }
 
 .standard_button {
@@ -221,7 +220,7 @@ input:-webkit-autofill:active {
   border-radius: var(--Corner-2, 10px);
   border: 1px solid var(--Stroke, #252a29);
   background: var(--Stroke, #252a29);
-  @media only screen and (max-width: 912px){
+  @media only screen and (max-width: 912px) {
     display: flex;
     flex-direction: column;
   }
@@ -230,7 +229,7 @@ input:-webkit-autofill:active {
     background: #fff;
     max-width: none !important;
     ul {
-      @media only screen and (max-width: 912px){
+      @media only screen and (max-width: 912px) {
         height: 100% !important;
       }
       li {
@@ -410,7 +409,7 @@ input:-webkit-autofill:active {
     padding: 12px 20px;
     width: 100%;
     // max-width: 325px;
-    &::placeholder{
+    &::placeholder {
       color: #1e1e1e !important;
     }
     @media only screen and (max-width: 768px) {
@@ -561,10 +560,10 @@ input:-webkit-autofill:active {
   }
 }
 
-.ant-table-wrapper .ant-table-cell-scrollbar:not([rowspan]){
+.ant-table-wrapper .ant-table-cell-scrollbar:not([rowspan]) {
   box-shadow: none !important;
 }
-.searchImg{
+.searchImg {
   cursor: pointer;
 }
 
@@ -593,7 +592,7 @@ input:-webkit-autofill:active {
 
   .ant-picker-input {
     input {
-      color:#000 !important;
+      color: #000 !important;
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -958,14 +957,19 @@ html * {
 }
 
 :where(.css-dev-only-do-not-override-m4timi).ant-select-dropdown .ant-select-item-group {
-  color:#1e1e1e;
+  color: #1e1e1e;
 }
 
 :where(.css-dev-only-do-not-override-m4timi).ant-select-single .ant-select-selector .ant-select-selection-search {
-  inset-inline-end:  none !important;
+  inset-inline-end: none !important;
   inset-inline-start: 5px !important;
 }
 
-textarea:where(.css-dev-only-do-not-override-m4timi).ant-input{
+textarea:where(.css-dev-only-do-not-override-m4timi).ant-input {
   resize: none;
+}
+
+.ant-table-thead {
+  position: relative;
+  z-index: 1;
 }

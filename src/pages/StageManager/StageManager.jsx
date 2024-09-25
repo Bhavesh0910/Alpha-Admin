@@ -342,6 +342,8 @@ const StageManager = () => {
                   overlay={() => statusMenuFlag(text?.status, row)}
                   open={selectedIndex === index ? close : false}
                   trigger={["click"]}
+                  getPopupContainer={(triggerNode) => triggerNode.closest(".ant-table-body")}
+
                   // onMouseLeave={() => setClose(false)}
                 >
                   <DownOutlined />
@@ -465,6 +467,7 @@ const StageManager = () => {
               <Dropdown
                 overlay={() => statusMenu(text, record)}
                 trigger={["click"]}
+                getPopupContainer={(triggerNode) => triggerNode.closest(".ant-table-body")}
               >
                 <Button
                   icon={<DownOutlined />}
@@ -604,6 +607,7 @@ const StageManager = () => {
                 <Dropdown
                   overlay={() => statusMenuFlag(text?.status, row)}
                   trigger={["click"]}
+                  getPopupContainer={(triggerNode) => triggerNode.closest(".ant-table-body")}
                 >
                   <DownOutlined />
                 </Dropdown>
@@ -726,6 +730,7 @@ const StageManager = () => {
               <Dropdown
                 overlay={() => statusMenu(text, record)}
                 trigger={["click"]}
+                getPopupContainer={(triggerNode) => triggerNode.closest(".ant-table-body")}
               >
                 <Button
                   icon={<DownOutlined />}
@@ -961,6 +966,7 @@ const StageManager = () => {
                 <Dropdown
                   overlay={() => statusMenuFlag(text?.status, row)}
                   trigger={["click"]}
+                  getPopupContainer={(triggerNode) => triggerNode.closest(".ant-table-body")}
                 >
                   <DownOutlined />
                 </Dropdown>
@@ -1062,6 +1068,7 @@ const StageManager = () => {
               <Dropdown
                 overlay={() => statusMenu(text, record)}
                 trigger={["click"]}
+                getPopupContainer={(triggerNode) => triggerNode.closest(".ant-table-body")}
               >
                 <Button
                   icon={<DownOutlined />}
@@ -1134,6 +1141,7 @@ const StageManager = () => {
                 <Dropdown
                   overlay={() => statusMenuFlag(text?.status, row)}
                   trigger={["click"]}
+                  getPopupContainer={(triggerNode) => triggerNode.closest(".ant-table-body")}
                 >
                   <DownOutlined />
                 </Dropdown>
@@ -1287,6 +1295,7 @@ const StageManager = () => {
               <Dropdown
                 overlay={() => statusMenu(text, record)}
                 trigger={["click"]}
+                getPopupContainer={(triggerNode) => triggerNode.closest(".ant-table-body")}
               >
                 <Button
                   icon={<DownOutlined />}
