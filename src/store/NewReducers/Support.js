@@ -78,8 +78,13 @@ const supportLists = createSlice({
     stageStatusOptions: [],
     nestedTableData: null,
     refetch: false,
+    isExpandable: null,
   },
-  reducers: {},
+  reducers: {
+    setIsExpandable: (state, action) => {
+      state.isExpandable = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(supportListReq.pending, (state) => {
@@ -162,6 +167,7 @@ const supportLists = createSlice({
 
 // Export the async thunk and any reducers if needed
 export default supportLists.reducer;
+export const {setIsExpandable} = supportLists.actions;
 
 export const statusUpdateReq = createAsyncThunk("support/updateStatus", async ({idToken, body, id, isPayoutUpdate, updatedStatus, dispatch}, {rejectWithValue}) => {
   try {

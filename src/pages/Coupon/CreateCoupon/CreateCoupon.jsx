@@ -128,7 +128,9 @@ const CreateCoupon = () => {
     setEmails(selectedLabels);
   };
 
-  const handleFormSubmit = (e) => {
+  console.log("dates", date);
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     const couponData = {
       coupon_name: code,
@@ -144,7 +146,21 @@ const CreateCoupon = () => {
 
     console.log("Here...");
     console.log(idToken, couponData, dispatch);
-    dispatch(createCoupon({idToken, couponData, dispatch}));
+    // dispatch(createCoupon({idToken, couponData, dispatch}));
+    const response = await dispatch(createCoupon({idToken, couponData, dispatch}));
+
+    if (response?.payload.status < 400) {
+      // Clear all the form fields
+      setCode("");
+      setUsers([]);
+      setCouponAmount("");
+      setPercent(0);
+      setCategory(null);
+      setDate(null);
+      setIsActivate(false);
+      setIsPublic(false);
+      setIsMulti(false);
+    }
   };
 
   const Loading = () => {
@@ -176,7 +192,7 @@ const CreateCoupon = () => {
                 id="coupon_code"
                 placeholder="Enter Coupon Code"
                 value={code}
-                onChange={(e) => setCode(e.target.value?.toUpperCase())}
+                onChange={(e) => setCode(e.target.value.toUpperCase())}
               />
             </div>
             <div className="form_input_box">
@@ -299,7 +315,7 @@ const CreateCoupon = () => {
               <DatePicker
                 format="YYYY-MM-DD HH:mm:ss"
                 disabledDate={disabledDate}
-                disabledTime={disabledDateTime}
+                // disabledTime={disabledDateTime}
                 showTime={{defaultValue: dayjs("00:00:00", "HH:mm:ss")}}
                 onChange={(value) => setDate(value ? value.format("YYYY-MM-DD") : null)}
               />

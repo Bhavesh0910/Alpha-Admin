@@ -2,6 +2,8 @@ import React, {useState, useEffect} from "react";
 import {Table} from "antd";
 import "./AntTable.scss";
 import {useLocation} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {setIsExpandable} from "../../store/NewReducers/Support";
 
 const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460, columns, totalItems, pageSize, setPageSize, CurrentPageNo, isExpandable, ExpandedComp, rowId, customRowClass = false}) => {
   const [pagination, setPagination] = useState(() => {
@@ -48,9 +50,12 @@ const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460, column
     }
   }, [totalItems]);
 
+  const dispatch = useDispatch();
+
   const handleExpand = (expanded, record) => {
     if (expanded) {
       setExpandedRowKeys([record[rowId]]);
+      dispatch(setIsExpandable([record[rowId]]));
     } else {
       setExpandedRowKeys([]);
     }
@@ -61,9 +66,7 @@ const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460, column
   }, [expandedRowKeys]);
 
   return (
-    <div
-      className="ant_table_container"
-    >
+    <div className="ant_table_container">
       <Table
         columns={columns}
         dataSource={data}

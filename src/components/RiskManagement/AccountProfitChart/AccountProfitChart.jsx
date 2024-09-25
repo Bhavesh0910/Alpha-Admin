@@ -13,9 +13,9 @@ const AccountProfitChart = () => {
       let dates = [];
       let totalProfit = [];
       let totalLoss = [];
-      dates = fundingChartData?.result?.map((item) => item?.date);
-      totalProfit = fundingChartData?.result?.map((item) => item?.total_profit);
-      totalLoss = fundingChartData?.result?.map((item) => item?.total_loss);
+      dates = fundingChartData?.result?.map((item) => item?.date).reverse();
+      totalProfit = fundingChartData?.result?.map((item) => item?.total_profit).reverse();
+      totalLoss = fundingChartData?.result?.map((item) => item?.total_loss).reverse();
       console.log("dates : ", dates);
       console.log("totalProfit : ", totalProfit);
       console.log("totalProfit : ", totalLoss);

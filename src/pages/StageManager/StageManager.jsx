@@ -1716,6 +1716,8 @@ function ExpandedRowData({record}) {
   const [editCommentToUpdate, setEditCommentToUpdate] = useState(null);
   const [updatedContract, setUpdatedContract] = useState(null);
 
+  const {isExpandable} = useSelector((state) => state.support);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
   const navigate = useNavigate();
@@ -1740,12 +1742,10 @@ function ExpandedRowData({record}) {
     }
   }, [record]);
 
-  console.log("nestedtabledata ; ", nestedTableData?.user_payouts);
-
   useEffect(() => {
     let flag = location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2" ? true : false;
     dispatch(nestedTableDataReq({idToken, url, flag, dispatch}));
-  }, [url]);
+  }, []);
 
   const martingleStatus = nestedTableData?.martingale?.status || nestedTableData?.martingale_status;
 
@@ -1801,7 +1801,7 @@ function ExpandedRowData({record}) {
       setUrl(`v2/get/funded/details/${record.login_id}/`);
       dispatch(nestedTableDataReq({idToken, url, flag: false, dispatch}));
     }
-  }, [url]);
+  }, [url, record]);
 
   function handleModal(text) {
     setModalVisible(true);
