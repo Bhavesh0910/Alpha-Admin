@@ -55,7 +55,7 @@ const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460, column
   const handleExpand = (expanded, record) => {
     if (expanded) {
       setExpandedRowKeys([record[rowId]]);
-      dispatch(setIsExpandable([record[rowId]]));
+      dispatch(setIsExpandable(record[rowId]));
     } else {
       setExpandedRowKeys([]);
     }

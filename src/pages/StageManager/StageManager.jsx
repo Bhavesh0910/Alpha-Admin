@@ -1743,9 +1743,11 @@ function ExpandedRowData({record}) {
   }, [record]);
 
   useEffect(() => {
-    let flag = location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2" ? true : false;
-    dispatch(nestedTableDataReq({idToken, url, flag, dispatch}));
-  }, []);
+    if (record.id === isExpandable) {
+      let flag = location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2" ? true : false;
+      dispatch(nestedTableDataReq({idToken, url, flag, dispatch}));
+    }
+  }, [url, isExpandable]);
 
   const martingleStatus = nestedTableData?.martingale?.status || nestedTableData?.martingale_status;
 
@@ -1797,11 +1799,16 @@ function ExpandedRowData({record}) {
 
   useEffect(() => {
     // console.log("kkk");
-    if (location.pathname === "/support/funded") {
-      setUrl(`v2/get/funded/details/${record.login_id}/`);
-      dispatch(nestedTableDataReq({idToken, url, flag: false, dispatch}));
+    if (isExpandable === record?.login_id) {
+      if (location.pathname === "/support/funded") {
+        setUrl(`v2/get/funded/details/${record.login_id}/`);
+        dispatch(nestedTableDataReq({idToken, url, flag: false, dispatch}));
+      }
     }
-  }, [url, record]);
+  }, [isExpandable, url]);
+
+  console.log("isExpandable", isExpandable);
+  console.log("isExpandable1", record?.login_id);
 
   function handleModal(text) {
     setModalVisible(true);
