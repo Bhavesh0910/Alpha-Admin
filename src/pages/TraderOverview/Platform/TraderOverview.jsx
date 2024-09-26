@@ -524,6 +524,13 @@ function TraderOverview() {
         render: (text) => (text ? "Unblocked" : "Blocked") || "-",
       },
       {
+        title: "Active / Inactive",
+        dataIndex: "is_Active",
+        key: "is_Active",
+        width: 100,
+        render: (text) => (text !== null || text !== undefined ? (text === true ? "Active" : "InActive") : "-"),
+      },
+      {
         title: "Action",
         dataIndex: "action",
         key: "action",
@@ -1126,6 +1133,10 @@ const ExpandableRow = ({record}) => {
         <div>
           <div>Equity</div>
           <p>{record?.equity ? `$${record?.equity}` : "-"}</p>
+        </div>
+        <div>
+          <div>Notes</div>
+          <p>{record?.user_id?.notes ? `${record?.user_id?.notes}` : "-"}</p>
         </div>
         {/* <div>
           <div>Balance</div>
