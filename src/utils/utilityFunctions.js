@@ -1,12 +1,12 @@
-import { notification } from "antd";
+import {notification} from "antd";
 
-export function copyToClipboard(value) {
+export function copyToClipboard(value, message) {
   if (navigator.clipboard) {
     navigator.clipboard
       .writeText(value)
       .then(() => {
         notification.success({
-          message: "Information copied to clipboard",
+          message: message ? message + " Copied" : "Information copied to clipboard",
           placement: "topRight",
         });
       })
