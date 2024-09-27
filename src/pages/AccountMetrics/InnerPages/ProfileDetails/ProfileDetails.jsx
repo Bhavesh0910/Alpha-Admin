@@ -51,7 +51,7 @@ const ProfileDetails = ({id}) => {
         language: data.language || "",
         time_zone: data.time_zone || "", 
       });
-      setCountryCode(data?.contact_number?.split(" ")[1] || "+");
+      setCountryCode(`+${data?.country_code || " "}`);
       setPhoneNumber(data?.contact_number?.split(" ")[0] || "");
     }
     }, [data]);
@@ -93,7 +93,8 @@ const ProfileDetails = ({id}) => {
           full_name: `${formData.first_name} ${formData.last_name}`, 
           first_name: formData.first_name,
           last_name: formData.last_name,
-          Contact_number: `${countryCode} ${phoneNumber}`, 
+          Contact_number: `${phoneNumber}`, 
+          country_code: countryCode ,
           Country: formData.selectedCountry,
           City: formData.city,
           photo: null
@@ -219,6 +220,9 @@ const ProfileDetails = ({id}) => {
                 onChange={(e) => setFormData({ ...formData, city: e.target.value })}
               />
             </div>
+          </div>
+          <div className="profile_notes">
+            Notes: {data?.notes ? data?.notes : '-'}
           </div>
           <div className="address_wrapper">
             <h2>Address</h2>
