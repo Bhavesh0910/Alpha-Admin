@@ -29,15 +29,16 @@ const KYC = () => {
   const dispatch = useDispatch();
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
+  const [previousSort, setPreviousSort] = useState(null);
 
   const [kycUser, setKycUser] = useState(null);
   const [kycModel, setKycModel] = useState(false);
   const [kycUpdatedValue, setKycUpdatedValue] = useState(null);
   const [comment, setComment] = useState(null);
+  const [sorterStatus, setSorterStatus] = useState();
+  const [veriff, setVeriff] = useState("all");
 
   const {data, isLoading: accountsLoading, refetch, count} = useSelector((state) => state.compliance);
-
-  console.log(data, "data");
 
   useEffect(() => {
     let query = `?page=${pageNo}&page_size=${pageSize}`;
@@ -54,10 +55,28 @@ const KYC = () => {
       query += `&search=${searchText}`;
     }
 
-    console.log(query, "query");
+    if (sorterStatus) {
+      let data = "";
+      if (sorterStatus?.columnKey === "status") {
+        data = sorterStatus?.order === "ascend" ? "iscompleted" : "-iscompleted";
+      }
+      if (sorterStatus?.columnKey === "created_at") {
+        console.log("sorterStatus?.order :", sorterStatus?.order);
+        data = sorterStatus?.order === "ascend" ? "iscreated " : "-iscreated";
+      }
+      if (sorterStatus?.columnKey === "admin_status") {
+        data = sorterStatus?.order === "ascend" ? "is_approved " : "-is_approved ";
+      }
+      if (sorterStatus?.column) {
+        query += `&ordering=${data}`;
+      }
+    }
+    if (veriff && veriff !== "all") {
+      query += `&status=${veriff}`;
+    }
 
     dispatch(getKycList({idToken, query, dispatch}));
-  }, [idToken, pageNo, pageSize, dates, status, searchText, refetch]);
+  }, [idToken, pageNo, pageSize, dates, status, searchText, refetch, sorterStatus, veriff]);
 
   const handleSearch = (value) => {
     setPageNo(1);
@@ -75,9 +94,18 @@ const KYC = () => {
     setCategory(value);
   };
 
-  function triggerChange(page, updatedPageSize) {
-    setPageNo(page);
-    setPageSize(updatedPageSize);
+  function triggerChange(page, updatedPageSize, sorter) {
+    if (previousSort !== sorter.column) {
+      console.log("I am here");
+      setPreviousSort(sorter.column);
+      setPageNo(1);
+      setPageSize(updatedPageSize);
+      setSorterStatus(sorter);
+    } else {
+      setPageNo(page);
+      setPageSize(updatedPageSize);
+      setSorterStatus(sorter);
+    }
   }
 
   const openKycUpdateModel = (updatedValue, record) => {
@@ -133,6 +161,7 @@ const KYC = () => {
       dataIndex: "created_at",
       key: "created_at",
       width: 100,
+      sorter: true,
     },
     {
       title: "CID",
@@ -142,7 +171,7 @@ const KYC = () => {
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Sumsub Status",
+      title: "Veriff",
       dataIndex: "status",
       key: "status",
       width: 100,
@@ -153,6 +182,7 @@ const KYC = () => {
           {typeof text === "string" && text.length > 0 ? text.slice(0, 1).toUpperCase() + text.slice(1).toLowerCase() : "-"}
         </div>
       ),
+      sorter: true,
     },
     {
       title: "Admin Review",
@@ -189,6 +219,7 @@ const KYC = () => {
         ) : (
           "-"
         ),
+      sorter: true,
     },
     {
       title: "Country",
@@ -243,7 +274,7 @@ const KYC = () => {
       dataIndex: "description",
       key: "description",
       width: 100,
-      render: (text) => <p style={{maxWidth:'250px'}}>{(text ? text : "-")}</p>,
+      render: (text) => <p style={{maxWidth: "250px"}}>{text ? text : "-"}</p>,
     },
     // {
     //   title: "Contract",
@@ -267,12 +298,32 @@ const KYC = () => {
 
   function updateDateRange(dates) {
     if (dates) {
+      setPageNo(1);
       setDates(dates.map((date) => date.format("DD MMM YYYY")));
     } else {
       setDates([null, null]);
     }
   }
 
+  const options = [
+    {value: "all", label: "All"},
+    {value: "init", label: "Init"},
+    {value: "prechecked", label: "Prechecked"},
+    {value: "pending", label: "Pending"},
+    {value: "completed", label: "Completed"},
+    {value: "onHold", label: "Onhold"},
+    {value: "queued", label: "Queued"},
+  ];
+
+  function handleVeriffChange(value) {
+    setPageNo(1);
+    setVeriff(value);
+  }
+
+  function handleSorterLogic(value) {
+    setPageNo(1);
+    setSorterStatus(value);
+  }
   return (
     <>
       <div className="kyc_container">
@@ -292,9 +343,7 @@ const KYC = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={(e) => {
-                  console.log("e : ", e.key === "Enter");
                   if (e.key === "Enter") {
-                    console.log("Searching.....");
                     handleSearch(e.target.value);
                   }
                 }}
@@ -308,6 +357,15 @@ const KYC = () => {
                   alt="searchIcon"
                 />
               </div>
+            </div>
+            <div className="filter_buttons noPadding">
+              <Select
+                // defaultValue={options[0].value}
+                placeholder={"Select Veriff Status"}
+                className="header-select ml2 widthMin"
+                onChange={handleVeriffChange}
+                options={options}
+              />
             </div>
             <div className="filter_buttons">
               <Button
@@ -343,20 +401,18 @@ const KYC = () => {
             </div>
           </div>
         </div>
-        {accountsLoading ? (
-          <LoaderOverlay />
-        ) : (
-          <AntTable
-            data={data || []}
-            columns={columns}
-            totalPages={Math.ceil(count / pageSize)}
-            totalItems={count}
-            pageSize={pageSize}
-            CurrentPageNo={pageNo}
-            setPageSize={setPageSize}
-            triggerChange={triggerChange}
-          />
-        )}
+        {accountsLoading && <LoaderOverlay />}
+        <AntTable
+          data={data || []}
+          columns={columns}
+          totalPages={Math.ceil(count / pageSize)}
+          totalItems={count}
+          pageSize={pageSize}
+          CurrentPageNo={pageNo}
+          setPageSize={setPageSize}
+          triggerChange={triggerChange}
+          handleSorterLogic={handleSorterLogic}
+        />
       </div>
       <Modal
         title={"Flag User"}

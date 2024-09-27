@@ -425,7 +425,7 @@ const traderAffiliateRefList = async (idToken, id, status = "success") => {
         status: status,
       },
     };
-    const response = await axios.get(`${baseUrl}v2/get/referred-users/list/?affiliate_id=${id}`, config);
+    const response = await axios.get(`${baseUrl}v3/get/referred-users/list/?affiliate_id=${id}`, config);
     return response.data;
   } catch (error) {
     console.error("Error in getting trader ref list", error);
