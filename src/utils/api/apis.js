@@ -1556,6 +1556,81 @@ const updateAdvDetails = async (idToken, data, id) => {
   return output;
 };
 
+//permissions
+
+export const getPermissionList = async (idToken) => {
+  try {
+    const response = await axios.get(`${baseUrl}permission-list/`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching permission list:", error);
+    throw error;
+  }
+};
+
+export const getGroupsList = async (idToken) => {
+  try {
+    const response = await axios.get(`${baseUrl}groups-list/`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching groups list:", error);
+    throw error;
+  }
+};
+
+export const createGroupPermissions = async (idToken, groupData) => {
+  try {
+    const response = await axios.post(`${baseUrl}admin-create-group-permissions/`, {
+      group_name: groupData.group_name,
+      permission_id: groupData.permission_id,
+    }, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error creating group permissions:", error);
+    throw error;
+  }
+};
+
+export const getGroupPermissions = async (idToken, id) => {
+  try {
+    const response = await axios.get(`${baseUrl}group-permissions/${id}/`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching group permissions:", error);
+    throw error;
+  }
+};
+
+export const getAdminUsersGroupsPermissions = async (idToken, search) => {
+  try {
+    const response = await axios.get(`${baseUrl}admin-users-groups-permissions/?search=${search}`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching admin user groups permissions:", error);
+    throw error;
+  }
+};
+
 //competition
 
 const getCompDetails = async (idToken) => {
