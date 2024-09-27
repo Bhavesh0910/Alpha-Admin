@@ -18,6 +18,7 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
   const [emailOpts, setEmailOpts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const [couponValue, setCouponValue] = useState("Coupon Amount");
 
   useEffect(() => {
     fetchChallenges();
@@ -162,9 +163,62 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
                 )}
               </Select>
             </div>
+            <div>
+              <label htmlFor="coupon_value">Coupon Value</label>
+              <div className="coupon_select">
+                <div
+                  className="form_input_box"
+                  style={{maxWidth: "160px"}}
+                >
+                  <Select
+                    className="category_dropdown"
+                    defaultValue="Coupon Amount"
+                    onChange={setCouponValue}
+                  >
+                    <Option value="Coupon Amount">Coupon Amount</Option>
+                    <Option value="Coupon Discount">Coupon Percent</Option>
+                  </Select>
+                </div>
+                <div
+                  className="form_input_box"
+                  style={{width: "100%"}}
+                >
+                  {couponValue === "Coupon Discount" ? (
+                    <>
+                      <Input
+                        type="number"
+                        className="coupon_percentage"
+                        id="coupon_percentage"
+                        placeholder="Enter Coupon Percentage"
+                        prefix={<PercentageIcon />}
+                        value={editedData?.coupon_percent || ""}
+                        onChange={(e) => {
+                          const value = Number(e.target.value);
+                          if (value >= 0 && value < 100) {
+                            handleInputChange("coupon_percent", e.target.value)}                         
+                        }}
+                        required
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Input
+                        className="coupon_amount"
+                        type="number"
+                        id="coupon_amount"
+                        placeholder="Enter Coupon Amount"
+                        value={editedData?.coupon_amount || ""}
+                        onChange={(e) => handleInputChange("coupon_amount", e.target.value)}
+                        required
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
           <div className="bottomSection">
-            <div className="form_input_box">
+            {/* <div className="form_input_box">
               <label htmlFor="coupon_amount">Amount</label>
               <Input
                 id="coupon_amount"
@@ -182,7 +236,9 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
                 value={editedData?.coupon_percent || ""}
                 onChange={(e) => handleInputChange("coupon_percent", e.target.value)}
               />
-            </div>
+            </div> */}
+
+          
             <div className="form_input_box">
               <label htmlFor="coupon_challenge">Challenge</label>
               <Select
