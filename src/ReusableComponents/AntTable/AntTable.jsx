@@ -15,22 +15,21 @@ const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460, column
   });
 
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
-  const location = useLocation();
 
-  const handlePageChange = (page, updatedPageSize) => {
+  const handlePageChange = (page, updatedPageSize, sorter) => {
     if (serverSide) {
       setPagination((prev) => ({
         ...prev,
-        current: page,
-        pageSize: updatedPageSize,
+        current: page.current,
+        pageSize: page.pageSize,
       }));
-      setPageSize(updatedPageSize);
-      triggerChange(page, updatedPageSize);
+      setPageSize(page.pageSize);
+      triggerChange(page.current, page.pageSize, sorter);
     } else {
       setPagination((prev) => ({
         ...prev,
-        current: page,
-        pageSize: updatedPageSize,
+        current: page.current,
+        pageSize: page.pageSize,
       }));
     }
   };
@@ -65,6 +64,9 @@ const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460, column
     console.log(expandedRowKeys, " expandedrowkey");
   }, [expandedRowKeys]);
 
+  function handleSortingLogic(pagination, filters, sorter) {
+    // triggerChange(page, updatedPageSize, sorter);
+  }
   return (
     <div className="ant_table_container">
       <Table
@@ -77,7 +79,10 @@ const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460, column
           showSizeChanger: true,
           showQuickJumper: true,
           showTotal: (total) => `Total ${serverSide ? totalItems : data?.length} items`,
-          onChange: handlePageChange,
+          // onChange: handlePageChange,
+        }}
+        onChange={(pagination, filters, sorter) => {
+          handlePageChange(pagination, filters, sorter);
         }}
         scroll={{
           y: scrollY,

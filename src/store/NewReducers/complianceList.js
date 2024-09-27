@@ -35,7 +35,7 @@ async function getKycListApi(idToken, query) {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    let response = await axios(`${baseUrl}v2/get-kyc/${query}`, config);
+    let response = await axios(`${baseUrl}v3/get-kyc/${query}`, config);
     return response;
   } catch (error) {
     throw error;
@@ -95,8 +95,8 @@ const complianceList = createSlice({
       })
       .addCase(getKycList.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload.data?.data?.results;
-        state.count = action.payload.data?.data?.count;
+        state.data = action.payload.data?.results;
+        state.count = action.payload.data?.count;
       })
       .addCase(getKycList.rejected, (state) => {
         state.isLoading = false;
