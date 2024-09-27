@@ -20,7 +20,7 @@ import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 import {DownOutlined} from "@ant-design/icons";
 import "./StageManager.scss";
-import {supportListReq, nestedTableDataReq, statusUpdateReq, editCommentReq, updateContactReq, createAccountReq} from "../../store/NewReducers/Support";
+import {supportListReq, nestedTableDataReq, statusUpdateReq, editCommentReq, updateContactReq, createAccountReq, editPaymentReferenceDetails} from "../../store/NewReducers/Support";
 import ReactCountryFlag from "react-country-flag";
 import dayjs from "dayjs";
 import {formatDate, formatDateTime, formatDateTimeNew, FormatUSD} from "../../utils/helpers/string";
@@ -31,6 +31,7 @@ import {returnErrors} from "../../store/reducers/error";
 import downloadIcon from "../../assets/icons/download_to_pc.svg";
 import {copyToClipboard} from "../../utils/utilityFunctions";
 import {data} from "./../AffiliateMarketing/AffiliateRefList/AffiliateRefList";
+import {CopyToClipboard} from "react-copy-to-clipboard";
 const {RangePicker} = DatePicker;
 
 const {Option} = Select;
@@ -73,6 +74,7 @@ const StageManager = () => {
   const [specialCount, setSpecialCount] = useState(0);
   const [fetchUpdate, setFetchUpdate] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState(false);
+
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -1251,14 +1253,18 @@ const StageManager = () => {
             dataIndex: "amount",
             key: "amount",
             width: 80,
-            render: (text) => <span>${text}</span>,
+            render: (text) => <span onClick={() => copyToClipboard(text, "Amount")}>${text}</span>,
           },
           {
             title: "Total Payout",
             dataIndex: "",
             key: "totalPayout",
             width: 80,
-            render: (text, record) => <span>{record?.performance_bonus && record?.amount ? `$${record?.performance_bonus + record?.amount}` : "-"} </span>,
+            render: (text, record) => (
+              <span onClick={() => copyToClipboard(record?.performance_bonus + record?.amount, "Total Payout")}>
+                {record?.performance_bonus && record?.amount ? `$${record?.performance_bonus + record?.amount}` : "-"}{" "}
+              </span>
+            ),
           },
 
           // {
@@ -1716,12 +1722,22 @@ function ExpandedRowData({record}) {
   const [editCommentToUpdate, setEditCommentToUpdate] = useState(null);
   const [updatedContract, setUpdatedContract] = useState(null);
 
+  const [isSettlementModalVisible, setisSettlementModalVisible] = useState(false);
+  const [settlementUserToUpdate, setSettlementUserToUpdate] = useState(false);
+  const [settlementComment, setSettlementComment] = useState(false);
+
   const {isExpandable} = useSelector((state) => state.support);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  function handleEditSettlement() {
+    try {
+      // dispatch(editPaymentReferenceDetails({idToken, settlementComment}));
+    } catch (error) {}
+  }
   useEffect(() => {
     if (record.id === null || record.id === undefined) {
       return;
@@ -1743,9 +1759,11 @@ function ExpandedRowData({record}) {
   }, [record]);
 
   useEffect(() => {
-    let flag = location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2" ? true : false;
-    dispatch(nestedTableDataReq({idToken, url, flag, dispatch}));
-  }, []);
+    if (record.id === isExpandable) {
+      let flag = location.pathname === "/support/stage-1" || location.pathname === "/support/stage-2" ? true : false;
+      dispatch(nestedTableDataReq({idToken, url, flag, dispatch}));
+    }
+  }, [url, isExpandable]);
 
   const martingleStatus = nestedTableData?.martingale?.status || nestedTableData?.martingale_status;
 
@@ -1797,11 +1815,16 @@ function ExpandedRowData({record}) {
 
   useEffect(() => {
     // console.log("kkk");
-    if (location.pathname === "/support/funded") {
-      setUrl(`v2/get/funded/details/${record.login_id}/`);
-      dispatch(nestedTableDataReq({idToken, url, flag: false, dispatch}));
+    if (isExpandable === record?.login_id) {
+      if (location.pathname === "/support/funded") {
+        setUrl(`v2/get/funded/details/${record.login_id}/`);
+        dispatch(nestedTableDataReq({idToken, url, flag: false, dispatch}));
+      }
     }
-  }, [url, record]);
+  }, [isExpandable, url]);
+
+  console.log("isExpandable", isExpandable);
+  console.log("isExpandable1", record?.login_id);
 
   function handleModal(text) {
     setModalVisible(true);
@@ -2030,6 +2053,12 @@ function ExpandedRowData({record}) {
   //     render: (text) => (text ? moment(text).format("MMMM Do YYYY, h:mm:ss a") : "-"),
   //   },
   // ];
+
+  function openSettlementDetails(currentValue, nestedTableData) {
+    setSettlementUserToUpdate(nestedTableData);
+    setisSettlementModalVisible(true);
+    setSettlementComment(currentValue);
+  }
   const columns = useMemo(() => {
     switch (selectedButton) {
       case "Payout":
@@ -2789,7 +2818,16 @@ function ExpandedRowData({record}) {
                     </div>
                   </div>
                   <div className="reason_container">
-                    <strong>Payment Reference</strong>
+                    <div>
+                      Payment Reference
+                      <img
+                        width={"15px"}
+                        src={addIcon}
+                        alt=""
+                        style={{cursor: "pointer"}}
+                        // onClick={() => openSettlementDetails(nestedTableData?.payment_reference, nestedTableData)}
+                      />
+                    </div>
                     <div
                       className="text"
                       onClick={() => copyToClipboard(nestedTableData?.payment_reference)}
@@ -2920,6 +2958,51 @@ function ExpandedRowData({record}) {
                 )}
               </Form.Item>
             )}
+          </Modal>
+          <Modal
+            title={"Payment Reference"}
+            open={isSettlementModalVisible}
+            onCancel={() => {
+              setisSettlementModalVisible(false);
+              setSettlementUserToUpdate(null);
+            }}
+            onOk={handleEditSettlement}
+            className="supportModel"
+          >
+            <Form.Item
+              className="lableWhite"
+              label="Edit Payment Reference"
+            >
+              <Input.TextArea
+                style={{height: "120px"}}
+                value={settlementComment}
+                // onChange={(e) => setEditCommentToUpdate(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value.length <= 255) {
+                    setSettlementComment(e.target.value);
+                    setShowWarning(false);
+                  }
+                  if (e.target.value.length === 255) {
+                    console.log("warning....");
+                    setShowWarning(true);
+                  }
+                  if (e.target.value.length === 256) {
+                    console.log("warning....");
+                    setMaxReasonChar(true);
+                  }
+                }}
+                maxLength={255}
+                placeholder="Write your comment here.."
+              />
+              {showWarning && (
+                <Alert
+                  message="Comment cannot exceed 255 characters."
+                  type="warning"
+                  showIcon
+                  className="warning"
+                />
+              )}
+            </Form.Item>
           </Modal>
         </div>
       )}
