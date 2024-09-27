@@ -367,7 +367,7 @@ const KYC = () => {
                 options={options}
               />
             </div>
-            <div className="filter_buttons">
+            <div className="desktop_filter_buttons">
               <Button
                 className={status === "all" ? "active" : ""}
                 onClick={() => handleTabChange("all")}
@@ -398,6 +398,19 @@ const KYC = () => {
               >
                 Pending
               </Button>
+            </div>
+            <div className="mobile_filter_buttons">
+              <Select
+                placeholder="Select Status"
+                className="header-select ml2 widthMin"
+                onChange={(value) => handleTabChange(value)}
+              >
+                <Option value="all">All</Option>
+                <Option value="Manual Approved">Manual Approved</Option>
+                <Option value="Approved">Approved</Option>
+                <Option value="Rejected">Rejected</Option>
+                <Option value="Pending">Pending</Option>
+              </Select>
             </div>
           </div>
         </div>
