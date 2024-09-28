@@ -1734,9 +1734,14 @@ function ExpandedRowData({record}) {
   const dispatch = useDispatch();
 
   function handleEditSettlement() {
+    const formData = new FormData();
+    formData.append("id", record?.id);
+    formData.append("payment_reference", settlementComment);
+    let isPayoutUpdate = location.pathname === "/support/payout";
     try {
-      // dispatch(editPaymentReferenceDetails({idToken, settlementComment}));
+      dispatch(statusUpdateReq({idToken, body: formData, id: null, isPayoutUpdate}));
     } catch (error) {}
+    setisSettlementModalVisible(false);
   }
   useEffect(() => {
     if (record.id === null || record.id === undefined) {
@@ -1803,6 +1808,7 @@ function ExpandedRowData({record}) {
       };
       const response = await axios.get(`${baseUrl}dg/get_document/${id}/`, config);
       setLoading(false);
+      console.log("ALPHA : ", response);
       return response.data;
     } catch (error) {
       dispatch(returnErrors(error?.response?.data?.detail || "Something went wrong!"), 400);
@@ -2055,6 +2061,10 @@ function ExpandedRowData({record}) {
   // ];
 
   function openSettlementDetails(currentValue, nestedTableData) {
+    console.log("Record : ", record);
+    console.log("payment_reference : ", record?.payment_reference);
+    console.log("nestedTableData : ", nestedTableData);
+    console.log("================================");
     setSettlementUserToUpdate(nestedTableData);
     setisSettlementModalVisible(true);
     setSettlementComment(currentValue);
@@ -2825,14 +2835,14 @@ function ExpandedRowData({record}) {
                         src={addIcon}
                         alt=""
                         style={{cursor: "pointer"}}
-                        // onClick={() => openSettlementDetails(nestedTableData?.payment_reference, nestedTableData)}
+                        onClick={() => openSettlementDetails(record?.payment_reference, nestedTableData)}
                       />
                     </div>
                     <div
                       className="text"
                       onClick={() => copyToClipboard(nestedTableData?.payment_reference)}
                     >
-                      {(nestedTableData && nestedTableData?.payment_reference) || "-"}
+                      {record?.payment_reference || "-"}
                     </div>
                   </div>
                 </div>
