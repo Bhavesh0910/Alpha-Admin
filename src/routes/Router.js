@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
 import RiskManagement from "../pages/RiskManagement";
 
@@ -68,6 +68,11 @@ import AllCertificates from "../pages/Certificates/AllCertificates";
 import CreateCertificates from "../pages/Certificates/CreateCertificates";
 import CreateCertificateViewLogs from "../pages/Certificates/CreateCertificates/Logs";
 import Permissions from "../pages/Permissions/Permissions";
+import AddValueForm from "../components/FundingEvaluation/AddNewForm";
+// import Stage1 from "../pages/NewStageManager/Stage1";
+// import Stage2 from "../pages/NewStageManager/Stage2";
+// import NewFunded from "../pages/NewStageManager/Funded";
+// import Payouts from "../pages/NewStageManager/Payouts";
 
 function Router() {
   return (
@@ -156,7 +161,6 @@ function Router() {
               </PageLayout>
             }
           />
-
 
           <Route
             exact={true}
@@ -747,7 +751,6 @@ function Router() {
             }
           />
 
-
           <Route
             exact={true}
             path="/user-profile"
@@ -758,7 +761,51 @@ function Router() {
             }
           />
 
-
+          <Route
+            exact={true}
+            path="/add-value-form"
+            element={
+              <PageLayout headerName="Funding Evaluation">
+                <AddValueForm />
+              </PageLayout>
+            }
+          />
+          {/* <Route
+            exact={true}
+            path="/stage1"
+            element={
+              <PageLayout headerName="Support">
+                <Stage1 />
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/stage2"
+            element={
+              <PageLayout headerName="Support">
+                <Stage2 />
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/funded"
+            element={
+              <PageLayout headerName="Support">
+                <NewFunded />
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/payout"
+            element={
+              <PageLayout headerName="Support">
+                <Payouts />
+              </PageLayout>
+            }
+          /> */}
         </Route>
       </Routes>
     </BrowserRouter>

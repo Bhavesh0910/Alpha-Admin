@@ -178,6 +178,27 @@ const getFundingDetails = async (idToken) => {
   return output;
 };
 
+// const getNewFundingDetails = async (idToken) => {
+//   let config = {
+//     headers: {
+//       Authorization: `Bearer ${idToken}`,
+//     },
+//   };
+//   let output;
+//   await axios
+//     .get(`${baseUrl}v2/challenges/admin/`, config)
+//     .then((res) => {
+//       output = res;
+//       return output;
+//     })
+//     .catch(function (error) {
+//       output = error;
+//       return output;
+//     });
+
+//   return output;
+// };
+
 //support
 const getSupportTableDetails = async (idToken, pageNumber, type, severity, status, search) => {
   const params = {
@@ -1006,9 +1027,11 @@ export const getStageChart = async (idToken, stage, startDate, endDate) => {
     };
 
     if (startDate && endDate) {
-      response = await axios.get(`${baseUrl}v2/account-overview/stage-${stage}-chart/?start_date=${startDate}&end_date=${endDate}`, config);
+      // response = await axios.get(`${baseUrl}v2/account-overview/stage-${stage}-chart/?start_date=${startDate}&end_date=${endDate}`, config);
+      response = await axios.get(`${baseUrl}v3/account-overview/stage-${stage}-chart/?start_date=${startDate}&end_date=${endDate}`, config);
+
     } else {
-      response = await axios.get(`${baseUrl}v2/account-overview/stage-${stage}-chart/`, config);
+      response = await axios.get(`${baseUrl}v3/account-overview/stage-${stage}-chart/`, config);
     }
     return response;
   } catch (error) {

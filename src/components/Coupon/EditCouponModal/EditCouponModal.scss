@@ -23,6 +23,8 @@
     border: 1px solid var(--Stroke, #252a29);
     background: var(--Main-Background, #fff);
     position: relative;
+    height: 70vh;
+    overflow: auto;
     .header_wrapper {
       display: flex;
       flex-direction: row;

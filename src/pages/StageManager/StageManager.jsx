@@ -2383,15 +2383,18 @@ function ExpandedRowData({record}) {
               </div>
               <div className="nestedPayoutRow2">
                 <div className="comment_box">
-                  <div>
-                    Comment{" "}
-                    <img
-                      width={"15px"}
-                      src={addIcon}
-                      alt=""
-                      style={{cursor: "pointer"}}
-                      onClick={() => openEditModal(record?.comment, record)}
-                    />
+                  <div className="editIconContent">
+                    <strong> Comment </strong>
+                    <div>
+                      {" "}
+                      <img
+                        width={"15px"}
+                        src={addIcon}
+                        alt=""
+                        style={{cursor: "pointer"}}
+                        onClick={() => openEditModal(record?.comment, record)}
+                      />
+                    </div>
                   </div>
                   <div
                     className="text"
@@ -2498,15 +2501,17 @@ function ExpandedRowData({record}) {
               </div>
               <div className="nestedPayoutRow2">
                 <div className="comment_box">
-                  <div>
-                    Comment{" "}
-                    <img
-                      width={"15px"}
-                      src={addIcon}
-                      alt=""
-                      style={{cursor: "pointer"}}
-                      onClick={() => openEditModal(record?.comment, record)}
-                    />
+                  <div className="editIconContent">
+                    <strong> Comment </strong>
+                    <div>
+                      <img
+                        width={"15px"}
+                        src={addIcon}
+                        alt=""
+                        style={{cursor: "pointer"}}
+                        onClick={() => openEditModal(record?.comment, record)}
+                      />
+                    </div>
                   </div>
                   <div className="text">{record?.comment || "-"}</div>
                 </div>
@@ -2801,15 +2806,18 @@ function ExpandedRowData({record}) {
                 </div> */}
                 <div className="nestedPayoutRow2">
                   <div className="comment_box">
-                    <div>
-                      Comment{" "}
-                      <img
-                        width={"15px"}
-                        src={addIcon}
-                        alt=""
-                        style={{cursor: "pointer"}}
-                        onClick={() => openEditModal(record?.comment, record)}
-                      />
+                    <div className="editIconContent">
+                      <strong> Comment </strong>
+                      <div>
+                        {" "}
+                        <img
+                          width={"15px"}
+                          src={addIcon}
+                          alt=""
+                          style={{cursor: "pointer"}}
+                          onClick={() => openEditModal(record?.comment, record)}
+                        />
+                      </div>
                     </div>
                     <div
                       className="text"
@@ -2828,15 +2836,18 @@ function ExpandedRowData({record}) {
                     </div>
                   </div>
                   <div className="reason_container">
-                    <div>
-                      Payment Reference
-                      <img
-                        width={"15px"}
-                        src={addIcon}
-                        alt=""
-                        style={{cursor: "pointer"}}
-                        onClick={() => openSettlementDetails(record?.payment_reference, nestedTableData)}
-                      />
+                    <div className="editIconContent">
+                      <strong> Payment Reference</strong>
+                      <div>
+                        {" "}
+                        <img
+                          width={"15px"}
+                          src={addIcon}
+                          alt=""
+                          style={{cursor: "pointer"}}
+                          onClick={() => openSettlementDetails(record?.payment_reference, nestedTableData)}
+                        />
+                      </div>
                     </div>
                     <div
                       className="text"

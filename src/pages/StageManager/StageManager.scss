@@ -395,6 +395,11 @@
     gap: 8px;
     align-items: flex-start;
   }
+  .editIconContent{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
 }
 .text {
   color: var(--Brand-2, #12181f);

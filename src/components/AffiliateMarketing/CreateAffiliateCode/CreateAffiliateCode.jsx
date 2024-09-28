@@ -146,7 +146,7 @@ const CreateAffiliateCode = () => {
             <label htmlFor="commission">Commission (%)</label>
             <Input
               type="number"
-              placeholder="0"
+              placeholder="Enter Commission"
               prefix={<PercentageIcon />}
               value={couponData.aff_percentage}
               onChange={(e) =>
@@ -161,7 +161,7 @@ const CreateAffiliateCode = () => {
             <label htmlFor="repeat_commission">Repeat Commission (%)</label>
             <Input
               type="number"
-              placeholder="0"
+              placeholder="Enter Repeat Commission"
               prefix={<PercentageIcon />}
               value={couponData.repeat_percent}
               onChange={(e) =>
@@ -177,6 +177,7 @@ const CreateAffiliateCode = () => {
           <label htmlFor="coupon_percent">Discount (%)</label>
           <Input
             type="number"
+            placeholder="Enter Discount"
             value={couponData.coupon_percent}
             onChange={(e) => setCouponData((prev) => ({...prev, coupon_percent: e.target.value}))}
           />

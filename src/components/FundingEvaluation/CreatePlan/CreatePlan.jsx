@@ -8,17 +8,21 @@ import {CircularProgress} from "@mui/material";
 import {Button, Input, Select, Spin} from "antd";
 import {fetchFundingDetails} from "../../../store/NewReducers/fundingSlice";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
+import {useNavigate} from "react-router-dom";
 const {Option} = Select;
 
 const CreateTradingAccount = () => {
   const [emailOpts, setEmailOpts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [accBalance, setAccBalance] = useState("");
+  const [customFlag, setCustomFlag] = useState(false);
   const idToken = useSelector((state) => state.auth.idToken);
   const dispatch = useDispatch();
 
   const {fundingData} = useSelector((state) => state.funding);
   const [index, setIndex] = useState(0);
 
+  const navigate = useNavigate();
   // User search by email
   const fetch = async (value) => {
     setIsLoading(true);
@@ -82,19 +86,15 @@ const CreateTradingAccount = () => {
     console.log("dataFundingAcc : ", data);
   }, [data]);
 
-
-
   const handleCreateTradingAccount = async () => {
-   
     const {challenge, group, leverage, name, pwd, pwdInvestor, raw_spread, status, user, email, reason} = data;
- 
+
     if (!challenge || !leverage || !name || !pwd || !pwdInvestor || !raw_spread || !status || !user || !email || !reason) {
       dispatch(returnErrors("Please fill all the fields.", 400));
       return;
     }
     setIsSpinner(true);
-    console.log(data)
-
+    console.log(data);
 
     let traderData = {};
     if (data?.platform === "MT5") {
@@ -174,6 +174,29 @@ const CreateTradingAccount = () => {
       timeoutId = setTimeout(() => {
         fetch(value);
       }, 1500);
+    }
+  };
+
+  useEffect(() => {
+    console.log("Custom flag : ", customFlag);
+  }, [customFlag]);
+
+  const handleAccountBalanceChange = (value, allValues) => {
+    const update = {
+      leverage: 100,
+    };
+    console.log("Custom why i am here");
+    const selectedChallenge = fundingData?.[data?.fundingEvalValue]?.filter((item) => item.account_balance === value)?.map((item) => item.id);
+    setData((prev) => ({...prev, ...update}));
+    setData((prev) => ({...prev, challenge: selectedChallenge ? selectedChallenge[0] : null}));
+    setData((prev) => ({...prev, leverageDisplayValue: value}));
+  };
+
+  const handleAccountBalanceChange2 = (value, allValues) => {
+    if (value && !amounts[index]?.find((item) => item?.includes(`${value}`))) {
+      setCustomFlag(true);
+      setAccBalance(value);
+      // navigate("/add-value-form",{state:{accBalance:value}})
     }
   };
 
@@ -274,7 +297,7 @@ const CreateTradingAccount = () => {
         <div className="row1">
           <div className="form_input">
             <label htmlFor="AccountBalance">Account Balance</label>
-            <Select
+            {/* <Select
               className="funding_evaluation_selector"
               placeholder="Enter account balance"
               options={index !== -1 ? amounts[index]?.map((item) => ({label: item, value: item})) : []}
@@ -290,7 +313,22 @@ const CreateTradingAccount = () => {
                 setData((prev) => ({...prev, leverageDisplayValue: value}));
               }}
               value={data?.leverageDisplayValue ? data?.leverageDisplayValue : null}
-            />
+            /> */}
+            <Select
+              className="funding_evaluation_selector"
+              placeholder="Enter account balance"
+              showSearch={data?.fundingEvalValue === "Scaling" ? true : false}
+              value={accBalance || undefined}
+              options={!customFlag ? (index !== -1 ? amounts[index]?.map((item) => ({label: item, value: item})) : []) : [{label: `Add ${accBalance}`, value: accBalance}]}
+              onChange={(value, allValues) => {
+                handleAccountBalanceChange(value, allValues);
+              }}
+              onSelect={(value) => {
+                console.log("custom : ",value)
+                customFlag && navigate("/add-value-form", {state: {accountBalance: value}});
+              }}
+              onSearch={handleAccountBalanceChange2}
+            ></Select>
           </div>
           <div className="form_input">
             <label htmlFor="Stage">Stage</label>
