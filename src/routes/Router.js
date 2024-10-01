@@ -102,7 +102,7 @@ function Router() {
             exact={true}
             path="/risk-management"
             element={
-              <PageLayout headerName="Risk Mangement">
+              <PageLayout headerName="Risk Management">
                 <RiskManagement />
               </PageLayout>
             }
