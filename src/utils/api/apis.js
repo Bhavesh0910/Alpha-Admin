@@ -1609,7 +1609,7 @@ export const getGroupsList = async (idToken) => {
   }
 };
 
-export const createGroupPermissions = async (idToken, groupData) => {
+export const createGroupPermissionsApi = async (idToken, groupData) => {
   try {
     const response = await axios.post(`${baseUrl}admin-create-group-permissions/`, {
       group_name: groupData.group_name,
@@ -1622,6 +1622,28 @@ export const createGroupPermissions = async (idToken, groupData) => {
     return response.data;
   } catch (error) {
     console.error("Error creating group permissions:", error);
+    throw error;
+  }
+};
+
+export const assignGroupPermissions = async (idToken, userId, groupId, permissionIds) => {
+  try {
+    const response = await axios.post(
+      `${baseUrl}admin/assign-group-permissions/`, 
+      {
+        user_id: userId,
+        group_id: groupId,
+        permission_ids: permissionIds,
+      }, 
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error assigning group permissions:", error);
     throw error;
   }
 };
@@ -2343,6 +2365,24 @@ const CreateTradingAccountReq = async (idToken, data, platform) => {
     return response;
   } catch (error) {
     return error;
+  }
+};
+
+export const createChallenge = async (idToken, challengeData) => {
+  try {
+    const response = await axios.post(
+      `${baseUrl}v2/challenges/admin/create/`,
+      challengeData, 
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error creating challenge:", error);
+    throw error;
   }
 };
 

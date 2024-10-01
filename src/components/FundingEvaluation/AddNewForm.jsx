@@ -1,10 +1,17 @@
-import React, {useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
-import {Input, Button, Switch} from "antd";
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { Input, Button, Switch } from "antd";
 import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { createChallenge } from "../../utils/api/apis";
+import { returnMessages } from "../../store/reducers/message";
+import { returnErrors } from "../../store/reducers/error";
+
 const AddValueForm = () => {
   const location = useLocation();
   const initialAccountBalance = location.state?.accountBalance || "";
+  const idToken = useSelector((state) => state.auth.idToken);
+
   const [formData, setFormData] = useState({
     fundingEvaluation: "Scaling",
     name: "",
@@ -31,18 +38,22 @@ const AddValueForm = () => {
     martingale: false,
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleSwitchChange = (field) => (checked) => {
     setFormData((prev) => ({
       ...prev,
       [field]: checked,
     }));
   };
+
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    console.log(formData);
+  const dispatch = useDispatch()
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationSchema = Yup.object().shape({
       fundingEvaluation: Yup.string().required("Funding Evaluation is required"),
@@ -68,36 +79,60 @@ const AddValueForm = () => {
       martingale: Yup.boolean().required("Martingale is required"),
     });
 
-    validationSchema
-      .validate(formData, {abortEarly: false})
-      .then(() => {
-        console.log(formData);
-      })
-      .catch((err) => {
-        console.error(err);
-        const errorMessages = {};
-        err.inner.forEach((error) => {
-          errorMessages[error.path] = error.message;
-        });
-        setErrors(errorMessages);
+    try {
+      await validationSchema.validate(formData, { abortEarly: false });
+
+      let challengeData = {
+        name: formData.name,
+        account_balance: formData.accountBalance,
+        Leverage: formData.leverage,
+        plan_type: formData.fundingEvaluation,
+        minimum_trading_days: formData.minTradingDays,
+        phase_1_total_days: formData.phase1TotalDays,
+        phase_2_total_days: formData.phase2TotalDays,
+        Evaluation_Phase_1: formData.evaluationPhase1,
+        Evaluation_Phase_2: formData.evaluationPhase2,
+        Max_Loss: formData.maxLoss,
+        Max_Daily_Loss: formData.maxDailyLoss,
+        Profit_Split: formData.profitSplit,
+        Bi_Weekly_Profit_Split: formData.biWeeklyProfitSplit,
+        Max_Capital_Growth: formData.maxCapitalGrowth,
+        Trading_Requirements: formData.tradingRequirement,
+        Tradable_Asset: 'FX/Indices/Commodities',
+        Trade_through_News: formData.tradeThroughNews,
+        Hold_over_the_Weekend: formData.holdOverWeekend,
+        EAs: formData.ea,
+        Hedging_and_Stacking: formData.hedgingAndStocking,
+        Martin_Gale: formData.martingale,
+        Price: formData.price,
+        server: formData.server,
+        broker: formData.broker,
+      }
+      await createChallenge(idToken, challengeData);
+      dispatch(returnMessages("Challenge created", 200))
+    
+
+      console.log("Challenge created successfully" , challengeData);
+    } catch (err) {
+      const errorMessages = {};
+      err.inner.forEach((error) => {
+        errorMessages[error.path] = error.message;
       });
+      setErrors(errorMessages);
+      console.error("Validation failed:", errorMessages);
+      dispatch(returnErrors("Error creating challenge" , 400))
+    }
   };
-  const [errors, setErrors] = useState({});
 
   return (
     <div className="create_plan_container">
-      {/* <h2>Funding Evaluation</h2> */}
-      <form
-        onSubmit={handleSubmit}
-        className="create_plan_form"
-      >
+      <form onSubmit={handleSubmit} className="create_plan_form">
         <div className="row1">
           <div className="form_input">
             <label>Funding Evaluation</label>
             <Input
               name="fundingEvaluation"
               value={formData.fundingEvaluation}
-              //   onChange={handleChange}
               disabled
             />
           </div>
@@ -110,7 +145,7 @@ const AddValueForm = () => {
               onChange={handleChange}
               placeholder="Name"
             />
-            {errors.name && <div style={{color: "red"}}>{errors.name}</div>}
+            {errors.name && <div style={{ color: "red" }}>{errors.name}</div>}
           </div>
 
           <div className="form_input">
@@ -119,10 +154,8 @@ const AddValueForm = () => {
               name="accountBalance"
               value={formData.accountBalance}
               disabled
-              //   onChange={handleChange}
-              //   placeholder="Account Balance"
             />
-            {errors.accountBalance && <div style={{color: "red"}}>{errors.accountBalance}</div>}
+            {errors.accountBalance && <div style={{ color: "red" }}>{errors.accountBalance}</div>}
           </div>
         </div>
         <div className="row1">
@@ -307,10 +340,7 @@ const AddValueForm = () => {
             />
           </div>
         </div>
-        <Button
-          type="primary"
-          onClick={handleSubmit}
-        >
+        <Button type="primary" onClick={handleSubmit}>
           Submit
         </Button>
       </form>
