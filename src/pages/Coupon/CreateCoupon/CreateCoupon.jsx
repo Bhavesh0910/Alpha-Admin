@@ -339,7 +339,7 @@ const CreateCoupon = () => {
                 checked={isMulti}
                 onChange={(e) => setIsMulti(e.target.checked)}
               >
-                Multi Use?
+                Multi Use
               </Checkbox>
             </div>
             <Button
