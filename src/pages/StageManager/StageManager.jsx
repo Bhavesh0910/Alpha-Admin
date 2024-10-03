@@ -418,17 +418,18 @@ const StageManager = () => {
             ),
           },
           // Table.SELECTION_COLUMN,
-          // {
-          //   title: "Full Name",
-          //   dataIndex: "username",
-          //   key: "username",
-          //   render: (text) => (text ? text : "-"),
-          // },
+          {
+            title: "Name",
+            dataIndex: "username",
+            key: "username",
+            width:80,
+            render: (text) => (text ? text : "-"),
+          },
           {
             title: "Country",
             dataIndex: "country",
             key: "country",
-            width: 80,
+            width: 75,
             render: (country) => {
               const countryName = country;
               const countryCode = lookup.byCountry(countryName);
@@ -519,12 +520,13 @@ const StageManager = () => {
           //     />
           //   ),
           // },
-          // {
-          //   title: "Date (created at)",
-          //   dataIndex: "created_at",
-          //   key: "created_at",
-          //   render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
-          // },
+          {
+            title: "Date (created at)",
+            dataIndex: "created",
+            key: "created",
+            width: 100,
+            render: (text) => (text ? moment(text).format("DD/MMM/YYYY") : "-"),
+          },
           // {
           //   title: "Date (last updated)",
           //   dataIndex: "updated_at",
@@ -681,12 +683,13 @@ const StageManager = () => {
             ),
           },
           // Table.SELECTION_COLUMN,
-          // {
-          //   title: "Full Name",
-          //   dataIndex: "username",
-          //   key: "username",
-          //   render: (text) => (text ? text : "-"),
-          // },
+          {
+            title: "Full Name",
+            dataIndex: "username",
+            key: "username",
+            width:100,
+            render: (text) => (text ? text : "-"),
+          },
           {
             title: "Country",
             dataIndex: "country",
@@ -829,12 +832,13 @@ const StageManager = () => {
           //     />
           //   ),
           // },
-          // {
-          //   title: "Date (created at)",
-          //   dataIndex: "created_at",
-          //   key: "created_at",
-          //   render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
-          // },
+          {
+            title: "Date (created at)",
+            dataIndex: "created",
+            key: "created",
+            width: 100,
+            render: (text) => moment(text).format("DD/MMM/YYYY"),
+          },
           // {
           //   title: "Date (last updated)",
           //   dataIndex: "updated_at",
@@ -999,6 +1003,22 @@ const StageManager = () => {
             dataIndex: "email",
             key: "email",
             width: 80,
+            render:(text)=>text ? text :'-'
+          },
+          {
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
+            width: 80,
+            render:(text,record)=>record?.user_id?.name ? record?.user_id?.name :'-'
+
+          },
+          {
+            title: " Start Date",
+            dataIndex: "start_date",
+            key: "start_date",
+            width: 100,
+            render: (text) => (text ? moment(text).format("DD/MMM/YYYY") : "-"),
           },
           {
             title: "Email Generated",
@@ -1176,12 +1196,13 @@ const StageManager = () => {
             width: 100,
             render: (text) => <span>{text}</span>,
           },
-          // {
-          //   title: "Username",
-          //   dataIndex: "user_name",
-          //   key: "user_name",
-          //   render: (text) => <span>{text}</span>,
-          // },
+          {
+            title: "Username",
+            dataIndex: "user_name",
+            key: "user_name",
+            width:100,
+            render: (text) => <span>{text}</span>,
+          },
           {
             title: "Email Generated",
             dataIndex: "email_sent",
@@ -1221,12 +1242,13 @@ const StageManager = () => {
               />
             ),
           },
-          // {
-          //   title: "Date (created at)",
-          //   dataIndex: "created_at",
-          //   key: "created_at",
-          //   render: (text) => moment(text).format("MMMM Do YYYY, h:mm:ss a"),
-          // },
+          {
+            title: "Date (created at)",
+            dataIndex: "created_at",
+            key: "created_at",
+            width:100,
+            render: (text) => (text ? moment(text).format("DD/MMM/YYYY") : "-"),
+          },
           {
             title: "Payment Mode",
             dataIndex: "method",
@@ -2317,14 +2339,14 @@ function ExpandedRowData({record}) {
                   {/* <div>{nestedTableData?.contact}</div> */}
                   <button className={`${martingleStatus === "Success" ? "status_success" : "notButton"}`}>Success</button>
                 </div>
-                <div>
+                {/* <div>
                   <div>Name</div>
                   <p>{record?.username || "-"}</p>
-                </div>
-                <div className="date_time">
+                </div> */}
+                {/* <div className="date_time">
                   <div>Date (Created at)</div>
                   <p>{moment(record?.created_at).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
-                </div>
+                </div> */}
                 <div className="date_time">
                   <div>Date (last updated)</div>
                   <p>{moment(record?.updated_at).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
@@ -2426,10 +2448,10 @@ function ExpandedRowData({record}) {
               {" "}
               <div className="expanded_detail_box">
                 <div className="payoutNestedTable">
-                  <div>
+                  {/* <div>
                     <div>Name</div>
                     <p>{record?.user_id?.name || "-"}</p>
-                  </div>
+                  </div> */}
                   <div>
                     <div>Martingle</div>
                     {/* <div>{nestedTableData?.contact}</div> */}
@@ -2493,10 +2515,10 @@ function ExpandedRowData({record}) {
                     <div>Date Joined</div>
                     <p>{moment(record?.user_id?.date_joined).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
                   </div>
-                  <div className="date_time">
+                  {/* <div className="date_time">
                     <div>Date (Created at)</div>
                     <p>{moment(record?.start_date).format("MMMM Do YYYY, h:mm:ss a") || "-"}</p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="nestedPayoutRow2">

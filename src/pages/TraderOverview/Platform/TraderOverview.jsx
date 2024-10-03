@@ -194,7 +194,7 @@ function TraderOverview() {
     const formattedOptions = Object.keys(data).map((key) => ({
       label: key,
       value: key,
-      children: (data[key] || []).map((item) => ({
+      children: (data && data[key] || [])?.map((item) => ({
         label: item.name || "",
         value: item.name || "",
       })),
@@ -218,7 +218,7 @@ function TraderOverview() {
     setSearchText("");
     setDates(null);
     setPhase("");
-    const data = value === "MT5" ? "trader-accounts" : value === "C-traders" ? "ctrader-accounts" : "dxtraders";
+    const data = value === "MT5" ? "trader-accounts" : value === "CTraders" ? "ctrader-accounts" : "dxtraders";
     setPlatform(data);
   };
 
@@ -234,8 +234,8 @@ function TraderOverview() {
       label: "MT5",
     },
     {
-      value: "C-traders",
-      label: "C-traders",
+      value: "CTraders",
+      label: "CTraders",
     },
     {
       value: "DX",
@@ -435,6 +435,15 @@ function TraderOverview() {
             <span>{countryName}</span>
           );
         },
+      },
+      {
+        title: "Name",
+        dataIndex:"name",
+        key:"name",
+        width:100,
+        render:(text)=>{
+          return <span>{text?text :"-"}</span>;
+        }
       },
       {
         title: "Account No.",
@@ -1118,10 +1127,10 @@ const ExpandableRow = ({record}) => {
   return (
     <>
       <div className="NestedTable">
-        <div>
+        {/* <div>
           <div>Name</div>
           <p>{record?.name || "-"}</p>
-        </div>
+        </div> */}
         {/* <div>
           <div>Start Date</div>
           <p>{record?.start_date ? dayjs(record?.start_date).format("YYYY-MM-DD") : "-"}</p>

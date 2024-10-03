@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {CreateTradingAccountReq, UserSearchReq} from "../../../utils/api/apis";
 import "./CreatePlan.scss";
 import {useEffect, useState} from "react";
-import {returnErrors} from "../../../store/reducers/error";
+import errorReducer, {returnErrors} from "../../../store/reducers/error";
 import {returnMessages} from "../../../store/reducers/message";
 import {CircularProgress} from "@mui/material";
 import {Button, Input, Select, Spin} from "antd";
@@ -43,7 +43,7 @@ const CreateTradingAccount = () => {
   const [isSpinner, setIsSpinner] = useState(false);
 
   const stages = ["Evaluation", "Verification", "Funded"];
-  const platforms = ["MT5", "C-Trader", "Dx-Trader"];
+  const platforms = ["MT5", "CTrader", "Dx-Trader"];
   const rawSpreadOptions = [
     {label: "Raw Spread", value: "Raw Spread"},
     {label: "No Commission", value: "No commission"},
@@ -89,7 +89,7 @@ const CreateTradingAccount = () => {
   const handleCreateTradingAccount = async () => {
     const {challenge, group, leverage, name, pwd, pwdInvestor, raw_spread, status, user, email, reason} = data;
 
-    if (!challenge || !leverage || !name || !pwd || !pwdInvestor || !raw_spread || !status || !user || !email || !reason) {
+    if (!challenge || !leverage || !name || !pwd || !pwdInvestor || raw_spread === null || raw_spread === undefined || !status || !user || !email || !reason) {
       dispatch(returnErrors("Please fill all the fields.", 400));
       return;
     }
@@ -111,7 +111,7 @@ const CreateTradingAccount = () => {
         email: email,
       };
     }
-    if (data?.platform === "C-Trader") {
+    if (data?.platform === "CTrader") {
       traderData = {
         user: user,
         name: name,
@@ -141,12 +141,25 @@ const CreateTradingAccount = () => {
     }
 
     console.log("traderdata : ", traderData);
-    const response = await CreateTradingAccountReq(idToken, traderData, data?.platform);
-    if (response?.status < 399) {
-      dispatch(returnMessages("Created Account Successfully", 201));
-    } else {
-      const msg = response?.response?.data?.detail || "Something went wrong";
+    try {
+      const response = await CreateTradingAccountReq(idToken, traderData, data?.platform);
+      if (response?.status < 399) {
+        const id = response?.data?.login || "";
+        const message = response?.data?.message || "Account created successfully!";
+        console.log("id", id);
+        dispatch(returnMessages(`${message.slice(0, 1).toUpperCase() + message.slice(1, message.length - 1)} ${id}`, 201));
+        setIsSpinner(false);
+      } else {
+        throw response;
+      }
+    } catch (error) {
+      console.log("errorr:", error);
+      const msg = error?.response?.data?.message || error?.response?.data[0] || "Something went wrong";
       dispatch(returnErrors(msg, 400));
+      console.log("I am in catch");
+
+      traderData = {};
+      setIsSpinner(false);
     }
     setData({
       challenge: null,
@@ -162,9 +175,6 @@ const CreateTradingAccount = () => {
       email: "",
       reason: "",
     });
-
-    traderData = {};
-    setIsSpinner(false);
   };
 
   let timeoutId;
@@ -324,7 +334,7 @@ const CreateTradingAccount = () => {
                 handleAccountBalanceChange(value, allValues);
               }}
               onSelect={(value) => {
-                console.log("custom : ",value)
+                console.log("custom : ", value);
                 customFlag && navigate("/add-value-form", {state: {accountBalance: value}});
               }}
               onSearch={handleAccountBalanceChange2}
