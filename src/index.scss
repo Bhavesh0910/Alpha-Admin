@@ -936,6 +936,11 @@ input:-webkit-autofill:active {
   background: var(--in-Progress-Body, #fffdcf);
 }
 
+.ant-pagination-item a{
+  @media only screen and (max-width:400px){
+    font-size: 10px;
+  }
+}
 html * {
   &::-webkit-scrollbar {
     width: 8px;
