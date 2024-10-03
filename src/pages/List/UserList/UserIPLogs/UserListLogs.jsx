@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Breadcrumb, Card } from "antd";
+import { Breadcrumb } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import AntTable from "../../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../../ReusableComponents/LoaderOverlay";
@@ -22,22 +22,24 @@ const UserListLogs = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const baseUrl = "v3/user-log/list/";
     const query = `?page=${pageNo}&page_size=${pageSize}`;
-    const url = baseUrl + query;
+    const url = query;
     if (idToken) {
       dispatch(logsListReq({ idToken, url, key: "userLogData", dispatch }));
     }
   }, [pageNo, pageSize, idToken, dispatch]);
 
   const transformedData = (userLogData || []).map((log) => ({
-    ...log,
-    status: log.action === 'unblock_user' ? 'blocked' : 
-            log.action === 'block_user' ? 'allowed' : '-',
-    date_time: log.date_time ? dayjs(log.date_time).format('YYYY-MM-DD HH:mm:ss') : '-',
+    admin_email: log.admin_user?.email || "-", // Extracting admin email
+    date_time: log.created_at ? dayjs(log.created_at).format('YYYY-MM-DD HH:mm:ss') : "-", // Formatting created_at timestamp
+    status: log.meta_data?.status || "-", // Extracting status from meta_data
+    category: log.category || "-", // Extracting category
+    action: log.action || "-", // Extracting action
+    user_reference: log.user_reference || "-", // Extracting user reference
+    account_reference: log.account_reference || "-", // Extracting account reference
   }));
 
-  const columns = useMemo(()=>[
+  const columns = useMemo(() => [
     {
       title: "Admin Email ID",
       dataIndex: "admin_email",
@@ -45,7 +47,7 @@ const UserListLogs = () => {
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Date and Time",
+      title: "Created at",
       dataIndex: "date_time",
       key: "date_time",
       render: (text) => (text ? text : "-"),
@@ -54,6 +56,30 @@ const UserListLogs = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      render: (text) => (text ? text : "-"),
+    },
+    {
+      title: "Category",
+      dataIndex: "category",
+      key: "category",
+      render: (text) => (text ? text : "-"),
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      render: (text) => (text ? text : "-"),
+    },
+    {
+      title: "User Reference",
+      dataIndex: "user_reference",
+      key: "user_reference",
+      render: (text) => (text ? text : "-"),
+    },
+    {
+      title: "Account Reference",
+      dataIndex: "account_reference",
+      key: "account_reference",
       render: (text) => (text ? text : "-"),
     },
   ]);

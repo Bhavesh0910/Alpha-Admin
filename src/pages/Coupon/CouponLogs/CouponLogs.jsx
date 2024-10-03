@@ -1,89 +1,74 @@
-import {Breadcrumb, Card} from "antd";
-import React, {useEffect, useMemo, useState} from "react";
+import { Breadcrumb } from "antd";
+import React, { useEffect, useMemo, useState } from "react";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import {Link} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {logsListReq} from "../../../store/NewReducers/logsSlice";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logsListReq } from "../../../store/NewReducers/logsSlice";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import {render} from "react-saga";
+import moment from "moment";
+import "./CouponLogs.scss"; // Ensure you have a CSS file for styles
 
 const CouponLogs = () => {
-  const {idToken} = useSelector((state) => state.auth);
-  const {couponLogData, count, isLoading} = useSelector((state) => state.logs);
+  const { idToken } = useSelector((state) => state.auth);
+  const { couponLogData, count, isLoading } = useSelector((state) => state.logs);
 
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const baseurl = "v3/coupon-log/list/";
     const query = `?page=${pageNo}&page_size=${pageSize}&category=COUPON`;
-    const url = baseurl + query;
-    dispatch(logsListReq({idToken, url, key: "couponLogData", dispatch}));
-  }, [pageNo, pageSize, idToken]);
+    dispatch(logsListReq({ idToken, url: query, key: "couponLogData", dispatch }));
+  }, [pageNo, pageSize, idToken, dispatch]);
+
+  const transformedData = (couponLogData || []).map((log) => ({
+    admin_email: log.admin_user?.email || "-",
+    date_time: log.created_at ? moment(log.created_at).format('YYYY-MM-DD HH:mm:ss') : "-",
+    login_id: log.meta_data?.login_id || "-", // Changed to login_id
+    add_user: log.user_reference || "-",
+    action: log.action || "-",
+    account_reference: log.account_reference || "-",
+    status: log.status || "-",
+  }));
 
   const columns = useMemo(() => [
     {
       title: "Admin Email ID",
       dataIndex: "admin_email",
       key: "admin_email",
-      render: (text) => (text ? text : "-"),
+      render: (text) => text || "-",
     },
     {
       title: "Date and Time",
       dataIndex: "date_time",
-      key: "dateTime",
-      render: (text) => (text ? text : "-"),
+      key: "date_time",
+      render: (text) => text || "-",
     },
     {
-      title: "Coupon Code",
-      dataIndex: "coupon_code",
-      key: "couponCode",
-      render: (text) => (text ? text : "-"),
+      title: "Login ID", 
+      dataIndex: "login_id",
+      key: "login_id",
+      render: (text) => text || "-",
     },
     {
       title: "Add User",
       dataIndex: "add_user",
-      key: "addUser",
-      render: (text) => (text ? text : "-"),
+      key: "add_user",
+      render: (text) => text || "-",
     },
     {
-      title: "Coupon Amount",
-      dataIndex: "coupon_amount",
-      key: "couponAmount",
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Coupon Percentage",
-      dataIndex: "coupon_percentage",
-      key: "couponPercentage",
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Challenge",
-      dataIndex: "challenge",
-      key: "challenge",
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Coupon Expiry",
-      dataIndex: "coupon_expiry",
-      key: "couponExpiry",
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (text) => (text ? text : "-"),
+      title: "Account Reference",
+      dataIndex: "account_reference",
+      key: "account_reference",
+      render: (text) => text || "-",
     },
     {
       title: "Action",
       dataIndex: "action",
       key: "action",
-      render: (text) => (text ? text : "-"),
+      render: (text) => text || "-",
     },
-  ]);
+  ], []);
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
@@ -93,24 +78,19 @@ const CouponLogs = () => {
   return (
     <div className="table-wrapper viewLogs_table">
       <div className="header_wrapper">
-        <Breadcrumb
-          separator=">"
-          items={[
-            {
-              title: <Link to="/coupon">Coupon</Link>,
-            },
-            {
-              title: <Link to="">Log</Link>,
-            },
-          ]}
-        />
+        <Breadcrumb separator=">">
+          <Breadcrumb.Item>
+            <Link to="/coupon">Coupon</Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>Log</Breadcrumb.Item>
+        </Breadcrumb>
       </div>
       {isLoading ? (
         <LoaderOverlay />
       ) : (
         <AntTable
           columns={columns}
-          data={couponLogData || []}
+          data={transformedData}
           totalPages={Math.ceil(count / pageSize)}
           totalItems={count}
           pageSize={pageSize}

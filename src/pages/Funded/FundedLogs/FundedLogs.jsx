@@ -16,9 +16,8 @@ const FundedLogs = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const baseurl = "v3/funded-log/list/";
-    const query = `?page=${pageNo}&page_size=${pageSize}`;
-    const url = baseurl + query;
+    const query = `?page=${pageNo}&page_size=${pageSize}&category=MT5_ACCOUNT`;
+    const url =  query;
     dispatch(logsListReq({ idToken, url, key: "fundedLogData", dispatch }));
   }, [pageNo, pageSize, idToken, dispatch]);
 

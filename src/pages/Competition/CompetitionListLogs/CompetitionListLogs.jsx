@@ -16,9 +16,8 @@ const CompetitionListLogs = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const baseurl = "v3/competition-log/list/";
     const query = `?page=${pageNo}&page_size=${pageSize}&category=COMPETITION`;
-    const url = baseurl + query;
+    const url = query;
     dispatch(logsListReq({idToken, url, key: "competitionLogData", dispatch}));
   }, [pageNo, pageSize, idToken, dispatch]);
 

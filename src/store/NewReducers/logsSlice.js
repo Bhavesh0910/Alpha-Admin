@@ -10,7 +10,7 @@ const logsListApi = async (idToken, url) => {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get(`${baseUrl}${url}`, config);
+    const response = await axios.get(`${baseUrl}logentry/list/${url}&ordering=-created_at`, config);
     return response?.data;
   } catch (error) {
     console.error("Error during logsListApi request:", error);
@@ -51,7 +51,7 @@ const logSlice = createSlice({
     reqPayoutLogData: [],
     userLogData: [],
     couponLogData: [],
-    payoutLogData: [],
+    ipLogData: [],
     competitionLogData: [],
     count: 1,
   },

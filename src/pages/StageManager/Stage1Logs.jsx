@@ -1,94 +1,86 @@
-import React, {useEffect, useMemo, useState} from "react";
-import {Breadcrumb, Card} from "antd";
-import {useDispatch, useSelector} from "react-redux";
+import React, { useEffect, useMemo, useState } from "react";
+import { Breadcrumb } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 import "../Funded/FundedLogs/FundedLogs.scss";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
-import {logsListReq} from "../../store/NewReducers/logsSlice";
+import { logsListReq } from "../../store/NewReducers/logsSlice";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Stage1Logs = () => {
-  const {idToken} = useSelector((state) => state.auth);
-  const {fundedLogData, count, isLoading} = useSelector((state) => state.logs);
+  const { idToken } = useSelector((state) => state.auth);
+  const { stage1LogsData, count, isLoading } = useSelector((state) => state.logs);
 
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const baseurl = "v3/stage-log/list/?stage=stage1";
-    const query = `&category=STAGE_1&page=${pageNo}&page_size=${pageSize}`;
-    const url = baseurl + query;
-    dispatch(logsListReq({idToken, url, key: "stage1LogsData", dispatch}));
+    const query = `?category=STAGE_1&page=${pageNo}&page_size=${pageSize}`;
+    dispatch(logsListReq({ idToken, url: query, key: "stage1LogsData" }));
   }, [pageNo, pageSize, idToken, dispatch]);
 
+  // Transforming the log data
+  const transformedData = stage1LogsData.map((log) => ({
+    admin_email: log.admin_user.email,
+    admin_name: `${log.admin_user.first_name} ${log.admin_user.last_name}`.trim() || "-",
+    date_time: new Date(log.created_at).toLocaleString(), 
+    account_reference: log.account_reference,
+    user_reference: log.user_reference,
+    action: log.action,
+    category: log.category,
+    created_at: new Date(log.created_at).toLocaleString(),
+  }));
+
   const columns = useMemo(() => [
+    {
+      title: "Admin Name",
+      dataIndex: "admin_name",
+      key: "admin_name",
+      width: 150,
+      render: (text) => (text ? text : "-"),
+    },
     {
       title: "Admin Email ID",
       dataIndex: "admin_email",
       key: "admin_email",
-      width: 100,
+      width: 150,
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Date and Time",
-      dataIndex: "date_time",
-      key: "date_time",
-      width: 100,
+      title: "Created at",
+      dataIndex: "created_at",
+      key: "created_at",
+      width: 150,
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Account No.",
-      dataIndex: "account_no",
-      key: "account_no",
-      width: 100,
+      title: "Account Reference",
+      dataIndex: "account_reference",
+      key: "account_reference",
+      width: 150,
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Password",
-      dataIndex: "password",
-      key: "password",
-      width: 100,
+      title: "User Reference",
+      dataIndex: "user_reference",
+      key: "user_reference",
+      width: 150,
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-      width: 100,
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      width: 150,
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Raw Spread",
-      dataIndex: "raw_spread",
-      key: "raw_spread",
+      title: "Category",
+      dataIndex: "category",
+      key: "category",
       width: 100,
       render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Funding Evaluation",
-      dataIndex: "funding_evaluation",
-      key: "funding_evaluation",
-      width: 100,
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Account Balance",
-      dataIndex: "account_balance",
-      key: "account_balance",
-      width: 100,
-      render: (text) => (text ? text : "-"),
-    },
-    {
-      title: "Stage",
-      dataIndex: "stage",
-      key: "stage",
-      width: 100,
-      render: (text) => (
-        <div className="stage_status_wrapper">
-          <p className={text === "funded" ? "funded" : ""}>{text}</p>
-        </div>
-      ),
     },
   ]);
 
@@ -117,7 +109,7 @@ const Stage1Logs = () => {
       ) : (
         <AntTable
           columns={columns}
-          data={fundedLogData || []}
+          data={transformedData || []}
           totalPages={Math.ceil(count / pageSize)}
           totalItems={count}
           pageSize={pageSize}
