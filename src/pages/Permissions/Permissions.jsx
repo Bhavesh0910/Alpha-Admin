@@ -1,22 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Tag, Button, List } from 'antd';
 import './Permissions.scss';
 import warningIcon from '../../assets/icons/warning.svg'
 import plusIcon from '../../assets/icons/plus.svg'
 import tickIcon from '../../assets/icons/tick.svg'
 import searchIcon from "../../assets/icons/searchIcon.svg";
+import { getPermissionList } from '../../utils/api/apis';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAdminUsersGroupsPermissions, fetchGroupsList, fetchPermissionList } from '../../store/NewReducers/permissions';
 
 const permissionsList = [
     "Support | Stage 1 | Can create Account",
     "Coupons | Can take Actions"
 ];
 
+
+
 function Permissions() {
     const [name, setName] = useState('');
     const [tags, setTags] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [selectedPermissions, setSelectedPermissions] = useState([]);
-    const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
+    const [modalVisible, setModalVisible] = useState(false);
+    const { idToken } = useSelector((state) => state.auth);
+
+    const { adminUserGroupsPermissions, permissions , loading, error } = useSelector((state) => state.permissions);
+
+    const dispatch = useDispatch()
+
+
+    useEffect(() => {
+        dispatch(fetchPermissionList({ idToken }));
+        dispatch(fetchGroupsList({ idToken }));
+    }, [dispatch, idToken]);
+
+    useEffect(() => {
+        let delayDebounceFn
+        if(name){
+         delayDebounceFn = setTimeout(() => {
+            dispatch(fetchAdminUsersGroupsPermissions({ idToken, search: name }));
+        }, 1000); 
+    }
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [name, dispatch, idToken]);
+
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter' && name) {
@@ -38,7 +66,7 @@ function Permissions() {
         }
     };
 
-    const filteredPermissions = permissionsList.filter((permission) =>
+    const filteredPermissions = permissions?.results?.filter((permission) =>
         permission.toLowerCase().includes(searchText.toLowerCase())
     );
 
@@ -142,10 +170,10 @@ function Permissions() {
                                 placeholder='Granted Permissions'
                                 style={{ marginBottom: '5px' }}
                             />
-                        <div className="searchImg"
-                        >
-                            <img src={searchIcon} alt="searchIcon" />
-                        </div>
+                            <div className="searchImg"
+                            >
+                                <img src={searchIcon} alt="searchIcon" />
+                            </div>
                         </div>
                     </div>
                     <div className='granted_permissions_list'>

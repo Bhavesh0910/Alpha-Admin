@@ -34,6 +34,7 @@ const initialState = {
   isLoading: false,
   searchDates: [dayjs().subtract(7, "day").format("YYYY-MM-DD"), dayjs().format("YYYY-MM-DD")],
   refreshCount: 0,
+  authData:[]
 };
 
 const authSlice = createSlice({
@@ -59,6 +60,7 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
         state.idToken = action.payload.data.idToken;
         state.refreshToken = action.payload.data.refreshToken;
+        state.authData = action.payload.data
       } else {
         state.isAuthenticated = action.payload;
         //

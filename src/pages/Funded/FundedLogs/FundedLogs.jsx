@@ -17,51 +17,53 @@ const FundedLogs = () => {
 
   useEffect(() => {
     const query = `?page=${pageNo}&page_size=${pageSize}&category=MT5_ACCOUNT`;
-    const url =  query;
-    dispatch(logsListReq({ idToken, url, key: "fundedLogData", dispatch }));
+    dispatch(logsListReq({ idToken, url: query, key: "fundedLogData", dispatch }));
   }, [pageNo, pageSize, idToken, dispatch]);
 
   const columns = useMemo(() => [
     {
       title: "Admin Email ID",
-      dataIndex: "admin_email",
+      dataIndex: ["admin_user", "email"],
       key: "admin_email",
       width: 150,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Date and Time",
-      dataIndex: "date_time",
-      key: "date_time",
+      dataIndex: "created_at",
+      key: "created_at",
       width: 150,
       render: (text) => (text ? new Date(text).toLocaleString() : "-"),
     },
     {
-      title: "User ID",
-      dataIndex: "user_id",
-      key: "user_id",
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
       width: 100,
       render: (text) => (text ? text : "-"),
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      width: 120,
-      render: (text) => (
-        <div className="status_wrapper">
-          <p className={text.toLowerCase().replace(/\s+/g, '-')}>{text}</p>
-        </div>
-      ),
+      title: "Account Reference",
+      dataIndex: "account_reference",
+      key: "account_reference",
+      width: 150,
+      render: (text) => (text ? text : "-"),
+    },
+    {
+      title: "User Reference",
+      dataIndex: "user_reference",
+      key: "user_reference",
+      width: 150,
+      render: (text) => (text ? text : "-"),
     },
     {
       title: "Comment",
-      dataIndex: "comment",
-      key: "comment",
+      dataIndex: "admin_comment",
+      key: "admin_comment",
       width: 200,
       render: (text) => (text ? text : "-"),
     },
-  ]);
+  ], []);
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
@@ -88,7 +90,7 @@ const FundedLogs = () => {
       ) : (
         <AntTable
           columns={columns}
-          data={fundedLogData || []}
+          data={fundedLogData?.results || []} 
           totalPages={Math.ceil(count / pageSize)}
           totalItems={count}
           pageSize={pageSize}

@@ -27,6 +27,7 @@ import paymentSlice from "../NewReducers/payment";
 import couponSlice from "../NewReducers/Coupons";
 import SupportSlice from "../NewReducers/Support";
 import complianceList from "../NewReducers/complianceList";
+import permissions from "../NewReducers/permissions";
 import countryWiseSlice from "../NewReducers/countryWise";
 import getUserProfileData from "../NewReducers/userProfileSlice";
 import logsReducer from "../NewReducers/logsSlice";
@@ -60,6 +61,7 @@ const rootReducer = combineReducers({
   export: exportReducer,
   exportHistory: exportHistoryReducer,
   payoutList: payoutSlice,
+  permissions: permissions,
   payment: paymentSlice,
   coupon: couponSlice,
   support: SupportSlice,
