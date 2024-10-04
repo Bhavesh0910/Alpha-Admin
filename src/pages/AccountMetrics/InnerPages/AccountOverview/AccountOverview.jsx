@@ -179,15 +179,15 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
               <div className="bottom_main_left_satistic_inner_two">
                 <div>
                   <p>Average profit</p>
-                  <h3 style={{ color: '#009017' }}> {statistics?.Average_profit ? "$" : ''}{formatValue(statistics?.Average_profit)}</h3>
+                  <h3 style={{ color: '#009017' }}> {overview?.calculated_data?.average_profit ? dollarUS(overview?.calculated_data?.average_profit) : '-'}</h3>
                 </div>
                 <div>
                   <p>Average loss</p>
-                  <h3 style={{ color: '#F20000' }}>{statistics?.Average_loss ? "$" : ''}{formatValue(statistics?.Average_loss)}</h3>
+                  <h3 style={{ color: '#F20000' }}>{overview?.calculated_data?.average_loss ? dollarUS(overview?.calculated_data?.average_loss) : '-'}</h3>
                 </div>
                 <div>
                   <p>Average RRR</p>
-                  <h3>{formatValue(statistics?.RRR)}</h3>
+                  <h3> {overview?.calculated_data ? formatValue(overview?.calculated_data["rrr "]) : '-'}</h3>
                 </div>
                 {/* <div>
           <p>Martingale Status</p>
