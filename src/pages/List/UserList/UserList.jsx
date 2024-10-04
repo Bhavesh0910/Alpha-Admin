@@ -293,6 +293,20 @@ const UserListTable = () => {
       ),
     },
     {
+      title: "First Name",
+      dataIndex: "first_name",
+      key: "first_name",
+      width: "100px",
+      render: (text) => (text ? text : "-"),
+    },
+    {
+      title: "Last Name",
+      dataIndex: "last_name",
+      key: "last_name",
+      width: "100px",
+      render: (text) => (text ? text : "-"),
+    },
+    {
       title: "Email",
       dataIndex: "email",
       render: (text) => (
@@ -404,14 +418,20 @@ const UserListTable = () => {
   const ExpandedRowRender = ({record}) => {
     return (
       <div className="expanded-row-content">
-        <div>
+        {/* <div>
           <p>
             <strong>Name: </strong> {record.full_name || "-"}
           </p>
-        </div>
+        </div> */}
         <div>
           <p>
             <strong>Date Joined: </strong> {record.date_joined ? moment(record.date_joined).format("ll") : "-"}
+          </p>
+        </div>
+
+        <div>
+          <p>
+            <strong>Notes:</strong> {record?.notes ? record?.notes : "-"}
           </p>
         </div>
       </div>

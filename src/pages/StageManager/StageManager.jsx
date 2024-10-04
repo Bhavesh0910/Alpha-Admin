@@ -15,6 +15,7 @@ import rejectIcon from "../../assets/icons/reject.svg";
 import toggleGreen from "../../assets/icons/toggle-green.svg";
 import toggleRed from "../../assets/icons/toggle-red.svg";
 import CrossMark from "../../assets/icons/notverified_red_circleIcon.svg";
+import {ReactComponent as Download} from "../../assets/icons/download.svg"
 
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
@@ -422,7 +423,7 @@ const StageManager = () => {
             title: "Name",
             dataIndex: "username",
             key: "username",
-            width:80,
+            width: 80,
             render: (text) => (text ? text : "-"),
           },
           {
@@ -687,7 +688,7 @@ const StageManager = () => {
             title: "Full Name",
             dataIndex: "username",
             key: "username",
-            width:100,
+            width: 100,
             render: (text) => (text ? text : "-"),
           },
           {
@@ -1003,15 +1004,14 @@ const StageManager = () => {
             dataIndex: "email",
             key: "email",
             width: 80,
-            render:(text)=>text ? text :'-'
+            render: (text) => (text ? text : "-"),
           },
           {
             title: "Name",
             dataIndex: "name",
             key: "name",
             width: 80,
-            render:(text,record)=>record?.user_id?.name ? record?.user_id?.name :'-'
-
+            render: (text, record) => (record?.user_id?.name ? record?.user_id?.name : "-"),
           },
           {
             title: " Start Date",
@@ -1020,19 +1020,19 @@ const StageManager = () => {
             width: 100,
             render: (text) => (text ? moment(text).format("DD/MMM/YYYY") : "-"),
           },
-          {
-            title: "Email Generated",
-            dataIndex: "email_sent",
-            key: "email_sent",
-            width: 100,
-            render: (text, row) => (
-              <img
-                width={"25px"}
-                src={text || row.status === "approved" ? RightMark : CrossMark}
-                alt=""
-              />
-            ),
-          },
+          // {
+          //   title: "Email Generated",
+          //   dataIndex: "email_sent",
+          //   key: "email_sent",
+          //   width: 100,
+          //   render: (text, row) => (
+          //     <img
+          //       width={"25px"}
+          //       src={text || row.status === "approved" ? RightMark : CrossMark}
+          //       alt=""
+          //     />
+          //   ),
+          // },
           // {
           //   title: "Credential Generated",
           //   dataIndex: "credential_generated",
@@ -1200,7 +1200,7 @@ const StageManager = () => {
             title: "Username",
             dataIndex: "user_name",
             key: "user_name",
-            width:100,
+            width: 100,
             render: (text) => <span>{text}</span>,
           },
           {
@@ -1246,7 +1246,7 @@ const StageManager = () => {
             title: "Date (created at)",
             dataIndex: "created_at",
             key: "created_at",
-            width:100,
+            width: 100,
             render: (text) => (text ? moment(text).format("DD/MMM/YYYY") : "-"),
           },
           {
@@ -1270,6 +1270,7 @@ const StageManager = () => {
             width: 65,
             render: (text) => (text ? <span>{text}</span> : "-"),
           },
+
           {
             title: "Amount",
             dataIndex: "amount",
@@ -1288,7 +1289,23 @@ const StageManager = () => {
               </span>
             ),
           },
-
+          {
+            title: "Invoice",
+            dataIndex: "invoice",
+            key: "invoice",
+            width: 100,
+            render: (text) =>
+              text ? (
+                <a
+                  href={text}
+                  target="_blank"
+                >
+                  {<Download />}
+                </a>
+              ) : (
+                "-"
+              ),
+          },
           // {
           //   title: "Comment",
           //   dataIndex: "comment",
