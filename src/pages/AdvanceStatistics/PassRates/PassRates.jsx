@@ -356,7 +356,7 @@ const PassRates = () => {
                 <p>Pro and Swing</p>
               </button>
             </div>
-            <div className="tabs_inner">
+            {/* <div className="tabs_inner">
               <button className="tabs">
                 <p>Disable Funded AC Report</p>
               </button>
@@ -366,7 +366,7 @@ const PassRates = () => {
               <button className="tabs">
                 <p>Active AC by Periods</p>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
 

@@ -128,4 +128,34 @@
         line-height: normal; 
       }
     }
+    .card_wrapper{
+      display: grid;
+      grid-template-columns: repeat(4 , 1fr);
+      grid-gap: 20px;
+      .card{
+        background-color: #fff;
+        border-radius: 10px;
+        min-height: 120px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        .title{
+          color: var(--Text, #1E1E1E);
+          font-family: "Nunito Sans";
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: normal;  
+        }
+        .value{
+          color: var(--Text, #1E1E1E);
+          font-family: "Nunito Sans";
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: normal;
+        }
+      }
+    }
 }

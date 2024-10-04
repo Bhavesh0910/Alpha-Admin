@@ -1,7 +1,9 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
 import {
+  fetchAffiliateCode,
   fetchAffiliateExport,
+  fetchCommissionPayment,
   getAffiliateCodelist,
   getAffiliateListV2,
   getCodelistV2,
@@ -33,6 +35,31 @@ export const fetchAffiliateList = createAsyncThunk("affiliate/fetchAffiliateList
     return rejectWithValue(msg);
   }
 });
+
+export const fetchCommissionPaymentData = createAsyncThunk("affiliate/fetchCommissionPaymentData", async ({ idToken, affiliateId }, { dispatch, rejectWithValue }) => {
+  try {
+    const data = await fetchCommissionPayment(idToken, affiliateId);
+    return data;
+  } catch (error) {
+    const msg = error.response?.data?.detail || "Error fetching commission payment data";
+    dispatch(returnErrors(msg, 400));
+    return rejectWithValue(msg);
+  }
+});
+
+export const fetchAffiliateCodes = createAsyncThunk(
+  "affiliate/fetchAffiliateCodes",
+  async ({ idToken, affiliateId }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await fetchAffiliateCode(idToken, affiliateId);
+        return response.data; 
+    } catch (error) {
+      const msg = error.response?.data?.detail || "Error fetching affiliate codes";
+      dispatch(returnErrors(msg, 400));
+      return rejectWithValue(msg);
+    }
+  }
+);
 
 // Thunk for fetching affiliate export data
 export const fetchAffExportData = createAsyncThunk("affiliate/fetchAffExportData", async ({idToken, affiliateId}, {rejectWithValue, dispatch}) => {
@@ -139,9 +166,11 @@ const affiliateSlice = createSlice({
   name: "affiliate",
   initialState: {
     affiliateData: [],
+    codes: [],
     codeData: [],
     newCodeListData: [],
     exportHistoryData: [],
+    commissionPaymentData: null, 
     affiliateExportData: null,
     referredList: [],
     pushleadsChartData: null,
@@ -261,6 +290,28 @@ const affiliateSlice = createSlice({
       .addCase(fetchPushleadsChartData.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })   .addCase(fetchCommissionPaymentData.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchCommissionPaymentData.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.commissionPaymentData = action.payload.data; 
+      })
+      .addCase(fetchCommissionPaymentData.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })     .addCase(fetchAffiliateCodes.pending, (state) => {
+        state.isLoading = true;
+        state.error = null; 
+      })
+      .addCase(fetchAffiliateCodes.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.codes = action.payload; 
+      })
+      .addCase(fetchAffiliateCodes.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload; 
       });
   },
 });

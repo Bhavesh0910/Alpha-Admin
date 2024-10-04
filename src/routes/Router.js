@@ -69,6 +69,7 @@ import CreateCertificates from "../pages/Certificates/CreateCertificates";
 import CreateCertificateViewLogs from "../pages/Certificates/CreateCertificates/Logs";
 import Permissions from "../pages/Permissions/Permissions";
 import AddValueForm from "../components/FundingEvaluation/AddNewForm";
+import Affiliate from "../pages/AffiliateMarketing/Affiliate";
 // import Stage1 from "../pages/NewStageManager/Stage1";
 // import Stage2 from "../pages/NewStageManager/Stage2";
 // import NewFunded from "../pages/NewStageManager/Funded";
@@ -556,7 +557,7 @@ function Router() {
             path="/affiliate-marketing/ref-list/"
             element={
               <PageLayout headerName="Affiliate Marketing">
-                <AffiliateRefList />
+                <Affiliate />
               </PageLayout>
             }
           />

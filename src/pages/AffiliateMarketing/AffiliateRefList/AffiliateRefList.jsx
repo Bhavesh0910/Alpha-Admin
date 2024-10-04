@@ -18,7 +18,7 @@ const { RangePicker } = DatePicker;
 
 
 
-const AffiliateRefList = () => {
+const AffiliateRefList = ({id , user_id}) => {
     const dispatch = useDispatch();
     const [activeTab, setActiveTab] = useState("all");
     const [searchText, setSearchText] = useState("");
@@ -32,9 +32,7 @@ const AffiliateRefList = () => {
 
     const { idToken } = useSelector((state) => state.auth);
     const { referredList, pushleadsChartData, affiliateExportData , isLoading, isExportLoading } = useSelector((state) => state.affiliate);
-    const { state } = useLocation();
-    const id = state?.id;
-    const user_id = state?.user_id
+
 
 
 
@@ -135,8 +133,14 @@ const AffiliateRefList = () => {
         },
         {
             title: "Email",
-            dataIndex: "profile__Email",
-            key: "profile__Email",
+            dataIndex: "email",
+            key: "email",
+            render: (text) => text ? `${text}` : "-",
+        },
+        {
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
             render: (text) => text ? `${text}` : "-",
         },
         // {
@@ -151,12 +155,12 @@ const AffiliateRefList = () => {
         //     key: "percentage",
         //     render: (text) => `${text}%`,
         // },
-        // {
-        //     title: "Created At",
-        //     dataIndex: "createdAt",
-        //     key: "createdAt",
-        //     render: (text) => new Date(text).toLocaleDateString(),
-        // },
+        {
+            title: "Created At",
+            dataIndex: "date",
+            key: "date",
+            render: (text) =>  text ? dayjs(text).format("DD/MMM/YYYY") : "-",
+        },
         // {
         //     title: "Payment ID",
         //     dataIndex: "paymentId",
@@ -174,7 +178,7 @@ const AffiliateRefList = () => {
             <div className="header_wrapper"></div>
             <div className="table_header_filter">
                 <div className="header_left">
-                    <div className="search_box_wrapper">
+                    {/* <div className="search_box_wrapper">
                         <input
                             placeholder="Search..."
                             className="search_input"
@@ -189,8 +193,8 @@ const AffiliateRefList = () => {
                         <div className="searchImg" onClick={() => handleSearch(searchText)}>
                             <img src={searchIcon} alt="searchIcon" />
                         </div>
-                    </div>
-                    <div className="header_middle">
+                    </div> */}
+                    {/* <div className="header_middle">
                         <div className="filter_buttons">
                             <Button
                                 className={activeTab === "all" ? "active" : ""}
@@ -211,15 +215,16 @@ const AffiliateRefList = () => {
                                 Unsuccessful
                             </Button>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div className="header_bottom">
-                <RangePicker
+                <div></div>
+                {/* <RangePicker
                     onChange={updateDateRange}
                     autoFocus
                     presets={rangePresets}
-                />
+                /> */}
                 <div className="export_btn">
                     <Button onClick={openModal} loading={isExportLoading}>
                         <img src={exportBtnIcon} alt="export_btn_icon" />
@@ -231,6 +236,44 @@ const AffiliateRefList = () => {
                     >
                         View Export History
                     </Link>
+                </div>
+            </div>
+
+            <div className="card_wrapper">
+                <div className="card">
+                    <h3 className="title">
+                        Clicks
+                    </h3>
+                    <p className="value">
+                        {pushleadsChartData ? pushleadsChartData.pushed_leads : '-'}
+                    </p>
+                </div>
+
+                <div className="card">
+                    <h3 className="title">
+                        Sign ups
+                    </h3>
+                    <p className="value">
+                        {pushleadsChartData ? pushleadsChartData.signups : '-'}
+                    </p>
+                </div>
+
+                <div className="card">
+                    <h3 className="title">
+                        Sales/Purchase
+                    </h3>
+                    <p className="value">
+                        {pushleadsChartData ? pushleadsChartData.conversions : '-'}
+                    </p>
+                </div>
+
+                <div className="card">
+                    <h3 className="title">
+                        Commission
+                    </h3>
+                    <p className="value">
+                        {pushleadsChartData ? pushleadsChartData.outstanding_commission : '-'}
+                    </p>
                 </div>
             </div>
 

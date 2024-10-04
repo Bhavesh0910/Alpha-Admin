@@ -572,6 +572,54 @@ const getAffiliateListV2 = async (idToken, pageNo, pageSize, search) => {
   }
 };
 
+export const fetchCommissionPayment = async (idToken, affiliateId) => {
+  let config = {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  }
+  const url = `${baseUrl}affiliate/v2/commission/payment/?affiliate_id=${affiliateId}`;
+
+  let output;
+  await axios
+    .get(url, config)
+    .then((res) => {
+      output = res;
+
+      return output;
+    })
+    .catch(function (error) {
+      output = error;
+      return output;
+    });
+
+  return output;
+};
+
+export const fetchAffiliateCode = async (idToken, affiliateId) => {
+  let config = {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  }
+  const url = `${baseUrl}affiliate/v2/code/list/?affiliate_id=${affiliateId}`;
+
+  let output;
+  await axios
+    .get(url, config)
+    .then((res) => {
+      output = res;
+
+      return output;
+    })
+    .catch(function (error) {
+      output = error;
+      return output;
+    });
+
+  return output;
+};
+
 export async function getExportHistory(idToken, urls) {
   const url = `${baseUrl}${urls}`;
 
