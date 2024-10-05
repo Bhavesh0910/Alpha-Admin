@@ -3,6 +3,7 @@
   .dropdown{
     height: 46px;
     text-transform: capitalize;
+    z-index: 2 !important;
   }
   
   .slider_container{
@@ -231,6 +232,7 @@
 
 
 .custom-dropdown-menu{
+  z-index: 2 !important;
   li{
   color: #000 !important;
   }

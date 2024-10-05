@@ -348,13 +348,13 @@ const PassRates = () => {
                   </Tooltip>
                 </div>
               )}
-              <button className="tabs">
+              {/* <button className="tabs">
                 <img
                   src={ArrowUpBlack}
                   alt="Pro and Swing Arrow"
                 />
                 <p>Pro and Swing</p>
-              </button>
+              </button> */}
             </div>
             {/* <div className="tabs_inner">
               <button className="tabs">
