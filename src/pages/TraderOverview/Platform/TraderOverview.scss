@@ -74,7 +74,30 @@
   .btn-wrapper {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 4px;
+    .disable-enable-btn {
+      padding: 0px;
+    }
+    .Reinstate {
+      > svg {
+        > path {
+          stroke: var(--Brand, #f26419);
+          fill: #f3d6c7;
+        }
+
+        > g {
+          > path {
+            stroke: #f26419;
+          }
+        }
+      }
+    }
+    .disable-enable-btn.active {
+      background-color: #34c759;
+    }
+    .disable-enable-btn.inactive {
+      background-color: #ff3737;
+    }
     button {
       display: flex;
       padding: 6px 10px;

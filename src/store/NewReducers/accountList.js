@@ -3,7 +3,19 @@ import {accountListReq, changeAccountStatusApi, deleteAcountApi} from "../../uti
 import {returnErrors} from "../reducers/error";
 import {returnMessages} from "../reducers/message";
 import axios from "axios";
-import { baseUrl } from "../../utils/api/apis";
+import {baseUrl} from "../../utils/api/apis";
+
+export const enableDisableUser = createAsyncThunk("accounts/toggleAccountStatus", async ({idToken, body, dispatch}, {rejectWithValue}) => {
+  try {
+    const response = await enableDisableUserApi(idToken, body);
+    dispatch(returnMessages(response?.message || "Status Changed Successfully!", 200));
+    dispatch(traderListRefresh());
+    return response;
+  } catch (error) {
+    dispatch(returnErrors(error.response.data.detail || "Action Failed, Try again!", 400));
+    return rejectWithValue(error.response.data);
+  }
+});
 
 export const changeAccountStatus = createAsyncThunk("accounts/changeAccountStatus", async ({idToken, body, dispatch}, {rejectWithValue}) => {
   try {
@@ -142,6 +154,21 @@ const accountSlice = createSlice({
 export const {resetAccountList, setDefaultLoginId, setLoginList, traderListRefresh} = accountSlice.actions;
 export default accountSlice.reducer;
 
+const enableDisableUserApi = async (idToken, body) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    };
+    // const response = await axios.post(`${baseUrl}disable/accounts/`, body, config);
+    const response = await axios.post(`${baseUrl}abc/`, body, config);
+    return response.data;
+  } catch (error) {
+    console.error("Error during toggle user account status request:", error);
+    throw error;
+  }
+};
 const reinstateAccountApi = async (idToken, body) => {
   try {
     const config = {
