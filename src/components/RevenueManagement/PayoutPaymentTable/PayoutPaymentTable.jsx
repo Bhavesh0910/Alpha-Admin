@@ -24,7 +24,7 @@ const PayoutPaymentTable = ({activeTab}) => {
         dataIndex: "name",
         key: "name",
         width: 150,
-        render: (text) => text,
+        render: (text) => (text ? text : "-"),
       },
       {
         title: "Email",
@@ -112,12 +112,14 @@ const PayoutPaymentTable = ({activeTab}) => {
         dataIndex: "payment_status",
         key: "payment_status",
         width: 150,
+        render: (text) => (text ? text : "-"),
       },
       {
         title: "Payment Platform Status",
         dataIndex: "payment_platform_status",
         key: "payment_platform_status",
         width: 180,
+        render: (text) => (text ? text : "-"),
       },
       {
         title: "Promo",
@@ -156,26 +158,28 @@ const PayoutPaymentTable = ({activeTab}) => {
         dataIndex: "amount",
         key: "amount",
         width: 150,
-        render: (amount) => <span>${amount}</span>,
+        render: (amount) => (amount ? <span>${amount / 100}</span> : "-"),
       },
       {
         title: "Date",
         dataIndex: "created_at",
         key: "created_at",
         width: 150,
-        render: (text) => moment(text).format("YYYY-MM-DD"),
+        render: (text) => (text ? moment(text).format("YYYY-MM-DD") : "-"),
       },
       {
         title: "Login ID",
         dataIndex: "account_login_id",
         key: "account_login_id",
         width: 150,
+        render: (text) => (text ? text : "-"),
       },
       {
         title: "Challenge",
         dataIndex: "challenge_name",
         key: "challenge_name",
         width: 150,
+        render: (text) => (text ? text : "-"),
       },
     ],
     [paymentData],
@@ -187,35 +191,35 @@ const PayoutPaymentTable = ({activeTab}) => {
         title: "ID",
         dataIndex: "id",
         key: "id",
-        width:100,
+        width: 100,
         render: (text) => text || "-",
       },
       {
         title: "Amount",
         dataIndex: "amount",
         key: "amount",
-        width:100,
+        width: 100,
         render: (text) => (text !== null && text !== undefined ? text : "-"),
       },
       {
         title: "Country",
         dataIndex: "country",
         key: "country",
-        width:100,
+        width: 100,
         render: (text) => text || "-",
       },
       {
         title: "Created At",
         dataIndex: "created_at",
         key: "created_at",
-        width:120,
+        width: 120,
         render: (text) => text || "-",
       },
       {
         title: "Invoice",
         dataIndex: "invoice",
         key: "invoice",
-        width:100,
+        width: 100,
         render: (text) => (
           <>
             {text ? (
@@ -235,63 +239,63 @@ const PayoutPaymentTable = ({activeTab}) => {
         title: "KYC",
         dataIndex: "kyc",
         key: "kyc",
-        width:100,
+        width: 100,
         render: (text) => (text !== null && text !== undefined ? (text ? "Yes" : "No") : "-"),
       },
       {
         title: "Login ID",
         dataIndex: "login_id",
         key: "login_id",
-        width:100,
+        width: 100,
         render: (text) => text || "-",
       },
       {
         title: "Method",
         dataIndex: "method",
         key: "method",
-        width:100,
+        width: 100,
         render: (text) => text || "-",
       },
       {
         title: "Performance Bonus",
         dataIndex: "performance_bonus",
         key: "performance_bonus",
-        width:110,
+        width: 110,
         render: (text) => (text !== null && text !== undefined ? text : "-"),
       },
       {
         title: "Profit Split",
         dataIndex: "profit_split",
         key: "profit_split",
-        width:100,
+        width: 100,
         render: (text) => (text !== null && text !== undefined ? text : "-"),
       },
       {
         title: "Reason",
         dataIndex: "reason",
         key: "reason",
-        width:100,
+        width: 100,
         render: (text) => text || "-",
       },
       {
         title: "Status",
         dataIndex: "status",
         key: "status",
-        width:100,
+        width: 100,
         render: (text) => text || "-",
       },
       {
         title: "User Email",
         dataIndex: "user_email",
         key: "user_email",
-        width:100,
+        width: 100,
         render: (text) => text || "-",
       },
       {
         title: "User Name",
         dataIndex: "user_name",
         key: "user_name",
-        width:100,
+        width: 100,
         render: (text) => text || "-",
       },
     ],
@@ -323,21 +327,20 @@ const PayoutPaymentTable = ({activeTab}) => {
     setPageSize(updatedPageSize);
   }
 
-  console.log("payment data : ", paymentData , payoutData);
+  console.log("payment data : ", paymentData, payoutData);
 
   return (
-      <AntTable
-        data={activeTab === "payments" ? paymentData?.results || [] : payoutData?.results || []}
-        columns={activeTab === "payments" ? paymentColumns : payoutColumns}
-        totalPages={activeTab === "payments" ? Math.ceil((paymentData?.count || 0) / pageSize) : Math.ceil((payoutData?.count || 0) / pageSize)}
-        totalItems={activeTab === "payments" ? paymentData?.count || 0 : payoutData?.count || 0}
-        pageSize={pageSize}
-        CurrentPageNo={pageNo}
-        setPageSize={setPageSize}
-        triggerChange={triggerChange}
-      />
-    );
-    
+    <AntTable
+      data={activeTab === "payments" ? paymentData?.results || [] : payoutData?.results || []}
+      columns={activeTab === "payments" ? paymentColumns : payoutColumns}
+      totalPages={activeTab === "payments" ? Math.ceil((paymentData?.count || 0) / pageSize) : Math.ceil((payoutData?.count || 0) / pageSize)}
+      totalItems={activeTab === "payments" ? paymentData?.count || 0 : payoutData?.count || 0}
+      pageSize={pageSize}
+      CurrentPageNo={pageNo}
+      setPageSize={setPageSize}
+      triggerChange={triggerChange}
+    />
+  );
 };
 
 export default PayoutPaymentTable;

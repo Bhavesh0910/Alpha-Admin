@@ -7,6 +7,7 @@ import searchIcon from "../../assets/icons/searchIcon.svg";
 import editIcon from "../../assets/icons/edit_icon_gray.svg";
 import exportBtnIcon from "../../assets/icons/export_btn_icon.svg";
 import verifiedIcon from "../../assets/icons/verified_green_circleIcon.svg";
+import {ReactComponent as Download} from "../../assets/icons/download.svg";
 import notVerifiedIcon from "../../assets/icons/notverified_red_circleIcon.svg";
 import {ReactComponent as CopyButton} from "../../assets/icons/copyButtonGray.svg";
 import dayjs from "dayjs";
@@ -23,7 +24,7 @@ const {RangePicker} = DatePicker;
 
 const Payment = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
@@ -150,6 +151,7 @@ const Payment = () => {
         dataIndex: "payment_status",
         key: "payment_status",
         width: 120,
+        render: (text) => (text ? text : "-"),
       },
       // {
       //   title: "Payment Platform Status",
@@ -157,38 +159,38 @@ const Payment = () => {
       //   key: "payment_platform_status",
       //   width: 180,
       // },
-      // {
-      //   title: "Promo",
-      //   dataIndex: "promo_code",
-      //   key: "promo_code",
-      //   width: 50,
-      //   render: (text) => (
-      //     <>
-      //       {text ? (
-      //         <div className="copy_text_btn">
-      //           <div href={`mailto:${text}`}>{text}</div>
-      //           <Tooltip title="Copy Promo">
-      //             <Button
-      //               icon={<CopyButton />}
-      //               size="small"
-      //               style={{marginLeft: 8}}
-      //               onClick={() => {
-      //                 navigator.clipboard.writeText(text);
-      //                 notification.success({
-      //                   message: "Promo copied to clipboard",
-      //                   placement: "topRight",
-      //                 });
-      //               }}
-      //               className="copy_btn"
-      //             />
-      //           </Tooltip>
-      //         </div>
-      //       ) : (
-      //         "-"
-      //       )}
-      //     </>
-      //   ),
-      // },
+      {
+        title: "Promo",
+        dataIndex: "promo_code",
+        key: "promo_code",
+        width: 50,
+        render: (text) => (
+          <>
+            {text ? (
+              <div className="copy_text_btn">
+                <div href={`mailto:${text}`}>{text}</div>
+                <Tooltip title="Copy Promo">
+                  <Button
+                    icon={<CopyButton />}
+                    size="small"
+                    style={{marginLeft: 8}}
+                    onClick={() => {
+                      navigator.clipboard.writeText(text);
+                      notification.success({
+                        message: "Promo copied to clipboard",
+                        placement: "topRight",
+                      });
+                    }}
+                    className="copy_btn"
+                  />
+                </Tooltip>
+              </div>
+            ) : (
+              "-"
+            )}
+          </>
+        ),
+      },
       {
         title: "Amount",
         dataIndex: "amount",
@@ -209,16 +211,34 @@ const Payment = () => {
         key: "account_login_id",
         width: 150,
       },
-      // {
-      //   title: "Challenge",
-      //   dataIndex: "challenge_name",
-      //   key: "challenge_name",
-      //   width: 150,
-      // },
+      {
+        title: "Challenge",
+        dataIndex: "challenge_name",
+        key: "challenge_name",
+        width: 150,
+        render: (text) => (text ? text : "-"),
+      },
+      {
+        title: "Invoice",
+        dataIndex: "invoice",
+        key: "invoice",
+        width: 150,
+        render: (text) =>
+          text && text !== "N/A" ? (
+            <a
+              href={text}
+              target="_blank"
+            >
+              <Download />
+            </a>
+          ) : (
+            "-"
+          ),
+      },
       {
         title: "Status",
-        dataIndex: "payment_status",
-        key: "payment_status",
+        dataIndex: "payment",
+        key: "payment",
         render: (text, record, index) =>
           text === "succeeded" ? (
             <Dropdown
@@ -267,8 +287,7 @@ const Payment = () => {
 
   const handleUpdateStatus = () => {
     let body = {payment_status: updatedStatus};
-    console.log("id : ", userToUpdate?.id);
-    dispatch(updatePaymentStatusReq({idToken, body, id: userToUpdate?.id, dispatch}));
+    dispatch(updatePaymentStatusReq({idToken, body, id: userToUpdate?.User_id?.id, dispatch}));
     setStatusModelVisible(false);
   };
 
@@ -285,8 +304,11 @@ const Payment = () => {
   }, [idToken, pageSize, pageNo, searchText, activeTab, dates, refetch]);
 
   function fetchPayments(idToken, pageSize, pageNo, searchText, activeTab, dates) {
-    let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}&status=${activeTab === "paid" ? 1 : activeTab === "unpaid" ? 0 : ""}`;
+    let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
 
+    if (activeTab) {
+      query += `&payment_status=${activeTab}`;
+    }
     if (searchText) {
       query = query + `&search=${searchText}`;
     }
@@ -412,14 +434,14 @@ const Payment = () => {
           <div className="header_middle">
             <div className="filter_buttons">
               <Button
-                className={activeTab === "all" ? "active" : ""}
-                onClick={() => handleTabChange("all")}
+                className={activeTab === null ? "active" : ""}
+                onClick={() => handleTabChange(null)}
               >
                 All
               </Button>
               <Button
-                className={activeTab === "paid" ? "active" : ""}
-                onClick={() => handleTabChange("paid")}
+                className={activeTab === "succeeded" ? "active" : ""}
+                onClick={() => handleTabChange("succeeded")}
               >
                 Paid
               </Button>
@@ -428,6 +450,12 @@ const Payment = () => {
                 onClick={() => handleTabChange("unpaid")}
               >
                 Unpaid
+              </Button>
+              <Button
+                className={activeTab === "refunded" ? "active" : ""}
+                onClick={() => handleTabChange("refunded")}
+              >
+                Refunded
               </Button>
             </div>
             <div className="paymentDateRange">
@@ -471,7 +499,7 @@ const Payment = () => {
             triggerChange={triggerChange}
             isExpandable={true}
             ExpandedComp={ExpandableRow}
-            rowId={"id"}
+            rowId={"User_id"}
           />
         )}
       </div>
@@ -497,12 +525,12 @@ const Payment = () => {
         }}
         onOk={handleUpdateStatus}
       >
-        <Form.Item
-          label="Comment"
-          value={editCommentToUpdate}
-          onChange={(e) => setEditCommentToUpdate(e.target.value)}
-        >
-          <Input.TextArea placeholder="Write your comment here.." />
+        <Form.Item label="Comment">
+          <Input.TextArea
+            value={editCommentToUpdate}
+            onChange={(e) => setEditCommentToUpdate(e.target.value)}
+            placeholder="Write your comment here.."
+          />
         </Form.Item>
       </Modal>
     </div>
@@ -543,8 +571,7 @@ const CalendarModal = ({idToken, exportLink, status, handleCloseModal, setModalV
       dispatch(paymentExportsReq({idToken, query, dispatch}))
         .unwrap()
         .then((response) => {
-          const {s3_file_url, filename} = response;
-
+          const {s3_file_url, filename} = response?.data;
           const link = document.createElement("a");
           link.href = s3_file_url;
           link.download = filename;
@@ -605,6 +632,7 @@ const CalendarModal = ({idToken, exportLink, status, handleCloseModal, setModalV
 };
 
 export const ExpandableRow = ({record}) => {
+  const data = record?.meta_data ? JSON.parse(record?.meta_data) : null;
   return (
     <div className="paymentNestedTable">
       <div>
@@ -615,6 +643,13 @@ export const ExpandableRow = ({record}) => {
         <div>Payment Platform Status</div>
         <p>{record?.payment_platform_status || "-"}</p>
       </div>
+      {record?.meta_data &&
+        Object.keys(data)?.map((item) => (
+          <div>
+            <div>{item.replaceAll("_", " ")}</div>
+            <p>{(data[item] && data[item] !== "") || "-"}</p>
+          </div>
+        ))}
       {/* 
       <div>
         <div>Login id</div>
@@ -624,7 +659,7 @@ export const ExpandableRow = ({record}) => {
         <div>Date</div>
         <p>{record?.created_at ? moment(record.created_at).format("YYYY-MM-DD") : "-"}</p>
       </div> */}
-      <div>
+      {/* <div>
         <div>Challenge</div>
         <p>{record?.challenge_name || "-"}</p>
       </div>
@@ -654,7 +689,7 @@ export const ExpandableRow = ({record}) => {
             "-"
           )}
         </p>
-      </div>
+      </div> */}
       {/* <div>
         <div>Transaction ID</div>
         <p>
