@@ -179,11 +179,11 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
               <div className="bottom_main_left_satistic_inner_two">
                 <div>
                   <p>Average profit</p>
-                  <h3 style={{ color: '#009017' }}> {overview?.calculated_data?.average_profit ? dollarUS(overview?.calculated_data?.average_profit) : '-'}</h3>
+                  <h3 style={{ color: '#009017' }}> {overview?.calculated_data?.average_profit ? dollarUS(overview?.calculated_data?.average_profit?.toFixed(2)) : '-'}</h3>
                 </div>
                 <div>
                   <p>Average loss</p>
-                  <h3 style={{ color: '#F20000' }}>{overview?.calculated_data?.average_loss ? dollarUS(overview?.calculated_data?.average_loss) : '-'}</h3>
+                  <h3 style={{ color: '#F20000' }}>{overview?.calculated_data?.average_loss ? dollarUS(overview?.calculated_data?.average_loss?.toFixed(2)) : '-'}</h3>
                 </div>
                 <div>
                   <p>Average RRR</p>
