@@ -15,7 +15,7 @@ import rejectIcon from "../../assets/icons/reject.svg";
 import toggleGreen from "../../assets/icons/toggle-green.svg";
 import toggleRed from "../../assets/icons/toggle-red.svg";
 import CrossMark from "../../assets/icons/notverified_red_circleIcon.svg";
-import {ReactComponent as Download} from "../../assets/icons/download.svg"
+import {ReactComponent as Download} from "../../assets/icons/download.svg";
 
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
@@ -1430,7 +1430,13 @@ const StageManager = () => {
   return (
     <div className="stageManager_container">
       <div className="header_wrapper">
-        <h2>{location.pathname.split("/")[2].charAt(0).toUpperCase() + location.pathname.split("/")[2].slice(1)}</h2>
+        <h2>
+          {location.pathname === "/support/stage-1"
+            ? "Stage 1 Pass"
+            : location.pathname === "/support/stage-2"
+            ? "Stage 2 Pass"
+            : location.pathname.split("/")[2].charAt(0).toUpperCase() + location.pathname.split("/")[2].slice(1)}
+        </h2>
 
         <div className="supportFilterParent">
           <RangePicker

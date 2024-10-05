@@ -80,12 +80,12 @@ const items = [
     children: [
       {
         key: "6-1",
-        label: "Stage 1",
+        label: "Stage 1 Pass",
         link: "/support/stage-1",
       },
       {
         key: "6-2",
-        label: "Stage 2",
+        label: "Stage 2 Pass",
         link: "/support/stage-2",
       },
       {
