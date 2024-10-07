@@ -16,6 +16,7 @@ import ArrowUp from "../../../assets/icons/ArrowUp.svg";
 import ArrowUpBlack from "../../../assets/icons/ArrowUpBlack.svg";
 import "./PassRates.scss";
 import {Link} from "react-router-dom";
+import { dollarUS } from "../../../utils/helpers/string";
 
 const {RangePicker} = DatePicker;
 
@@ -181,7 +182,7 @@ const PassRates = () => {
       title: "Account Balance",
       dataIndex: "account_balance",
       key: "account_balance",
-      render: (text) => (text !== undefined ? `$${text}` : "-"),
+      render: (text) => (text !== undefined && text !== null ? dollarUS(text) : "-"),
       width: 120,
     },
     {
@@ -471,9 +472,9 @@ const PassRates = () => {
 
 const ExpandedRowRender = ({record}) => (
   <div className="expanded-row-content">
-    <p>
+    {/* <p>
       <strong>Account Balance:</strong> {record.account_balance || "-"}
-    </p>
+    </p> */}
     <p>
       <strong>Pro Funded Failed:</strong> {record.pro_funded_failed !== undefined ? record.pro_funded_failed : "-"}
     </p>
