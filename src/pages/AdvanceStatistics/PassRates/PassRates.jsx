@@ -156,62 +156,106 @@ const PassRates = () => {
     </Menu>
   );
 
-  const columns = useMemo(() => [
+  const columns = [
+    {
+      title: "Date",
+      dataIndex: "month_year",
+      key: "month_year",
+      render: (text) => (text ? dayjs(text).format('DD/MMM/YYYY') : "-"),
+      width: 100,
+    },
+    {
+      title: "Challenge Name",
+      dataIndex: "challenge_name",
+      key: "challenge_name",
+      render: (text) => text || "-",
+    },
     {
       title: "Plan Type",
       dataIndex: "plan_type",
       key: "plan_type",
       render: (text) => text || "-",
+      width: 150,
     },
     {
-      title: "Created Date",
-      dataIndex: "created_date",
-      key: "created_date",
-      render: (text) => text || "-",
-    },
-    {
-      title: "Stage",
-      dataIndex: "stage",
-      key: "stage",
-      render: (text) => text || "-",
-    },
-    {
-      title: "Passed",
-      dataIndex: "passed",
-      key: "passed",
-      render: (text) => text || "-",
-    },
-    {
-      title: "Pass Rate (%)",
-      dataIndex: "pass_rate",
-      key: "pass_rate",
-      render: (text) => (text !== undefined ? text : "-"),
-    },
-    {
-      title: "Pass Ratio",
-      dataIndex: "pass_ratio",
-      key: "pass_ratio",
-      render: (text) => text || "-",
-    },
-    {
-      title: "Fail Rate (%)",
-      dataIndex: "fail_rate",
-      key: "fail_rate",
-      render: (text) => text || "-",
-    },
-    {
-      title: "Fail Ratio",
-      dataIndex: "fail_ratio",
-      key: "fail_ratio",
-      render: (text) => text || "-",
+      title: "Account Balance",
+      dataIndex: "account_balance",
+      key: "account_balance",
+      render: (text) => (text !== undefined ? `$${text}` : "-"),
+      width: 120,
     },
     {
       title: "Total Accounts",
       dataIndex: "total_accounts",
       key: "total_accounts",
-      render: (text) => text || "-",
+      render: (text) => (text !== undefined ? text : "-"),
+      width: 100,
     },
-  ]);
+    {
+      title: "Stage 1 Passed",
+      dataIndex: "stage1_passed",
+      key: "stage1_passed",
+      render: (text) => (text !== undefined ? text : "-"),
+      width: 120,
+    },
+    {
+      title: "Stage 1 Failed",
+      dataIndex: "stage1_failed",
+      key: "stage1_failed",
+      render: (text) => (text !== undefined ? text : "-"),
+      width: 120,
+    },
+    {
+      title: "Stage 2 Passed",
+      dataIndex: "stage2_passed",
+      key: "stage2_passed",
+      render: (text) => (text !== undefined ? text : "-"),
+      width: 120,
+    },
+    {
+      title: "Stage 2 Failed",
+      dataIndex: "stage2_failed",
+      key: "stage2_failed",
+      render: (text) => (text !== undefined ? text : "-"),
+      width: 120,
+    },
+    {
+      title: "Active Accounts",
+      dataIndex: "active_accounts",
+      key: "active_accounts",
+      render: (text) => (text !== undefined ? text : "-"),
+      width: 120,
+    },
+    {
+      title: "Stage 1 Pass Rate (%)",
+      dataIndex: "stage1_pass_rate",
+      key: "stage1_pass_rate",
+      render: (text) => (text !== undefined ? `${text}%` : "-"),
+      width: 120,
+    },
+    {
+      title: "Stage 1 Fail Rate (%)",
+      dataIndex: "stage1_fail_rate",
+      key: "stage1_fail_rate",
+      render: (text) => (text !== undefined ? `${text}%` : "-"),
+      width: 120,
+    },
+    {
+      title: "Stage 2 Pass Rate (%)",
+      dataIndex: "stage2_pass_rate",
+      key: "stage2_pass_rate",
+      render: (text) => (text !== undefined ? `${text}%` : "-"),
+      width: 120,
+    },
+    {
+      title: "Stage 2 Fail Rate (%)",
+      dataIndex: "stage2_fail_rate",
+      key: "stage2_fail_rate",
+      render: (text) => (text !== undefined ? `${text}%` : "-"),
+      width: 120,
+    },
+  ];
+  
 
   const rangePresets = [
     {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
@@ -431,10 +475,16 @@ const ExpandedRowRender = ({record}) => (
       <strong>Account Balance:</strong> {record.account_balance || "-"}
     </p>
     <p>
-      <strong>Breached:</strong> {record.breached !== undefined ? record.breached : "-"}
+      <strong>Pro Funded Failed:</strong> {record.pro_funded_failed !== undefined ? record.pro_funded_failed : "-"}
     </p>
     <p>
-      <strong>New:</strong> {record.new !== undefined ? record.new : "-"}
+      <strong>Pro plus Funded Failed:</strong> {record.proplus_funded_failed !== undefined ? record.proplus_funded_failed : "-"}
+    </p>
+    <p>
+      <strong>Pro Funded Failed Rate:</strong> {record.proplus_funded_failed  ? record.proplus_funded_failed : "-"}
+    </p>
+        <p>
+      <strong>Pro plus Funded Failed Rate:</strong> {record.proplus_funded_failed_rate ? record.proplus_funded_failed_rate : "-"}
     </p>
   </div>
 );
