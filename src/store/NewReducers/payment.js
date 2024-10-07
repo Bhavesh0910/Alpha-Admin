@@ -25,8 +25,8 @@ async function paymentListApi(idToken, query) {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    // const res = axios.get(`${baseUrl}v3-payments/${query}`, config);
-    const res = axios.get(`${baseUrl}payments/admin/transactions/list/${query}`, config);
+    const res = axios.get(`${baseUrl}v3-payments/${query}`, config);
+    // const res = axios.get(`${baseUrl}payments/admin/transactions/list/${query}`, config);
     return res;
   } catch (error) {
     throw error;
