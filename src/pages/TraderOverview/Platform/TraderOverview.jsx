@@ -644,7 +644,7 @@ function TraderOverview() {
     dispatch(
       enableDisableUser({
         idToken,
-        body : formdata,
+        body: formdata,
         dispatch,
       }),
     );
@@ -1098,27 +1098,33 @@ function TraderOverview() {
               </Select>
             )} */}
 
-            <p className="modal-title">Write Your Reason</p>
-            <textarea
-              maxLength={255}
-              value={reason}
-              onChange={(e) => {
-                // setReason(e.target.value);
-                if (e.target.value.length <= 255) {
-                  setReason(e.target.value);
-                  setShowWarning(false);
-                }
-                if (e.target.value.length === 255) {
-                  console.log("warning....");
-                  setShowWarning(true);
-                }
-                if (e.target.value.length === 256) {
-                  console.log("warning....");
-                  setMaxReasonChar(true);
-                }
-              }}
-              placeholder="Write your reason here.."
-            ></textarea>
+            {action === "Enable" || action === "Disable" ? (
+              <p className="modal-title">Are you sure you want to {action} this account</p>
+            ) : (
+              <>
+                <p className="modal-title">Write Your Reason</p>
+                <textarea
+                  maxLength={255}
+                  value={reason}
+                  onChange={(e) => {
+                    // setReason(e.target.value);
+                    if (e.target.value.length <= 255) {
+                      setReason(e.target.value);
+                      setShowWarning(false);
+                    }
+                    if (e.target.value.length === 255) {
+                      console.log("warning....");
+                      setShowWarning(true);
+                    }
+                    if (e.target.value.length === 256) {
+                      console.log("warning....");
+                      setMaxReasonChar(true);
+                    }
+                  }}
+                  placeholder="Write your reason here.."
+                ></textarea>
+              </>
+            )}
             {showWarning && (
               <Alert
                 message="Comment cannot exceed 255 characters."
