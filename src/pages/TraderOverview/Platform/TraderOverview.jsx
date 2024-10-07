@@ -638,14 +638,13 @@ function TraderOverview() {
   );
 
   const handleEnableDisableAction = () => {
-    const body = {
-      login_id: selectedTrader?.login_id,
-      platform: platform === "trader-accounts" ? "mt5" : platform === "ctrader-accounts" ? "ctrader" : "dxtrade",
-    };
+    const formdata = new FormData();
+    formdata.append("login_id", selectedTrader?.login_id);
+    formdata.append("platform", platform === "trader-accounts" ? "mt5" : platform === "ctrader-accounts" ? "ctrader" : "dxtrade");
     dispatch(
       enableDisableUser({
         idToken,
-        body,
+        body : formdata,
         dispatch,
       }),
     );
