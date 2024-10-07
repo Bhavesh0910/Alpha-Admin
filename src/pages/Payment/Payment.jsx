@@ -237,8 +237,8 @@ const Payment = () => {
       },
       {
         title: "Status",
-        dataIndex: "payment",
-        key: "payment",
+        dataIndex: "payment_status",
+        key: "payment_status",
         render: (text, record, index) =>
           text === "succeeded" ? (
             <Dropdown
@@ -287,7 +287,7 @@ const Payment = () => {
 
   const handleUpdateStatus = () => {
     let body = {payment_status: updatedStatus};
-    dispatch(updatePaymentStatusReq({idToken, body, id: userToUpdate?.User_id?.id, dispatch}));
+    dispatch(updatePaymentStatusReq({idToken, body, id: userToUpdate?.id, dispatch}));
     setStatusModelVisible(false);
   };
 
@@ -304,11 +304,11 @@ const Payment = () => {
   }, [idToken, pageSize, pageNo, searchText, activeTab, dates, refetch]);
 
   function fetchPayments(idToken, pageSize, pageNo, searchText, activeTab, dates) {
-    let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
+    let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}&status=${activeTab === "paid" ? 1 : activeTab === "unpaid" ? 0 : ""}`;
 
-    if (activeTab) {
-      query += `&payment_status=${activeTab}`;
-    }
+    // if (activeTab) {
+    //   query += `&payment_status=${activeTab}`;
+    // }
     if (searchText) {
       query = query + `&search=${searchText}`;
     }
@@ -440,8 +440,8 @@ const Payment = () => {
                 All
               </Button>
               <Button
-                className={activeTab === "succeeded" ? "active" : ""}
-                onClick={() => handleTabChange("succeeded")}
+                className={activeTab === "paid" ? "active" : ""}
+                onClick={() => handleTabChange("paid")}
               >
                 Paid
               </Button>
@@ -451,12 +451,12 @@ const Payment = () => {
               >
                 Unpaid
               </Button>
-              <Button
+              {/* <Button
                 className={activeTab === "refunded" ? "active" : ""}
                 onClick={() => handleTabChange("refunded")}
               >
                 Refunded
-              </Button>
+              </Button> */}
             </div>
             <div className="paymentDateRange">
               <RangePicker
@@ -499,7 +499,7 @@ const Payment = () => {
             triggerChange={triggerChange}
             isExpandable={true}
             ExpandedComp={ExpandableRow}
-            rowId={"User_id"}
+            rowId={"id"}
           />
         )}
       </div>
