@@ -146,6 +146,18 @@ const accountSlice = createSlice({
       .addCase(reinstateAccount.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
+      })
+      .addCase(enableDisableUser.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(enableDisableUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.refresh = !state.refresh;
+      })
+      .addCase(enableDisableUser.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
       });
   },
 });
