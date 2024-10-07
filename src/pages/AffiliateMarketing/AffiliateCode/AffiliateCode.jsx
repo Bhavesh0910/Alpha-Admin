@@ -7,7 +7,7 @@ import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import dayjs from "dayjs";
 
-const AffiliateCode = ({ id }) => {
+const AffiliateCode = ({ user_id }) => {
   const [searchText, setSearchText] = useState("");
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
@@ -16,8 +16,8 @@ const AffiliateCode = ({ id }) => {
   const { idToken } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(fetchAffiliateCodes({ idToken, affiliateId: id, pageNo, pageSize, searchText }));
-  }, [dispatch, pageNo, pageSize, searchText, idToken, id]);
+    dispatch(fetchAffiliateCodes({ idToken, affiliateId: user_id, pageNo, pageSize, searchText }));
+  }, [dispatch, pageNo, pageSize, searchText, idToken, user_id]);
 
   const columns = [
     {
