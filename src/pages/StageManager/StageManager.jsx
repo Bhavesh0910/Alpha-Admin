@@ -1445,12 +1445,14 @@ const StageManager = () => {
             onChange={updateDateRange}
             // presets={rangePresets}
           />
+          {location.pathname === "/support/funded" ? '' : 
           <Button
             onClick={() => navigate(viewLogsLink)}
             className="view_logs__btn standard_button"
           >
             View Logs
           </Button>
+          }
         </div>
       </div>
 
