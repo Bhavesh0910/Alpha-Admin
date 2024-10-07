@@ -4,6 +4,7 @@
     height: 46px;
     text-transform: capitalize;
     z-index: 2 !important;
+
   }
   
   .slider_container{
@@ -182,10 +183,16 @@
         justify-content: center;
         align-items: center;
         gap: 10px;
+        border: none;
 
         border-radius: 10px;
         background: #f6fefe;
 
+        span{
+          display: flex;
+          align-items: center;
+          gap: 5px;
+        }
         p {
           color: #1e1e1e;
           font-family: "Nunito Sans";

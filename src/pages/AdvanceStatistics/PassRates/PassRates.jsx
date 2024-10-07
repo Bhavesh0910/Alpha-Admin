@@ -275,6 +275,7 @@ const PassRates = () => {
       dataIndex: "challenge_name",
       key: "challenge_name",
       render: (text) => renderValue(text),
+      width: 150,
     },
     {
       title: "Plan Type",
@@ -485,7 +486,7 @@ const PassRates = () => {
                   </Tooltip>
                 </div>
               )}
-              <button className="tabs">
+              <button className="tabs" style={{minWidth: '120px'}}>
                 <Dropdown overlay={planTypeMenu} trigger={["click"]}
                   className="dropdown"
                 >
