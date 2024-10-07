@@ -572,28 +572,23 @@ const getAffiliateListV2 = async (idToken, pageNo, pageSize, search) => {
   }
 };
 
-export const fetchCommissionPayment = async (idToken, affiliateId) => {
-  let config = {
+export const fetchCommissionPayment = async (idToken, affiliateId, pageNo, pageSize) => {
+  const config = {
     headers: {
       Authorization: `Bearer ${idToken}`,
     },
+  };
+
+  console.log(pageNo)
+  
+  const url = `${baseUrl}affiliate/v2/commission/payment/?affiliate_id=${affiliateId}&page=${pageNo}&page_size=${pageSize}`;
+
+  try {
+    const res = await axios.get(url, config);
+    return res; 
+  } catch (error) {
+    throw error; 
   }
-  const url = `${baseUrl}affiliate/v2/commission/payment/?affiliate_id=${affiliateId}`;
-
-  let output;
-  await axios
-    .get(url, config)
-    .then((res) => {
-      output = res;
-
-      return output;
-    })
-    .catch(function (error) {
-      output = error;
-      return output;
-    });
-
-  return output;
 };
 
 export const fetchAffiliateCode = async (idToken, affiliateId) => {

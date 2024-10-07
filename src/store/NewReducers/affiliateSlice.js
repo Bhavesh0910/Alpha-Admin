@@ -36,16 +36,19 @@ export const fetchAffiliateList = createAsyncThunk("affiliate/fetchAffiliateList
   }
 });
 
-export const fetchCommissionPaymentData = createAsyncThunk("affiliate/fetchCommissionPaymentData", async ({ idToken, affiliateId }, { dispatch, rejectWithValue }) => {
-  try {
-    const data = await fetchCommissionPayment(idToken, affiliateId);
-    return data;
-  } catch (error) {
-    const msg = error.response?.data?.detail || "Error fetching commission payment data";
-    dispatch(returnErrors(msg, 400));
-    return rejectWithValue(msg);
+export const fetchCommissionPaymentData = createAsyncThunk(
+  "affiliate/fetchCommissionPaymentData",
+  async ({ idToken, affiliateId, pageNo, pageSize }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await fetchCommissionPayment(idToken, affiliateId, pageNo, pageSize);
+      return response
+    } catch (error) {
+      const msg = error.response?.data?.detail || "Error fetching commission payment data";
+      dispatch(returnErrors(msg, 400));
+      return rejectWithValue(msg);
+    }
   }
-});
+);
 
 export const fetchAffiliateCodes = createAsyncThunk(
   "affiliate/fetchAffiliateCodes",
