@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from "react";
 import "./TraderOverview.scss";
-import {Table, DatePicker, Button, Card, Radio, Select, Typography, Modal, Cascader, Tag, Dropdown, Menu, Form, Input, Alert, notification} from "antd";
+import {Table, DatePicker, Button, Card, Radio, Select, Typography, Modal, Cascader, Tag, Dropdown, Menu, Form, Input, Alert, notification, Switch} from "antd";
 
 import {Link, useNavigate} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
@@ -9,11 +9,12 @@ import {getAccountList, getAccountListSuccess} from "../../../store/reducers/acc
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import {setDefaultLoginId, accountList, changeAccountStatus, deleteAcount, reinstateAccount} from "../../../store/NewReducers/accountList";
+import {setDefaultLoginId, accountList, changeAccountStatus, deleteAcount, reinstateAccount, enableDisableUser} from "../../../store/NewReducers/accountList";
 import {clearPersistedData} from "../../../store/configureStore";
 import dayjs from "dayjs";
 import blockIcon from "../../../assets/icons/block.svg";
 import unblockIcon from "../../../assets/icons/unblock.svg";
+import {ReactComponent as UnblockIcon} from "../../../assets/icons/unblock.svg";
 import deleteIcon from "../../../assets/icons/delete.svg";
 import {formatDate} from "fullcalendar/index.js";
 import ReactCountryFlag from "react-country-flag";
@@ -194,7 +195,7 @@ function TraderOverview() {
     const formattedOptions = Object.keys(data).map((key) => ({
       label: key,
       value: key,
-      children: (data && data[key] || [])?.map((item) => ({
+      children: ((data && data[key]) || [])?.map((item) => ({
         label: item.name || "",
         value: item.name || "",
       })),
@@ -380,6 +381,8 @@ function TraderOverview() {
       )}
     </Menu>
   );
+  // const [checked, setChecked] = useState(data?.map((item) => item?.is_Active) === true)
+  // console.log("abc",data.map((item) => item.is_Active))
 
   const columns = useMemo(
     () => [
@@ -438,12 +441,12 @@ function TraderOverview() {
       },
       {
         title: "Name",
-        dataIndex:"name",
-        key:"name",
-        width:100,
-        render:(text)=>{
-          return <span>{text?text :"-"}</span>;
-        }
+        dataIndex: "name",
+        key: "name",
+        width: 100,
+        render: (text) => {
+          return <span>{text ? text : "-"}</span>;
+        },
       },
       {
         title: "Account No.",
@@ -543,13 +546,28 @@ function TraderOverview() {
         title: "Action",
         dataIndex: "action",
         key: "action",
-        width: 100,
+        width: 200,
         render: (text, record) => (
           <div
             className="btn-wrapper"
             style={{width: "10rem"}}
           >
             {/* {record?.user_is_active ? ( */}
+
+            <div
+              style={{cursor: "pointer"}}
+              title={`${record?.is_Active === true ? "Disable User" : "Enable User"}`}
+            >
+              <Switch
+                className={`disable-enable-btn ${record?.is_Active === true ? "active" : "inactive"}`}
+                checked={record?.is_Active === true}
+                onClick={() => handleAction(record?.is_Active === true ? "Disable" : "Enable", record)}
+                // onChange={(checked) => {
+                //   // setChecked(checked)
+                //   handleEnableDisableAction(record, checked);
+                // }}
+              />
+            </div>
             <div
               style={{cursor: "pointer"}}
               title={`${record?.user_is_active ? "Block" : "Unblock"}`}
@@ -561,6 +579,7 @@ function TraderOverview() {
                 trigger={["click"]}
               >
                 <img
+                  // style={{width: "50px", height: "50px"}}
                   src={record?.user_is_active ? blockIcon : unblockIcon}
                   alt="blockIcon"
                 />
@@ -578,15 +597,23 @@ function TraderOverview() {
                 </div> */}
             </div>
             {/* ) : ( */}
+            <div></div>
             {record?.is_disqualified === true && (
               <div
+                className="Reinstate"
                 style={{cursor: "pointer"}}
                 title="Reinstate"
                 onClick={() => handleAction("Reinstate", record)}
               >
-                <img
+                {/* <img
+                  // style={{width: "50px", height: "50px"}}
+
                   src={unblockIcon}
                   alt="Unblock Icon"
+                /> */}
+                <UnblockIcon
+                  width={35}
+                  height={30}
                 />
               </div>
             )}
@@ -598,6 +625,7 @@ function TraderOverview() {
               danger
             >
               <img
+                // style={{width: "50px", height: "50px"}}
                 src={deleteIcon}
                 alt=""
               />
@@ -609,11 +637,29 @@ function TraderOverview() {
     [navigate, platform, searchText],
   );
 
+  const handleEnableDisableAction = () => {
+    const body = {
+      login_id: selectedTrader?.login_id,
+      platform: platform === "trader-accounts" ? "mt5" : platform === "ctrader-accounts" ? "ctrader" : "dxtrade",
+    };
+    dispatch(
+      enableDisableUser({
+        idToken,
+        body,
+        dispatch,
+      }),
+    );
+    setIsModalVisible(false);
+  };
+
   function handleAction(action, record) {
     console.log("Action : ", action);
     setAction(action);
     setSelectedTrader(record);
-    (action === "Reinstate" && setIsModalVisible(true)) || (action === "Delete" && setIsModalVisible(true));
+    (action === "Reinstate" && setIsModalVisible(true)) ||
+      (action === "Delete" && setIsModalVisible(true)) ||
+      (action === "Enable" && setIsModalVisible(true)) ||
+      (action === "Disable" && setIsModalVisible(true));
   }
 
   const handleBlock = () => {
@@ -1004,7 +1050,7 @@ function TraderOverview() {
         )}
 
         <Modal
-          title={`${action !== "Reinstate" && action !== "Delete" ? blockType : ""} ${action} Account`}
+          title={`${action !== "Reinstate" && action !== "Delete" && action !== "Enable" && action !== "Disable" ? blockType : ""} ${action} Account`}
           visible={isModalVisible}
           onCancel={handleCancel}
           centered
@@ -1023,9 +1069,21 @@ function TraderOverview() {
                 key="block"
                 type="primary"
                 danger
-                onClick={action === "Block" ? handleBlock : action === "UnBlock" ? handleUnBlock : action === "Reinstate" ? handleReinstate : handleDelete}
+                onClick={
+                  action === "Enable"
+                    ? handleEnableDisableAction
+                    : action === "Disable"
+                    ? handleEnableDisableAction
+                    : action === "Block"
+                    ? handleBlock
+                    : action === "UnBlock"
+                    ? handleUnBlock
+                    : action === "Reinstate"
+                    ? handleReinstate
+                    : handleDelete
+                }
               >
-                {action === "Block" ? "Block" : action === "UnBlock" ? "UnBlock" : action === "Reinstate" ? "Reinstate" : "Delete"}
+                {action === "Enable" ? "Enable" : action === "Disable" ? "Disable" : action === "Block" ? "Block" : action === "UnBlock" ? "UnBlock" : action === "Reinstate" ? "Reinstate" : "Delete"}
               </Button>
             </div>,
           ]}
