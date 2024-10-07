@@ -161,8 +161,7 @@ const enableDisableUserApi = async (idToken, body) => {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    // const response = await axios.post(`${baseUrl}disable/accounts/`, body, config);
-    const response = await axios.post(`${baseUrl}abc/`, body, config);
+    const response = await axios.post(`${baseUrl}disable/account/`, body, config);
     return response.data;
   } catch (error) {
     console.error("Error during toggle user account status request:", error);
