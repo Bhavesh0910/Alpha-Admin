@@ -31,6 +31,8 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
   }, []);
 
 
+
+
   return (
     <div className="accountMetrics_wrapper">
       {/* 1st */}
@@ -88,7 +90,7 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
             </div>
           </div>
         </div>
-
+{/* 
         <div className="top_right_div">
           <div className="accountMetrics_wrapper_header">
             <h2>Daily Summary</h2>
@@ -119,7 +121,7 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
               <h3>{overview?.calculated_data?.draw_down ? formatCurrency(overview?.calculated_data?.draw_down) : "$0.00"}</h3>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="accountMetrics_wrapper_bottom">
         <div className="bottom_main_left">
@@ -142,7 +144,7 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
               {charts === "BalanceChart" && <BalanceChart performanceChart={performanceChart ?? []} />}
               {charts === "ProfitChart" && <ProfitChart ProfitData={overview?.profit_chart ?? []} />}
               {charts === "DrawdownChart" && <DrawdownChart drawdownData={overview?.drawdown_chart ?? []} />}
-
+              
             </div>
           </div>
           <div className="bottom_main_left_satistic">
