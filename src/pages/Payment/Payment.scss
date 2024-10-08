@@ -2,6 +2,39 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  .status_button {
+    // width: 160px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    padding: 6px 10px;
+    border-radius: var(--Corner-Radius, 10px);
+  }
+  .status_button.status_succeeded {
+    border: 1px solid var(--sucess, #009017);
+    background: var(--Success-Body, #cdffdd);
+  }
+  .status_button.status_rejected {
+    border: 1px solid var(--Failed, #f20000);
+    background: var(--Failed-body, #ffe1e1);
+  }
+  .status_button.status_in_progress {
+    border: 1px solid var(--In-progress, #f4ea0f);
+    background: var(--in-Progress-Body, #fffdcf);
+  }
+  .status_button.status_failed {
+    border: 1px solid var(--Failed, #f20000);
+    background: var(--Failed-body, #ffe1e1);
+  }
+  .status_button.status_unpaid {
+    border: 1px solid var(--In-progress, #f4ea0f);
+    background: var(--in-Progress-Body, #fffdcf);
+  }
+  .status_button.status_default {
+    border: 1px solid var(--In-progress, #f4ea0f);
+  }
+
   .header_wrapper {
     button {
       margin-left: auto;
@@ -123,10 +156,11 @@
       &.new {
         .ant-select-selector {
           .ant-select-selection-item {
-            border: 1px solid #00a3ff;
+            border: 1px solid red;
           }
         }
       }
+
       &.in_progress {
         .ant-select-selector {
           .ant-select-selection-item {
@@ -137,7 +171,7 @@
       &.approved {
         .ant-select-selector {
           .ant-select-selection-item {
-            border: 1px solid #a3ea93;
+            background: var(--succeeded-body, green);
           }
         }
       }
@@ -221,13 +255,9 @@
   }
 }
 
-.status_button{
-  width: fit-content;
-}
-
-.paymentNestedTable{
+.paymentNestedTable {
   display: grid;
-  grid-template-columns: repeat(4,auto);
+  grid-template-columns: repeat(4, auto);
   gap: 40px;
   p {
     color: var(--Brand-2, #12181f);
@@ -238,10 +268,9 @@
     line-height: normal;
     margin-top: 10px;
   }
-
 }
 
-.paymentDateRange{
+.paymentDateRange {
   .ant-picker {
     min-width: 220px;
   }

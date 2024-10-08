@@ -408,7 +408,7 @@
 //               onChange={handleCategoryChange}
 //             >
 //               <Option value="all">All Categories</Option>
-         
+
 //             </Select> */}
 //             <input
 //               placeholder="Search by Email , Payment Id..."
@@ -654,7 +654,6 @@
 //   );
 // };
 
-
 import React, {useEffect, useMemo, useState} from "react";
 import "./Payment.scss";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
@@ -818,14 +817,14 @@ const Payment = () => {
       // },
       {
         title: "Promo",
-        dataIndex: "promo_code",
-        key: "promo_code",
-        width: 50,
+        dataIndex: "promo",
+        key: "promo",
+        width: 100,
         render: (text) => (
           <>
             {text ? (
               <div className="copy_text_btn">
-                <div href={`mailto:${text}`}>{text}</div>
+                <div>{text}</div>
                 <Tooltip title="Copy Promo">
                   <Button
                     icon={<CopyButton />}
@@ -892,12 +891,96 @@ const Payment = () => {
             "-"
           ),
       },
+      // {
+      //   title: "Status",
+      //   dataIndex: "payment_status",
+      //   key: "payment_status",
+      //   render: (text, record, index) =>
+      //     text === "succeeded" ? (
+      //       <Dropdown
+      //         overlay={() => statusMenu(text, record)}
+      //         trigger={["click"]}
+      //         getPopupContainer={(triggerNode) => triggerNode.closest(".ant-table-body")}
+      //       >
+      //         <Button
+      //           icon={<DownOutlined />}
+      //           className="status_button"
+      //           style={{
+      //             width: "160px",
+      //             display: "flex",
+      //             flexDirection: "row-reverse",
+      //             justifyContent: "space-between",
+      //             padding: "6px 10px",
+      //           }}
+      //         >
+      //           <p className={text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "succeeded" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "Pending" : ""}>
+      //             {text?.slice(0, 1).toUpperCase() + text?.slice(1, text?.length) || "-"}
+      //           </p>
+      //         </Button>
+      //       </Dropdown>
+      //     ) : (
+      //       <Button className="status_button">
+      //         <p
+      //           className={
+      //             text === "unpaid"
+      //               ? "new"
+      //               : text === "In Progress" || text === "in_progress" || text === "Pending" || text === "Payment Pending" || text === "pending"
+      //               ? "in_progress"
+      //               : text === "Approved" || text === "approved"
+      //               ? "approved"
+      //               : text === "Failed" || text === "rejected"
+      //               ? "failed"
+      //               : text === "expired" || text === "Expired" || text === "canceled"
+      //               ? "rejected"
+      //               : text === "Payment Received" || text === "succeeded" || text === "signed"
+      //               ? "succeeded"
+      //               : ""
+      //           }
+      //         >
+      //           {text?.slice(0, 1).toUpperCase() + text?.slice(1) || "-"}
+      //         </p>
+      //       </Button>
+      //     ),
+      // },
       {
         title: "Status",
         dataIndex: "payment_status",
         key: "payment_status",
-        render: (text, record, index) =>
-          text === "succeeded" ? (
+        width: 160,
+        render: (text, record) => {
+          let statusClass = "";
+          switch (text.toLowerCase()) {
+            case "unpaid":
+              statusClass = "status_unpaid";
+              break;
+            case "expired":
+            case "canceled":
+              statusClass = "status_rejected";
+              break;
+            case "pending":
+            case "payment pending":
+              statusClass = "status_in_progress";
+              break;
+            case "succeeded":
+            case "payment received":
+              statusClass = "status_succeeded";
+              break;
+            case "in progress":
+            case "in_progress":
+              statusClass = "status_in_progress";
+              break;
+            case "failed":
+            case "rejected":
+              statusClass = "status_failed";
+              break;
+            default:
+              statusClass = "status_default";
+              break;
+          }
+
+          const statusText = text?.charAt(0).toUpperCase() + text?.slice(1).toLowerCase() || "-";
+
+          return text === "succeeded" ? (
             <Dropdown
               overlay={() => statusMenu(text, record)}
               trigger={["click"]}
@@ -905,7 +988,7 @@ const Payment = () => {
             >
               <Button
                 icon={<DownOutlined />}
-                className="status_button"
+                className={`status_button ${statusClass}`}
                 style={{
                   width: "160px",
                   display: "flex",
@@ -914,14 +997,15 @@ const Payment = () => {
                   padding: "6px 10px",
                 }}
               >
-                <p className={text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Failed" ? "failed" : text === "Pending" ? "Pending" : ""}>
-                  {text?.slice(0, 1).toUpperCase() + text?.slice(1, text?.length) || "-"}
-                </p>
+                <p className={statusClass}>{statusText}</p>
               </Button>
             </Dropdown>
           ) : (
-            text
-          ),
+            <Button className={`status_button ${statusClass}`}>
+              <p className={statusClass}>{statusText}</p>
+            </Button>
+          );
+        },
       },
     ],
     [paymentData],
@@ -1288,7 +1372,7 @@ const CalendarModal = ({idToken, exportLink, status, handleCloseModal, setModalV
   );
 };
 
-export const ExpandableRow = ({ record }) => {
+export const ExpandableRow = ({record}) => {
   const data = record?.meta_data ? JSON.parse(record?.meta_data) : null;
   return (
     <div className="paymentNestedTable">
@@ -1310,5 +1394,3 @@ export const ExpandableRow = ({ record }) => {
     </div>
   );
 };
-
-

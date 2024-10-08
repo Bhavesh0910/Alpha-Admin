@@ -471,7 +471,14 @@
 
 .status_text {
   &.evaluation {
-    color: #f26419;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFD6AD;
+    color: #e95100;
+    border-radius: 4px;
+    padding: 8px;
   }
 }
 
