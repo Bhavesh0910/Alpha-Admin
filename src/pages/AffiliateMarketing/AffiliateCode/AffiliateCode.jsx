@@ -24,36 +24,37 @@ const AffiliateCode = ({ user_id }) => {
       title: "Code",
       dataIndex: "code",
       key: "code",
-      render: (text) => text || "-",
+      render: (text) => (text !== null && text !== undefined ? text : "-"),
     },
     {
       title: "Percentage",
       dataIndex: "percentage",
       key: "percentage",
-      render: (text) => (text ? `${text}%` : "-"), 
+      render: (text) => (text !== null && text !== undefined ? `${text}%` : "-"),
       width: 180
     },
     {
       title: "Pushed Leads",
       dataIndex: "pushed_leads",
       key: "pushed_leads",
-      render: (text) => text || "-",
+      render: (text) => (text !== null && text !== undefined ? text : "-"),
       width: 180
     },
     {
       title: "Consumed By Count",
       dataIndex: "consumed_by_count",
       key: "consumed_by_count",
-      render: (text) => text || "-",
+      render: (text) => (text !== null && text !== undefined ? text : "-"),
       width: 180
     },
     {
       title: "URL",
       dataIndex: "url",
       key: "url",
-      render: (text) => text ? <a href={text} target="_blank" rel="noopener noreferrer">{text}</a> : "-",
+      render: (text) => (text ? <a href={text} target="_blank" rel="noopener noreferrer">{text}</a> : "-"),
     },
   ];
+  
 
   const handleSearch = (value) => {
     setSearchText(value);
