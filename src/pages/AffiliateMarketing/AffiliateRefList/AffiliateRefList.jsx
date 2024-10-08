@@ -1,184 +1,179 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./AffiliateRefList.scss";
-import { DatePicker, Button, notification, Modal } from "antd";
-import { Link, useLocation } from "react-router-dom";
+import {DatePicker, Button, notification, Modal} from "antd";
+import {Link, useLocation} from "react-router-dom";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import exportBtnIcon from "../../../assets/icons/export_btn_icon.svg";
 import dayjs from "dayjs";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import LineChart from "./LineChart";
-import { fetchReferredList, fetchAffExportData, fetchPushleadsChartData } from "../../../store/NewReducers/affiliateSlice";
-import { returnErrors } from "../../../store/reducers/error";
-import { returnMessages } from "../../../store/reducers/message";
-import { CloseOutlined } from "@ant-design/icons";
+import {fetchReferredList, fetchAffExportData, fetchPushleadsChartData} from "../../../store/NewReducers/affiliateSlice";
+import {returnErrors} from "../../../store/reducers/error";
+import {returnMessages} from "../../../store/reducers/message";
+import {CloseOutlined} from "@ant-design/icons";
 
-const { RangePicker } = DatePicker;
+const {RangePicker} = DatePicker;
 
+const AffiliateRefList = ({id, user_id}) => {
+  const dispatch = useDispatch();
+  const [activeTab, setActiveTab] = useState("all");
+  const [searchText, setSearchText] = useState("");
+  const [category, setCategory] = useState("all");
+  const [pageSize, setPageSize] = useState(20);
+  const [pageNo, setPageNo] = useState(1);
+  const [dates, setDates] = useState(null);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [exportDates, setExportDates] = useState(null);
+  const [sessionId, setSessionId] = useState("");
 
+  const {idToken} = useSelector((state) => state.auth);
+  const {referredList, pushleadsChartData, affiliateExportData, isLoading, isExportLoading, isReferedListLoading} = useSelector((state) => state.affiliate);
 
-const AffiliateRefList = ({id , user_id}) => {
-    const dispatch = useDispatch();
-    const [activeTab, setActiveTab] = useState("all");
-    const [searchText, setSearchText] = useState("");
-    const [category, setCategory] = useState("all");
-    const [pageSize, setPageSize] = useState(20);
-    const [pageNo, setPageNo] = useState(1);
-    const [dates, setDates] = useState(null);
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [exportDates, setExportDates] = useState(null);
-    const [sessionId, setSessionId] = useState('');
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchReferredList({idToken, affiliateId: user_id, activeTab}));
+      dispatch(fetchPushleadsChartData({idToken, user_id: user_id}));
+    }
+  }, [id, activeTab, idToken, dispatch]);
 
-    const { idToken } = useSelector((state) => state.auth);
-    const { referredList, pushleadsChartData, affiliateExportData , isLoading, isExportLoading } = useSelector((state) => state.affiliate);
+  const handleSearch = (value) => {
+    setPageNo(1);
+    setSearchText(value);
+  };
 
+  const handleTabChange = (value) => {
+    setPageNo(1);
+    setActiveTab(value);
+    dispatch(fetchReferredList({idToken, affiliateId: id, activeTab: value}));
+  };
 
+  const handleCategoryChange = (value) => {
+    setPageNo(1);
+    setCategory(value);
+  };
 
+  const updateDateRange = (dates) => {
+    setPageNo(1);
+    if (dates) {
+      setDates(dates.map((date) => date.format("DD MMM YYYY")));
+    } else {
+      setDates(null);
+    }
+  };
 
-    useEffect(() => {
-        if (id) {
-            dispatch(fetchReferredList({ idToken, affiliateId: user_id, activeTab }));
-            dispatch(fetchPushleadsChartData({ idToken, user_id: user_id }));
-        }
-    }, [id, activeTab, idToken, dispatch ]);
+  const rangePresets = [
+    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
+    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
+    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
+    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
+    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]},
+  ];
 
-
-    const handleSearch = (value) => {
-        setPageNo(1);
-        setSearchText(value);
-    };
-
-    const handleTabChange = (value) => {
-        setPageNo(1);
-        setActiveTab(value);
-        dispatch(fetchReferredList({ idToken, affiliateId: id, activeTab: value }));
-    };
-
-    const handleCategoryChange = (value) => {
-        setPageNo(1);
-        setCategory(value);
-    };
-
-    const updateDateRange = (dates) => {
-        setPageNo(1);
-        if (dates) {
-            setDates(dates.map((date) => date.format("DD MMM YYYY")));
+  const handleExport = async () => {
+    if (exportDates && exportDates.length === 2) {
+      const [startDate, endDate] = exportDates;
+      try {
+        const response = dispatch(fetchAffExportData({idToken, affiliateId: id, startDate, endDate}));
+        if (affiliateExportData?.data?.s3_file_url) {
+          const s3_file_url = affiliateExportData?.data?.s3_file_url;
+          const link = document.createElement("a");
+          link.href = s3_file_url;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          console.log(s3_file_url);
+          dispatch(returnMessages("Export Successful", 200));
         } else {
-            setDates(null);
+          console.error("Failed to fetch export data.");
         }
-    };
-
-    const rangePresets = [
-        { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
-        { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
-        { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
-        { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
-        { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] },
-    ];
-
-    const handleExport = async () => {
-        if (exportDates && exportDates.length === 2) {
-            const [startDate, endDate] = exportDates;
-            try {
-                const response =  dispatch(fetchAffExportData({ idToken, affiliateId: id, startDate, endDate }));
-                if (affiliateExportData?.data?.s3_file_url) {
-                    const s3_file_url = affiliateExportData?.data?.s3_file_url;
-                    const link = document.createElement("a");
-                    link.href = s3_file_url;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    console.log(s3_file_url)
-                    dispatch(returnMessages("Export Successful", 200));
-                } else {
-                    console.error("Failed to fetch export data.");
-                }
-            } catch (error) {
-                console.error("Error exporting data:", error);
-                dispatch(returnErrors("Error exporting data", 400));
-            } finally {
-                setModalVisible(false);
-            }
-        } else {
-            notification.warning({
-                message: "Invalid Dates",
-                description: "Please select a valid date range.",
-            });
-        }
-    };
-
-    const openModal = () => {
-        setModalVisible(true);
-    };
-
-    const closeModal = () => {
+      } catch (error) {
+        console.error("Error exporting data:", error);
+        dispatch(returnErrors("Error exporting data", 400));
+      } finally {
         setModalVisible(false);
-    };
+      }
+    } else {
+      notification.warning({
+        message: "Invalid Dates",
+        description: "Please select a valid date range.",
+      });
+    }
+  };
 
-    const updateExportDateRange = (dates) => {
-        if (dates) {
-            setExportDates(dates.map(date => date.format("YYYY-MM-DD")));
-        } else {
-            setExportDates(null);
-        }
-    };
+  const openModal = () => {
+    setModalVisible(true);
+  };
 
-    const columns = [
-        {
-            title: "Referred Trader",
-            dataIndex: "id",
-            key: "id",
-            render: (text) => text ? `${text}` : "-",
-        },
-        {
-            title: "Email",
-            dataIndex: "email",
-            key: "email",
-            render: (text) => text ? `${text}` : "-",
-        },
-        {
-            title: "Name",
-            dataIndex: "name",
-            key: "name",
-            render: (text) => text ? `${text}` : "-",
-        },
-        // {
-        //     title: "Commission Amount",
-        //     dataIndex: "commissionAmount",
-        //     key: "commissionAmount",
-        //     render: (text) => `$${text}`,
-        // },
-        // {
-        //     title: "Percentage",
-        //     dataIndex: "percentage",
-        //     key: "percentage",
-        //     render: (text) => `${text}%`,
-        // },
-        {
-            title: "Created At",
-            dataIndex: "date",
-            key: "date",
-            render: (text) =>  text ? dayjs(text).format("DD/MMM/YYYY") : "-",
-        },
-        // {
-        //     title: "Payment ID",
-        //     dataIndex: "paymentId",
-        //     key: "paymentId",
-        // },
-        // {
-        //     title: "Status",
-        //     dataIndex: "status",
-        //     key: "status",
-        // },
-    ];
+  const closeModal = () => {
+    setModalVisible(false);
+  };
 
-    return (
-        <div className="affreflist_container">
-            <div className="header_wrapper"></div>
-            <div className="table_header_filter">
-                <div className="header_left">
-                    {/* <div className="search_box_wrapper">
+  const updateExportDateRange = (dates) => {
+    if (dates) {
+      setExportDates(dates.map((date) => date.format("YYYY-MM-DD")));
+    } else {
+      setExportDates(null);
+    }
+  };
+
+  const columns = [
+    // {
+    //     title: "Referred Trader",
+    //     dataIndex: "id",
+    //     key: "id",
+    //     render: (text) => text ? `${text}` : "-",
+    // },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      render: (text) => (text ? `${text}` : "-"),
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text) => (text ? `${text}` : "-"),
+    },
+    // {
+    //     title: "Commission Amount",
+    //     dataIndex: "commissionAmount",
+    //     key: "commissionAmount",
+    //     render: (text) => `$${text}`,
+    // },
+    // {
+    //     title: "Percentage",
+    //     dataIndex: "percentage",
+    //     key: "percentage",
+    //     render: (text) => `${text}%`,
+    // },
+    {
+      title: "Created At",
+      dataIndex: "date",
+      key: "date",
+      render: (text) => (text ? dayjs(text).format("DD/MMM/YYYY") : "-"),
+    },
+    // {
+    //     title: "Payment ID",
+    //     dataIndex: "paymentId",
+    //     key: "paymentId",
+    // },
+    // {
+    //     title: "Status",
+    //     dataIndex: "status",
+    //     key: "status",
+    // },
+  ];
+
+  return (
+    <div className="affreflist_container">
+      {(isReferedListLoading || isLoading) && <LoaderOverlay />}
+      <div className="header_wrapper"></div>
+      <div className="table_header_filter">
+        <div className="header_left">
+          {/* <div className="search_box_wrapper">
                         <input
                             placeholder="Search..."
                             className="search_input"
@@ -194,7 +189,7 @@ const AffiliateRefList = ({id , user_id}) => {
                             <img src={searchIcon} alt="searchIcon" />
                         </div>
                     </div> */}
-                    {/* <div className="header_middle">
+          {/* <div className="header_middle">
                         <div className="filter_buttons">
                             <Button
                                 className={activeTab === "all" ? "active" : ""}
@@ -216,116 +211,104 @@ const AffiliateRefList = ({id , user_id}) => {
                             </Button>
                         </div>
                     </div> */}
-                </div>
-            </div>
-            <div className="header_bottom">
-                <div></div>
-                {/* <RangePicker
+        </div>
+      </div>
+      <div className="header_bottom">
+        <div></div>
+        {/* <RangePicker
                     onChange={updateDateRange}
                     autoFocus
                     presets={rangePresets}
                 /> */}
-                <div className="export_btn">
-                    <Button onClick={openModal} loading={isExportLoading}>
-                        <img src={exportBtnIcon} alt="export_btn_icon" />
-                        Export
-                    </Button>
-                    <Link
-                        to="/affiliate-marketing/affiliateMarketing-exportHistory"
-                        style={{ color: "white" }}
-                    >
-                        View Export History
-                    </Link>
-                </div>
-            </div>
-
-            <div className="card_wrapper">
-                <div className="card">
-                    <h3 className="title">
-                        Clicks
-                    </h3>
-                    <p className="value">
-                        {pushleadsChartData ? pushleadsChartData.pushed_leads : '-'}
-                    </p>
-                </div>
-
-                <div className="card">
-                    <h3 className="title">
-                        Sign ups
-                    </h3>
-                    <p className="value">
-                        {pushleadsChartData ? pushleadsChartData.signups : '-'}
-                    </p>
-                </div>
-
-                <div className="card">
-                    <h3 className="title">
-                        Sales/Purchase
-                    </h3>
-                    <p className="value">
-                        {pushleadsChartData ? pushleadsChartData.conversions : '-'}
-                    </p>
-                </div>
-
-                <div className="card">
-                    <h3 className="title">
-                        Commission
-                    </h3>
-                    <p className="value">
-                        {pushleadsChartData ? pushleadsChartData.outstanding_commission : '-'}
-                    </p>
-                </div>
-            </div>
-
-            <div className="pushleads">
-                <div className="chart_wrapper">
-                    <h3 className="chart_title">Pushleads</h3>
-                    <LineChart data={pushleadsChartData} />
-                </div>
-                <div className="ref_list_table">
-                    <h3>Referred List</h3>    
-                    <AntTable
-                        columns={columns || []}
-                        data={referredList || []}
-                        serverSide={false}
-                    />
-                </div>
-            </div>
-
-            <Modal
-                title="Export Data"
-                visible={isModalVisible}
-                onCancel={closeModal}
-                footer={[
-                    <Button key="cancel" onClick={closeModal}>
-                        Cancel
-                    </Button>,
-                    <Button
-                        key="export"
-                        type="primary"
-                        onClick={handleExport}
-                        loading={isExportLoading}
-                    >
-                        Export
-                    </Button>
-                ]}
-            >
-                <div>
-                    <RangePicker
-                        onChange={updateExportDateRange}
-                        autoFocus
-                        presets={rangePresets}
-                        defaultValue={exportDates ? [
-                            dayjs(exportDates[0]),
-                            dayjs(exportDates[1])
-                        ] : null}
-                    />
-                </div>
-            </Modal>
-
-            {isLoading && <LoaderOverlay />}
+        <div className="export_btn">
+          <Button
+            onClick={openModal}
+            loading={isExportLoading}
+          >
+            <img
+              src={exportBtnIcon}
+              alt="export_btn_icon"
+            />
+            Export
+          </Button>
+          <Link
+            to="/affiliate-marketing/affiliateMarketing-exportHistory"
+            style={{color: "white"}}
+          >
+            View Export History
+          </Link>
         </div>
-    );
+      </div>
+
+      <div className="card_wrapper">
+        <div className="card">
+          <h3 className="title">Clicks</h3>
+          <p className="value">{pushleadsChartData ? pushleadsChartData.pushed_leads : "-"}</p>
+        </div>
+
+        <div className="card">
+          <h3 className="title">Sign ups</h3>
+          <p className="value">{pushleadsChartData ? pushleadsChartData.signups : "-"}</p>
+        </div>
+
+        <div className="card">
+          <h3 className="title">Sales/Purchase</h3>
+          <p className="value">{pushleadsChartData ? pushleadsChartData.conversions : "-"}</p>
+        </div>
+
+        <div className="card">
+          <h3 className="title">Commission</h3>
+          <p className="value">{pushleadsChartData ? pushleadsChartData.outstanding_commission : "-"}</p>
+        </div>
+      </div>
+
+      <div className="pushleads">
+        <div className="chart_wrapper">
+          <h3 className="chart_title">Pushleads</h3>
+          <LineChart data={pushleadsChartData} />
+        </div>
+        <div className="ref_list_table">
+          <h3>Referred List</h3>
+          <AntTable
+            columns={columns || []}
+            data={referredList || []}
+            serverSide={false}
+          />
+        </div>
+      </div>
+
+      <Modal
+        title="Export Data"
+        visible={isModalVisible}
+        onCancel={closeModal}
+        footer={[
+          <Button
+            key="cancel"
+            onClick={closeModal}
+          >
+            Cancel
+          </Button>,
+          <Button
+            key="export"
+            type="primary"
+            onClick={handleExport}
+            loading={isExportLoading}
+          >
+            Export
+          </Button>,
+        ]}
+      >
+        <div>
+          <RangePicker
+            onChange={updateExportDateRange}
+            autoFocus
+            presets={rangePresets}
+            defaultValue={exportDates ? [dayjs(exportDates[0]), dayjs(exportDates[1])] : null}
+          />
+        </div>
+      </Modal>
+    </div>
+  );
 };
 
 export default AffiliateRefList;
