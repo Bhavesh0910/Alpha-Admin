@@ -33,21 +33,21 @@ const TraderJournal = ({ login_id, platform }) => {
       dataIndex: "deal",
       key: "deal",
       width: 120,
-      render: (text) => (text !== undefined ? text : "N/A"),
+      render: (text) => (text != null ? text : "N/A"),
     },
     {
       title: "Order",
       dataIndex: "order",
       key: "order",
       width: 120,
-      render: (text) => (text !== undefined ? text : "N/A"),
+      render: (text) => (text != null ? text : "N/A"),
     },
     {
       title: "Position",
       dataIndex: "position",
       key: "position",
       width: 120,
-      render: (text) => (text !== undefined ? text : "N/A"),
+      render: (text) => (text != null ? text : "N/A"),
     },
     {
       title: "Symbol",
@@ -75,28 +75,28 @@ const TraderJournal = ({ login_id, platform }) => {
       dataIndex: "volume",
       key: "volume",
       width: 80,
-      render: (text) => (text !== undefined ? Number(text).toFixed(2) : "0.00"),
+      render: (text) => (text != null ? Number(text).toFixed(2) : "0.00"),
     },
     {
       title: "Price",
       dataIndex: "price",
       key: "price",
       width: 80,
-      render: (text) => (text !== undefined ? `$${(Number(text) || 0).toFixed(2)}` : "$0.00"),
+      render: (text) => (text != null ? dollarUS(Number(text) || 0) : "$0.00"),
     },
     {
       title: "S/L",
       dataIndex: "stopLoss",
       key: "sl",
       width: 120,
-      render: (text) => (text !== null && text !== undefined ? `$${(Number(text) || 0).toFixed(2)}` : "N/A"),
+      render: (text) => (text != null ? dollarUS(Number(text) || 0) : "N/A"),
     },
     {
       title: "T/P",
       dataIndex: "takeProfit",
       key: "tp",
       width: 100,
-      render: (text) => (text !== null && text !== undefined ? `$${(Number(text) || 0).toFixed(2)}` : "N/A"),
+      render: (text) => (text != null ? dollarUS(Number(text) || 0) : "N/A"),
     },
     {
       title: "Reason",
@@ -110,21 +110,21 @@ const TraderJournal = ({ login_id, platform }) => {
       dataIndex: "commission",
       key: "commission",
       width: 120,
-      render: (text) => `$${(Number(text)?.toFixed(2) || 0)}`,
+      render: (text) => dollarUS(Number(text) || 0),
     },
     {
       title: "Swap",
       dataIndex: "swap",
       key: "swap",
       width: 80,
-      render: (text) => `$${(Number(text)?.toFixed(2) || 0)}`,
+      render: (text) => dollarUS(Number(text) || 0),
     },
     {
       title: "Profit",
       dataIndex: "profit",
       key: "profit",
       width: 80,
-      render: (text) => `${dollarUS(Number(text)?.toFixed(2) || 0)}`,
+      render: (text) => dollarUS(Number(text) || 0),
     },
     {
       title: "Comment",
@@ -134,7 +134,6 @@ const TraderJournal = ({ login_id, platform }) => {
       render: (text) => (text ? text : "N/A"),
     },
   ], []);
-  
 
   function triggerChange(page, updatedPageSize) {
     setPageNo(page);
