@@ -5,7 +5,7 @@ const CurrentWinner = () => {
     const {compDashboard}=useSelector((state)=>state.comp);
     return (
     <div className="current_winner_wrapper">
-      <h2>Dashboard Stats</h2>
+      <h2>{ compDashboard?.user?.name && compDashboard?.user?.name ||"Dashboard Stats"}</h2>
       <div className="current_winner_groups">
         <div className="current_winner_info_groupA">
           <div className="current_winner_info">

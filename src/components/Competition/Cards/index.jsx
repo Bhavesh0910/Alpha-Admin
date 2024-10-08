@@ -61,7 +61,7 @@ const Cards = () => {
           />
           <p className="Cards_label">Current Winner</p>
         </div>
-        <p className="Cards_value">{compDashboard?.user?.name && compDashboard?.user?.name || compTableData && compTableData[0]?.name}</p>
+        <p className="Cards_value">{compTableData && compTableData[0]?.name}</p>
       </div>
       <div className="Cards_content">
         <div className="Cards_content_wrapper">
