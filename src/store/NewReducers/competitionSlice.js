@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {getCompDetails, postCompDetails, getOneCompDetails, updateCompDetails, getLeaderboardDetails, deleteCompDetails} from "../../utils/api/apis";
+import {getCompDetails, postCompDetails, getOneCompDetails, updateCompDetails, getLeaderboardDetails, deleteCompDetails, getCompTableDetails, getCompDashboardChart, getCompLeaderboardStats} from "../../utils/api/apis";
 import {returnErrors} from "../reducers/error";
 import {returnMessages} from "../reducers/message";
 
@@ -52,7 +52,7 @@ export const createCompetition = createAsyncThunk("comp/createCompetition", asyn
     console.log(response);
     dispatch(returnMessages("Successfully created competition", 200));
     return response?.data;
-  }catch (error) {
+  } catch (error) {
     const msg = error.response?.data?.detail || "Error creating competition";
     const status = error.response?.status || 500;
     dispatch(returnErrors(msg, status));
@@ -64,11 +64,9 @@ export const updateCompetition = createAsyncThunk("comp/updateCompetition", asyn
   console.log(id, updatedData);
   try {
     const response = await updateCompDetails(idToken, id, updatedData);
-      dispatch(returnMessages("Successfully updated competition", 200));
-      return response?.data;
-      
-  }   
-   catch (error) {
+    dispatch(returnMessages("Successfully updated competition", 200));
+    return response?.data;
+  } catch (error) {
     const msg = error.response?.data?.detail || "Error updating competition";
     const status = error.response?.status || 500;
     dispatch(returnErrors(msg, status));
@@ -76,12 +74,11 @@ export const updateCompetition = createAsyncThunk("comp/updateCompetition", asyn
   }
 });
 
-export const deleteCompetition = createAsyncThunk("comp/deleteCompetition", async ({ idToken, id }, { dispatch, rejectWithValue }) => {
+export const deleteCompetition = createAsyncThunk("comp/deleteCompetition", async ({idToken, id}, {dispatch, rejectWithValue}) => {
   try {
     const response = await deleteCompDetails(idToken, id);
-      dispatch(returnMessages("Competition deleted successfully", 200));
-      return id; 
-  
+    dispatch(returnMessages("Competition deleted successfully", 200));
+    return id;
   } catch (error) {
     const msg = error.response?.data?.detail || "Error deleting competition";
     const status = error.response?.status || 500;
@@ -90,9 +87,37 @@ export const deleteCompetition = createAsyncThunk("comp/deleteCompetition", asyn
   }
 });
 
+export const fetchCompTableDetails = createAsyncThunk("comp/compTableDetails", async ({idToken, id}, {dispatch, rejectWithValue}) => {
+  try {
+    const response = await getCompTableDetails(idToken, id);
+    return response?.data;
+  } catch (error) {
+    const msg = error.response?.data?.detail || "Error fetching competition details";
+    const status = error.response?.status || 500;
+    dispatch(returnErrors(msg, status));
+    return rejectWithValue(msg);
+  }
+});
+
+export const fetchCompDashboard = createAsyncThunk("comp/compDashboard", async ({idToken, id}, {dispatch, rejectWithValue}) => {
+  try {
+    const response = await getCompDashboardChart(idToken, id);
+    return response?.data;
+  } catch (error) {
+    const msg = error.response?.data?.detail || "Error fetching competition dashboard chart";
+    const status = error.response?.status || 500;
+    dispatch(returnErrors(msg, status));
+    return rejectWithValue(msg);
+  }
+});
+
+
 const initialState = {
   compData: [],
+  compTableData: [],
   competitionDetail: null,
+  compDashboard:null,
+
   leaderboardData: null,
   isLoading: false,
   error: null,
@@ -114,6 +139,32 @@ const compSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchCompTableDetails.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchCompTableDetails.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // console.log("action.payload : ", action.payload.leaderboard);
+        state.compTableData = action?.payload?.leaderboard;
+      })
+      .addCase(fetchCompTableDetails.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || action.error.message;
+      })
+      .addCase(fetchCompDashboard.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchCompDashboard.fulfilled, (state, action) => {
+        state.isLoading = false;
+        console.log("action.payload : ", action?.payload);
+        state.compDashboard = action?.payload;
+      })
+      .addCase(fetchCompDashboard.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || action.error.message;
+      })
       .addCase(fetchCompDetails.pending, (state) => {
         state.isLoading = true;
         state.error = null;

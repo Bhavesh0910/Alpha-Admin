@@ -596,7 +596,7 @@ export const fetchAffiliateCode = async (idToken, affiliateId) => {
     headers: {
       Authorization: `Bearer ${idToken}`,
     },
-  }
+  };
   const url = `${baseUrl}affiliate/v2/code/list/?affiliate_id=${affiliateId}`;
 
   let output;
@@ -1072,7 +1072,6 @@ export const getStageChart = async (idToken, stage, startDate, endDate) => {
     if (startDate && endDate) {
       // response = await axios.get(`${baseUrl}v2/account-overview/stage-${stage}-chart/?start_date=${startDate}&end_date=${endDate}`, config);
       response = await axios.get(`${baseUrl}v3/account-overview/stage-${stage}-chart/?start_date=${startDate}&end_date=${endDate}`, config);
-
     } else {
       response = await axios.get(`${baseUrl}v3/account-overview/stage-${stage}-chart/`, config);
     }
@@ -1122,6 +1121,23 @@ export const getFundingChart = async (idToken, startDate, endDate) => {
     } else {
       response = await axios.get(`${baseUrl}v3/account-overview/funding-chart/`, config);
     }
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getCompDashboardChart = async (idToken, id) => {
+  try {
+    let response;
+    let config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    };
+
+    response = await axios.get(`${baseUrl}v2/competition/leaderboard/user-stats/?user_competition_id=${id}`, config);
+
     return response;
   } catch (error) {
     return error;
@@ -1654,14 +1670,18 @@ export const getGroupsList = async (idToken) => {
 
 export const createGroupPermissionsApi = async (idToken, groupData) => {
   try {
-    const response = await axios.post(`${baseUrl}admin-create-group-permissions/`, {
-      group_name: groupData.group_name,
-      permission_id: groupData.permission_id,
-    }, {
-      headers: {
-        Authorization: `Bearer ${idToken}`,
+    const response = await axios.post(
+      `${baseUrl}admin-create-group-permissions/`,
+      {
+        group_name: groupData.group_name,
+        permission_id: groupData.permission_id,
       },
-    });
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
     return response.data;
   } catch (error) {
     console.error("Error creating group permissions:", error);
@@ -1672,17 +1692,17 @@ export const createGroupPermissionsApi = async (idToken, groupData) => {
 export const assignGroupPermissions = async (idToken, userId, groupId, permissionIds) => {
   try {
     const response = await axios.post(
-      `${baseUrl}admin/assign-group-permissions/`, 
+      `${baseUrl}admin/assign-group-permissions/`,
       {
         user_id: userId,
         group_id: groupId,
         permission_ids: permissionIds,
-      }, 
+      },
       {
         headers: {
           Authorization: `Bearer ${idToken}`,
         },
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -1752,6 +1772,28 @@ export const getOneCompDetails = async (idToken, id) => {
   let output;
   await axios
     .get(`${baseUrl}account/admin/competitions/${id}`, config)
+    .then((res) => {
+      output = res;
+
+      return output;
+    })
+    .catch(function (error) {
+      output = error;
+      return output;
+    });
+
+  return output;
+};
+
+export const getCompTableDetails = async (idToken, id) => {
+  let config = {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  };
+  let output;
+  await axios
+    .get(`${baseUrl}v2/competition/leaderboard/?competition_id=${id}`, config)
     .then((res) => {
       output = res;
 
@@ -2413,15 +2455,11 @@ const CreateTradingAccountReq = async (idToken, data, platform) => {
 
 export const createChallenge = async (idToken, challengeData) => {
   try {
-    const response = await axios.post(
-      `${baseUrl}v2/challenges/admin/create/`,
-      challengeData, 
-      {
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-      }
-    );
+    const response = await axios.post(`${baseUrl}v2/challenges/admin/create/`, challengeData, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error creating challenge:", error);

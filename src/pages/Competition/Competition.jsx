@@ -132,6 +132,8 @@ const CompetitionCard = ({ item }) => {
   const dispatch = useDispatch();
   const idToken = useSelector((state) => state.auth.idToken);
 
+  const navigate = useNavigate();
+
   const handleEdit = () => {
     setFormValues(item);
     setIsModalVisible(true);
@@ -237,7 +239,7 @@ const CompetitionCard = ({ item }) => {
           </div>
         </div>
       </div>
-      <Button className="view_board">View Leaderboard</Button>
+      <Button onClick={()=>navigate(`/leaderboard/${item.id}`)} className="view_board">View Leaderboard</Button>
       <Modal
         className="edit_modal"
         title="Edit Competition"

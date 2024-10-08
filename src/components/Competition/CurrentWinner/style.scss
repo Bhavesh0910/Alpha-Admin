@@ -1,0 +1,60 @@
+.current_winner_wrapper {
+  background: #fff;
+  // display: flex;
+  min-height: 100%;
+
+  gap: 16px;
+  padding: 20px;
+  border-radius: var(--Corner-Radius, 10px);
+  width: 30%;
+  @media screen and (max-width: 1024px){
+    width: 100%;
+  }
+  h2 {
+    color: #000;
+    font-size: 25px !important;
+    text-align: left;
+    font-family: Outfit, sans-serif !important;
+    font-weight: bold !important;
+  }
+  .current_winner_groups {
+    display: flex;
+    // flex-flow: wrap;
+    // width: 100%;
+    gap: 20px;
+    margin-block: 10px;
+    @media screen and (max-width: 1024px){
+        gap:20%
+      }
+    .current_winner_info_groupA .current_winner_info_groupB {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+   
+    }
+    .current_winner_info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-block: 10px;
+
+      .title {
+        color: #8b8e93;
+        font-size: 18px !important;
+        text-align: left;
+        text-wrap: wrap;
+        font-family: Outfit, sans-serif !important;
+        font-weight: bold !important;
+      }
+
+      > p {
+        color: #000;
+        font-size: 18px !important;
+        text-align: left;
+        font-family: Outfit, sans-serif !important;
+        font-weight: bold !important;
+      }
+    }
+  }
+}
