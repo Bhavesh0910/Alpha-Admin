@@ -1,0 +1,18 @@
+.leaderboard_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .leaderboard_middle_content {
+    box-sizing: border-box;
+    display: flex;
+    // flex-flow: wrap;
+    // margin: -16px 0px 0px -16px;
+    width: 100%;
+    justify-content: space-between;
+    gap: 15px;
+    
+    @media screen and (max-width: 1024px) {
+      flex-wrap: wrap;
+    }
+  }
+}
