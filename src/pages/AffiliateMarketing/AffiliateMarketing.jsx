@@ -73,7 +73,7 @@ const AffiliateMarketing = () => {
       title: "Name",
       dataIndex: "name",
       render: (text, record) => (
-        <div onClick={() => handleViewDetailsBtn(record.id , record.user_id)}>
+        <div onClick={() => handleViewDetailsBtn(record.id , record?.code , record.user_id)}>
           {category === "name" || category === "all"
             ? highlightText(
               text
