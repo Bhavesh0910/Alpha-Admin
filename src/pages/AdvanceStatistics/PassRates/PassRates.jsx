@@ -185,7 +185,7 @@ const PassRates = () => {
     </Menu>
   );
 
-  const renderValue = (text, fallback = "-") => {
+  const renderValue = (text, fallback = "N/A") => {
     return text !== null && text !== undefined ? text : fallback;
   };
   
@@ -336,15 +336,25 @@ const PassRates = () => {
   ];
   
   const columns = useMemo(() => {
-    if (selectedStage === "stage 1") {
-      return stage1Columns;
-    } else if (selectedStage === "stage 2") {
-      return stage2Columns;
-    } else {
-      return [...stage1Columns, ...stage2Columns];
-    }
-  }, [selectedStage]);
+    const uniqueColumns = new Map();
   
+    const addColumns = (columnsArray) => {
+      columnsArray.forEach((column) => {
+        uniqueColumns.set(column.key, column); 
+      });
+    };
+  
+    if (selectedStage === "stage 1") {
+      addColumns(stage1Columns);
+    } else if (selectedStage === "stage 2") {
+      addColumns(stage2Columns);
+    } else {
+      addColumns(stage1Columns);
+      addColumns(stage2Columns);
+    }
+  
+    return Array.from(uniqueColumns.values()); 
+  }, [selectedStage]);
   
   const rangePresets = [
     { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
@@ -574,16 +584,16 @@ const ExpandedRowRender = ({ record }) => (
       <strong>Account Balance:</strong> {record.account_balance || "-"}
     </p> */}
     <p>
-      <strong>Pro Funded Failed:</strong> {record.pro_funded_failed !== undefined ? record.pro_funded_failed : "-"}
+      <strong>Pro Funded Failed:</strong> {record.pro_funded_failed !== undefined ? record.pro_funded_failed : "N/A"}
     </p>
     <p>
-      <strong>Pro plus Funded Failed:</strong> {record.proplus_funded_failed !== undefined ? record.proplus_funded_failed : "-"}
+      <strong>Pro plus Funded Failed:</strong> {record.proplus_funded_failed !== undefined ? record.proplus_funded_failed : "N/A"}
     </p>
     <p>
-      <strong>Pro Funded Failed Rate:</strong> {record.proplus_funded_failed ? record.proplus_funded_failed : "-"}
+      <strong>Pro Funded Failed Rate:</strong> {record.proplus_funded_failed ? record.proplus_funded_failed : "N/A"}
     </p>
     <p>
-      <strong>Pro plus Funded Failed Rate:</strong> {record.proplus_funded_failed_rate ? record.proplus_funded_failed_rate : "-"}
+      <strong>Pro plus Funded Failed Rate:</strong> {record.proplus_funded_failed_rate ? record.proplus_funded_failed_rate : "N/A"}
     </p>
   </div>
 );
