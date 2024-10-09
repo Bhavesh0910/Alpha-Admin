@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import "./AccountRangeSlider.scss";
 import crossIcon from "../../../../assets/icons/cross_icon_white.svg";
 
-const AccountRangeSlider = ({ setIsRangeOpen, isRangeOpen, setAccRange, accRange }) => {
+const AccountRangeSlider = ({ setIsRangeOpen, isRangeOpen, setAccRange, accRange, setRawValue }) => {
   const [value, setValue] = useState(accRange || 100);
 
   // console.log(accRange)
@@ -21,6 +21,7 @@ const AccountRangeSlider = ({ setIsRangeOpen, isRangeOpen, setAccRange, accRange
 
   const handleApply = () => {
     setAccRange(value === 0 ? null : value);
+    setRawValue(null);
     handleCloseBtn();
   };
 

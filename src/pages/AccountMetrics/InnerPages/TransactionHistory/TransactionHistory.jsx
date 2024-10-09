@@ -48,10 +48,17 @@ function TransactionHistory({user_id}) {
             render: (text) => (text ? text : '-'),
         },
         {
+            title: 'Promo',
+            dataIndex: 'promo',
+            key: 'promo',
+            width: 100,
+            render: (text) => (text ? text : '-'),
+        },
+        {
             title: 'Date',
             dataIndex: 'date',
             key: 'date',
-            width: 150,
+            width: 120,
             render: (text) => (text ? dayjs(text).format('YYYY-MM-DD') : '-'),
         },
         {
@@ -136,9 +143,9 @@ const ExpandedRowRender = ({ record }) => {
       <a href={record?.invoice} target="_blank" rel="noopener noreferrer">
          View 
       </a>   : '-' }         </p>
-            <p>
+            {/* <p>
                 <strong>Promo:</strong> {record.promo || '-'}
-            </p>
+            </p> */}
             <p>
             {parseMetaData(record.meta_data)}
             </p>

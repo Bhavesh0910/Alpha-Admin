@@ -19,7 +19,7 @@ const CountryWiseOverviewTable = () => {
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [accRange, setAccRange] = useState(null);
-
+  const [rawValue, setRawValue] = useState(null);
   const [countries, setCountries] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
 
@@ -27,6 +27,7 @@ const CountryWiseOverviewTable = () => {
   const [isValidRange, setIsValidRange] = useState(true);
 
   const handleDateChange = (dates) => {
+    setRawValue(null);
     if (dates) {
       setDates(dates);
       // fetchCountryWiseData();
@@ -237,9 +238,12 @@ const CountryWiseOverviewTable = () => {
               if (value === null) {
                 handleCountriesData(false);
               }
+              setRawValue(value);
               setSelectedCountries(value);
               setFilteredCountries(countries);
+              console.log("Value : ", value);
             }}
+            value={rawValue}
             options={filteredCountries}
             // onKeyDown={(e) => {
             //   if (e.key === "Enter") {
@@ -268,6 +272,7 @@ const CountryWiseOverviewTable = () => {
               setIsRangeOpen={setIsRangeOpen}
               setAccRange={setAccRange}
               accRange={accRange}
+              setRawValue={setRawValue}
             />
           ) : (
             ""

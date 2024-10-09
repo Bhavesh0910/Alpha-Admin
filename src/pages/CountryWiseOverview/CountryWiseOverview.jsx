@@ -72,23 +72,23 @@ const CountryWiseOverview = () => {
       const paymentAmountSum = paymentPercentages.reduce((sum, item) => sum + parseFloat(item.paymentAmount), 0);
       const payoutAmountSum = payoutPercentages.reduce((sum, item) => sum + parseFloat(item.payoutAmount), 0);
 
-      if (!isCountrySelectedFlag && listData.length > inputVal) {
-        paymentAmounts = [...paymentPercentages.map((item) => item.paymentAmount), total.totalPayment - paymentAmountSum].map((item) => (item ? item : "-"));
-        paymentLabels = [...paymentPercentages.map((item) => item.country), "Other"].map((item) => (item ? item : "-"));
-        paymentSeries = [...paymentPercentages.map((item) => parseFloat(item.percentage)), parseFloat((100 - topPaymentPercentageSum).toFixed(2))];
+      // if (!isCountrySelectedFlag && listData.length > inputVal) {
+      //   paymentAmounts = [...paymentPercentages.map((item) => item.paymentAmount), total.totalPayment - paymentAmountSum].map((item) => (item ? item : "-"));
+      //   paymentLabels = [...paymentPercentages.map((item) => item.country), "Other"].map((item) => (item ? item : "-"));
+      //   paymentSeries = [...paymentPercentages.map((item) => parseFloat(item.percentage)), parseFloat((100 - topPaymentPercentageSum).toFixed(2))];
 
-        payoutAmounts = [...payoutPercentages.map((item) => item.payoutAmount), total.totalPayout - payoutAmountSum].map((item) => (item ? item : "-"));
-        payoutLabels = [...payoutPercentages.map((item) => item.country), "Other"].map((item) => (item ? item : "-"));
-        payoutSeries = [...payoutPercentages.map((item) => parseFloat(item.percentage)), parseFloat((100 - topPayoutPercentageSum).toFixed(2))].map((item) => (isNaN(item) ? 0 : item));
-      } else {
-        paymentAmounts = paymentPercentages.map((item) => item.paymentAmount);
-        paymentLabels = paymentPercentages.map((item) => item.country);
-        paymentSeries = paymentPercentages.map((item) => parseFloat(item.percentage));
+      //   payoutAmounts = [...payoutPercentages.map((item) => item.payoutAmount), total.totalPayout - payoutAmountSum].map((item) => (item ? item : "-"));
+      //   payoutLabels = [...payoutPercentages.map((item) => item.country), "Other"].map((item) => (item ? item : "-"));
+      //   payoutSeries = [...payoutPercentages.map((item) => parseFloat(item.percentage)), parseFloat((100 - topPayoutPercentageSum).toFixed(2))].map((item) => (isNaN(item) ? 0 : item));
+      // } else {
+      paymentAmounts = paymentPercentages.map((item) => item.paymentAmount || "N/A");
+      paymentLabels = paymentPercentages.map((item) => item.country || "N/A");
+      paymentSeries = paymentPercentages.map((item) => parseFloat(item.percentage) || 0);
 
-        payoutAmounts = payoutPercentages.map((item) => item.payoutAmount);
-        payoutLabels = payoutPercentages.map((item) => item.country);
-        payoutSeries = payoutPercentages.map((item) => parseFloat(item.percentage));
-      }
+      payoutAmounts = payoutPercentages.map((item) => item.payoutAmount || "N/A");
+      payoutLabels = payoutPercentages.map((item) => item.country || "N/A");
+      payoutSeries = payoutPercentages.map((item) => parseFloat(item.percentage) || 0);
+      // }
 
       setChartData({series: [paymentSeries, payoutSeries], labels: [paymentLabels, payoutLabels], amounts: [paymentAmounts, payoutAmounts]});
       setTotalData(total);

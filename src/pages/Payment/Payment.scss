@@ -4,10 +4,10 @@
   gap: 20px;
 
   .status_button {
-    // width: 160px;
+    width: 100% !important;
     display: flex;
     flex-direction: row-reverse;
-    justify-content: space-between;
+    // justify-content: space-between;
     padding: 6px 10px;
     border-radius: var(--Corner-Radius, 10px);
   }
@@ -23,16 +23,10 @@
     border: 1px solid var(--In-progress, #f4ea0f);
     background: var(--in-Progress-Body, #fffdcf);
   }
-  .status_button.status_failed {
-    border: 1px solid var(--Failed, #f20000);
-    background: var(--Failed-body, #ffe1e1);
-  }
-  .status_button.status_unpaid {
-    border: 1px solid var(--In-progress, #f4ea0f);
-    background: var(--in-Progress-Body, #fffdcf);
-  }
   .status_button.status_default {
     border: 1px solid var(--In-progress, #f4ea0f);
+    background: var(--in-Progress-Body, #fffdcf);
+
   }
 
   .header_wrapper {

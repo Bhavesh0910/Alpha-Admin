@@ -52,9 +52,9 @@ const countryWiseSlice = createSlice({
       state.listData = state.filterListData;
       state.count = state.filterListData.length;
     },
-    setCountrySelectedFlag:(state,action)=>{
-      state.isCountrySelectedFlag=action.payload;
-    }
+    setCountrySelectedFlag: (state, action) => {
+      state.isCountrySelectedFlag = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -65,9 +65,11 @@ const countryWiseSlice = createSlice({
       .addCase(countryWiseListReq.fulfilled, (state, action) => {
         console.log("Action payload oof acc slice : ", action.payload);
         state.isLoading = false;
-        state.listData = action.payload?.data; 
-        state.filterListData = action.payload?.data; 
-        state.totalItems = action.payload?.data?.length; 
+        if (action.payload?.data) {
+          state.listData = action.payload?.data;
+          state.filterListData = action.payload?.data;
+          state.totalItems = action.payload?.data?.length;
+        }
       })
       .addCase(countryWiseListReq.rejected, (state) => {
         state.isLoading = false;
@@ -77,5 +79,5 @@ const countryWiseSlice = createSlice({
 });
 
 // Export the async thunk and any reducers if needed
-export const {resetCountryWiseData, setCountryWiseData,setCountrySelectedFlag} = countryWiseSlice.actions;
+export const {resetCountryWiseData, setCountryWiseData, setCountrySelectedFlag} = countryWiseSlice.actions;
 export default countryWiseSlice.reducer;

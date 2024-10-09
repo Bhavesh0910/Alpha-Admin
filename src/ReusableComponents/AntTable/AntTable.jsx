@@ -75,7 +75,7 @@ const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460, column
         pagination={{
           current: serverSide ? CurrentPageNo : pagination.current,
           pageSize: pagination.pageSize,
-          total: pagination.total,
+          total: serverSide ? totalItems : data?.length,
           showSizeChanger: true,
           showQuickJumper: true,
           showTotal: (total) => `Total ${serverSide ? totalItems : data?.length} items`,

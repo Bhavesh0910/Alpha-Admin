@@ -69,16 +69,18 @@ const PayoutChart = ({chartData}) => {
           type="pie"
           id="custom_pie_chart"
         />
-        <span className="labels_container mt20">
-          {chartData?.amounts?.map((amount, index) => (
-            <div
-              key={index}
-              className="label_with_value"
-            >
-              <span className="value piechartamount">{formatCurrency(amount)}</span>
-            </div>
-          ))}
-        </span>
+        <div className="chart_custom_legends">
+          <span className="labels_container mt20">
+            {chartData?.amounts?.map((amount, index) => (
+              <div
+                key={index}
+                className="label_with_value"
+              >
+                <span className="value piechartamount">{formatCurrency(amount)}</span>
+              </div>
+            ))}
+          </span>
+        </div>
         <div className="mobileLabels_container">
           {chartData?.amounts?.map((item, index) => (
             <div
@@ -86,11 +88,12 @@ const PayoutChart = ({chartData}) => {
               className="label_with_value"
             >
               <div className="labels">
-              <span
-                className="circle"
-                style={{backgroundColor: options.colors[index]}}
-              ></span>
-              <span className="label">{chartData?.labels?.[index]}:</span></div>
+                <span
+                  className="circle"
+                  style={{backgroundColor: options.colors[index]}}
+                ></span>
+                <span className="label">{chartData?.labels?.[index]}:</span>
+              </div>
               <span className="value">{formatCurrency(chartData?.amounts?.[index])}</span>
             </div>
           ))}

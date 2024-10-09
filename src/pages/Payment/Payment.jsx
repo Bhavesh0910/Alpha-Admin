@@ -950,28 +950,22 @@ const Payment = () => {
         render: (text, record) => {
           let statusClass = "";
           switch (text.toLowerCase()) {
-            case "unpaid":
-              statusClass = "status_unpaid";
-              break;
             case "expired":
             case "canceled":
+            case "failed":
+            case "rejected":
               statusClass = "status_rejected";
               break;
             case "pending":
             case "payment pending":
+            case "in progress":
+            case "in_progress":
+            case "unpaid":
               statusClass = "status_in_progress";
               break;
             case "succeeded":
             case "payment received":
               statusClass = "status_succeeded";
-              break;
-            case "in progress":
-            case "in_progress":
-              statusClass = "status_in_progress";
-              break;
-            case "failed":
-            case "rejected":
-              statusClass = "status_failed";
               break;
             default:
               statusClass = "status_default";
