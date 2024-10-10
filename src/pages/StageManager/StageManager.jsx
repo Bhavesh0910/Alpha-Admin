@@ -787,6 +787,22 @@ const StageManager = () => {
           //   ),
           // },
           {
+            title: "High Risk Contract",
+            dataIndex: "meta_data",
+            key: "meta_data",
+            width: 100,
+            render: (text, row) =>
+              text ? (
+                <img
+                  width={"25px"}
+                  src={JSON.parse(text)?.high_risk === true ? RightMark : CrossMark}
+                  alt="rightWrongIcon"
+                />
+              ) : (
+                "N/A"
+              ),
+          },
+          {
             title: "Contract Issued",
             dataIndex: "issue_contract",
             key: "issue_contract",
@@ -1445,14 +1461,16 @@ const StageManager = () => {
             onChange={updateDateRange}
             // presets={rangePresets}
           />
-          {location.pathname === "/support/funded" ? '' : 
-          <Button
-            onClick={() => navigate(viewLogsLink)}
-            className="view_logs__btn standard_button"
-          >
-            View Logs
-          </Button>
-          }
+          {location.pathname === "/support/funded" ? (
+            ""
+          ) : (
+            <Button
+              onClick={() => navigate(viewLogsLink)}
+              className="view_logs__btn standard_button"
+            >
+              View Logs
+            </Button>
+          )}
         </div>
       </div>
 
