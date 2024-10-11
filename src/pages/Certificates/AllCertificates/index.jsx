@@ -138,7 +138,7 @@ function AllCertificates({ user_id }) {
         columns={columns}
         data={certificatesDetails?.results ?? []}
         totalPages={Math.ceil(certificatesDetails?.count / pageSize)}
-        totalItems={certificatesDetails?.length}
+        totalItems={certificatesDetails?.count}
         pageSize={pageSize}
         CurrentPageNo={pageNo}
         setPageSize={setPageSize}
