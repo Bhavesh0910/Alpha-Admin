@@ -326,29 +326,21 @@ const deleteSupportDetails = async (idToken, id) => {
   }
 };
 //Certificates
-const getCertificatesDetails = async (idToken, pageNumber, phase, search, user_id) => {
-  const params = {
-    page: pageNumber,
-    page_size: 21,
-  };
-  if (phase) {
-    params.phase = phase.value;
-  }
-  if (search) {
-    params.search = search;
-    params.page = 1;
-  }
+const getCertificatesDetails = async (idToken, user_id , query) => {
+
+
+  console.log(user_id)
+
 
   const config = {
     headers: {
       Authorization: `Bearer ${idToken}`,
       "Content-Type": "application/json",
     },
-    params: params,
   };
 
   try {
-    const response = await axios.get(`${baseUrl}achievements/admin/certificates/list/${user_id}`, config);
+    const response = await axios.get(`${baseUrl}achievements/admin/certificates/list/${query}`, config);
     return response;
   } catch (error) {
     return error;

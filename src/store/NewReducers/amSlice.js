@@ -145,9 +145,9 @@ export const getUserProfileData = createAsyncThunk(
 // Thunk for fetching certificate details
 export const fetchCertificatesDetails = createAsyncThunk(
   'amSlice/fetchCertificatesDetails',
-  async ({ idToken, pageNumber, phase, search, user_id }, { dispatch, rejectWithValue }) => {
+  async ({ idToken, user_id , query }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await getCertificatesDetails(idToken, pageNumber, phase, search, user_id);
+      const response = await getCertificatesDetails(idToken, user_id , query );
       return response.data; 
     } catch (error) {
       const msg = error.response?.data?.detail || 'Error fetching certificate details';
