@@ -14,6 +14,7 @@ import {returnErrors} from "../../../store/reducers/error";
 import {formatText} from "../../../utils/string";
 
 import {tailspin} from "ldrs";
+import {Checkbox} from "antd";
 tailspin.register();
 
 function SigninForm() {
@@ -25,7 +26,7 @@ function SigninForm() {
   });
 
   const [loading, setLoading] = useState(false);
-
+  const [rememberMe, setRememberMe] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   let emailRef = useRef(null);
   let passwordRef = useRef(null);
@@ -193,6 +194,14 @@ function SigninForm() {
                   "Sign In"
                 )}
               </button>
+            </div>
+            <div className="remember-me">
+              <Checkbox
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              >
+                Remember me
+              </Checkbox>
             </div>
           </form>
         </div>
