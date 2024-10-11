@@ -244,15 +244,15 @@ const advanceStatisticsSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(fetchTotalMethod.pending, (state) => {
-        state.isTotalMethodLoading = true;
+        state.isLoading = true;
         state.error = null;
       })
       .addCase(fetchTotalMethod.fulfilled, (state, action) => {
-        state.isTotalMethodLoading = false;
+        state.isLoading = false;
         state.totalMethod = action.payload;
       })
       .addCase(fetchTotalMethod.rejected, (state, action) => {
-        state.isTotalMethodLoading = false;
+        state.isLoading = false;
         state.error = action.payload;
       });
   },

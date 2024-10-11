@@ -30,9 +30,9 @@ const Payout = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [dates, setDates] = useState(null);
   const [exportDates, setExportDates] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  const { payoutDetails, totalPayments, totalMethod, isTotalMethodLoading } = useSelector((state) => state.advanceStatistics);
+  const { payoutDetails, totalPayments, totalMethod, isTotalMethodLoading , isLoading  } = useSelector((state) => state.advanceStatistics);
   const { idToken } = useSelector((state) => state.auth);
   const { isLoading: isExportLoading } = useSelector((state) => state.export);
 
@@ -44,19 +44,13 @@ const Payout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
-      let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
+      let query = `?page=${pageNo}&page_size=${pageSize}`;
 
       if (searchText) {
         query += `&search=${searchText}`;
-      }
-
-      if (dates && dates.length === 2) {
-        let startDate = dates[0]?.format("DD/MMM/YYYY");
-        let endDate = dates[1]?.format("DD/MMM/YYYY");
-        query += `&start_date=${startDate}&end_date=${endDate}`;
       }
 
       try {
@@ -71,12 +65,32 @@ const Payout = () => {
           description: "There was an error fetching data. Please try again.",
         });
       } finally {
-        setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [dispatch, idToken, pageNo, pageSize, searchText, dates]);
+  }, [dispatch, idToken, pageNo, pageSize, searchText]);
+
+  useEffect(() => {
+    const fetchFilteredPayoutDetails = async () => {
+      if (dates && dates.length === 2) {
+        const startDate = dates[0]?.format("DD/MMM/YYYY");
+        const endDate = dates[1]?.format("DD/MMM/YYYY");
+        const query = `?start_date=${startDate}&end_date=${endDate}&page=${pageNo}&page_size=${pageSize}`;
+        try {
+          await dispatch(fetchPayoutDetails({ idToken, query }));
+        } catch (error) {
+          notification.error({
+            message: "Data Fetch Error",
+            description: "There was an error fetching payout details. Please try again.",
+          });
+        }
+      }
+    };
+
+    fetchFilteredPayoutDetails();
+  }, [dispatch, idToken, dates, pageNo, pageSize]);
+
 
   const searchRef = useRef();
 
@@ -278,7 +292,6 @@ const Payout = () => {
   const currentDate = dayjs().format('YYYY-MM-DD');
 let currentDateData = totalPayments?.find(item => item.payout_date === currentDate);
 
-// If current date data is not found, find the latest date data
 if (!currentDateData && totalPayments?.length) {
   const latestDate = totalPayments.reduce((latest, item) => {
     return dayjs(item.payout_date).isAfter(dayjs(latest.payout_date)) ? item : latest;
