@@ -24,6 +24,20 @@
     width: 100%;
   }
 
+  .remember-me{
+    display: flex;
+    >label{
+      >span{
+        color: #fff;
+        font-family: var(--primary-font-family);
+        font-size: 20px;
+        font-style: normal;
+        font-weight: var(--fw-normal);
+        line-height: normal;
+            }
+    }
+
+  }
   .signinform_wrapper {
     width: 100%;
     padding: 40px;
