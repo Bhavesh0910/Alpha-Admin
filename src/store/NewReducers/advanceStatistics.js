@@ -80,7 +80,8 @@ export const fetchTotalPayments = createAsyncThunk(
   async ({ idToken , query }, { dispatch, rejectWithValue }) => {
     try {
       const response = await getTotatPayments(idToken , query );
-      return response;
+      console.log(response)
+      return response.result;
     } catch (error) {
       const msg = error.response?.data?.detail || "Error fetching total payments details";
       dispatch(returnErrors(msg, 400));
@@ -94,7 +95,7 @@ export const fetchTotalMethod = createAsyncThunk(
   async ({ idToken, query }, { dispatch, rejectWithValue }) => {
     try {
       const response = await getTotalMethod(idToken, query);
-      return response;
+      return response.result;
     } catch (error) {
       const msg = error.response?.data?.detail || "Error fetching total method";
       dispatch(returnErrors(msg, 400));
@@ -236,7 +237,7 @@ const advanceStatisticsSlice = createSlice({
       })
       .addCase(fetchTotalPayments.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.totalPayments = action.payload.data; 
+        state.totalPayments = action.payload; 
       })
       .addCase(fetchTotalPayments.rejected, (state, action) => {
         state.isLoading = false;

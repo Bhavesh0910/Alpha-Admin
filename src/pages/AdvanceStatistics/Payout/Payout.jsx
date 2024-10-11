@@ -14,7 +14,9 @@ import { exportDataReq } from "../../../store/NewReducers/exportSlice";
 import { returnErrors } from "../../../store/reducers/error";
 import dayjs from "dayjs";
 import SplitChart from "./SplitChart";
-import { formatCurrency, formatValue } from "../../../utils/helpers/string";
+import { dollarUS, formatCurrency, formatValue } from "../../../utils/helpers/string";
+import GreenArrowIcon from '../../../assets/icons/green-arrow.svg'
+import RedArrowIcon from '../../../assets/icons/red-arrow.svg'
 
 const { RangePicker } = DatePicker;
 
@@ -28,7 +30,7 @@ const Payout = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [dates, setDates] = useState(null);
   const [exportDates, setExportDates] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
 
   const { payoutDetails, totalPayments, totalMethod, isTotalMethodLoading } = useSelector((state) => state.advanceStatistics);
   const { idToken } = useSelector((state) => state.auth);
@@ -37,7 +39,7 @@ const Payout = () => {
   const [defaultDates, setDefaultDates] = useState();
 
   const [isValidRange, setIsValidRange] = useState(true);
-  const [lastValidRange, setLastValidRange] = useState({ startDate: null, endDate: null});
+  const [lastValidRange, setLastValidRange] = useState({ startDate: null, endDate: null });
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,8 +55,8 @@ const Payout = () => {
 
       if (dates && dates.length === 2) {
         let startDate = dates[0]?.format("DD/MMM/YYYY");
-        let endDate = dates[1]?.format("DD/MMM/YYYY"); 
-         query += `&start_date=${startDate}&end_date=${endDate}`;
+        let endDate = dates[1]?.format("DD/MMM/YYYY");
+        query += `&start_date=${startDate}&end_date=${endDate}`;
       }
 
       try {
@@ -273,6 +275,21 @@ const Payout = () => {
   };
 
 
+  const currentDate = dayjs().format('YYYY-MM-DD');
+let currentDateData = totalPayments?.find(item => item.payout_date === currentDate);
+
+// If current date data is not found, find the latest date data
+if (!currentDateData && totalPayments?.length) {
+  const latestDate = totalPayments.reduce((latest, item) => {
+    return dayjs(item.payout_date).isAfter(dayjs(latest.payout_date)) ? item : latest;
+  });
+  currentDateData = latestDate;
+}
+
+  const formatValue = (value) => {
+    return value ? value.toLocaleString(undefined, { minimumFractionDigits: 2 }) : '-';
+  };
+
   return (
     <>
       {/* {isExportLoading && <LoaderOverlay />} */}
@@ -308,27 +325,97 @@ const Payout = () => {
           </div>
           <div className="payout_lower_heading">
             <div className="payout_infobox_wrapper">
+              {currentDateData && (
+                <>
+                  <div className="payout_lower_heading_left">
+                    <h3>Total number of payouts requested</h3>
+                    <div className="payout_lower_heading_inner">
+                      <h2>
+                        {formatValue(currentDateData.number_of_payouts_requested)}
+                        <span className={currentDateData.percent_number_of_payouts_requested >= 0 ? 'green' : 'red'}>
+                          {` (${currentDateData.percent_number_of_payouts_requested}%)`}
+                          {currentDateData.percent_number_of_payouts_requested >= 0 ? (
+                            <img src={GreenArrowIcon} alt="Increase" />
+                          ) : (
+                            <img src={RedArrowIcon} alt="Decrease" />
+                          )}
+                        </span>
+                      </h2>
+                    </div>
+                  </div>
 
-              <div className="payout_lower_heading_left">
-                <h3>
-                  Total number of payouts Requested             </h3>
-                <div className="payout_lower_heading_inner">
-                  {!totalPayments ? <Spin /> :
-                    <h2>{totalPayments && formatValue(totalPayments[0]?.new_request)}</h2>
-                  }
-                </div>
-              </div>
+                  <div className="payout_lower_heading_left">
+                    <h3>Total amount of payout requested</h3>
+                    <div className="payout_lower_heading_inner">
+                      <h2>
+                        {dollarUS(currentDateData.amount_of_payout_requested)}
+                        <span className={currentDateData.percent_amount_of_payout_requested >= 0 ? 'green' : 'red'}>
+                          {` (${currentDateData.percent_amount_of_payout_requested}%)`}
+                          {currentDateData.percent_amount_of_payout_requested >= 0 ? (
+                            <img src={GreenArrowIcon} alt="Increase" />
+                          ) : (
+                            <img src={RedArrowIcon} alt="Decrease" />
+                          )}
+                        </span>
+                      </h2>
+                    </div>
+                  </div>
+
+                  <div className="payout_lower_heading_left">
+                    <h3>Total amount of payout approved</h3>
+                    <div className="payout_lower_heading_inner">
+                      <h2>
+                        {dollarUS(currentDateData.amount_of_payout_approved)}
+                        <span className={currentDateData.percent_amount_of_payout_approved >= 0 ? 'green' : 'red'}>
+                          {` (${currentDateData.percent_amount_of_payout_approved}%)`}
+                          {currentDateData.percent_amount_of_payout_approved >= 0 ? (
+                            <img src={GreenArrowIcon} alt="Increase" />
+                          ) : (
+                            <img src={RedArrowIcon} alt="Decrease" />
+                          )}
+                        </span>
+                      </h2>
+                    </div>
+                  </div>
+
+                  <div className="payout_lower_heading_left">
+                    <h3>Total amount of payout flagged</h3>
+                    <div className="payout_lower_heading_inner">
+                      <h2>
+                        {dollarUS(currentDateData.amount_of_payout_flagged)}
+                        <span className={currentDateData.percent_amount_of_payout_flagged >= 0 ? 'green' : 'red'}>
+                          {` (${currentDateData.percent_amount_of_payout_flagged}%)`}
+                          {currentDateData.percent_amount_of_payout_flagged >= 0 ? (
+                            <img src={GreenArrowIcon} alt="Increase" />
+                          ) : (
+                            <img src={RedArrowIcon} alt="Decrease" />
+                          )}
+                        </span>
+                      </h2>
+                    </div>
+                  </div>
+
+                  <div className="payout_lower_heading_left">
+                    <h3>Total amount of payout rejected</h3>
+                    <div className="payout_lower_heading_inner">
+                      <h2>
+                        {dollarUS(currentDateData.amount_of_payout_rejected)}
+                        <span className={currentDateData.percent_amount_of_payout_rejected >= 0 ? 'green' : 'red'}>
+                          {` (${currentDateData.percent_amount_of_payout_rejected}%)`}
+                          {currentDateData.percent_amount_of_payout_rejected >= 0 ? (
+                            <img src={GreenArrowIcon} alt="Increase" />
+                          ) : (
+                            <img src={RedArrowIcon} alt="Decrease" />
+                          )}
+                        </span>
+                      </h2>
+                    </div>
+                  </div>
+                </>
+              )}
 
 
-              <div className="payout_lower_heading_left">
-                <h3>
-                  total amount of payout approved       </h3>
-                <div className="payout_lower_heading_inner">
-                  {!totalPayments ? <Spin /> :
-                    <h2>{totalPayments && totalPayments[0]?.total_approved_amount ? "$" : ''}{totalPayments && formatValue(totalPayments[0]?.total_approved_amount)}</h2>
-                  }
-                </div>
-              </div>
+
 
 
               {/* <div className="payout_lower_heading_left">

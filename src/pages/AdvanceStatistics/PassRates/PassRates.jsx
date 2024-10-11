@@ -146,7 +146,7 @@ const PassRates = () => {
 
   const updateDateRange = (dates) => {
     setPageNo(1);
-    setDates(dates ? dates.map((date) => date.format("DD MMM YYYY")) : []);
+    setDates(dates ? dates.map((date) => date.format("DD/MMM/YYYY")) : []);
   };
 
   const handleMenuClick = (e) => setSelectedStage(e.key);
@@ -447,7 +447,7 @@ const PassRates = () => {
             <RangePicker
               ranges={rangePresets.reduce((acc, curr) => ({ ...acc, [curr.label]: curr.value }), {})}
               onChange={updateDateRange}
-              format="DD MMM YYYY"
+              format="DD/MMM/YYYY"
             />
           </div>
 
