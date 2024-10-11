@@ -8,12 +8,11 @@
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    .payout_header_right{
+    .payout_header_right {
       display: flex;
       gap: 20px;
       display: flex;
       flex-direction: row-reverse;
- 
     }
     h2 {
       color: #fff;
@@ -65,15 +64,44 @@
       }
     }
   }
-  
+
   .payout_lower_heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    .payout_infobox_wrapper{
+    span {
+      display: flex;
+      width: fit-content;
+      padding: 0px 10px;
+      min-height: 27px;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      align-self: stretch;
+      color: var(--Text, #1e1e1e);
+      leading-trim: both;
+      text-edge: cap;
+      font-family: "Nunito Sans";
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      flex-direction: row-reverse;
+    }
+    span.green{
+      border-radius: var(--table-box, 20px);
+      border: 0.5px solid var(--sucess, #009017);
+      background: var(--Success-Body, #cdffdd);
+    }
+    span.red{
+      border-radius: var(--table-box, 20px);
+border: 0.5px solid var(--Failed, #F20000);
+background: var(--Failed-body, #FFE1E1);
+    }
+    .payout_infobox_wrapper {
       display: grid;
-      grid-template-columns: repeat(4 , 1fr);
+      grid-template-columns: repeat(4, 1fr);
       grid-gap: 20px;
     }
     .payout_lower_heading_left {
@@ -103,7 +131,7 @@
         text-transform: capitalize;
 
         @media only screen and (max-width: 768px) {
-         font-size: 16px;
+          font-size: 16px;
         }
 
         span {
@@ -114,7 +142,7 @@
           font-weight: 400;
           line-height: normal;
           @media only screen and (max-width: 768px) {
-             font-size: 12px;
+            font-size: 12px;
           }
         }
       }
@@ -131,6 +159,8 @@
           font-style: normal;
           font-weight: 700;
           line-height: normal;
+          display: flex;
+          gap: 10px;
         }
 
         button {
@@ -206,7 +236,7 @@
       }
 
       @media only screen and (max-width: 768px) {
-       font-size: 12px;
+        font-size: 12px;
       }
       border-radius: 10px;
       background: #04d9ff;

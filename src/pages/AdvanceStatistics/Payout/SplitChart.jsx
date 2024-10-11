@@ -3,24 +3,32 @@ import "./SplitChart.scss";
 import { formatCurrency } from "../../../utils/helpers/string";
 import { Spin } from "antd";
 
-
-const SplitChart = ({ data , loading }) => {
+const SplitChart = ({ data, loading }) => {
   const [chartData, setChartData] = useState([]);
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    if (data) {
+    if (data && data.length > 0) {
+      const latestDate = data.reduce((latest, current) => {
+        return new Date(current.payout_date) > new Date(latest) ? current.payout_date : latest;
+      }, data[0].payout_date);
 
-        const totalAmount = Object.values(data).reduce((acc, value) => acc + value, 0);
-        setTotal(totalAmount);
-        const formattedData = Object.entries(data).map(([key, value]) => ({
-          name: key,
-          value,
-          percentage: (value / totalAmount) * 100 
-        }));
-        setChartData(formattedData);
+      const latestData = data.filter(item => item.payout_date === latestDate);
+
+      const totalAmount = latestData.reduce((acc, item) => acc + item.amount_of_payout, 0);
+      setTotal(totalAmount);
+
+      const formattedData = latestData.map(item => ({
+        method: item.method,
+        amount_of_payout: item.amount_of_payout,
+        percent_change_amount_of_payout: item.percent_change_amount_of_payout,
+      }));
+
+      setChartData(formattedData);
     }
   }, [data]);
+
+  console.log(chartData)
 
   return (
     <div className="splitChart_wrapper">
@@ -37,12 +45,12 @@ const SplitChart = ({ data , loading }) => {
           <div className="chart-bar-container">
             {chartData.map((item) => (
               <div
-                key={item.name}
+                key={item.method}
                 className="chart-bar"
-                style={{ width: `${item.percentage + 40}%`, backgroundColor: getColor(item.name) }}
+                style={{ width: `${(item.amount_of_payout / total) * 100 + 40}%`, backgroundColor: getColor(item.method) }}
               >
                 <p>
-                  <span>{item.name} <span className="percentage">({item.percentage?.toFixed(2)}%)</span></span> {formatCurrency(item.value)}
+                  <span>{item.method} <span className="percentage">({item.percent_change_amount_of_payout?.toFixed(2)}%)</span></span> {formatCurrency(item.amount_of_payout)}
                 </p>
               </div>
             ))}
@@ -60,8 +68,9 @@ const SplitChart = ({ data , loading }) => {
 const getColor = (name) => {
   const colors = {
     "RISE": "#EE6666",
-    "Bank Wire": "#36A2EB",
+    "SWIFT": "#36A2EB",
     "WISE": "#6B54C6",
+    "ACH": "#FFD700",
     "N/A": "#b09494"
   };
   return colors[name] || "#CCCCCC";
