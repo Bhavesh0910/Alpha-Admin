@@ -1,22 +1,22 @@
-import React, {useEffect, useMemo, useState} from "react";
-import {DatePicker, Button, Select, Tooltip, notification, Card, Dropdown, Menu, Modal, Form, Input} from "antd";
-import {Link, useNavigate} from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
+import { DatePicker, Button, Select, Tooltip, notification, Card, Dropdown, Menu, Modal, Form, Input } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import exportBtnIcon from "../../../assets/icons/export_btn_icon.svg";
-import {ReactComponent as CopyButton} from "../../../assets/icons/copyButtonGray.svg";
+import { ReactComponent as CopyButton } from "../../../assets/icons/copyButtonGray.svg";
 import dayjs from "dayjs";
 import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
-import {CloseOutlined, DownOutlined} from "@ant-design/icons";
-import {useSelector, useDispatch} from "react-redux";
+import { CloseOutlined, DownOutlined } from "@ant-design/icons";
+import { useSelector, useDispatch } from "react-redux";
 import "./DailyStats.scss";
-import {fetchDailyStats, fetchWithdrawalsStatus} from "../../../store/NewReducers/advanceStatistics";
+import { fetchDailyStats, fetchWithdrawalsStatus } from "../../../store/NewReducers/advanceStatistics";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import {exportDataReq} from "../../../store/NewReducers/exportSlice";
-import {returnMessages} from "../../../store/reducers/message";
-import {returnErrors} from "../../../store/reducers/error";
+import { exportDataReq } from "../../../store/NewReducers/exportSlice";
+import { returnMessages } from "../../../store/reducers/message";
+import { returnErrors } from "../../../store/reducers/error";
 
-const {Option} = Select;
-const {RangePicker} = DatePicker;
+const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const DailyStats = () => {
   const dispatch = useDispatch();
@@ -38,9 +38,10 @@ const DailyStats = () => {
   const [updatedStatus, setUpdatedStatus] = useState(null);
   const [editCommentToUpdate, setEditCommentToUpdate] = useState(null);
 
-  const {dailyStats, isLoading} = useSelector((state) => state.advanceStatistics);
-  const {isLoading: isExportLoading} = useSelector((state) => state.export);
-  const {idToken} = useSelector((state) => state.auth);
+  const { dailyStats, isLoading } = useSelector((state) => state.advanceStatistics);
+  const { isLoading: isExportLoading } = useSelector((state) => state.export);
+  const { idToken } = useSelector((state) => state.auth);
+
 
   useEffect(() => {
     let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
@@ -54,272 +55,164 @@ const DailyStats = () => {
       query += `&start_date=${startDate}&end_date=${endDate}`;
     }
 
-    dispatch(fetchDailyStats({idToken, query, dispatch}));
+    dispatch(fetchDailyStats({ idToken, query, dispatch }));
     console.log(query);
   }, [dispatch, idToken, pageNo, pageSize, searchText, dates]);
 
   const columns = useMemo(() => [
     {
-      title: "",
-      key: "",
-      children: [
-        {
-          title: "Plan Type",
-          dataIndex: "plan_type",
-          key: "plan_type",
-          width: 120,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Created Date",
-          dataIndex: "created_date",
-          key: "created_date",
-          width: 120,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Passed",
-          dataIndex: "passed",
-          key: "passed",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Breached",
-          dataIndex: "breached",
-          key: "breached",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Total Accounts",
-          dataIndex: "total_accounts",
-          key: "total_accounts",
-          width: 120,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Repeated",
-          dataIndex: "repeated",
-          key: "repeated",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "New",
-          dataIndex: "new",
-          key: "new",
-          width: 60,
-          render: (text) => text || "-",
-        },
-      ],
+        title: "",
+        key: "overall",
+        children: [
+            {
+                title: "Date",
+                dataIndex: "Date",
+                key: "Date",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+            {
+                title: "Total Requests",
+                dataIndex: "Total_request",
+                key: "total_requests",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+            {
+                title: "Total Approved",
+                dataIndex: "total_approved",
+                key: "total_approved",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+            {
+                title: "Total Customers",
+                dataIndex: "total_customer",
+                key: "total_customers",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+            {
+                title: "Total Breached",
+                dataIndex: "total_breached",
+                key: "total_breached",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+            {
+                title: "Total Passed",
+                dataIndex: "total_passed",
+                key: "total_passed",
+                width: 180,
+                render: (text) => text || "N/A",
+            },
+        ],
     },
     {
-      title: "Alpha Pro",
-      key: "alpha_pro",
-      children: [
-        {
-          title: "Passed",
-          dataIndex: ["Alpha pro", "passed"],
-          key: "alpha_pro_passed",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Breached",
-          dataIndex: ["Alpha pro", "breached"],
-          key: "alpha_pro_breached",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Total Accounts",
-          dataIndex: ["Alpha pro", "total_accounts"],
-          key: "alpha_pro_total_accounts",
-          width: 120,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Repeated",
-          dataIndex: ["Alpha pro", "repeated"],
-          key: "alpha_pro_repeated",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "New",
-          dataIndex: ["Alpha pro", "new"],
-          key: "alpha_pro_new",
-          width: 60,
-          render: (text) => text || "-",
-        },
-      ],
-    },
-    // {
-    //   title: "Free Trial",
-    //   key: "free_trial",
-    //   children: [
-    //     {
-    //       title: "Passed",
-    //       dataIndex: ["Free Trial", "passed"],
-    //       key: "free_trial_passed",
-    //       width: 80,
-    //       render: (text) => text || "-",
-    //     },
-    //     {
-    //       title: "Breached",
-    //       dataIndex: ["Free Trial", "breached"],
-    //       key: "free_trial_breached",
-    //       width: 80,
-    //       render: (text) => text || "-",
-    //     },
-    //     {
-    //       title: "Total Accounts",
-    //       dataIndex: ["Free Trial", "total_accounts"],
-    //       key: "free_trial_total_accounts",
-    //       width: 120,
-    //       render: (text) => text || "-",
-    //     },
-    //     {
-    //       title: "Repeated",
-    //       dataIndex: ["Free Trial", "repeated"],
-    //       key: "free_trial_repeated",
-    //       width: 80,
-    //       render: (text) => text || "-",
-    //     },
-    //     {
-    //       title: "New",
-    //       dataIndex: ["Free Trial", "new"],
-    //       key: "free_trial_new",
-    //       width: 60,
-    //       render: (text) => text || "-",
-    //     },
-    //   ],
-    // },
-    {
-      title: "Scaling",
-      key: "scaling",
-      children: [
-        {
-          title: "Passed",
-          dataIndex: ["Scaling", "passed"],
-          key: "scaling_passed",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Breached",
-          dataIndex: ["Scaling", "breached"],
-          key: "scaling_breached",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Total Accounts",
-          dataIndex: ["Scaling", "total_accounts"],
-          key: "scaling_total_accounts",
-          width: 120,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Repeated",
-          dataIndex: ["Scaling", "repeated"],
-          key: "scaling_repeated",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "New",
-          dataIndex: ["Scaling", "new"],
-          key: "scaling_new",
-          width: 60,
-          render: (text) => text || "-",
-        },
-      ],
+        title: "Alpha Pro",
+        key: "alpha_pro",
+        children: [
+            {
+                title: "Passed",
+                dataIndex: ["ALPHA PRO", "passed"],
+                key: "alpha_pro_passed",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+            {
+                title: "Breached",
+                dataIndex: ["ALPHA PRO", "breached"],
+                key: "alpha_pro_breached",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+            {
+                title: "Total Accounts",
+                dataIndex: ["ALPHA PRO", "total_accounts"],
+                key: "alpha_pro_total_accounts",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+            {
+                title: "New",
+                dataIndex: ["ALPHA PRO", "new"],
+                key: "alpha_pro_new",
+                width: 150,
+                render: (text) => text || "N/A",
+            },
+        ],
     },
     {
-      title: "Swing",
-      key: "swing",
-      children: [
-        {
-          title: "Passed",
-          dataIndex: ["Swing", "passed"],
-          key: "swing_passed",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Breached",
-          dataIndex: ["Swing", "breached"],
-          key: "swing_breached",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Total Accounts",
-          dataIndex: ["Swing", "total_accounts"],
-          key: "swing_total_accounts",
-          width: 120,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Repeated",
-          dataIndex: ["Swing", "repeated"],
-          key: "swing_repeated",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "New",
-          dataIndex: ["Swing", "new"],
-          key: "swing_new",
-          width: 60,
-          render: (text) => text || "-",
-        },
-      ],
+        title: "Alpha Pro Plus",
+        key: "alpha_pro_plus",
+        children: [
+            {
+                title: "Passed",
+                dataIndex: ["ALPHA PRO PLUS", "passed"],
+                key: "alpha_pro_plus_passed",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+            {
+                title: "Breached",
+                dataIndex: ["ALPHA PRO PLUS", "breached"],
+                key: "alpha_pro_plus_breached",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+            {
+                title: "Total Accounts",
+                dataIndex: ["ALPHA PRO PLUS", "total_accounts"],
+                key: "alpha_pro_plus_total_accounts",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+            {
+                title: "New",
+                dataIndex: ["ALPHA PRO PLUS", "new"],
+                key: "alpha_pro_plus_new",
+                width: 150,
+                render: (text) => text || "N/A",
+            },
+        ],
     },
     {
-      title: "Alpha Pro Plus",
-      key: "alpha_pro_plus",
-      children: [
-        {
-          title: "Passed",
-          dataIndex: ["Alpha Pro Plus", "passed"],
-          key: "alpha_pro_plus_passed",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Breached",
-          dataIndex: ["Alpha Pro Plus", "breached"],
-          key: "alpha_pro_plus_breached",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Total Accounts",
-          dataIndex: ["Alpha Pro Plus", "total_accounts"],
-          key: "alpha_pro_plus_total_accounts",
-          width: 120,
-          render: (text) => text || "-",
-        },
-        {
-          title: "Repeated",
-          dataIndex: ["Alpha Pro Plus", "repeated"],
-          key: "alpha_pro_plus_repeated",
-          width: 80,
-          render: (text) => text || "-",
-        },
-        {
-          title: "New",
-          dataIndex: ["Alpha Pro Plus", "new"],
-          key: "alpha_pro_plus_new",
-          width: 60,
-          render: (text) => text || "-",
-        },
-      ],
+        title: "Swing",
+        key: "swing",
+        children: [
+            {
+                title: "Passed",
+                dataIndex: ["SWING", "passed"],
+                key: "swing_passed",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+            {
+                title: "Breached",
+                dataIndex: ["SWING", "breached"],
+                key: "swing_breached",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+            {
+                title: "Total Accounts",
+                dataIndex: ["SWING", "total_accounts"],
+                key: "swing_total_accounts",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+            {
+                title: "New",
+                dataIndex: ["SWING", "new"],
+                key: "swing_new",
+                width: 120,
+                render: (text) => text || "N/A",
+            },
+        ],
     },
-  ]);
+]);
+
+
 
   const statusMenu = (key, record) => (
     <Menu onClick={(e) => openStatusUpdateModal(e.key, record)}>
@@ -385,11 +278,11 @@ const DailyStats = () => {
   };
 
   const rangePresets = [
-    {label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()]},
-    {label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()]},
-    {label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()]},
-    {label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()]},
-    {label: "All time", value: [dayjs().subtract(20, "years"), dayjs()]},
+    { label: "Last 1 month", value: [dayjs().subtract(1, "month"), dayjs()] },
+    { label: "Last 3 months", value: [dayjs().subtract(3, "months"), dayjs()] },
+    { label: "Last 6 months", value: [dayjs().subtract(6, "months"), dayjs()] },
+    { label: "Last 1 year", value: [dayjs().subtract(1, "year"), dayjs()] },
+    { label: "All time", value: [dayjs().subtract(20, "years"), dayjs()] },
   ];
 
   const handleOpenModal = () => {
@@ -405,10 +298,10 @@ const DailyStats = () => {
       const [startDate, endDate] = exportDates;
       const url = `daily-details/export/?start_date=${startDate}&end_date=${endDate}`;
 
-      dispatch(exportDataReq({idToken, url}))
+      dispatch(exportDataReq({ idToken, url }))
         .unwrap()
         .then((response) => {
-          const {s3_file_url, filename} = response;
+          const { s3_file_url, filename } = response;
 
           const link = document.createElement("a");
           link.href = s3_file_url;
@@ -462,7 +355,7 @@ const DailyStats = () => {
       </div>
       <div className="table_header_filter">
         <div className="header_left">
-          <div className="search_box_wrapper">
+          {/* <div className="search_box_wrapper">
             <input
               placeholder="Search by Plan Type..."
               className="search_input"
@@ -483,9 +376,9 @@ const DailyStats = () => {
                 alt="searchIcon"
               />
             </div>
-          </div>
+          </div> */}
           <div className="header_middle">
-            <div className="filter_btns">
+            {/* <div className="filter_btns">
               <Button
                 className={activeTab === "all" ? "active" : ""}
                 onClick={() => handleTabChange("all")}
@@ -504,22 +397,22 @@ const DailyStats = () => {
               >
                 Active AC by Periods
               </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
-      <RangePicker
+      {/* <RangePicker
         presets={rangePresets}
         onChange={updateDateRange}
-      />
+      /> */}
       {isLoading ? (
         <LoaderOverlay />
       ) : (
         <AntTable
-          data={dailyStats?.results || []}
+          data={dailyStats || []}
           columns={columns}
-          totalPages={Math.ceil(dailyStats?.count / pageSize)}
-          totalItems={dailyStats?.count}
+          totalPages={Math.ceil(dailyStats?.length / pageSize)}
+          totalItems={dailyStats?.length}
           pageSize={pageSize}
           CurrentPageNo={pageNo}
           setPageSize={setPageSize}
@@ -532,17 +425,17 @@ const DailyStats = () => {
         onCancel={handleCloseModal}
         footer={null}
         className="export_modal"
-        closeIcon={<CloseOutlined style={{color: "#fff"}} />}
+        closeIcon={<CloseOutlined style={{ color: "#fff" }} />}
       >
         <div className="export_modal_wrapper">
           <RangePicker
             onChange={updateExportDateRange}
             autoFocus
             presets={rangePresets}
-            style={{width: "100%"}}
+            style={{ width: "100%" }}
           />
         </div>
-        <p style={{color: "#fff"}}>File will contain information of the date you’ve selected.</p>
+        <p style={{ color: "#fff" }}>File will contain information of the date you’ve selected.</p>
         <div className="btn_wrapper">
           <Button
             type="primary"

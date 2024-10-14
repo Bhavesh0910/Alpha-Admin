@@ -213,7 +213,7 @@ const advanceStatisticsSlice = createSlice({
       })
       .addCase(fetchDailyStats.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.dailyStats = action.payload.data;
+        state.dailyStats = action.payload;
       })
       .addCase(fetchDailyStats.rejected, (state, action) => {
         state.isLoading = false;
