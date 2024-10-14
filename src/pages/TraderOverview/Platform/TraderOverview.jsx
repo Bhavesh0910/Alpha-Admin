@@ -556,7 +556,7 @@ function TraderOverview() {
 
             <div
               style={{cursor: "pointer"}}
-              title={`${record?.is_Active === true ? "Disable User" : "Enable User"}`}
+              title={`${record?.is_Active === true ? "Disable Account" : "Enable Account"}`}
             >
               <Switch
                 className={`disable-enable-btn ${record?.is_Active === true ? "active" : "inactive"}`}
