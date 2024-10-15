@@ -19,7 +19,7 @@ export function copyToClipboard(value, message) {
   }
 }
 
-function fallbackCopy(value) {
+function fallbackCopy(value, message) {
   const textarea = document.createElement("textarea");
   textarea.value = value;
   document.body.appendChild(textarea);
@@ -27,7 +27,7 @@ function fallbackCopy(value) {
   document.execCommand("copy");
   document.body.removeChild(textarea);
   notification.success({
-    message: "Information copied to clipboard using fallback",
+    message: message ? message + " copied" : "Information copied to clipboard using fallback",
     placement: "topRight",
   });
 }
