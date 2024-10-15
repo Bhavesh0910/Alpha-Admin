@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { returnErrors } from '../reducers/error';
-import { getAccountDetails, getAccountInsights, getTradeJournal, getTradingAccountOverview, getObjectives, getPerformanceChart, getAccountAnalysis, getTransactionHistory, baseUrl, getCertificatesDetails } from '../../utils/api/apis';
+import { getAccountDetails, getAccountInsights, getTradeJournal, getTradingAccountOverview, getObjectives, getPerformanceChart, getAccountAnalysis, getTransactionHistory, baseUrl, getCertificatesDetails, createCertificateApi } from '../../utils/api/apis';
 import axios from 'axios';
+import { returnMessages } from '../reducers/message';
 
 // Thunk for fetching trading account overview
 export const fetchTradingAccountOverview = createAsyncThunk(
@@ -157,6 +158,21 @@ export const fetchCertificatesDetails = createAsyncThunk(
   }
 );
 
+export const createCertificates = createAsyncThunk(
+  'amSlice/createCertificates',
+  async ({ idToken, certificateData }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await createCertificateApi(idToken, certificateData );
+      dispatch(returnMessages("Certificate Created successfully" , 200))
+      return response.data; 
+    } catch (error) {
+      const msg = error.response?.data?.detail || 'Error creating certificate';
+      dispatch(returnErrors(msg, 400));
+      return rejectWithValue(msg);
+    }
+  }
+);
+
 
 
 const amSlice = createSlice({
@@ -172,6 +188,7 @@ const amSlice = createSlice({
     performanceChart: null,
     userProfileData: null,
     certificatesDetails: null, 
+    createdCertificate: null,
     isLoading: false,
     error: null,
   },
@@ -296,6 +313,18 @@ const amSlice = createSlice({
         state.certificatesDetails = action.payload; 
       })
       .addCase(fetchCertificatesDetails.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(createCertificates.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(createCertificates.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.createdCertificate = action.payload; 
+      })
+      .addCase(createCertificates.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

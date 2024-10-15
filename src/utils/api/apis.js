@@ -347,6 +347,26 @@ const getCertificatesDetails = async (idToken, user_id , query) => {
   }
 };
 
+
+export const createCertificateApi = async (idToken, certificateData) => {
+  try {
+    const response = await axios.post(
+      `${baseUrl}create_certificate/`,
+      certificateData,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error creating certificate:", error);
+    throw error;
+  }
+};
+
+
 // TraderList
 
 const getAllTradersRequest = async (idToken, searchValue, pageNumber, phase, active, competition, tab, dispatch) => {
