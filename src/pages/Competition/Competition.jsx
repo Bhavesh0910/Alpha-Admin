@@ -59,9 +59,9 @@ const Competition = () => {
   return (
     <div className="competition_container">
       {isLoading && <LoaderOverlay />}
-      <div className="mobile_headers">
+      {/* <div className="mobile_headers">
         <h4>Competition</h4>
-      </div>
+      </div> */}
       <div className="header_wrapper">
         <h3>Competition List</h3>
         <Button

@@ -96,17 +96,17 @@ const PieChart = ({data}) => {
       tooltip: accountOverviewData?.stage1?.in_progress_count || "-",
     },
   ];
-  const roundedValues = assessmentData.map((item) => {
-    const value = item.value;
-    if (value > 9999) {
+  const roundedValues = assessmentData?.map((item) => {
+    const value = item?.value;
+    if (value && value > 999999) {
       return {
         ...item,
-        value: `${Math.floor(value / 1000)}k`,
+        value: `${value / 1000}k`,
       };
     }
     return item;
   });
-  console.log(accountOverviewData);
+
   return (
     <div className="pieChart_wrapper">
       <h2>Stage 01</h2>
@@ -122,19 +122,27 @@ const PieChart = ({data}) => {
           />
         </div>
         <div className={`labels_container`}>
-          {[accountOverviewData?.stage1?.pass_count || 0, accountOverviewData?.stage1?.fail_count || 0, accountOverviewData?.stage1?.in_progress_count || 0]?.map((item, index) => (
+          {/* {[accountOverviewData?.stage1?.pass_count || 0, accountOverviewData?.stage1?.fail_count || 0, accountOverviewData?.stage1?.in_progress_count || 0]?.map((item, index) => (
             <div
               key={index}
               className="label_with_value"
             >
               <span className="value">{item}</span>
             </div>
-          ))}
-          {/* {roundedValues.map((item, index) => (
-            <div key={index} className="label_with_value">
-              <span className="value" title={item.tooltip}>{item.value}</span>
-            </div>
           ))} */}
+          {roundedValues.map((item, index) => (
+            <div
+              key={index}
+              className="label_with_value"
+            >
+              <span
+                className="value"
+                title={item?.tooltip}
+              >
+                {item.value}
+              </span>
+            </div>
+          ))}
         </div>
         <div className="mobileLabels_container">
           {assessmentData?.map((item, index) => (

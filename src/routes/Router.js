@@ -281,7 +281,7 @@ function Router() {
             exact={true}
             path="/advance-statistics/withdrawal-status"
             element={
-              <PageLayout headerName="Withdrawal Status">
+              <PageLayout headerName="Advance Statistics">
                 <WithdrawalStatus />
               </PageLayout>
             }
@@ -290,7 +290,7 @@ function Router() {
             exact={true}
             path="/advance-statistics/withdrawal-status/export-history"
             element={
-              <PageLayout headerName="Withdrawal Status">
+              <PageLayout headerName="Advance Statistics">
                 <WithdrawalStatusExportHistory />
               </PageLayout>
             }
@@ -300,7 +300,7 @@ function Router() {
             exact={true}
             path="/advance-statistics/withdrawal-details"
             element={
-              <PageLayout headerName="Approved Withdrawal Details">
+              <PageLayout headerName="Advance Statistics">
                 <WithdrawalDetails />
               </PageLayout>
             }
@@ -310,7 +310,7 @@ function Router() {
             exact={true}
             path="/advance-statistics/withdrawal-details/export-history"
             element={
-              <PageLayout headerName="Withdrawal Details">
+              <PageLayout headerName="Advance Statistics">
                 <WithdrawalDetailsExportHistory />
               </PageLayout>
             }
@@ -320,7 +320,7 @@ function Router() {
             exact={true}
             path="/advance-statistics/daily-stats"
             element={
-              <PageLayout headerName="Daily Stats">
+              <PageLayout headerName="Advance Statistics">
                 <DailyStats />
               </PageLayout>
             }
@@ -330,7 +330,7 @@ function Router() {
             exact={true}
             path="/advance-statistics/daily-stats/export-history"
             element={
-              <PageLayout headerName="Daily Stats">
+              <PageLayout headerName="Advance Statistics">
                 <DailyStatsExportHistory />
               </PageLayout>
             }
@@ -380,7 +380,7 @@ function Router() {
             exact={true}
             path="/advance-statistics/trading-pairs"
             element={
-              <PageLayout headerName="Trading Pairs">
+              <PageLayout headerName="Advance Statistics">
                 <TradingPairs />
               </PageLayout>
             }
@@ -697,7 +697,7 @@ function Router() {
             exact={true}
             path="/coupon"
             element={
-              <PageLayout headerName="Coupon">
+              <PageLayout headerName="Coupons">
                 <Coupon />
               </PageLayout>
             }
@@ -707,7 +707,7 @@ function Router() {
             exact={true}
             path="/coupon/create-coupon"
             element={
-              <PageLayout headerName="Coupon">
+              <PageLayout headerName="Coupons">
                 <CreateCoupon />
               </PageLayout>
             }

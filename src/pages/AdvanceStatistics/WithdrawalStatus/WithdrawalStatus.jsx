@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from "react";
-import {DatePicker, Button, Select, Tooltip, notification, Card, Dropdown, Menu, Modal, Form, Input, Spin} from "antd";
+import {DatePicker, Button, Select, Tooltip, notification, Card, Dropdown, Menu, Modal, Form, Input, Spin, Breadcrumb} from "antd";
 import {Link, useNavigate} from "react-router-dom";
 import searchIcon from "../../../assets/icons/searchIcon.svg";
 import exportBtnIcon from "../../../assets/icons/export_btn_icon.svg";
@@ -14,6 +14,7 @@ import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import {exportDataReq} from "../../../store/NewReducers/exportSlice";
 import {returnMessages} from "../../../store/reducers/message";
 import {returnErrors} from "../../../store/reducers/error";
+import Title from "antd/es/skeleton/Title";
 
 const {Option} = Select;
 const {RangePicker} = DatePicker;
@@ -276,10 +277,12 @@ const WithdrawalStatus = () => {
       });
     }
   };
-  
 
   return (
     <div className="withdrawal_status_container">
+      <div className="header_boxx">
+        <h1>Withdrawal Status</h1>
+      </div>
       <div className="table_header_filter">
         <div className="header_left">
           <div className="search_box_wrapper">
@@ -338,8 +341,6 @@ const WithdrawalStatus = () => {
               >
                 New
               </Button>
-
-              
             </div>
           </div>
         </div>

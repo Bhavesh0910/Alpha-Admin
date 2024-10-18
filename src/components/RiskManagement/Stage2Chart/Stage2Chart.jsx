@@ -84,8 +84,8 @@ const Stage2Chart = ({data}) => {
     },
   ];
   const roundedValues = assessmentData.map((item) => {
-    const value = item.value;
-    if (value > 9999) {
+    const value = item?.value;
+    if (value && value > 999999) {
       return {
         ...item,
         value: `${Math.floor(value / 1000)}k`,
@@ -107,15 +107,15 @@ const Stage2Chart = ({data}) => {
           />
         </div>
         <div className="labels_container">
-          {[accountOverviewData?.stage2?.pass_count || 0, accountOverviewData?.stage2?.fail_count || 0, accountOverviewData?.stage2?.in_progress_count || 0]?.map((label, index) => (
+          {/* {[accountOverviewData?.stage2?.pass_count || 0, accountOverviewData?.stage2?.fail_count || 0, accountOverviewData?.stage2?.in_progress_count || 0]?.map((label, index) => (
             <div
               key={index}
               className="label_with_value"
             >
               <span className="value">{label}</span>
             </div>
-          ))}
-          {/* {roundedValues?.map((item, index) => (
+          ))} */}
+          {roundedValues?.map((item, index) => (
             <div
               key={index}
               className="label_with_value"
@@ -127,7 +127,7 @@ const Stage2Chart = ({data}) => {
                 {item.value}
               </span>
             </div>
-          ))} */}
+          ))}
         </div>
         <div className="mobileLabels_container">
           {assessmentData?.map((item, index) => (

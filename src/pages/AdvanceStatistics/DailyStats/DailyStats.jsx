@@ -338,6 +338,9 @@ const DailyStats = () => {
   return (
     <div className="withdrawal_status_container  daily_stats">
       {/* {isExportLoading && <LoaderOverlay />} */}
+      <div className="header_boxx">
+        <h1>Daily Stats</h1>
+      </div>
       <div className="export_btn">
         <Button onClick={handleOpenModal}>
           <img

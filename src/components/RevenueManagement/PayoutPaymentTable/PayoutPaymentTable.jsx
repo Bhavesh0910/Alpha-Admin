@@ -23,14 +23,14 @@ const PayoutPaymentTable = ({activeTab}) => {
         title: "Name",
         dataIndex: "name",
         key: "name",
-        width: 150,
+        width: 100,
         render: (text) => (text ? text : "-"),
       },
       {
         title: "Email",
         dataIndex: "email",
         key: "email",
-        width: 200,
+        width: 100,
         render: (text) => {
           return (
             <div
@@ -47,7 +47,7 @@ const PayoutPaymentTable = ({activeTab}) => {
         title: "Payment ID",
         dataIndex: "payment_id",
         key: "payment_id",
-        width: 150,
+        width: 100,
         render: (text) => (
           <>
             {text ? (
@@ -79,7 +79,7 @@ const PayoutPaymentTable = ({activeTab}) => {
         title: "Transaction ID",
         dataIndex: "transaction_id",
         key: "transaction_id",
-        width: 200,
+        width: 100,
         render: (text) => (
           <>
             {text ? (
@@ -123,9 +123,9 @@ const PayoutPaymentTable = ({activeTab}) => {
       },
       {
         title: "Promo",
-        dataIndex: "promo_code",
-        key: "promo_code",
-        width: 50,
+        dataIndex: "promo",
+        key: "promo",
+        width: 80,
         render: (text) => (
           <>
             {text ? (
@@ -157,28 +157,28 @@ const PayoutPaymentTable = ({activeTab}) => {
         title: "Amount",
         dataIndex: "amount",
         key: "amount",
-        width: 150,
+        width: 100,
         render: (amount) => (amount ? <span>${amount / 100}</span> : "-"),
       },
       {
         title: "Date",
-        dataIndex: "created_at",
-        key: "created_at",
-        width: 150,
+        dataIndex: "date",
+        key: "date",
+        width: 120,
         render: (text) => (text ? moment(text).format("YYYY-MM-DD") : "-"),
       },
       {
         title: "Login ID",
         dataIndex: "account_login_id",
         key: "account_login_id",
-        width: 150,
+        width: 100,
         render: (text) => (text ? text : "-"),
       },
       {
         title: "Challenge",
-        dataIndex: "challenge_name",
-        key: "challenge_name",
-        width: 150,
+        dataIndex: "challenge",
+        key: "challenge",
+        width: 100,
         render: (text) => (text ? text : "-"),
       },
     ],

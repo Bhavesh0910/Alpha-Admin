@@ -336,7 +336,8 @@ const KYC = () => {
             />
           </div>
           <div className="table_header_filter">
-            <div className="search_box_wrapper search_box_wrapper">
+            <div className="header_row1">
+            <div className="search_box_wrapper">
               <input
                 placeholder="Search by Email..."
                 className="search_input"
@@ -357,6 +358,7 @@ const KYC = () => {
                   alt="searchIcon"
                 />
               </div>
+       
             </div>
             <div className="filter_buttons noPadding">
               <Select
@@ -367,6 +369,8 @@ const KYC = () => {
                 options={options}
               />
             </div>
+            </div>
+ 
             <div className="desktop_filter_buttons">
               <Button
                 className={status === "all" ? "active" : ""}

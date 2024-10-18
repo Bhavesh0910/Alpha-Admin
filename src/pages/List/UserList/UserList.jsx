@@ -278,7 +278,7 @@ const UserListTable = () => {
     {
       title: "Flag",
       dataIndex: "status",
-      width: "80px",
+      width: 70,
       render: (text, record) => (
         <div className="flagContainer">
           <p className={`flag ${text === "Blacklisted" ? "Red" : text === "Warning" ? "Yellow" : "Green"}`}></p>
@@ -296,19 +296,20 @@ const UserListTable = () => {
       title: "First Name",
       dataIndex: "first_name",
       key: "first_name",
-      width: "100px",
+      width: 80,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Last Name",
       dataIndex: "last_name",
       key: "last_name",
-      width: "100px",
+      width: 80,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Email",
       dataIndex: "email",
+      width: 100,
       render: (text) => (
         <>
           {text || "-"}
@@ -328,6 +329,7 @@ const UserListTable = () => {
     {
       title: "Country",
       dataIndex: "country",
+      width: 100,
       render: (country) => {
         const countryName = country || "-";
         const countryCode = lookup.byCountry(countryName);
@@ -350,22 +352,25 @@ const UserListTable = () => {
     {
       title: "City",
       dataIndex: "city",
+      width: 100,
       render: (text) => <span>{text || "-"}</span>,
     },
     {
       title: "Contact",
       dataIndex: "contact",
+      width: 100,
       render: (text) => <span>{text || "-"}</span>,
     },
     {
       title: "Active",
       dataIndex: "is_active",
+      width: 100,
       render: (text) => <span className={`status_wrapper ${text ? "active" : "blocked"}`}>{text !== undefined ? (text ? "Active" : "Blocked") : "-"}</span>,
     },
     {
       title: "Block Type",
       dataIndex: "soft_blocked",
-      width: 120,
+      width: 100,
       render: (_, record) => {
         if (!record.is_active) {
           return <span>Hard Blocked</span>;
@@ -376,6 +381,7 @@ const UserListTable = () => {
     {
       title: "Action",
       dataIndex: "actions",
+      width: 100,
       render: (_, record) => (
         <div className="action_wrapper">
           <div

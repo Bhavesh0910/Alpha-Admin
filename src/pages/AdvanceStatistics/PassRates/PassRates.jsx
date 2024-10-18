@@ -384,7 +384,7 @@ const PassRates = () => {
       <div className="passRates_main">
         <div className="passRates_header">
           <div className="heading">
-            <h2>Pass Rates</h2>
+            <h2>Passes Rates</h2>
           </div>
           <div className="passRates_export_btn_wrapper">
             <div className="passRates_export_btn">
