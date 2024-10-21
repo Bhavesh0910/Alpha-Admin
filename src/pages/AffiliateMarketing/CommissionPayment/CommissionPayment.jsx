@@ -163,7 +163,7 @@ export const ExpandedRow = ({record}) => {
       </div>
       <div>
         <strong>Amount</strong>
-        <p>{record?.payment?.amount ? `$${record?.payment?.amount}` : "-"}</p>
+        <p>{record?.payment?.amount ?  `$${Number(record?.payment?.amount/100).toFixed(2)}` : "-"}</p>
       </div>
       <div>
         <strong>Challenge</strong>

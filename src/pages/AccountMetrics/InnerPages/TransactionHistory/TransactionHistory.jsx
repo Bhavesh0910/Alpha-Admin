@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import './TransactionHistory.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchTransactionHistory } from '../../../../store/NewReducers/amSlice';
-import AntTable from '../../../../ReusableComponents/AntTable/AntTable';
-import dayjs from 'dayjs';
-import { dollarUS, formatValue } from '../../../../utils/helpers/string';
-import LoaderOverlay from '../../../../ReusableComponents/LoaderOverlay';
+import React, {useEffect, useState} from "react";
+import "./TransactionHistory.scss";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchTransactionHistory} from "../../../../store/NewReducers/amSlice";
+import AntTable from "../../../../ReusableComponents/AntTable/AntTable";
+import dayjs from "dayjs";
+import {dollarUS, formatValue} from "../../../../utils/helpers/string";
+import LoaderOverlay from "../../../../ReusableComponents/LoaderOverlay";
+import {DownloadOutlined} from "@ant-design/icons";
 
 function TransactionHistory({user_id}) {
-    const [pageSize, setPageSize] = useState(20);
-    const [pageNo, setPageNo] = useState(1);
-    const idToken = useSelector((state) => state.auth.idToken);
-    const dispatch = useDispatch();
-    const { transactionHistory, isLoading, error } = useSelector((state) => state.accountMetrics);
+  const [pageSize, setPageSize] = useState(20);
+  const [pageNo, setPageNo] = useState(1);
+  const idToken = useSelector((state) => state.auth.idToken);
+  const dispatch = useDispatch();
+  const {transactionHistory, isLoading, error} = useSelector((state) => state.accountMetrics);
 
-    useEffect(() => {
-        dispatch(fetchTransactionHistory({ idToken , user_id }));
-    }, [dispatch, idToken]);
+  useEffect(() => {
+    dispatch(fetchTransactionHistory({idToken, user_id}));
+  }, [dispatch, idToken]);
 
     const columns = [
         {
@@ -38,7 +39,7 @@ function TransactionHistory({user_id}) {
             dataIndex: 'amount',
             key: 'amount',
             width: 150,
-            render: (text) => dollarUS(formatValue(text)),
+            render: (text) => text ? dollarUS(formatValue(Number(text)/100)) : "-",
         },
         {
             title: 'User ID',
@@ -99,30 +100,30 @@ function TransactionHistory({user_id}) {
     ];
 
 
-    function triggerChange(page, updatedPageSize) {
-        setPageNo(page);
-        setPageSize(updatedPageSize);
-    }
+  function triggerChange(page, updatedPageSize) {
+    setPageNo(page);
+    setPageSize(updatedPageSize);
+  }
 
-    return (
-        <div className="transaction_history">
-            {isLoading && <LoaderOverlay />}
-            <AntTable
-                columns={columns || []}
-                data={transactionHistory}
-                totalPages={Math.ceil(transactionHistory?.length / pageSize)}
-                totalItems={transactionHistory?.length}
-                pageSize={pageSize}
-                CurrentPageNo={pageNo}
-                setPageSize={setPageSize}
-                triggerChange={triggerChange}
-                isExpandable={true}
-                ExpandedComp={ExpandedRowRender}
-                rowId="payment_id"
-                scrollY={460}
-            />
-        </div>
-    );
+  return (
+    <div className="transaction_history">
+      {isLoading && <LoaderOverlay />}
+      <AntTable
+        columns={columns || []}
+        data={transactionHistory}
+        totalPages={Math.ceil(transactionHistory?.length / pageSize)}
+        totalItems={transactionHistory?.length}
+        pageSize={pageSize}
+        CurrentPageNo={pageNo}
+        setPageSize={setPageSize}
+        triggerChange={triggerChange}
+        isExpandable={true}
+        ExpandedComp={ExpandedRowRender}
+        rowId="payment_id"
+        scrollY={460}
+      />
+    </div>
+  );
 }
 
 const ExpandedRowRender = ({ record }) => {
@@ -154,20 +155,20 @@ const ExpandedRowRender = ({ record }) => {
 };
 
 const parseMetaData = (metaData) => {
-    try {
-        const parsedData = JSON.parse(metaData);
-        return (
-            <div>
-                {Object.entries(parsedData).map(([key, value]) => (
-                    <div key={key}>
-                        <strong>{key}</strong>: {String(value)}
-                    </div>
-                ))}
-            </div>
-        );
-    } catch {
-        return '-';
-    }
+  try {
+    const parsedData = JSON.parse(metaData);
+    return (
+      <div>
+        {Object.entries(parsedData).map(([key, value]) => (
+          <div key={key}>
+            <strong>{key}</strong>: {String(value)}
+          </div>
+        ))}
+      </div>
+    );
+  } catch {
+    return "-";
+  }
 };
 
 export default TransactionHistory;

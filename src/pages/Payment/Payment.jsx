@@ -779,22 +779,18 @@ const Payment = () => {
           <>
             {text ? (
               <div className="copy_text_btn">
-                <a href={`mailto:${text}`}>{text}</a>
-                <Tooltip title="Copy Transaction ID">
-                  <Button
-                    icon={<CopyButton />}
-                    size="small"
-                    style={{marginLeft: 8}}
-                    onClick={() => {
-                      navigator.clipboard.writeText(text);
-                      notification.success({
-                        message: "Transaction ID copied to clipboard",
-                        placement: "topRight",
-                      });
-                    }}
-                    className="copy_btn"
-                  />
-                </Tooltip>
+                <div>{text}</div>
+                <CopyToClipboard text={text || "-"}>
+                  <Tooltip title="Copy Transaction ID">
+                    <Button
+                      icon={<CopyButton />}
+                      size="small"
+                      style={{marginLeft: 8}}
+                      onClick={() => message.success("Copied Transaction ID")}
+                      className="copy_btn"
+                    />
+                  </Tooltip>
+                </CopyToClipboard>
               </div>
             ) : (
               "-"
@@ -825,21 +821,17 @@ const Payment = () => {
             {text ? (
               <div className="copy_text_btn">
                 <div>{text}</div>
-                <Tooltip title="Copy Promo">
-                  <Button
-                    icon={<CopyButton />}
-                    size="small"
-                    style={{marginLeft: 8}}
-                    onClick={() => {
-                      navigator.clipboard.writeText(text);
-                      notification.success({
-                        message: "Promo copied to clipboard",
-                        placement: "topRight",
-                      });
-                    }}
-                    className="copy_btn"
-                  />
-                </Tooltip>
+                <CopyToClipboard text={text || "-"}>
+                  <Tooltip title="Copy Promo">
+                    <Button
+                      icon={<CopyButton />}
+                      size="small"
+                      style={{marginLeft: 8}}
+                      onClick={() => message.success("Copied Promo")}
+                      className="copy_btn"
+                    />
+                  </Tooltip>
+                </CopyToClipboard>
               </div>
             ) : (
               "-"
@@ -994,6 +986,26 @@ const Payment = () => {
                 <p className={statusClass}>{statusText}</p>
               </Button>
             </Dropdown>
+          ) : text === "refunded" || text === "Refunded" ? (
+            <Dropdown
+              overlay={() => statusMenu(text, record)}
+              trigger={["click"]}
+              getPopupContainer={(triggerNode) => triggerNode.closest(".ant-table-body")}
+            >
+              <Button
+                icon={<DownOutlined />}
+                className={`status_button ${statusClass}`}
+                style={{
+                  width: "160px",
+                  display: "flex",
+                  flexDirection: "row-reverse",
+                  justifyContent: "space-between",
+                  padding: "6px 10px",
+                }}
+              >
+                <p className={statusClass}>{statusText}</p>
+              </Button>
+            </Dropdown>
           ) : (
             <Button className={`status_button ${statusClass}`}>
               <p className={statusClass}>{statusText}</p>
@@ -1010,13 +1022,15 @@ const Payment = () => {
       className="menuCard"
       onClick={(e) => openStatusUpdateModal(e.key, record)}
     >
-      <Menu.Item key="Refunded">Refund</Menu.Item>
+      {(key === "refunded" && <Menu.Item key="revoked">Revoked</Menu.Item>) || (key === "Refunded" && <Menu.Item key="revoked">Revoked</Menu.Item>)}
+      {(key === "succeeded" && <Menu.Item key="Refunded">Refund</Menu.Item>) || (key === "succeeded" && <Menu.Item key="Refunded">Refund</Menu.Item>)}
       {/* <Menu.Item key="New">New</Menu.Item>
       <Menu.Item key="Approved">Approved</Menu.Item>
       <Menu.Item key="In Progress">In Progress</Menu.Item>
       <Menu.Item key="Rejected">Rejected</Menu.Item>
       <Menu.Item key="Flagged">Flagged</Menu.Item>
-      <Menu.Item key="Dissmissed">Dissmissed</Menu.Item> */}
+      <Menu.Item key="Dissmissed">Dissmissed</Menu.Item> 
+      */}
     </Menu>
   );
 
@@ -1024,6 +1038,7 @@ const Payment = () => {
     let body = {payment_status: updatedStatus};
     dispatch(updatePaymentStatusReq({idToken, body, id: userToUpdate?.id, dispatch}));
     setStatusModelVisible(false);
+    setEditCommentToUpdate(null);
   };
 
   const openStatusUpdateModal = (updatedValue, record) => {

@@ -52,13 +52,13 @@ const StatisticChart = ({ setDates, rangePresets  , dates}) => {
     stroke: { curve: "smooth" },
     xaxis: {
       type: "datetime",
-      categories: data.dates,
+      categories: data?.dates,
       labels: { style: { colors: "#1E1E1E" } },
     },
     yaxis: {
       labels: {
         style: { colors: "#1E1E1E" },
-        formatter: (val) => `$${val}`,
+        formatter: (val) => `$${val?.toFixed(2)}`,
       },
     },
     tooltip: {
