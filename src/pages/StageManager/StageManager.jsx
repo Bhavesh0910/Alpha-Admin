@@ -2548,7 +2548,7 @@ function ExpandedRowData({record}) {
                   </div>
                   <div>
                     <div>Profit</div>
-                    <p>{FormatUSD((nestedTableData && nestedTableData?.max_loss) ?? "-")}</p>
+                    <p>{FormatUSD((nestedTableData && nestedTableData?.profit) ?? "-")}</p>
                   </div>
                   <div>
                     <div>Max Daily Loss</div>
