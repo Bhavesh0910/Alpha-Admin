@@ -2496,7 +2496,7 @@ function ExpandedRowData({record}) {
                   <div>
                     <div>Martingle</div>
                     {/* <div>{nestedTableData?.contact}</div> */}
-                    <button className={`${martingleStatus === "Success" ? "status_success" : "notButton"}`}>Success</button>
+                    <button className={`${martingleStatus === "Success" ? "status_success" : martingleStatus === "Warning" ? "status_warning":  "notButton"}`}>{martingleStatus}</button>
                   </div>
                   <div>
                     <div>Equity</div>

@@ -297,6 +297,26 @@
     font-weight: 600;
     line-height: normal;
   }
+  button.status_warning {
+    display: flex;
+    width: 114px;
+    padding: 6px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+
+    border-radius: var(--Corner-Radius, 10px);
+    border: 1px solid var(--sucess, #f20000);
+    background: var(--Success-Body, #ffe1e1);
+
+    color: var(--text, #141414);
+    font-family: "Nunito Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
   .notButton {
     display: none;
   }
