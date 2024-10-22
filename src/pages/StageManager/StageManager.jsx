@@ -1120,9 +1120,7 @@ const StageManager = () => {
                   }}
                 >
                   <p
-                    className={
-                      text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Flagged" ? "flagged" : ""
-                    }
+                    className={text === "New" ? "new" : text === "In Progress" ? "in_progress" : text === "Approved" ? "approved" : text === "Rejected" ? "rejected" : text === "Failed" ? "rejected" : text === "Flagged" ? "flagged" : ""}
                   >
                     {text === "New" ? "Action Required" : text === "Dissmissed" ? "Subject to interview" : text === "Failed" ? "Rejected" : text}{" "}
                   </p>

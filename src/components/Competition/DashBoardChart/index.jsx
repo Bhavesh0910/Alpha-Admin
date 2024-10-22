@@ -81,8 +81,7 @@ const DashBoardChart = () => {
         options={options}
         series={series}
         type="line"
-        height={360}
-        width={750}
+        style={{height: "400px", width: "100%"}}
       />
     </div>
   );
