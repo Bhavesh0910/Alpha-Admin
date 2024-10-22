@@ -8,7 +8,7 @@ import logoIcon from "../../../assets/icons/logo_blue_bg.svg";
 import {useNavigate} from "react-router-dom";
 import {validateEmail, validatePassword} from "../../../utils/helpers/string";
 import {useDispatch, useSelector} from "react-redux";
-import {authenticate, setAuthenticationStatus} from "../../../store/NewReducers/authSlice";
+import {authenticate, setAuthenticationStatus, setRememberMe} from "../../../store/NewReducers/authSlice";
 import {alphaNewLogin} from "../../../utils/api/apis";
 import {returnErrors} from "../../../store/reducers/error";
 import {formatText} from "../../../utils/string";
@@ -26,7 +26,6 @@ function SigninForm() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   let emailRef = useRef(null);
   let passwordRef = useRef(null);
@@ -196,12 +195,7 @@ function SigninForm() {
               </button>
             </div>
             <div className="remember-me">
-              <Checkbox
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-              >
-                Remember me
-              </Checkbox>
+              <Checkbox onChange={(e) => dispatch(setRememberMe(e.target.checked))}>Remember me</Checkbox>
             </div>
           </form>
         </div>

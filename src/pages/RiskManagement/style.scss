@@ -29,7 +29,8 @@
   .row1_box {
     display: grid;
     gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(391px, 1fr));
+    // grid-template-columns: repeat(auto-fit, minmax(391px, 1fr));
+    grid-template-columns: 1fr 1fr;
 
     @media only screen and (max-width: 900px) {
       grid-template-columns: 100%;

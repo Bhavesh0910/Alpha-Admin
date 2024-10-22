@@ -4,7 +4,7 @@ import Router from "./routes/Router";
 import ErrorModal from "./components/Alerts/ErrorModal";
 import SuccessModal from "./components/Alerts/SuccessModal";
 import {useDispatch, useSelector} from "react-redux";
-import {returnErrors} from "./store/reducers/error";
+import {clearErrors, returnErrors} from "./store/reducers/error";
 import {clearPersistedData} from "./store/configureStore";
 import {deAuthenticateAll} from "./store/NewReducers/logout";
 import axios from "axios";
@@ -23,7 +23,7 @@ function App() {
   }
   const dispatch = useDispatch();
 
-  const {refreshToken, refreshCount} = useSelector((state) => state.auth);
+  const {refreshToken, refreshCount, rememberMe} = useSelector((state) => state.auth);
 
   useEffect(() => {
     handleCreateUUID();
@@ -34,17 +34,22 @@ function App() {
       return response;
     },
     (error) => {
-      console.log("error : ",error)
       if (error?.response?.status === 403 || error?.response?.status === 401) {
         // if (error?.response?.status === 401) {
         if (error?.response?.data?.detail === "invalid-auth-token") {
+          if (!rememberMe) {
+            deAuthenticateAll(dispatch);
+            clearPersistedData();
+            return;
+          }
           if (refreshCount >= 12) {
             deAuthenticateAll(dispatch);
             clearPersistedData();
             dispatch(incrementRefreshCount(0));
           } else {
             dispatch(refreshTokenReq(refreshToken));
-            dispatch(incrementRefreshCount(refreshCount + 1));
+            dispatch(incrementRefreshCount(++refreshCount));
+            dispatch(clearErrors());
             // window.location.reload();
           }
           return Promise.reject(error);

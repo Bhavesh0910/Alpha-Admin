@@ -72,6 +72,9 @@ const authSlice = createSlice({
     setDatesMethod: (state, action) => {
       state.searchDates = action.payload;
     },
+    setRememberMe: (state, action) => {
+      state.rememberMe = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => {
@@ -80,5 +83,5 @@ const authSlice = createSlice({
   },
 });
 
-export const {authenticate, deAuthenticate, incrementRefreshCount, setAuthenticationStatus, setIsLoading, setDatesMethod} = authSlice.actions;
+export const {authenticate, deAuthenticate, incrementRefreshCount, setAuthenticationStatus, setIsLoading, setDatesMethod, setRememberMe} = authSlice.actions;
 export default authSlice.reducer;
