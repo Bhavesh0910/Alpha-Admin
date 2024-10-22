@@ -1,16 +1,15 @@
-import { Breadcrumb, Radio, Tabs } from "antd";
-import React, { useEffect, useState } from "react";
+import {Breadcrumb, Radio, Tabs} from "antd";
+import React, {useEffect, useState} from "react";
 import "./AccountOverview.scss";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import profileIcon from "../../../../assets/icons/profileIcon.svg";
 import BalanceChart from "../../Charts/BalanceChart";
 import ProfitChart from "../../Charts/ProfitChart";
-import { dollarUS, formatCurrency, formatDate, FormatUSD, formatValue } from "../../../../utils/helpers/string";
+import {dollarUS, formatCurrency, formatDate, FormatUSD, formatValue} from "../../../../utils/helpers/string";
 import DrawdownChart from "../../Charts/DrawdownChart";
 
-const AccountOverview = ({ overview, statistics, info, accountDetails, objectives, performanceChart }) => {
-
-  console.log(overview)
+const AccountOverview = ({overview, statistics, info, accountDetails, objectives, performanceChart}) => {
+  console.log(overview);
   const [charts, setCharts] = useState("BalanceChart");
   const [pageNos, setPageNos] = useState(1);
   const onChangeActive = (e) => {
@@ -18,20 +17,12 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
     setCharts(e.target.value);
   };
 
-
-
-
-
-
   const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {
     const now = new Date();
     setCurrentTime(now.toString());
   }, []);
-
-
-
 
   return (
     <div className="accountMetrics_wrapper">
@@ -60,11 +51,11 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
           <div className="top_left_div_lower">
             <div>
               <p>Start Date</p>
-              <h3>{accountDetails?.start_date ? formatDate(accountDetails?.start_date) : '-'}</h3>
+              <h3>{accountDetails?.start_date ? formatDate(accountDetails?.start_date) : "-"}</h3>
             </div>
             <div>
               <p>End Date</p>
-              <h3>{accountDetails?.expiry_date ? formatDate(accountDetails?.expiry_date) : '-'}</h3>
+              <h3>{accountDetails?.expiry_date ? formatDate(accountDetails?.expiry_date) : "-"}</h3>
             </div>
             <div>
               <p>Account Size</p>
@@ -79,18 +70,18 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
               <h3>{formatValue(overview?.calculated_data?.trades)}</h3>
             </div>
             <div className="top_row_2">
-            <div>
-              <p>Group</p>
-              <h3>{accountDetails?.group ? accountDetails?.group?.replace(/\\/g, " ") : '-'}</h3>
-            </div>
-            <div>
-              <p>Challenge Name</p>
-              <h3>{accountDetails?.challenge?.name ? accountDetails?.challenge?.name : "-"}</h3>
-            </div>
+              <div>
+                <p>Group</p>
+                <h3>{accountDetails?.group ? accountDetails?.group?.replace(/\\/g, " ") : "-"}</h3>
+              </div>
+              <div>
+                <p>Challenge Name</p>
+                <h3>{accountDetails?.challenge?.name ? accountDetails?.challenge?.name : "-"}</h3>
+              </div>
             </div>
           </div>
         </div>
-{/* 
+        {/* 
         <div className="top_right_div">
           <div className="accountMetrics_wrapper_header">
             <h2>Daily Summary</h2>
@@ -128,7 +119,7 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
           <div className="bottom_main_left_charts">
             <div
               className="trader-overview-header-right tabs_wrapper"
-              style={{ width: "100%" }}
+              style={{width: "100%"}}
             >
               <Radio.Group
                 value={charts}
@@ -144,7 +135,6 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
               {charts === "BalanceChart" && <BalanceChart performanceChart={performanceChart ?? []} />}
               {charts === "ProfitChart" && <ProfitChart ProfitData={overview?.profit_chart ?? []} />}
               {charts === "DrawdownChart" && <DrawdownChart drawdownData={overview?.drawdown_chart ?? []} />}
-              
             </div>
           </div>
           <div className="bottom_main_left_satistic">
@@ -171,7 +161,7 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
                 </div>
                 <div>
                   <p>Win rate</p>
-                  <h3>{formatValue(statistics?.win_rate)}</h3>
+                  <h3>{formatValue(overview?.calculated_data?.win_ratio)}</h3>
                 </div>
                 <div>
                   <p>Highest</p>
@@ -181,15 +171,20 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
               <div className="bottom_main_left_satistic_inner_two">
                 <div>
                   <p>Average profit</p>
-                  <h3 style={{ color: '#009017' }}> {overview?.calculated_data?.average_profit ? dollarUS(overview?.calculated_data?.average_profit?.toFixed(2)) : '-'}</h3>
+                  <h3 style={{color: "#009017"}}>
+                    {" "}
+                    {overview?.calculated_data?.average_profit !== null && overview?.calculated_data?.average_profit !== undefined
+                      ? dollarUS(overview?.calculated_data?.average_profit?.toFixed(2))
+                      : "-"}
+                  </h3>
                 </div>
                 <div>
                   <p>Average loss</p>
-                  <h3 style={{ color: '#F20000' }}>{overview?.calculated_data?.average_loss ? dollarUS(overview?.calculated_data?.average_loss?.toFixed(2)) : '-'}</h3>
+                  <h3 style={{color: "#F20000"}}>{dollarUS(overview?.calculated_data?.average_loss?.toFixed(2)) ?? "N/A"}</h3>
                 </div>
                 <div>
                   <p>Average RRR</p>
-                  <h3> {overview?.calculated_data ? formatValue(overview?.calculated_data["rrr "]) : '-'}</h3>
+                  <h3> {overview?.calculated_data ? formatValue(overview?.calculated_data["rrr "]) : "-"}</h3>
                 </div>
                 {/* <div>
           <p>Martingale Status</p>
@@ -200,7 +195,6 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
                   <h3>{formatValue(accountDetails?.martingale_count, 0)}</h3>
                 </div>
               </div>
-
             </div>
             <div className="bottom_main_left_satistic_lower">
               <h3>Last Updated:</h3>
@@ -216,26 +210,26 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
           <div className="bottom_main_right_inner">
             <div className="bottom_main_right_inner_div">
               <div>
-                {objectives && objectives?.payout_dates ?
+                {objectives && objectives?.payout_dates ? (
                   <>
                     <h4>
                       Withdrawal Dates - <span>{`${objectives?.payout_dates[0]} &  ${objectives?.payout_dates[1]}`} </span>
                     </h4>
                   </>
-                  :
+                ) : (
                   <>
                     <h4>
                       Min Trading days - {objectives?.trading_days?.target} <span>{">"}</span>
                     </h4>
                     <p>Results : {objectives?.trading_days?.result ?? 0}</p>
                   </>
-                }
+                )}
               </div>
-              {objectives?.trading_days &&
+              {objectives?.trading_days && (
                 <button className={`${objectives?.trading_days?.status === "In Progress" ? "status_in_progress" : objectives?.trading_days?.status === "Success" ? "status_green" : "status_red"}`}>
                   {objectives?.trading_days?.status}
                 </button>
-              }
+              )}
             </div>
 
             <div className="bottom_main_right_inner_div">
@@ -245,9 +239,7 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
                 </h4>
                 <p>Results : {FormatUSD(objectives?.profit_target?.result)}</p>
               </div>
-              <button
-                className={`${objectives?.profit_target?.status === "In Progress" ? "status_in_progress" : objectives?.profit_target?.status === "Success" ? "status_green" : "status_red"}`}
-              >
+              <button className={`${objectives?.profit_target?.status === "In Progress" ? "status_in_progress" : objectives?.profit_target?.status === "Success" ? "status_green" : "status_red"}`}>
                 {objectives?.profit_target?.status}
               </button>
             </div>
@@ -260,12 +252,9 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
                 <p>Results : {FormatUSD(objectives?.drawdown_result?.max_loss?.result ?? 0)}</p>
               </div>
               <button
-                className={`${objectives?.drawdown_result?.max_loss?.status === "In Progress"
-                  ? "status_in_progress"
-                  : objectives?.drawdown_result?.max_loss?.status === "Success"
-                    ? "status_green"
-                    : "status_red"
-                  }`}
+                className={`${
+                  objectives?.drawdown_result?.max_loss?.status === "In Progress" ? "status_in_progress" : objectives?.drawdown_result?.max_loss?.status === "Success" ? "status_green" : "status_red"
+                }`}
               >
                 {objectives?.drawdown_result?.max_loss?.status}
               </button>
@@ -279,12 +268,13 @@ const AccountOverview = ({ overview, statistics, info, accountDetails, objective
                 <p>Remaining : {FormatUSD(objectives?.drawdown_result?.max_daily_loss?.remaining ?? 0)}</p>
               </div>
               <button
-                className={`${objectives?.drawdown_result?.max_daily_loss?.status === "In Progress"
-                  ? "status_in_progress"
-                  : objectives?.drawdown_result?.max_daily_loss?.status === "Success"
+                className={`${
+                  objectives?.drawdown_result?.max_daily_loss?.status === "In Progress"
+                    ? "status_in_progress"
+                    : objectives?.drawdown_result?.max_daily_loss?.status === "Success"
                     ? "status_green"
                     : "status_red"
-                  }`}
+                }`}
               >
                 {objectives && objectives?.drawdown_result?.max_daily_loss?.status}
               </button>

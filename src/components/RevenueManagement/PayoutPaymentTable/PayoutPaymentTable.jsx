@@ -1,11 +1,13 @@
 import React, {useEffect, useMemo, useState} from "react";
 import "./PayoutPaymentTable.scss";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
-import {Button, notification, Tooltip} from "antd";
+import {Button, message, notification, Tooltip} from "antd";
 import {paymentListReq, payoutListReq} from "../../../store/NewReducers/payment";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import moment from "moment";
+import CopyToClipboard from "react-copy-to-clipboard";
+import {ReactComponent as CopyButton} from "../../../assets/icons/copyButtonGray.svg";
 
 const PayoutPaymentTable = ({activeTab}) => {
   const [pageSize, setPageSize] = useState(20);
@@ -33,12 +35,24 @@ const PayoutPaymentTable = ({activeTab}) => {
         width: 100,
         render: (text) => {
           return (
-            <div
-              onClick={() => {
-                navigate("/payments/payments-export-history");
-              }}
-            >
-              {text}
+            <div className="copy_text_btn">
+              {text ? (
+                <>
+                  <a href={`mailto:${text}`}>{text}</a>
+                  <CopyToClipboard text={text || "-"}>
+                    <Tooltip title="Copy email">
+                      <Button
+                        type="link"
+                        icon={<CopyButton />}
+                        onClick={() => message.success("Copied email")}
+                        disabled={!text}
+                      />
+                    </Tooltip>
+                  </CopyToClipboard>
+                </>
+              ) : (
+                "-"
+              )}
             </div>
           );
         },
@@ -48,32 +62,29 @@ const PayoutPaymentTable = ({activeTab}) => {
         dataIndex: "payment_id",
         key: "payment_id",
         width: 100,
-        render: (text) => (
-          <>
-            {text ? (
-              <div className="copy_text_btn">
-                <a href={`mailto:${text}`}>{text}</a>
-                <Tooltip title="Copy Payment ID">
-                  <Button
-                    // icon={<CopyButton />}
-                    size="small"
-                    style={{marginLeft: 8}}
-                    onClick={() => {
-                      navigator.clipboard.writeText(text);
-                      notification.success({
-                        message: "Payment ID copied to clipboard",
-                        placement: "topRight",
-                      });
-                    }}
-                    className="copy_btn"
-                  />
-                </Tooltip>
-              </div>
-            ) : (
-              "-"
-            )}
-          </>
-        ),
+        render: (text) => {
+          return (
+            <div>
+              {text ? (
+                <div className="copy_text_btn">
+                  <div>{text}</div>
+                  <CopyToClipboard text={text || "-"}>
+                    <Tooltip title="Copy payment id">
+                      <Button
+                        type="link"
+                        icon={<CopyButton />}
+                        onClick={() => message.success("Copied payment id")}
+                        disabled={!text}
+                      />
+                    </Tooltip>
+                  </CopyToClipboard>
+                </div>
+              ) : (
+                "-"
+              )}
+            </div>
+          );
+        },
       },
       {
         title: "Transaction ID",
@@ -199,7 +210,7 @@ const PayoutPaymentTable = ({activeTab}) => {
         dataIndex: "amount",
         key: "amount",
         width: 100,
-        render: (text) => (text !== null && text !== undefined ? text : "-"),
+        render: (text) => (text ? `$${text}` : "-"),
       },
       {
         title: "Country",
