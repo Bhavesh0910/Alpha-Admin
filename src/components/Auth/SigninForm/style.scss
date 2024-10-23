@@ -24,19 +24,18 @@
     width: 100%;
   }
 
-  .remember-me{
+  .remember-me {
     display: flex;
-    >label{
-      >span{
-        color: #fff;
+    > label {
+      > span {
+        color: var(--Text-white);
         font-family: var(--primary-font-family);
         font-size: 20px;
         font-style: normal;
         font-weight: var(--fw-normal);
         line-height: normal;
-            }
+      }
     }
-
   }
   .signinform_wrapper {
     width: 100%;
@@ -101,7 +100,7 @@
       gap: 8px;
 
       p {
-        color: #989898;
+        color: var(--primary-text-color);
         font-family: var(--primary-font-family);
         font-size: 16px;
         font-style: normal;
@@ -126,7 +125,7 @@
       align-items: center;
       gap: 20px;
       border-radius: 20px;
-      background: var(--Box, #131313);
+      background: var(--text-black);
       cursor: pointer;
       width: 100%;
       margin: 0 auto 0 auto;
@@ -162,12 +161,12 @@
         height: 50px;
         width: 100%;
         border-radius: 8px;
-        background: var(--secondary-sb-50-background, #010101);
+        background: var(--text-black);
 
         border: 1px solid transparent;
 
         &:focus-within {
-          border: 1px solid var(--primary-p-blue-100-main, #04d9ff);
+          border: 1px solid var(--blue-color);
         }
 
         img {
@@ -180,10 +179,10 @@
           background-color: transparent !important;
           border: none;
           outline: none;
-          color: #fff !important;
+          color: var(--Text-white) !important;
 
           &::placeholder {
-            color: #989898;
+            color: var(--primary-text-color);
           }
 
           &:focus {
@@ -214,7 +213,7 @@
           gap: 5px;
 
           label {
-            color: #989898;
+            color: var(--primary-text-color);
             font-family: var(--primary-font-family);
             font-size: 16px;
             font-style: normal;
@@ -247,13 +246,13 @@
           font-style: normal;
           font-weight: 600;
           line-height: 140%; /* 22.4px */
-          color: #4bb390;
+          color: var(--green-shade1);
           text-decoration: none;
         }
       }
       p,
       span {
-        color: #989898;
+        color: var(--primary-text-color);
         font-family: var(--primary-font-family);
         font-size: 16px;
         font-style: normal;
@@ -262,7 +261,7 @@
       }
       span a {
         text-decoration: none;
-        color: #4bb390;
+        color: var(--green-shade1);
         cursor: pointer;
       }
     }

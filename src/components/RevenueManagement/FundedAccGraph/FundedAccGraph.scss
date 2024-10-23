@@ -5,13 +5,13 @@
 
   padding: 20px;
   border-radius: var(--table-box, 20px);
-  background: #fff;
+  background: var(--Text-white);
 
   .header_wrapper {
     display: flex;
     justify-content: space-between;
     h3 {
-      color: var(--Text-white, #1e1e1e);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 20px;
       font-style: normal;
@@ -21,6 +21,6 @@
   }
 
   .apexcharts-svg {
-    background: #fff !important;
+    background: var(--Text-white) !important;
   }
 }

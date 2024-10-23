@@ -1,5 +1,5 @@
 .createCouponModal_container {
-  .ant-select{
+  .ant-select {
     width: 100%;
   }
   .createCouponModal_wrapper {
@@ -8,9 +8,9 @@
     padding: 20px;
     flex-direction: column;
     gap: 20px;
-    color: #1e1e1e;
+    color: var(--text-black);
     border-radius: 20px;
-    background: #fff;
+    background: var(--Text-white);
     position: relative;
     margin-top: 20px;
     .header_wrapper {
@@ -20,7 +20,7 @@
       justify-content: space-between;
 
       h3 {
-        color: var(--Text-white, #1e1e1e);
+        color: var(--text-black);
         font-family: var(--primary-font-family);
         font-size: 18px;
         font-style: normal;
@@ -41,12 +41,12 @@
 
         .ant-select {
           .ant-select-selector {
-            border: 1px solid var(--Stroke, #686868) !important;
+            border: 1px solid var(--gray) !important;
             background: transparent !important;
 
             &:focus-within {
-              border: 1px solid var(--Brand, #04d9ff) !important;
-              background: var(--Main-Background, #edf0f0) !important;
+              border: 1px solid var(--blue-color) !important;
+              background: var(--Table-header-fill) !important;
             }
 
             .ant-select-selection-placeholder {
@@ -57,14 +57,14 @@
 
         .ant-input-affix-wrapper {
           &:focus-within {
-            border: 1px solid var(--Brand-1, #04d9ff) !important;
-            background: var(--Table-header-fill, #edf0f0) !important;
+            border: 1px solid var(--blue-color) !important;
+            background: var(--Table-header-fill) !important;
           }
           .ant-input {
             padding-left: 10px !important;
             border: 0 !important;
             &:focus-within {
-              background: var(--Table-header-fill, #edf0f0) !important;
+              background: var(--Table-header-fill) !important;
             }
           }
         }
@@ -72,11 +72,11 @@
         .ant-picker {
           max-width: 100%;
           background: transparent !important;
-          border: 1px solid var(--Stroke, #686868) !important;
+          border: 1px solid var(--gray) !important;
 
           &:focus-within {
-            border: 1px solid var(--Brand, #04d9ff) !important;
-            background: var(--Main-Background, #edf0f0) !important;
+            border: 1px solid var(--blue-color) !important;
+            background: var(--Table-header-fill) !important;
           }
 
           .ant-picker-input {
@@ -104,7 +104,7 @@
         .status_checkbox_wrapper {
           .ant-checkbox-wrapper {
             span {
-              color: var(--Text-white, #1e1e1e);
+              color: var(--text-black);
               font-family: var(--primary-font-family);
               font-size: 16px;
               font-style: normal;
@@ -115,7 +115,7 @@
         }
 
         .save_changes_btn {
-          color: var(--Main-Background, #12181f);
+          color: var(--navy-blue);
           font-family: "Nunito Sans";
           font-size: 14px;
           font-style: normal;
@@ -129,7 +129,7 @@
           justify-content: center;
           align-items: center;
           border-radius: 10px;
-          background: var(--Brand, #04d9ff);
+          background: var(--blue-color);
           margin-left: auto;
 
           @media only screen and (max-width: 432px) {
@@ -141,8 +141,7 @@
   }
 }
 
-
-.coupon_select{
+.coupon_select {
   display: flex;
   align-items: center;
   border-radius: 6px;
@@ -151,9 +150,9 @@
     border-radius: 6px 0 0 6px !important;
     max-width: 150px !important;
   }
-  .coupon_amount , .coupon_percentage{
-    border: 1px solid var(--Stroke, #686868) ;
+  .coupon_amount,
+  .coupon_percentage {
+    border: 1px solid var(--gray);
     border-radius: 0 6px 6px 0 !important;
-
   }
 }

@@ -12,21 +12,20 @@
     border-radius: var(--Corner-Radius, 10px);
   }
   .status_button.status_succeeded {
-    border: 1px solid var(--sucess, #009017);
-    background: var(--Success-Body, #cdffdd);
+    border: 1px solid var(--green-border-color);
+    background: var(--green-bg-color);
   }
   .status_button.status_rejected {
-    border: 1px solid var(--Failed, #f20000);
-    background: var(--Failed-body, #ffe1e1);
+    border: 1px solid var(--red-border-color);
+    background: var(--red-bg-color);
   }
   .status_button.status_in_progress {
-    border: 1px solid var(--In-progress, #f4ea0f);
-    background: var(--in-Progress-Body, #fffdcf);
+    border: 1px solid var(--yellow-border-color);
+    background: var(--yellow-bg-color);
   }
   .status_button.status_default {
-    border: 1px solid var(--In-progress, #f4ea0f);
-    background: var(--in-Progress-Body, #fffdcf);
-
+    border: 1px solid var(--orange-border-color);
+    background: var(--orange-bg-color);
   }
 
   .header_wrapper {
@@ -80,7 +79,7 @@
     }
 
     button {
-      color: var(--Text-white, #1e1e1e);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -89,16 +88,16 @@
       min-height: 44px;
       padding: 0px 15px;
       border-radius: 10px;
-      background: #f6fefe;
+      background: var(--Text-white);
       &:hover {
-        border: 1px solid var(--Text-white, #f6fefe) !important;
-        color: var(--Text-white, #1e1e1e) !important;
-        background: var(--Stroke, #f6fefe) !important;
+        border: 1px solid var(--Text-white) !important;
+        color: var(--text-black) !important;
+        background: var(--Text-white) !important;
       }
     }
 
     a {
-      color: var(--Brand-1, #04d9ff) !important;
+      color: var(--blue-color) !important;
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -150,7 +149,7 @@
       &.new {
         .ant-select-selector {
           .ant-select-selection-item {
-            border: 1px solid red;
+            border: 1px solid var(--red-border-color);
           }
         }
       }
@@ -158,28 +157,28 @@
       &.in_progress {
         .ant-select-selector {
           .ant-select-selection-item {
-            border: 1px solid #1e1e1ea8;
+            border: 1px solid var(--text-black);
           }
         }
       }
       &.approved {
         .ant-select-selector {
           .ant-select-selection-item {
-            background: var(--succeeded-body, green);
+            background: var(--green-border-color);
           }
         }
       }
       &.flagged {
         .ant-select-selector {
           .ant-select-selection-item {
-            border: 1px solid #ff7b36;
+            border: 1px solid var(--orange-border-color);
           }
         }
       }
       &.dismissed {
         .ant-select-selector {
           .ant-select-selection-item {
-            border: 1px solid #f97f7f;
+            border: 1px solid var(--orange-border-color);
           }
         }
       }
@@ -206,7 +205,7 @@
     flex-direction: column;
     gap: 20px;
     padding: 20px;
-    color: #1e1e1e;
+    color: var(--text-black);
     border-radius: var(--Outside-box, 10px);
     background: var(--Stroke, #252a29);
     width: 100%;
@@ -214,7 +213,7 @@
     // max-width: 743px;
 
     h4 {
-      color: var(--Text-white, #fff);
+      color: var(--Text-white);
       font-family: "Nunito Sans";
       font-size: 16px;
       font-style: normal;
@@ -223,7 +222,7 @@
     }
 
     p {
-      color: var(--Text-white, #fff);
+      color: var(--Text-white);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -254,7 +253,7 @@
   grid-template-columns: repeat(4, auto);
   gap: 40px;
   p {
-    color: var(--Brand-2, #12181f);
+    color: var(--navy-blue);
     font-family: "Nunito Sans";
     font-size: 18px;
     font-style: normal;

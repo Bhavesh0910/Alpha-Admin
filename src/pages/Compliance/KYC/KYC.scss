@@ -12,8 +12,13 @@
       justify-content: space-between;
       align-items: center;
 
+      @media only screen and (max-width: 800px) {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
       h3 {
-        color: var(--white, #fff);
+        color: var(--Text-white);
         font-family: "Nunito Sans";
         font-size: 20px;
         font-style: normal;
@@ -29,37 +34,72 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      .filter_buttons {
-        @media only screen and (max-width: 900px) {
-          // max-width: fit-content;
-          width: 100%;
+      .header_row1 {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        @media only screen and (max-width: 890px) {
+          flex-direction: column;
+          gap: 20px;
         }
+        .search_box_wrapper {
+          // width: 200px !important;
+          @media only screen and (max-width: 890px) {
+            width: 512px ;
+            max-width: none !important;
+          }
+          @media only screen and (max-width: 806px) {
+            width: 512px ;
+            min-width: 0px !important;
+          }
+          @media only screen and (max-width: 690px) {
+            width: 100% ;
+            // min-width: none !important;
+          }
+        }
+        .filter_buttons {
+          width: 317px;
 
-        // @media only screen and (max-width: 570px) {
-        //   button {
-        //     padding: 4px 2px;
-        //   }
-        // }
+          @media only screen and (max-width: 890px) {
+            width: 512px;
+          }
+          @media only screen and (max-width: 690px) {
+            width: 100%;
+          }
+        }
       }
+      // .filter_buttons {
+      //   @media only screen and (max-width: 900px) {
+      //     // max-width: fit-content;
+      //     width: 100%;
+      //   }
+
+      // @media only screen and (max-width: 570px) {
+      //   button {
+      //     padding: 4px 2px;
+      //   }
+      // }
+      // }
       .desktop_filter_buttons {
         display: flex;
         // flex-wrap: wrap;
         // justify-content: flex-end;
-        margin-top: 20px;
-        background-color: #fff;
+        // margin-top: 20px;
+        background-color: var(--Text-white);
         border-radius: 8px;
-        
+
         &:first-child {
           .active {
-            background-color: #04d9ff;
-            color: #000;
-          }}
+            background-color: var(--blue-color);
+            color: var(--text-black);
+          }
+        }
         @media only screen and (max-width: 690px) {
           display: none;
         }
         > button {
           margin: 7px;
-          padding: 10px 20px;
+          // padding: 10px 20px;
           border: none;
           border-radius: 5px;
           // background-color: #f7f7f7;
@@ -67,19 +107,19 @@
           cursor: pointer;
 
           &:active {
-            background-color: #04d9ff;
-            color: #000;
+            background-color: var(--blue-color);
+            color: var(--text-black);
           }
 
           &:hover {
-            background-color: #04d9ff;
+            background-color: var(--blue-color);
           }
           &:first-child {
             &.active {
-              background-color: #04d9ff;
-              color: #000;
-            }}
-          
+              background-color: var(--blue-color);
+              color: var(--text-black);
+            }
+          }
         }
       }
 
@@ -107,22 +147,34 @@
     background: transparent;
 
     &.approved {
-      border: 1px solid var(--sucess, #009017);
-      background: var(--Success-Body, #cdffdd);
+      border: 1px solid var(--green-border-color);
+      background: var(--green-bg-color);
     }
 
     &.rejected {
-      border: 1px solid var(--Failed, #f20000);
-      background: var(--Failed-body, #ffe1e1);
+      border: 1px solid var(--red-border-color);
+      background: var(--red-bg-color);
     }
 
     &.in_progress,
     &.pending,
     &.in_review {
-      border: 1px solid var(--In-progress, #f4ea0f);
-      background: var(--in-Progress-Body, #fffdcf);
+      border: 1px solid var(--yellow-border-color);
+      background: var(--yellow-bg-color);
     }
   }
+  @media only screen and (max-width: 800px) {
+    .ant-picker{
+      width: 512px;
+      max-width: none !important;
+    }
+    }
+  @media only screen and (max-width: 690px) {
+    .ant-picker{
+      width: 100%;
+      max-width: none !important;
+    }
+    }
 }
 
 .noPadding {

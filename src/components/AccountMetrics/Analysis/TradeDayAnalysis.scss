@@ -40,7 +40,7 @@
     }
 
     .title {
-      color: var(--Text-2, #686868);
+      color: var(--primary-text-color);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -48,7 +48,7 @@
       line-height: normal;
     }
     .value {
-      color: var(--Text, #1e1e1e);
+      color: var(--text-black);
 
       font-family: "Nunito Sans";
       font-size: 20px;

@@ -13,14 +13,14 @@
     gap: 15px;
     flex: 1 0 0;
     border-radius: var(--table-box, 20px);
-    background: #fff;
+    background: var(--Text-white);
     .Cards_content_wrapper {
       display: flex;
       align-items: center;
       gap: 10px;
     }
     .Cards_label {
-      color: var(--secondary-sb-200-paragraph-text-i-con, #8f8f8f);
+      color: var(--primary-text-color);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -28,7 +28,7 @@
       line-height: normal;
     }
     .Cards_value {
-      color: var(--White, #1e1e1e);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 18px;
       font-style: normal;
@@ -36,7 +36,7 @@
       line-height: 119%; /* 28.56px */
       text-wrap: wrap;
       &.profit_value {
-        color: #8bfb88;
+        color: var( --green-shade0);
       }
     }
   }

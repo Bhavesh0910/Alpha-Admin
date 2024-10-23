@@ -255,10 +255,10 @@ const WithdrawalDetails = () => {
   return (
     <>
       {/* {isExportLoading && <LoaderOverlay />} */}
-      <div className="withdrawal_status_container">
-      <div className="header_boxx">
-        <h1>Approved Withdrawal</h1>
-      </div>
+      <div className="withdrawal_details_container">
+        <div className="header_boxx">
+          <h1 style={{color: "white"}}>Approved Withdrawal</h1>
+        </div>
         <div className="table_header_filter">
           <div className="header_left">
             <div className="search_box_wrapper">

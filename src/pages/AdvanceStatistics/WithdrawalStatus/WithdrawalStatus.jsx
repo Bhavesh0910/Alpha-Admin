@@ -281,7 +281,7 @@ const WithdrawalStatus = () => {
   return (
     <div className="withdrawal_status_container">
       <div className="header_boxx">
-        <h1>Withdrawal Status</h1>
+        <h1 style={{color: "white"}}>Withdrawal Status</h1>
       </div>
       <div className="table_header_filter">
         <div className="header_left">

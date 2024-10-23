@@ -1,13 +1,11 @@
 .passRates_main {
-
-  .dropdown{
+  .dropdown {
     height: 46px;
     text-transform: capitalize;
     z-index: 2 !important;
-
   }
-  
-  .slider_container{
+
+  .slider_container {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -20,14 +18,14 @@
     z-index: 2;
     margin-top: 40px;
     margin-left: 75px;
-    .ant-slider-rail{
-      background-color: #fff;
+    .ant-slider-rail {
+      background-color: var(--Text-white);
     }
-    .slider_labels{
+    .slider_labels {
       display: flex;
       align-items: center;
       gap: 20px;
-      color: #fff;
+      color: var(--Text-white);
     }
   }
   .passRates_header {
@@ -36,7 +34,7 @@
     width: 100%;
     .heading {
       h2 {
-        color: #fff;
+        color: var(--Text-white);
         font-family: "Nunito Sans";
         font-size: 20px;
         font-style: normal;
@@ -60,14 +58,14 @@
         width: fit-content;
 
         border-radius: 10px;
-        background: #f6fefe;
+        background: var(--Text-white);
 
         button {
           border: none;
         }
       }
       p {
-        color: var(--Brand-1, #04d9ff);
+        color: var(--blue-color);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -99,11 +97,11 @@
         cursor: pointer;
 
         border-radius: 10px;
-        border: 1px solid #f6fefe;
-        background: var(--Canvas-BG, #161d26);
+        border: 1px solid var(--Text-white);
+        background: var(--navy-blue);
 
         p {
-          color: var(--white, #fff);
+          color: var(--Text-white);
           font-family: "Nunito Sans";
           font-size: 14px;
           font-style: normal;
@@ -131,7 +129,7 @@
         flex: 1;
 
         border-radius: var(--table-box, 20px);
-        background: #fff;
+        background: var(--Text-white);
       }
       .chart_div {
         display: flex;
@@ -143,7 +141,7 @@
         flex: 1;
 
         border-radius: var(--table-box, 20px);
-        background: #fff;
+        background: var(--Text-white);
 
         .chart {
           width: 100%;
@@ -163,14 +161,14 @@
     display: flex;
     justify-content: space-between;
     margin: 20px 0;
-    
-    img{
+
+    img {
       transition: 0.2s ease;
     }
-  .arrow_up{
-    rotate: 180deg;
-    transition: 0.2s ease;
-  }
+    .arrow_up {
+      rotate: 180deg;
+      transition: 0.2s ease;
+    }
     .tabs_inner {
       display: flex;
       gap: 10px;
@@ -186,15 +184,15 @@
         border: none;
 
         border-radius: 10px;
-        background: #f6fefe;
+        background: var(--Text-white);
 
-        span{
+        span {
           display: flex;
           align-items: center;
           gap: 5px;
         }
         p {
-          color: #1e1e1e;
+          color: var(--text-black);
           font-family: "Nunito Sans";
           font-size: 14px;
           font-style: normal;
@@ -215,8 +213,8 @@
 
   .exportHistory_download_btn {
     border-radius: var(--Corner-Radius, 10px);
-    border: 1px solid var(--sucess, #009017);
-    background: var(--Success-Body, #cdffdd);
+    border: 1px solid var(--green-border-color);
+    background: var(--green-bg-color);
 
     display: flex;
     height: 32px;
@@ -226,7 +224,7 @@
     gap: 10px;
 
     p {
-      color: var(--Text, #1e1e1e);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -234,13 +232,11 @@
       line-height: normal;
     }
   }
-
 }
 
-
-.custom-dropdown-menu{
+.custom-dropdown-menu {
   z-index: 2 !important;
-  li{
-  color: #000 !important;
+  li {
+    color: var(--text-black) !important;
   }
 }

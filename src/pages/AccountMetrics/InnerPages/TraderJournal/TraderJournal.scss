@@ -7,9 +7,9 @@
     align-items: center;
     gap: 10px;
     border-radius: var(--Corner-Radius, 10px);
-    border: 1px solid var(--Failed, #f20000);
+    border: 1px solid var(--red-border-color);
 
-    color: var(--Failed, #f20000);
+    color: var(--red-border-color);
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;

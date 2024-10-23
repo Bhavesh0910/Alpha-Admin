@@ -1,7 +1,7 @@
 .userDetails_wrapper {
   padding: 20px;
   border-radius: var(--table-box, 20px);
-  background: var(--Brand-2, #12181f);
+  background: var(--text-black);
   width: 100%;
   max-width: 835px;
   display: flex;
@@ -20,7 +20,7 @@
   .close_icon {
    
     cursor: pointer;
-    color: #fff;
+    color: var(--Text-white);
     transition: color 0.3s ease; 
   }
   .topSection_wrapper {
@@ -30,7 +30,7 @@
     align-items: flex-end;
 
     .list_header {
-      color: var(--white, #fff);
+      color: var(--Text-white);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -57,7 +57,7 @@
 
         a {
           p {
-            color: var(--Brand, #04d9ff);
+            color: var(--blue-color);
             font-family: "Nunito Sans";
             font-size: 14px;
             font-style: normal;

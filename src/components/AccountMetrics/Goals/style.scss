@@ -4,7 +4,7 @@
   gap: 20px;
 
   .text {
-    color: var(--Text-Light, #b0b0b0);
+    color: var(--primary-text-color);
     font-family: var(--primary-font-family);
     font-size: 18px;
     font-style: normal;
@@ -32,8 +32,8 @@
 
   .goals-box {
     border-radius: 16px;
-    border: 1px solid var(--Stroke, #272727);
-    background: var(--bg, #030504);
+    border: 1px solid var(--black27-color);
+    background: var(--text-black);
     display: flex;
     padding: 20px 25px 40px 25px;
     flex-direction: column;
@@ -56,7 +56,7 @@
 
     .goals-box-content {
       p {
-        color: var(--Secondary-SB-250-White, #1e1e1e);
+        color: var(--text-black);
         leading-trim: both;
         text-edge: cap;
         font-family: var(--primary-font-family);
@@ -92,33 +92,33 @@
       }
 
       &.danger {
-        background: #ff5d5d;
-        color: #ff5d5d;
+        background: var(--red-bg-color);
+        color: var(--red-bg-color);
 
         p {
-          color: #1e1e1e;
+          color: var(--text-black);
         }
       }
     }
 
     .pass {
-      border: 1px solid #afff9e;
+      border: 1px solid var(--green-bg-color);
       background: rgba(175, 255, 158, 0.1);
 
       p {
-        color: #afff9e;
+        color: var(--green-bg-color);
       }
     }
     .inProgress {
-      border: 1px solid var(--Yellow, #1E1E1E27a) !important;
+      border: 1px solid var(--text-black) !important;
       background: rgba(255, 236, 67, 0.15) !important;
       p {
-        color: #1E1E1E27a;
+        color: var(--text-black);
       }
     }
 
     h3 {
-      color: var(--White, #1e1e1e);
+      color: var(--text-black);
       font-family: var(--primary-font-family);
       font-size: 16px;
       font-style: normal;
@@ -128,7 +128,7 @@
     }
 
     p {
-      color: var(--stroke-unselect, #767676);
+      color: var(--primary-text-color);
       font-family: var(--primary-font-family);
       font-size: 14px;
       font-style: normal;
@@ -149,14 +149,14 @@
     .custom-bullet-alt::before {
       content: " ";
 
-      background-color: #767676;
+      background-color: var(--primary-text-color);
       width: 10px;
       height: 10px;
       border-radius: 100%;
     }
 
     li {
-      color: var(--stroke-unselect, #767676);
+      color: var(--primary-text-color);
       font-family: var(--primary-font-family);
       font-size: 14px;
       font-style: normal;
@@ -176,7 +176,7 @@
 
         > div {
           span {
-            color: #1e1e1e;
+            color: var(--text-black);
             font-family: var(--primary-font-family);
             font-size: 10px;
             font-style: normal;
@@ -199,14 +199,14 @@
     // width: 224px;
     height: 5px;
     border-radius: 2.5px;
-    background-color: #8f8f8f;
+    background-color: var(--primary-text-color);
     overflow: hidden;
   }
 
   .background {
     width: 100%;
     height: 100%;
-    background-color: #767676;
+    background-color: var(--primary-text-color);
   }
 
   .progress {
@@ -214,13 +214,13 @@
     border-radius: 53px;
     opacity: 0.8;
     height: 100%;
-    background: var(--brand-gradient, #4bb390);
+    background: var(--green-bg-color);
   }
 
   .slider-container {
     .sliderMaxValue {
       text-align: right;
-      color: var(--Secondary-SB-250-White, #1e1e1e);
+      color: var(--text-black);
       font-family: var(--primary-font-family);
       font-size: 14px;
       font-style: normal;
@@ -232,13 +232,13 @@
 
     // background-color: red;
     .sliderBase {
-      background-color: #8f8f8fc9;
+      background-color: var(--primary-text-color);
       width: 100%;
       border-radius: 40px;
       height: 5px;
 
       .sliderActive {
-        background-color: #4bb390;
+        background-color: var(--green-bg-color);
         border-radius: 40px;
         height: 5px;
         position: relative;
@@ -252,18 +252,18 @@
         }
 
         &.in_Progress {
-          background-color: #1E1E1E27a !important;
+          background-color: var(--text-black) !important;
 
           .sliderCircle {
-            background-color: #1E1E1E27a !important;
+            background-color: var(--text-black) !important;
           }
         }
 
         &.danger {
-          background-color: #ff5d5d;
+          background-color: var(--red-bg-color);
 
           .sliderCircle {
-            background-color: #ff5d5d;
+            background-color: var(--red-bg-color);
 
             .sliderText {
               display: none;
@@ -278,15 +278,15 @@
         }
 
         &.ForceGreen {
-          background-color: #4bb390;
+          background-color: var(--green-bg-color);
 
           .sliderCircle {
-            background-color: #4bb390;
+            background-color: var(--green-bg-color);
           }
         }
 
         .sliderCircle {
-          background-color: #4bb390;
+          background-color: var(--green-bg-color);
           border-radius: 50%;
           width: 16px;
           height: 16px;
@@ -301,7 +301,7 @@
             text-wrap: nowrap;
             position: absolute;
             top: 18px;
-            color: var(--Secondary-SB-250-White, #1e1e1e);
+            color: var(--text-black);
             font-family: var(--primary-font-family);
             font-size: 14px;
             font-style: normal;
@@ -314,7 +314,7 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background-color: #1e1e1e;
+            background-color: var(--text-black);
           }
         }
       }

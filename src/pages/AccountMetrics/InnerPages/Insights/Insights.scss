@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 20px;
 
-  .no_data{
+  .no_data {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,13 +20,13 @@
     align-self: stretch;
 
     border-radius: var(--table-box, 20px);
-    background: #fff;
+    background: var(--Text-white);
 
     width: 100%;
 
     .insights_main_header {
       h2 {
-        color: var(--Text, #1e1e1e);
+        color: var(--text-black);
         font-family: "Nunito Sans";
         font-size: 20px;
         font-style: normal;
@@ -68,8 +68,8 @@
           width: 100%;
 
           border-radius: var(--Corner-Radius, 10px);
-          border: 1px solid var(--Text-2, #686868);
-          background: #fff;
+          border: 1px solid var(--gray);
+          background: var(--Text-white);
 
           p {
             display: flex;
@@ -105,8 +105,8 @@
           width: 100%;
 
           border-radius: var(--Corner-Radius, 10px);
-          border: 1px solid var(--Text-2, #686868);
-          background: #fff;
+          border: 1px solid var(--gray);
+          background: var(--Text-white);
 
           p {
             display: flex;

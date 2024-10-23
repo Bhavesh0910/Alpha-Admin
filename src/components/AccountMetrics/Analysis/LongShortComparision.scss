@@ -4,11 +4,11 @@
   gap: 20px;
 
   .ant-table {
-    background: #ffffff;
+    background: var(--Text-white);
     border-radius: 8px;
 
     .ant-table-thead > tr > th {
-      background: #f0f2f5;
+      background: var(--Text-white);
       font-weight: bold;
       border-bottom: 1px solid #cfcfcf !important;
       border-right: 1px solid #cfcfcf !important;
@@ -46,7 +46,7 @@
 }
 
 .results-by-instruments {
-  background-color: #f0f2f5;
+  background-color: var(--Text-white);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

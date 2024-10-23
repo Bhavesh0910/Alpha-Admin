@@ -45,7 +45,7 @@
       align-items: baseline;
       justify-content: space-between;
       h3 {
-        color: var(--Text-2, #686868);
+        color: var(--gray);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -62,14 +62,14 @@
       line-height: 24px; /* 150% */
     }
     .title.long {
-      color: #5f9d51;
+      color: var(--green-bg-color);
     }
     .title.short {
-      color: #e92b37;
+      color: var(--red-border-color);
     }
 
     .value {
-      color: var(--Text, #1e1e1e);
+      color: var(--text-black);
 
       font-family: "Nunito Sans";
       font-size: 20px;
@@ -107,7 +107,7 @@
       flex: 1;
 
       border-radius: var(--table-box, 20px);
-      background: #fff;
+      background: var(--Text-white);
 
       .chart {
         // padding: 20px;
@@ -124,7 +124,7 @@
 
         .long_balance_chart_header {
           h2 {
-            color: #000;
+            color: var(--text-black);
             font-family: "Nunito Sans";
             font-size: 20px;
             font-style: normal;
@@ -144,7 +144,7 @@
       height: 410px;
       flex: 1;
       border-radius: var(--table-box, 20px);
-      background: #fff;
+      background: var(--Text-white);
 
       .chart {
         padding: 20px;
@@ -161,7 +161,7 @@
 
         .short_balance_chart_header {
           h2 {
-            color: #000;
+            color: var(--text-black);
             font-family: "Nunito Sans";
             font-size: 20px;
             font-style: normal;

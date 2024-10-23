@@ -1,5 +1,4 @@
 .user_list_container {
-
   .status_wrapper {
     display: flex;
     width: 92px;
@@ -10,7 +9,7 @@
   }
 
   .action_wrapper {
-    div{
+    div {
       cursor: pointer;
     }
     button {
@@ -22,9 +21,9 @@
       flex: 1 0 0;
 
       border-radius: var(--Corner-Radius, 10px);
-      background: var(--Brand-2, #12181f);
+      background: var(--navy-blue);
 
-      color: var(--white, #fff);
+      color: var(--Text-white);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -42,10 +41,10 @@
     gap: 10px;
 
     border-radius: var(--Corner-Radius, 10px);
-    border: 1px solid var(--sucess, #009017);
-    background: var(--Success-Body, #cdffdd);
+    border: 1px solid var(--green-border-color);
+    background: var(--green-bg-color);
 
-    color: var(--text, #141414);
+    color: var(--text-black);
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -55,12 +54,12 @@
 
   .status_wrapper.active {
     border-radius: var(--Corner-Radius, 10px);
-    border: 1px solid var(--Green, #a3ea93);
-    background: var(--Success-Body, #cdffdd);
+    border: 1px solid var(--green-border-color);
+    background: var(--green-bg-color);
   }
   .status_wrapper.blocked {
     border-radius: var(--Corner-Radius, 10px);
-    border: 1px solid var(--Green, red);
+    border: 1px solid var(--red-border-color);
     background: none;
   }
   .header_wrapper {
@@ -121,27 +120,25 @@
 }
 
 .Red {
-  background-color: #f20000;
-  border: 2px solid #f20000;
+  background-color: var(--red-bg-color);
+  border: 2px solid var(--red-border-color);
 }
 
 .Yellow {
-  background-color: #f4ea0f;
-  border: 2px solid #f4ea0f;
+  background-color: var(--yellow-border-color);
+  border: 2px solid var(--yellow-border-color);
 }
 
 .Green {
-  background-color: #009017;
-  border: 2px solid #009017;
+  background-color: var(--green-border-color);
+  border: 2px solid var(--green-border-color);
 }
 
-.menuCard{
-  background-color: black !important;
+.menuCard {
+  background-color: var(--text-black) !important;
 }
 
-  
-
-.expanded-row-content{
+.expanded-row-content {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -149,8 +146,8 @@
   padding-left: 40px;
 }
 
-.ant-modal-confirm-confirm{
-  .ant-modal-confirm-title{
-    color: #fff;
+.ant-modal-confirm-confirm {
+  .ant-modal-confirm-title {
+    color: var(--Text-white);
   }
- }
+}

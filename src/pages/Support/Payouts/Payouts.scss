@@ -9,7 +9,7 @@
     justify-content: space-between;
     align-items: center;
     h3 {
-      color: var(--Text-white, #fff);
+      color: var(--Text-white);
       font-family: "Nunito Sans";
       font-size: 20px;
       font-style: normal;
@@ -38,7 +38,7 @@
     .ant-picker {
       border-radius: var(--Corner-Radius, 10px);
       border: 1px solid var(--Stroke, #252a29);
-      background: var(--Main-Background, #f6fefe);
+      background: var(--Text-white);
       width: 100%;
       max-width: 364px;
 
@@ -52,7 +52,7 @@
           line-height: normal;
 
           &::placeholder {
-            color: var(--Paragraph-text-colour, #a6a6a6);
+            color: var(--primary-text-color);
           }
         }
       }
@@ -63,14 +63,14 @@
 
       .ant-picker-range-separator {
         span {
-          color: #a6a6a6 !important;
+          color: var(--primary-text-color) !important;
         }
       }
       .ant-picker-suffix {
         cursor: pointer !important;
         span {
           svg {
-            fill: #a6a6a6;
+            fill: var(--primary-text-color);
           }
         }
       }
@@ -89,11 +89,11 @@
 
     border-radius: var(--Corner-1, 10px);
     border: 1px solid var(--Stroke, #252a29) !important;
-    background: var(--Main-Background, #f6fefe);
+    background: var(--Text-white);
     button {
       border-radius: var(--Corner-1, 5px);
       background: transparent !important;
-      color: #1e1e1e;
+      color: var(--text-black);
       border: none;
 
       @media only screen and (max-width: 570px) {
@@ -101,14 +101,14 @@
       }
     }
     .active {
-      background: #04d9ff !important;
-      color: #000 !important;
+      background: var(--blue-color) !important;
+      color: var(--text-black) !important;
     }
     .active:hover {
-      color: #000 !important;
+      color: var(--text-black) !important;
     }
     button:hover {
-      color: #04d9ff !important;
+      color: var(--blue-color) !important;
       border: none !important;
     }
   }
@@ -134,8 +134,8 @@
       min-height: 31px !important;
     }
     .standard_button:hover {
-      background: #04d9ff;
-      color: #000;
+      background: var(--blue-color);
+      color: var(--text-black);
     }
 
     .reject_button {
@@ -149,9 +149,9 @@
       border-bottom: 1px solid var(--Stroke, #252a29);
 
       border-radius: 10px;
-      border: 1px solid var(--Brand, #04d9ff);
+      border: 1px solid var(--blue-color);
 
-      color: var(--Text-white, #1e1e1e);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -160,14 +160,14 @@
     }
 
     .reject_button:hover {
-      border: 1px solid var(--Brand, #04d9ff);
-      color: var(--Text-white, #1e1e1e);
+      border: 1px solid var(--blue-color);
+      color: var(--text-black);
       background: var(--Inner-box-BG, #141a17);
     }
   }
 
   .modal_wrapper {
     border-radius: var(--table-box, 20px);
-    background: var(--Brand-2, #12181f);
+    background: var(--navy-blue);
   }
 }

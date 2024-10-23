@@ -10,7 +10,7 @@
     gap: 20px;
 
     @media only screen and (max-width: 460px) {
-      flex-direction: column;
+      flex-direction: column-reverse;
       align-items: flex-end;
     }
 
@@ -18,7 +18,7 @@
       min-height: 44px;
     }
     button {
-      color: #1e1e1e;
+      color: var(--text-black);
     }
   }
 
@@ -28,19 +28,19 @@
     flex-direction: column;
     gap: 20px;
     border-radius: var(--table-box, 20px);
-    background: #fff;
+    background: var(--Text-white);
     .form_input_box {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      color: #1e1e1e;
+      color: var(--text-black);
 
       .ant-select-selector {
-        border: 1px solid var(--Stroke, #686868) !important;
+        border: 1px solid var(--gray) !important;
 
         &:focus-within {
-          border: 1px solid var(--Brand-1, #04d9ff) !important;
-          background: var(--Table-header-fill, #edf0f0) !important;
+          border: 1px solid var(--blue-color) !important;
+          background: var(--Table-header-fill) !important;
         }
       }
 
@@ -48,8 +48,8 @@
         flex-direction: row !important;
 
         &:focus-within {
-          border: 1px solid var(--Brand-1, #04d9ff) !important;
-          background: var(--Table-header-fill, #edf0f0) !important;
+          border: 1px solid var(--blue-color) !important;
+          background: var(--Table-header-fill) !important;
         }
 
         input {
@@ -57,14 +57,14 @@
           border: none !important;
           &:focus-within {
             border: 0 !important;
-            background: var(--Table-header-fill, #edf0f0) !important;
+            background: var(--Table-header-fill) !important;
           }
         }
 
         .ant-input-suffix {
           padding-right: 10px !important;
           .anticon {
-            color: #1e1e1e !important;
+            color: var(--text-black) !important;
             background: transparent !important;
           }
         }
@@ -88,7 +88,7 @@
           grid-template-columns: 100%;
         }
 
-        .textarea{
+        .textarea {
           border: none !important;
         }
 
@@ -104,7 +104,7 @@
                 min-height: 91px !important;
                 &:focus-within {
                   border: 0 !important;
-                  background: var(--Table-header-fill, #edf0f0) !important;
+                  background: var(--Table-header-fill) !important;
                 }
               }
             }
@@ -122,8 +122,8 @@
       max-width: 155px;
 
       &:hover {
-        color: #f6fefe !important;
-        background: var(--Brand, #04d9ff) !important;
+        color: var(--Text-white) !important;
+        background: var(--blue-color) !important;
       }
 
       @media only screen and (max-width: 460px) {

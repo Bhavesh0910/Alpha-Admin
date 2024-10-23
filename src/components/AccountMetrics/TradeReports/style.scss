@@ -5,8 +5,8 @@
   align-items: flex-start;
   gap: 20px;
   border-radius: 20px;
-  border: 1px solid var(--Stroke, #272727);
-  background: var(--Box, #131313);
+  border: 1px solid var( --black27-color);
+  background: var(--Box, --bg-color);
 
   .chart-wrapper {
     max-height: 100%;
@@ -48,13 +48,13 @@
     align-items: flex-start;
     gap: 20px;
     border-radius: 16px;
-    background: var(--bg, #030504);
+    background: var(--bg,  --bg-color);
   }
 }
 
 .apexcharts-xaxis text {
   font-size: 12px;
-  fill: #a1a1a1;
+  fill: var(--primary-text-color);
   text-align: center;
   leading-trim: both;
   text-edge: cap;
@@ -68,7 +68,7 @@
 
 .apexcharts-yaxis text {
   font-size: 12px;
-  fill: var(--secondary-sb-200-paragraph-text-i-con, #8f8f8f);
+  fill: var(--primary-text-color);
   font-family: var(--primary-font-family);
   font-size: 10px;
   font-style: normal;
@@ -79,7 +79,7 @@
 
 .component-heading {
   .sub_title {
-    color: var(--stroke-unselect, #767676);
+    color: var(--primary-text-color);
     leading-trim: both;
     text-edge: cap;
     font-family: var(--primary-font-family);

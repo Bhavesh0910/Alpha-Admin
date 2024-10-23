@@ -89,10 +89,10 @@ code {
   display: flex;
   width: 100%;
   height: 50px;
-  border: 0.5px solid var(--Text-Medium, #333);
+  border: 0.5px solid var(--black27-color);
   border-radius: 8px;
-  background: var(--primary-p-blue-100-main, #04d9ff);
-  color: #1e1e1e;
+  background: var(--blue-color);
+  color: var(--text-black);
   font-family: var(--primary-font-family);
   font-weight: var(--fw-medium);
   font-size: 20px;
@@ -103,7 +103,7 @@ code {
 }
 
 .component-heading {
-  color: var(--White, #1e1e1e);
+  color: var(--text-black);
 
   font-family: var(--primary-font-family);
   font-size: 20px;
@@ -128,21 +128,21 @@ code {
     font-weight: 600;
     line-height: normal;
     border-radius: var(--Corner-2, 10px) !important;
-    border: 1px solid var(--Brand, #04d9ff) !important;
-    background: var(--Main-Background, #f6fefe) !important;
+    border: 1px solid var(--blue-color) !important;
+    background: var(--Text-white) !important;
     padding: 10px 4px !important;
 
     .ant-select-selection-item {
-      color: #1e1e1e !important;
+      color: var(--text-black) !important;
     }
   }
 
   .ant-select-arrow {
-    color: #1e1e1e !important;
+    color: var(--text-black) !important;
     padding-right: 10px;
   }
   .ant-select-selection-placeholder {
-    color: #1e1e1e !important;
+    color: var(--text-black) !important;
   }
   .ant-select-selection-item {
     color: var(--primary-font-family) !important;
@@ -151,7 +151,7 @@ code {
 
 /* .ant-select-dropdown {
   color: #1E1E1E !important;
-  background: var(--Main-Background, #F6FEFE) !important;
+  background: var(--Text-white, #F6FEFE) !important;
 } */
 
 .ant-input {
@@ -165,14 +165,14 @@ code {
   line-height: normal;
   padding: 10px 20px !important;
   border-radius: var(--Corner-Radius, 10px) !important;
-  border: 1px solid var(--Text-2, #686868) !important;
+  border: 1px solid var(--gray) !important;
   &:focus-within {
-    border: 1px solid var(--Brand-1, #04d9ff) !important;
-    background: var(--Table-header-fill, #edf0f0) !important;
+    border: 1px solid var(--blue-color) !important;
+    background: var(--Table-header-fill) !important;
   }
 
   &::placeholder {
-    color: #1e1e1e !important;
+    color: var(--text-black) !important;
   }
 }
 
@@ -187,8 +187,8 @@ code {
   gap: 10px;
   border-radius: 10px;
   border: 1px solid transparent;
-  background: var(--Brand, #04d9ff);
-  color: var(--Main-Background, #12181f);
+  background: var(--blue-color);
+  color: var(--text-black);
   font-family: var(--primary-font-family);
   font-size: 14px;
   font-style: normal;
@@ -196,7 +196,7 @@ code {
   line-height: normal;
 
   &:hover {
-    border: 1px solid var(--Brand-1, #04d9ff);
+    border: 1px solid var(--blue-color);
     background: transparent !important;
   }
 }
@@ -208,7 +208,7 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   border: none;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: #939393;
+  -webkit-text-fill-color: var(--gray);
   background-color: none !important;
   transition: 5000s ease-in-out 0s !important;
   box-shadow: none !important;
@@ -226,7 +226,7 @@ input:-webkit-autofill:active {
   }
   .ant-picker-presets {
     border-radius: var(--table-box, 20px);
-    background: #fff;
+    background: var(--Text-white);
     max-width: none !important;
     ul {
       @media only screen and (max-width: 912px) {
@@ -237,17 +237,17 @@ input:-webkit-autofill:active {
         align-items: center;
         justify-content: flex-start;
         min-height: 33px;
-        color: var(--Text-white, #1e1e1e);
+        color: var(--text-black);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
         font-weight: 400;
         line-height: normal;
         padding: 7px 10px;
-        background: #fff;
+        background: var(--Text-white);
         border: 1px solid transparent;
         &:hover {
-          border: 1px solid var(--Brand, #04d9ff) !important;
+          border: 1px solid var(--blue-color) !important;
         }
       }
     }
@@ -256,27 +256,27 @@ input:-webkit-autofill:active {
   .ant-picker-panel {
     padding: 15px !important;
     border-radius: var(--Corner-2, 10px) !important;
-    background: #fff !important;
-    color: #1e1e1e !important;
+    background: var(--Text-white) !important;
+    color: var(--text-black) !important;
 
     .ant-picker-datetime-panel {
       .ant-picker-date-panel {
-        color: #1e1e1e !important;
+        color: var(--text-black) !important;
 
         .ant-picker-header {
-          color: #1e1e1e !important;
+          color: var(--text-black) !important;
 
           button {
-            color: #1e1e1e !important;
+            color: var(--text-black) !important;
           }
         }
         .ant-picker-body {
-          color: #1e1e1e !important;
+          color: var(--text-black) !important;
           .ant-picker-content {
             tbody {
               tr {
                 td {
-                  color: #1e1e1e !important;
+                  color: var(--text-black) !important;
                 }
               }
             }
@@ -285,17 +285,17 @@ input:-webkit-autofill:active {
       }
       .ant-picker-time-panel {
         .ant-picker-header-view {
-          color: #1e1e1e;
+          color: var(--text-black);
         }
         .ant-picker-content {
           .ant-picker-time-panel-column {
             > li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner {
-              color: #000 !important;
-              background: var(--Brand, #04d9ff) !important;
+              color: var(--text-black) !important;
+              background: var(--blue-color) !important;
             }
             .ant-picker-time-panel-cell {
               .ant-picker-time-panel-cell-inner {
-                color: #1e1e1e !important;
+                color: var(--text-black) !important;
               }
             }
           }
@@ -303,7 +303,7 @@ input:-webkit-autofill:active {
       }
       .ant-picker-dropdown .ant-picker-time-panel-column {
         scrollbar-width: thin;
-        scrollbar-color: #04d9ff !important;
+        scrollbar-color: var(--blue-color) !important;
       }
     }
   }
@@ -312,14 +312,14 @@ input:-webkit-autofill:active {
     .ant-picker-ranges {
       .ant-picker-now {
         a {
-          color: #1e1e1e !important;
+          color: var(--text-black) !important;
         }
       }
 
       .ant-picker-ok {
         button {
-          color: #030504 !important;
-          background: var(--Brand, #04d9ff) !important;
+          color: var(--text-black) !important;
+          background: var(--blue-color) !important;
         }
       }
     }
@@ -328,27 +328,27 @@ input:-webkit-autofill:active {
 
 .status_green {
   border-radius: var(--Corner-Radius, 10px);
-  border: 1px solid var(--sucess, #009017);
-  background: var(--Success-Body, #cdffdd);
+  border: 1px solid var(--green-border-color);
+  background: var(--green-bg-color);
 }
 
 .status_red {
   border-radius: var(--Corner-Radius, 10px);
-  border: 1px solid var(--Failed, #f20000);
-  background: var(--Failed-body, #ffe1e1);
+  border: 1px solid var(--red-border-color);
+  background: var(--red-bg-color);
 }
 
 .status_yellow {
   border-radius: var(--Corner-Radius, 10px);
-  border: 1px solid var(--In-progress, #f4ea0f);
-  background: var(--in-Progress-Body, #fffdcf);
+  border: 1px solid var(--yellow-border-color);
+  background: var(--yellow-bg-color);
 }
 
 .search_box_wrapper {
   display: flex;
   border-radius: var(--Corner-Radius, 10px);
   border: 1px solid var(--Stroke, #252a29);
-  background: var(--Main-Background, #f6fefe);
+  background: var(--Text-white);
   // width: 100%;
   width: 400px;
   max-width: 350px;
@@ -374,7 +374,7 @@ input:-webkit-autofill:active {
   .ant-select {
     max-width: fit-content;
     .ant-select-selector {
-      color: var(--Paragraph-text-colour, #a6a6a6) !important;
+      color: var(--primary-text-color) !important;
       font-family: var(--primary-font-family) !important;
       font-size: 14px;
       font-style: normal;
@@ -397,7 +397,7 @@ input:-webkit-autofill:active {
     }
   }
   input {
-    color: var(--Paragraph-text-colour, #1e1e1e) !important;
+    color: var(--text-black) !important;
     font-family: var(--primary-font-family) !important;
     font-size: 14px;
     font-style: normal;
@@ -405,12 +405,12 @@ input:-webkit-autofill:active {
     line-height: normal;
     border-radius: var(--Corner-Radius, 10px);
     border: 0 !important;
-    background: var(--Main-Background, #f6fefe);
+    background: var(--Text-white);
     padding: 12px 20px;
     width: 100%;
     // max-width: 325px;
     &::placeholder {
-      color: #1e1e1e !important;
+      color: var(--text-black) !important;
     }
     @media only screen and (max-width: 768px) {
       font-size: 14px !important;
@@ -430,7 +430,7 @@ input:-webkit-autofill:active {
     align-items: center;
     justify-content: center;
     border-radius: 0px var(--Corner-Radius, 10px) var(--Corner-Radius, 10px) 0px;
-    background: var(--Brand, #04d9ff);
+    background: var(--blue-color);
     width: 100%;
     max-width: 44px;
   }
@@ -454,7 +454,7 @@ input:-webkit-autofill:active {
   .ant-radio-group {
     border-radius: var(--Corner-1, 5px);
     border: 1px solid var(--Stroke, #252a29);
-    background: var(--Main-Background, #f6fefe);
+    background: var(--Text-white);
     padding: 4px;
     height: 44px;
     display: flex;
@@ -466,13 +466,13 @@ input:-webkit-autofill:active {
     }
   }
   .ant-radio-button-wrapper {
-    background: var(--Main-Background, #f6fefe);
+    background: var(--Text-white);
     border: none !important;
     &::before {
       content: none;
     }
     span {
-      color: var(--Paragraph-text-colour, #12181f);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -482,9 +482,9 @@ input:-webkit-autofill:active {
   }
   .ant-radio-button-wrapper-checked {
     border-radius: var(--Corner-1, 5px);
-    background: var(--Brand, #04d9ff);
+    background: var(--blue-color);
     span {
-      color: var(--Main-Background, #12181f);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -513,7 +513,7 @@ input:-webkit-autofill:active {
 // View Log Btn CSS
 .view_logs__btn {
   max-width: 155px;
-  color: #12181f !important;
+  color: var(--navy-blue) !important;
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
@@ -529,7 +529,7 @@ input:-webkit-autofill:active {
         a {
           display: flex;
           align-items: center;
-          color: var(--Text-white, #ffffff);
+          color: var(--Text-white);
           font-family: "Nunito Sans";
           font-size: 20px;
           font-style: normal;
@@ -538,18 +538,18 @@ input:-webkit-autofill:active {
         }
       }
       &.ant-breadcrumb-separator {
-        color: #ffffff;
+        color: var(--Text-white);
       }
       &:last-child {
         span {
-          color: #ffffff !important;
+          color: var(--Text-white) !important;
           font-size: 16px !important;
           font-style: normal;
           font-weight: 400 !important;
           line-height: normal;
         }
         a {
-          color: #ffffff !important;
+          color: var(--Text-white) !important;
           font-size: 16px !important;
           font-style: normal;
           font-weight: 400 !important;
@@ -572,17 +572,17 @@ input:-webkit-autofill:active {
   min-height: 44px;
   border-radius: var(--Corner-Radius, 10px);
   border: 1px solid var(--Stroke, #252a29);
-  background: var(--Main-Background, #f6fefe);
+  background: var(--Text-white);
   width: 100%;
   max-width: 319px;
   max-height: 45px;
 
   &:hover {
-    background: var(--Main-Background, #f6fefe);
+    background: var(--Text-white);
   }
 
   &:focus-within {
-    background: var(--Main-Background, #f6fefe);
+    background: var(--Text-white);
   }
 
   @media only screen and (max-width: 800px) {
@@ -592,7 +592,7 @@ input:-webkit-autofill:active {
 
   .ant-picker-input {
     input {
-      color: #000 !important;
+      color: var(--text-black) !important;
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -600,7 +600,7 @@ input:-webkit-autofill:active {
       line-height: normal;
 
       &::placeholder {
-        color: var(--Paragraph-text-colour, #1e1e1e);
+        color: var(--text-black);
       }
     }
   }
@@ -611,14 +611,14 @@ input:-webkit-autofill:active {
 
   .ant-picker-range-separator {
     span {
-      color: #12181f !important;
+      color: var(--navy-blue) !important;
     }
   }
   .ant-picker-suffix {
     cursor: pointer !important;
     span {
       svg {
-        fill: #12181f;
+        fill: var(--navy-blue);
       }
     }
   }
@@ -632,7 +632,7 @@ input:-webkit-autofill:active {
   align-items: center;
   border-radius: var(--Corner-1, 10px);
   border: 1px solid var(--Stroke, #252a29) !important;
-  background: var(--Main-Background, #f6fefe);
+  background: var(--Text-white);
 
   @media only screen and (max-width: 650px) {
     flex-wrap: wrap;
@@ -641,25 +641,25 @@ input:-webkit-autofill:active {
   button {
     border-radius: var(--Corner-1, 5px);
     background: transparent !important;
-    color: #1e1e1e;
+    color: var(--text-black);
     border: none;
   }
   .active {
-    background: #04d9ff !important;
-    color: #000 !important;
+    background: var(--blue-color) !important;
+    color: var(--text-black) !important;
   }
   .active:hover {
-    color: #000 !important;
+    color: var(--text-black) !important;
   }
   button:hover {
-    color: #04d9ff !important;
+    color: var(--blue-color) !important;
     border: none !important;
   }
 }
 
 // Page Header CSS
 .page_header {
-  color: var(--Text-white, #fff);
+  color: var(--Text-white);
   font-family: "Nunito Sans";
   font-size: 20px;
   font-style: normal;
@@ -675,16 +675,16 @@ input:-webkit-autofill:active {
   border: 1px solid var(--Text-2, #686868) !important;
 
   &:hover {
-    border: 1px solid var(--Brand, #04d9ff);
-    background: var(--Inner-box-BG, #f6fefe) !important;
+    border: 1px solid var(--blue-color);
+    background: var(--Text-white) !important;
   }
   &:focus-within {
-    border: 1px solid var(--Brand, #04d9ff) !important;
-    background: var(--Main-Background, #f6fefe) !important;
+    border: 1px solid var(--blue-color) !important;
+    background: var(--Text-white) !important;
   }
 
   .ant-input {
-    color: var(--Text-white, #1e1e1e) !important;
+    color: var(--text-black) !important;
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -696,15 +696,15 @@ input:-webkit-autofill:active {
     border: 1px solid var(--Text-2, #686868) !important;
     background: transparent !important;
     &:focus-within {
-      background: var(--Main-Background, #f6fefe) !important;
+      background: var(--Text-white) !important;
     }
   }
 }
 
 .view_logs__btn {
   &:hover {
-    color: #f6fefe !important;
-    background: var(--Brand, #04d9ff) !important;
+    color: var(--Text-white) !important;
+    background: var(--blue-color) !important;
   }
 }
 
@@ -733,7 +733,7 @@ input:-webkit-autofill:active {
   @media only screen and (max-width: 768px) {
     display: block;
     h4 {
-      color: var(--Text-white, #fff) !important;
+      color: var(--Text-white) !important;
       font-family: var(--primary-font-family);
       font-size: 16px;
       font-style: normal;
@@ -760,7 +760,7 @@ input:-webkit-autofill:active {
       .ant-picker-year-panel {
         .ant-picker-header {
           button {
-            color: #1e1e1e !important;
+            color: var(--text-black) !important;
           }
         }
         .ant-picker-body {
@@ -769,7 +769,7 @@ input:-webkit-autofill:active {
               tr {
                 td {
                   div {
-                    color: #1e1e1e !important;
+                    color: var(--text-black) !important;
                   }
                 }
               }
@@ -781,7 +781,7 @@ input:-webkit-autofill:active {
               tr {
                 td {
                   div {
-                    color: #1e1e1e !important;
+                    color: var(--text-black) !important;
                   }
                 }
               }
@@ -793,7 +793,7 @@ input:-webkit-autofill:active {
       .ant-picker-month-panel {
         .ant-picker-header {
           button {
-            color: #1e1e1e !important;
+            color: var(--text-black) !important;
           }
         }
         .ant-picker-body {
@@ -802,7 +802,7 @@ input:-webkit-autofill:active {
               tr {
                 td {
                   div {
-                    color: #1e1e1e !important;
+                    color: var(--text-black) !important;
                   }
                 }
               }
@@ -814,7 +814,7 @@ input:-webkit-autofill:active {
               tr {
                 td {
                   div {
-                    color: #1e1e1e !important;
+                    color: var(--text-black) !important;
                   }
                 }
               }
@@ -826,10 +826,10 @@ input:-webkit-autofill:active {
       .ant-picker-decade-panel {
         .ant-picker-header {
           button {
-            color: #1e1e1e !important;
+            color: var(--text-black) !important;
           }
           div {
-            color: #1e1e1e !important;
+            color: var(--text-black) !important;
           }
         }
         .ant-picker-body {
@@ -838,7 +838,7 @@ input:-webkit-autofill:active {
               tr {
                 td {
                   div {
-                    color: #1e1e1e !important;
+                    color: var(--text-black) !important;
                   }
                 }
               }
@@ -850,7 +850,7 @@ input:-webkit-autofill:active {
               tr {
                 td {
                   div {
-                    color: #1e1e1e !important;
+                    color: var(--text-black) !important;
                   }
                 }
               }
@@ -863,8 +863,8 @@ input:-webkit-autofill:active {
 }
 
 .ant-checkbox-checked {
-  background-color: #04d9ff !important;
-  border-color: #04d9ff !important;
+  background-color: var(--blue-color) !important;
+  border-color: var(--blue-color) !important;
 }
 
 // Country with flag field CSS
@@ -903,7 +903,7 @@ input:-webkit-autofill:active {
     }
 
     p {
-      color: var(--Brand-2, #12181f);
+      color: var(--navy-blue);
       font-family: "Nunito Sans";
       font-size: 18px;
       font-style: normal;
@@ -915,29 +915,29 @@ input:-webkit-autofill:active {
 
 .tabs_wrapper .ant-radio-group {
   border: none !important;
-  background: #f5f5f5;
+  background: var(--Text-white);
 }
 
 .status_green {
   border-radius: var(--Corner-Radius, 10px);
-  border: 1px solid var(--sucess, #009017);
-  background: var(--Success-Body, #cdffdd);
+  border: 1px solid var(--green-border-color);
+  background: var(--green-bg-color);
 }
 
 .status_red {
   border-radius: var(--Corner-Radius, 10px);
-  border: 1px solid var(--Failed, #f20000);
-  background: var(--Failed-body, #ffe1e1);
+  border: 1px solid var(--red-border-color);
+  background: var(--red-bg-color);
 }
 
 .status_yellow {
   border-radius: var(--Corner-Radius, 10px);
-  border: 1px solid var(--In-progress, #f4ea0f);
-  background: var(--in-Progress-Body, #fffdcf);
+  border: 1px solid var(--yellow-border-color);
+  background: var(--yellow-bg-color);
 }
 
-.ant-pagination-item a{
-  @media only screen and (max-width:400px){
+.ant-pagination-item a {
+  @media only screen and (max-width: 400px) {
     font-size: 10px;
   }
 }
@@ -948,7 +948,7 @@ html * {
     height: 8px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: var(--Brand, #04d9ff);
+    background-color: var(--blue-color);
     border-radius: 50px;
     height: 8px;
   }
@@ -957,12 +957,12 @@ html * {
     border-radius: 50px;
   }
   &::-webkit-scrollbar-thumb:hover {
-    background-color: var(--Brand, #04d9ff);
+    background-color: var(--blue-color);
   }
 }
 
 :where(.css-dev-only-do-not-override-m4timi).ant-select-dropdown .ant-select-item-group {
-  color: #1e1e1e;
+  color: var(--text-black);
 }
 
 :where(.css-dev-only-do-not-override-m4timi).ant-select-single .ant-select-selector .ant-select-selection-search {
@@ -971,10 +971,13 @@ html * {
 }
 
 textarea:where(.css-dev-only-do-not-override-m4timi).ant-input {
-  resize: none;
-  color:#000;
+  resize: none !important;
+  color: var(--text-black) !important;
 }
-
+textarea:where(.css-m4timi).ant-input{
+  resize: none !important;
+  color: var(--text-black) !important;
+}
 .ant-table-thead {
   position: relative;
   z-index: 1;

@@ -8,9 +8,9 @@
     gap: 10px;
     cursor: pointer;
     border-radius: var(--Corner-Radius, 10px);
-    border: 1px solid var(--Green, #a3ea93);
+    border: 1px solid var(--green-border-color);
     background: transparent !important;
-    color: var(--Text-white, #1e1e1e);
+    color: var(--text-black);
     font-family: var(--primary-font-family);
     font-size: 14px;
     font-style: normal;
@@ -18,17 +18,16 @@
     line-height: normal;
 
     &:hover {
-      border: 1px solid var(--Green, #a3ea93) !important;
-      color: var(--Text-white, #1e1e1e) !important;
+      border: 1px solid var(--green-border-color) !important;
+      color: var(--text-black) !important;
     }
   }
-
 }
 
-.aff_export{
-  .download_btn{
+.aff_export {
+  .download_btn {
     border-radius: var(--Corner-Radius, 10px);
-    border: 1px solid var(--sucess, #009017);
-    background: var(--Success-Body, #CDFFDD); 
-}
+    border: 1px solid var(--green-border-color);
+    background: var(--green-bg-color);
+  }
 }

@@ -26,7 +26,7 @@
       max-height: 44px;
       border-radius: var(--Corner-1, 5px);
       border: 1px solid var(--Stroke, #252a29);
-      background: var(--Main-Background, #f6fefe);
+      background: var(--Text-white);
       .ant-radio-button-wrapper {
         display: flex;
         min-height: 36px;
@@ -35,7 +35,7 @@
         align-items: center;
         gap: 10px;
         border-radius: var(--Corner-1, 5px);
-        color: var(--Paragraph-text-colour, #a6a6a6);
+        color: var(--primary-text-color);
         border: 0;
         background: transparent;
         font-family: "Nunito Sans";
@@ -49,8 +49,8 @@
         }
 
         &.ant-radio-button-wrapper-checked {
-          background: var(--Brand, #04d9ff);
-          color: var(--Main-Background, #f6fefe);
+          background: var(--blue-color);
+          color: var(--primary-text-color);
         }
       }
     }

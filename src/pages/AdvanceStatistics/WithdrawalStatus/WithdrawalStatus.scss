@@ -8,10 +8,10 @@
   // }
 
   .ant-modal-close-x {
-    color: white !important;
+    color: var(--Text-white) !important;
   }
   .ant-modal-body {
-    color: var(--white, #fff);
+    color: var(--Text-white);
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -25,7 +25,7 @@
       margin-top: 20px;
       .ant-btn {
         border-radius: 10px;
-        background: #04d9ff;
+        background: var(--blue-color);
         display: flex;
         width: 155px;
         height: 46px;
@@ -37,9 +37,9 @@
     }
   }
   .ant-modal-header {
-    background: var(--Canvas-BG, #161d26) !important;
+    background: var(--navy-blue) !important;
     .ant-modal-title {
-      color: var(--white, #fff);
+      color: var(--Text-white);
       font-family: "Nunito Sans";
       font-size: 16px;
       font-style: normal;
@@ -53,13 +53,34 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-
+  .search_box_wrapper {
+    min-width: 0 !important;
+    width: 303px !important;
+    @media only screen and (max-width: 656px) {
+      width: 100% !important;
+    }
+  }
+  .ant-picker {
+    max-width: 303px;
+  }
+  .header_boxx {
+    display: flex;
+    margin-bottom: 20px;
+    height: 20px;
+    h1 {
+      color: var(--Text-white) !important;
+      font-family: "Nunito Sans" !important;
+      font-size: 20px !important;
+      font-style: normal;
+      font-weight: 900 !important;
+      line-height: normal;
+    }
+  }
   .header_wrapper {
     button {
       margin-left: auto;
     }
   }
-
 
   .status_btn {
     border-radius: var(--Corner-Radius, 10px);
@@ -69,7 +90,7 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
-    color: var(--Text, #1e1e1e);
+    color: var(--text-black);
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -81,7 +102,9 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 10px;
-
+    @media only screen and (max-width: 656px) {
+      flex-direction: column-reverse;
+    }
     @media only screen and (max-width: 1400px) {
       flex-wrap: wrap;
     }
@@ -95,49 +118,63 @@
         flex-wrap: wrap;
         gap: 20px;
       }
+
+      @media only screen and (max-width: 836px) {
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        // align-items: flex-start !important;
+      }
+
+      @media only screen and (max-width: 656px) {
+        flex-direction: column-reverse !important;
+        align-items: flex-start !important;
+      }
     }
 
     .header_middle {
       display: flex;
       align-items: center;
       gap: 10px;
+      @media only screen and (max-width: 656px) {
+        width: 100%;
 
+      }
       @media only screen and (max-width: 650px) {
         flex-wrap: wrap;
       }
-    }
-
-
-
-    .filter_btn {
-      display: flex;
-      gap: 6px;
-      padding: 4px;
-      align-items: center;
-      border-radius: var(--Corner-1, 10px);
-      border: 1px solid var(--Stroke, #252a29) !important;
-      background: var(--Main-Background, #f6fefe);
-      .ant-btn {
-        background: transparent;
-        border: none;      
+      .filter_btn {
+        width: 100%;
+        display: flex;
+        gap: 6px;
+        padding: 4px;
+        align-items: center;
+        border-radius: var(--Corner-1, 10px);
+        border: 1px solid var(--Stroke, #252a29) !important;
+        background: var(--Text-white);
+        .ant-btn {
+          background: transparent;
+          border: none;
+        }
+        // .ant-btn {
+        //   border-radius: 10px;
+        //   background: #f6fefe;
+        //   display: flex;
+        //   height: 46px;
+        //   padding: 0px 15px;
+        //   justify-content: center;
+        //   align-items: center;
+        //   gap: 10px;
+        //   color: #12181f;
+        //   font-family: "Nunito Sans";
+        //   font-size: 14px;
+        //   font-style: normal;
+        //   font-weight: 400;
+        //   line-height: normal;
+        // }
       }
-      // .ant-btn {
-      //   border-radius: 10px;
-      //   background: #f6fefe;
-      //   display: flex;
-      //   height: 46px;
-      //   padding: 0px 15px;
-      //   justify-content: center;
-      //   align-items: center;
-      //   gap: 10px;
-      //   color: #12181f;
-      //   font-family: "Nunito Sans";
-      //   font-size: 14px;
-      //   font-style: normal;
-      //   font-weight: 400;
-      //   line-height: normal;
-      // }
     }
+
+   
   }
 
   .export_btn {
@@ -151,7 +188,7 @@
     }
 
     .link {
-      color: var(--Brand-1, #04d9ff);
+      color: var(--blue-color);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -162,7 +199,7 @@
     }
 
     button {
-      color: var(--Text-white, #1e1e1e);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -171,16 +208,24 @@
       min-height: 44px;
       padding: 0px 15px;
       border-radius: 10px;
-      background: #f6fefe;
+      background: var(--Text-white);
 
       &:hover {
-        border: 1px solid var(--Text-white, #f6fefe) !important;
-        color: var(--Text-white, #1e1e1e) !important;
-        background: var(--Stroke, #f6fefe) !important;
+        border: 1px solid var(--Text-white) !important;
+        color: var(--text-black) !important;
+        background: var(--Text-white) !important;
       }
     }
   }
-
+.header_bottom{
+  @media only screen and (max-width: 656px) {
+    width: 100% !important;
+    .ant-picker {
+      width: 100% !important;
+      max-width: none !important;
+    }
+  }
+}
   .comment_desc_wrapper {
     display: flex;
     align-items: center;
@@ -226,7 +271,7 @@
       &.new {
         .ant-select-selector {
           .ant-select-selection-item {
-            border: 1px solid #00a3ff;
+            border: 1px solid var(--blue-color);
           }
         }
       }
@@ -234,7 +279,7 @@
       &.in_progress {
         .ant-select-selector {
           .ant-select-selection-item {
-            border: 1px solid #1e1e1ea8;
+            border: 1px solid var(--text-black);
           }
         }
       }
@@ -242,7 +287,7 @@
       &.approved {
         .ant-select-selector {
           .ant-select-selection-item {
-            border: 1px solid #a3ea93;
+            border: 1px solid var(--green-border-color);
           }
         }
       }
@@ -250,7 +295,7 @@
       &.flagged {
         .ant-select-selector {
           .ant-select-selection-item {
-            border: 1px solid #ff7b36;
+            border: 1px solid var(--red-border-color);
           }
         }
       }
@@ -258,7 +303,7 @@
       &.dismissed {
         .ant-select-selector {
           .ant-select-selection-item {
-            border: 1px solid #f97f7f;
+            border: 1px solid var(--red-border-color);
           }
         }
       }
@@ -325,10 +370,10 @@
 
       .filter_btn {
         min-height: 44px;
-        button{
+        button {
           border-radius: var(--Corner-1, 5px);
           background: transparent !important;
-          color: #1e1e1e;
+          color: var(--text-black);
           border: none;
         }
       }
@@ -345,7 +390,7 @@
       }
 
       .link {
-        color: var(--Brand-1, #04d9ff);
+        color: var(--blue-color);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -355,7 +400,7 @@
       }
 
       button {
-        color: var(--Text-white, #1e1e1e);
+        color: var(--text-black);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -364,12 +409,12 @@
         min-height: 44px;
         padding: 0px 15px;
         border-radius: 10px;
-        background: #f6fefe;
+        background: var(--Text-white);
 
         &:hover {
-          border: 1px solid var(--Text-white, #f6fefe) !important;
-          color: var(--Text-white, #1e1e1e) !important;
-          background: var(--Stroke, #f6fefe) !important;
+          border: 1px solid var(--Text-white) !important;
+          color: var(--text-black) !important;
+          background: var(--Text-white) !important;
         }
       }
     }
@@ -419,7 +464,7 @@
         &.new {
           .ant-select-selector {
             .ant-select-selection-item {
-              border: 1px solid #00a3ff;
+              border: 1px solid var(--blue-color);
             }
           }
         }
@@ -427,7 +472,7 @@
         &.in_progress {
           .ant-select-selector {
             .ant-select-selection-item {
-              border: 1px solid #1e1e1ea8;
+              border: 1px solid var(--text-black);
             }
           }
         }
@@ -435,7 +480,7 @@
         &.approved {
           .ant-select-selector {
             .ant-select-selection-item {
-              border: 1px solid #a3ea93;
+              border: 1px solid var(--green-bg-color);
             }
           }
         }
@@ -443,7 +488,7 @@
         &.flagged {
           .ant-select-selector {
             .ant-select-selection-item {
-              border: 1px solid #ff7b36;
+              border: 1px solid var(--red-border-color);
             }
           }
         }
@@ -451,7 +496,7 @@
         &.dismissed {
           .ant-select-selector {
             .ant-select-selection-item {
-              border: 1px solid #f97f7f;
+              border: 1px solid var(--red-border-color);
             }
           }
         }
@@ -460,8 +505,7 @@
   }
 }
 
-
 .btn_active {
   border-radius: var(--Corner-Radius, 10px);
-  background: #04d9ff !important;
+  background: var(--blue-color) !important;
 }

@@ -18,15 +18,15 @@
     align-items: flex-end;
     gap: 20px;
     border-radius: 20px;
-    border: 1px solid var(--Stroke, #272727);
-    background: var(--box-bg, #131313);
+    border: 1px solid var(--black27-color);
+    background: var(--text-black);
     .repayment-heading {
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       p {
-        color: var(--White, #1e1e1e);
+        color: var(--text-black);
         leading-trim: both;
         text-edge: cap;
         font-family: "Nunito Sans";
@@ -38,8 +38,8 @@
     }
     .payment-container {
       border-radius: 16px;
-      border: 1px solid #272727;
-      background: var(--black-bg, #030504);
+      border: 1px solid var(--black27-color);
+      background: var(--text-black);
       display: flex;
       padding: 20px;
       flex-direction: column;
@@ -48,7 +48,7 @@
       align-self: stretch;
       width: 100%;
       p {
-        color: var(--white, #1e1e1e);
+        color: var(--text-black);
         leading-trim: both;
         text-edge: cap;
         font-family: "Nunito Sans";
@@ -63,8 +63,8 @@
     }
     .coupon_container {
       border-radius: 20px;
-      border: 1px solid #272727;
-      background: var(--black-bg, #030504);
+      border: 1px solid var(--black27-color);
+      background: var(--text-black);
       display: flex;
       padding: 20px;
       flex-direction: column;
@@ -76,7 +76,7 @@
         .flexColumn {
           gap: 10px;
           .title {
-            color: var(--white, #1e1e1e);
+            color: var(--text-black);
             leading-trim: both;
             text-edge: cap;
             font-family: "Nunito Sans";
@@ -86,7 +86,7 @@
             line-height: normal;
           }
           .challengeTitle {
-            color: var(--white, #1e1e1e);
+            color: var(--text-black);
             leading-trim: both;
             text-edge: cap;
             font-family: "Nunito Sans";
@@ -110,7 +110,7 @@
       }
       .flexSpacebetween.priceSection {
         span {
-          color: var(--white, #1e1e1e);
+          color: var(--text-black);
           leading-trim: both;
           text-edge: cap;
           font-family: "Nunito Sans";
@@ -121,7 +121,7 @@
         }
       }
       .flexSpacebetween.discountSection {
-        color: var(--white, #1e1e1e);
+        color: var(--text-black);
         leading-trim: both;
         text-edge: cap;
         font-family: "Nunito Sans";

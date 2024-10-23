@@ -1,13 +1,13 @@
 .payoutChart_wrapper {
   padding: 20px;
   border-radius: var(--Corner-Radius, 10px);
-  background: var(--white, #fff);
+  background: var(--Text-white);
   display: grid;
   grid-template-rows: 5% 95%;
 
   .header_wrapper {
     h2 {
-      color: var(--Text-white, #1e1e1e);
+      color: var(--text-black);
       font-family: Inter;
       font-size: 20px;
       font-style: normal;
@@ -41,7 +41,7 @@
         border-radius: 50% !important;
       }
       .apexcharts-legend-text {
-        color: var(--Paragraph-text-colour, #000) !important;
+        color: var(---text-black) !important;
         font-family: "Nunito Sans" !important;
         font-size: 11px !important;
         font-style: normal !important;
@@ -92,7 +92,7 @@
   .piechartamount {
     font-family: "Nunito Sans";
     font-size: 11px;
-    color: #000;
+    color: var(--text-black);
     @media only screen and (max-width: 700px) {
       display: none;
     }
@@ -124,7 +124,7 @@
           display: inline-block;
         }
         .label {
-          color: var(--Paragraph-text-colour, #a6a6a6) !important;
+          color: var(--primary-text-color) !important;
           font-family: "Nunito Sans" !important;
           font-size: 13px !important;
           font-style: normal !important;
@@ -138,7 +138,7 @@
       }
 
       .value {
-        color: var(--Text-white, #000);
+        color: var(--text-black);
         font-family: "Nunito Sans";
         font-size: 16px;
         font-style: normal;

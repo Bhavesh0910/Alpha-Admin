@@ -4,12 +4,13 @@
   gap: 20px;
 
   h2 {
-    color: var(--Text-white, #fff);
+    color: var(--Text-white);
     font-family: "Nunito Sans";
     font-size: 20px;
     font-style: normal;
     font-weight: 900;
     line-height: normal;
+    margin-block-end: 20px;
   }
   .header_wrapper {
     display: flex;
@@ -19,20 +20,20 @@
 
   .status_green {
     border-radius: var(--Corner-Radius, 10px);
-    border: 1px solid var(--sucess, #009017);
-    background: var(--Success-Body, #cdffdd);
+    border: 1px solid var(--green-border-color);
+    background: var(--green-bg-color);
   }
 
   .status_red {
     border-radius: var(--Corner-Radius, 10px);
-    border: 1px solid var(--Failed, #f20000);
-    background: var(--Failed-body, #ffe1e1);
+    border: 1px solid var(--red-border-color);
+    background: var(--red-bg-color);
   }
 
   .status_yellow {
     border-radius: var(--Corner-Radius, 10px);
-    border: 1px solid var(--In-progress, #f4ea0f);
-    background: var(--in-Progress-Body, #fffdcf);
+    border: 1px solid var(--yellow-border-color);
+    background: var(--yellow-bg-color);
   }
 
   .table_header_filter {
@@ -48,11 +49,25 @@
       flex-direction: column;
     }
 
+    .search_box_wrapper {
+      width: 100%;
+      max-width: 352px !important;
+
+      @media only screen and (max-width: 806px) {
+        max-width: 352px !important;
+        min-width: 0 !important;
+      }
+      @media only screen and (max-width: 440px) {
+        width: 100% !important;
+        min-width: 100% !important;
+      }
+    }
+
     .ant-picker {
       max-height: 44px;
       border-radius: var(--Corner-Radius, 10px);
       border: 1px solid var(--Stroke, #252a29);
-      background: var(--Main-Background, #f6fefe);
+      background: var(--Text-white);
       width: 100%;
       max-width: 364px;
       flex-basis: 30%;
@@ -67,7 +82,7 @@
           line-height: normal;
 
           &::placeholder {
-            color: var(--Paragraph-text-colour, #a6a6a6);
+            color: var(--primary-text-color);
           }
         }
       }
@@ -78,14 +93,14 @@
 
       .ant-picker-range-separator {
         span {
-          color: #a6a6a6 !important;
+          color: var(--primary-text-color) !important;
         }
       }
       .ant-picker-suffix {
         cursor: pointer !important;
         span {
           svg {
-            fill: #a6a6a6;
+            fill: var(--primary-text-color);
           }
         }
       }
@@ -109,22 +124,22 @@
 
     border-radius: var(--Corner-1, 5px);
     border: 1px solid var(--Stroke, #252a29) !important;
-    background: var(--Main-Background, #f6fefe);
+    background: var(--Text-white);
     button {
       border-radius: var(--Corner-1, 5px);
       background: transparent !important;
-      color: #1e1e1e;
+      color: var(--text-black);
       border: none;
     }
     .active {
-      background: #04d9ff !important;
-      color: #000 !important;
+      background: var(--blue-color) !important;
+      color: var(--text-black) !important;
     }
     .active:hover {
-      color: #000 !important;
+      color: var(--text-black) !important;
     }
     button:hover {
-      color: #04d9ff !important;
+      color: var(--blue-color) !important;
       border: none !important;
     }
   }
@@ -138,7 +153,7 @@
     max-width: 125px;
     height: 31px;
     border-radius: var(--Corner-Radius, 10px);
-    border: 1px solid var(--Brand-1, #04d9ff);
+    border: 1px solid var(--blue-color);
   }
   .action_btn {
     max-width: 125px;
@@ -160,8 +175,8 @@
       min-height: 31px !important;
     }
     .standard_button:hover {
-      background: #04d9ff;
-      color: #000;
+      background: var(--blue-color);
+      color: var(--text-black);
     }
 
     .reject_button {
@@ -175,9 +190,9 @@
       border-bottom: 1px solid var(--Stroke, #252a29);
 
       border-radius: 10px;
-      border: 1px solid var(--Brand, #04d9ff);
+      border: 1px solid var(--blue-color);
 
-      color: var(--Text-white, #1e1e1e);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -186,15 +201,15 @@
     }
 
     .reject_button:hover {
-      border: 1px solid var(--Brand, #04d9ff);
-      color: var(--Text-white, #1e1e1e);
-      background: var(--Inner-box-BG, #04d9ff);
+      border: 1px solid var(--blue-color);
+      color: var(--text-black);
+      background: var(--blue-color);
     }
   }
 
   .modal_wrapper {
     border-radius: var(--table-box, 20px);
-    background: var(--Brand-2, #12181f);
+    background: var(--navy-blue);
   }
   .account_metrics_btn {
     display: flex;
@@ -205,8 +220,8 @@
     gap: 10px;
     background: transparent;
     border-radius: 10px;
-    border: 1px solid var(--Brand, #04d9ff);
-    color: var(--Text-white, #1e1e1e);
+    border: 1px solid var(--blue-color);
+    color: var(--text-black);
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -214,15 +229,15 @@
     line-height: normal;
 
     &:hover {
-      border: 1px solid var(--Brand, #04d9ff) !important;
+      border: 1px solid var(--blue-color) !important;
       background: transparent !important;
-      color: var(--Text-white, #1e1e1e) !important;
+      color: var(--text-black) !important;
     }
   }
 
   .status_button,
   .status_dropdown_option {
-    color: #1e1e1e !important;
+    color: var(--text-black) !important;
     border: 0;
     background: transparent;
     padding: 0 !important;
@@ -230,7 +245,7 @@
     &:hover {
       border: 0 !important;
       background: transparent !important;
-      color: var(--Text-white, #1e1e1e) !important;
+      color: var(--text-black) !important;
     }
     p,
     .status-button {
@@ -245,23 +260,23 @@
       border: 1px solid transparent;
 
       &.in_progress {
-        border: 1px solid var(--In-progress, #f4ea0f);
-        background: var(--in-Progress-Body, #fffdcf);
+        border: 1px solid var(--yellow-border-color);
+        background: var(--yellow-bg-color);
       }
       &.approved {
-        border: 1px solid var(--sucess, #009017);
-        background: var(--Success-Body, #cdffdd);
+        border: 1px solid var(--green-border-color);
+        background: var(--green-bg-color);
       }
       &.flagged {
-        border: 1px solid #f26419;
-        background: var(--Flagged-Body, #ffddcb);
+        border: 1px solid var(--orange-border-color);
+        background: var(--orange-bg-color);
       }
       &.rejected {
-        border: 1px solid var(--Failed, #f20000);
-        background: var(--Failed-body, #ffe1e1);
+        border: 1px solid var(--red-border-color);
+        background: var(--red-bg-color);
       }
       &.new {
-        border: 1px solid var(--Brand-1, #04d9ff);
+        border: 1px solid var(--blue-color);
         background: var(--new-body, #c5ffff);
       }
     }
@@ -287,10 +302,10 @@
     margin-top: 10px;
 
     border-radius: var(--Corner-Radius, 10px);
-    border: 1px solid var(--sucess, #009017);
-    background: var(--Success-Body, #cdffdd);
+    border: 1px solid var(--green-border-color);
+    background: var(--green-bg-color);
 
-    color: var(--text, #141414);
+    color: var(--text-black);
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -322,7 +337,7 @@
   }
 
   p {
-    color: var(--Brand-2, #12181f);
+    color: var(--navy-blue);
     font-family: "Nunito Sans";
     font-size: 18px;
     font-style: normal;
@@ -348,22 +363,41 @@
 }
 
 .lableWhite {
-  color: white;
+  color: var(--Text-white);
   > label {
-    color: white;
+    color: var(--Text-white);
   }
 }
 
 .supportModel {
   > label {
-    color: white;
+    color: var(--Text-white);
   }
 }
 
 .supportFilterParent {
   display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  gap: 15px;
+  
+  @media only screen and (max-width: 890px) {
+flex-direction: column-reverse;
+align-items: flex-end;
+  }
   > .ant-picker {
-    margin-right: 20px;
+    // margin-right: 20px;
+    max-width: 352px !important;
+    width: 100%;
+
+    @media only screen and (max-width: 806px) {
+      max-width: 352px !important;
+      // max-width: none !important;
+    }
+    @media only screen and (max-width: 440px) {
+      width: 100%;
+      max-width: none !important;
+    }
   }
 
   @media (max-width: 748px) {
@@ -375,9 +409,6 @@
   }
 }
 
-.stageSearchBox {
-  min-width: 50px;
-}
 .expanded_detail_box {
   width: 100%;
   grid-column: span 7;
@@ -392,7 +423,7 @@
       min-height: 31px;
       padding: 0px 10px;
       border-radius: 10px;
-      color: var(--Main-Background, #12181f);
+      color: var(--navy-blue);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -415,14 +446,14 @@
     gap: 8px;
     align-items: flex-start;
   }
-  .editIconContent{
+  .editIconContent {
     display: flex;
     align-items: center;
     gap: 5px;
   }
 }
 .text {
-  color: var(--Brand-2, #12181f);
+  color: var(--navy-blue);
   font-family: "Nunito Sans";
   font-size: 18px;
   font-style: normal;
@@ -449,11 +480,9 @@
   }
 }
 .settlement_details {
+  width: 700px !important;
 
-    width: 700px !important;
-
-    @media (max-width:748px){
-      width: 500px !important;
-    }
-
+  @media (max-width: 748px) {
+    width: 500px !important;
+  }
 }

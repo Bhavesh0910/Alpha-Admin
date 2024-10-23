@@ -1,16 +1,16 @@
 .fundingTotalProgress_wrapper {
   width: 100%;
   height: 100%;
-  color: #1e1e1e;
+  color: var(--text-black);
   display: flex;
   padding: 20px;
   flex-direction: column;
   gap: 20px;
   border-radius: 20px;
-  background: var(--white, #fff);
+  background: var(--Text-white);
 
   h2 {
-    color: var(--Text-white, #1e1e1e);
+    color: var(--text-black);
     font-family: "Nunito Sans";
     font-size: 20px;
     font-style: normal;
@@ -20,7 +20,7 @@
 
   .total_value {
     p {
-      color: var(--Text-white, #1e1e1e);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 24px;
       font-style: normal;
@@ -40,7 +40,7 @@
     .progress-labels {
       display: flex;
       justify-content: space-between;
-      color: #1e1e1e;
+      color: var(--text-black);
       font-family: "Noto Sans";
       font-size: 20px;
       font-style: normal;
@@ -55,14 +55,14 @@
     }
     .progress-bar {
       display: flex;
-      background: var(--Red, #f97f7f);
+      background: var(--Red);
       border-radius: 10px;
       .progress-bar-profit {
         height: 100%;
         width: 50%;
         min-height: 42px;
         border-radius: 10px;
-        background: var(--Green, #a3ea93);
+        background: var(--green-shade0);
       }
     }
   }

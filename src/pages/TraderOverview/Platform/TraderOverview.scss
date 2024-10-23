@@ -50,7 +50,7 @@
   .ant-table {
     overflow-x: auto;
     scrollbar-width: thin; /* Thin scrollbar (works in Firefox) */
-    scrollbar-color: var(--Brand, #04d9ff) var(--Stroke, #252a29); /* Color of the scrollbar (thumb and track) */
+    scrollbar-color: var(--blue-color) var(--Stroke, #252a29); /* Color of the scrollbar (thumb and track) */
   }
 
   /* Webkit (Chrome, Safari) scrollbar customization */
@@ -63,12 +63,12 @@
   }
 
   .ant-table::-webkit-scrollbar-thumb {
-    background: var(--Brand, #04d9ff); /* Color of the scrollbar thumb */
+    background: var(--blue-color); /* Color of the scrollbar thumb */
     border-radius: 5px; /* Rounded corners for the thumb */
   }
 
   .ant-table::-webkit-scrollbar-thumb:hover {
-    background: var(--Brand-hover, #5ac9a7); /* Color of the scrollbar thumb on hover */
+    background: var(--green-shade1); /* Color of the scrollbar thumb on hover */
   }
 
   .btn-wrapper {
@@ -81,22 +81,22 @@
     .Reinstate {
       > svg {
         > path {
-          stroke: var(--Brand, #f26419);
-          fill: #f3d6c7;
+          stroke: var(--orange-border-color);
+          fill: var(--orange-bg-color);
         }
 
         > g {
           > path {
-            stroke: #f26419;
+            stroke: var(--orange-border-color);
           }
         }
       }
     }
     .disable-enable-btn.active {
-      background-color: #34c759;
+      background-color: var(--green-border-color);
     }
     .disable-enable-btn.inactive {
-      background-color: #ff3737;
+      background-color: var(--red-border-color);
     }
     button {
       display: flex;
@@ -114,14 +114,14 @@
       border: 0;
     }
     .btn-block {
-      background: var(--Text-white, #1e1e1e);
-      color: #fff;
+      background: var(--text-black);
+      color: var(--Text-white);
       min-height: 19px;
 
       &:hover {
         border: 0;
-        background: var(--Text-white, #1e1e1e) !important;
-        color: #fff !important;
+        background: var(--text-black) !important;
+        color: var(--Text-white) !important;
       }
     }
     .btn-unblock {
@@ -136,8 +136,8 @@
     }
 
     .btn-delete {
-      color: var(--Red, #f97f7f);
-      border: 1px solid var(--Red, #f97f7f);
+      color: var(--Red);
+      border: 1px solid var(--Red);
       background-color: transparent;
     }
   }
@@ -173,16 +173,16 @@
         gap: 10px;
         border-radius: var(--Corner-Radius, 10px);
         border: 1px solid var(--Stroke, #252a29);
-        background: var(--Main-Background, #f6fefe);
+        background: var(--Text-white);
 
         @media only screen and (max-width: 430px) {
           width: 100% !important;
         }
       }
       .ant-select-selector {
-        background: var(--Main-Background, #f6fefe);
+        background: var(--Text-white);
         border: none;
-        color: var(--Paragraph-text-colour, #a6a6a6);
+        color: var(--primary-text-color);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -192,7 +192,7 @@
         // overflow: auto;
       }
       .ant-select-arrow {
-        color: #a6a6a6;
+        color: var(--primary-text-color);
       }
       // .ant-select-selection-item-content,.ant-select-selection-item{
       //   display: none !important;
@@ -212,6 +212,12 @@
       gap: 10px;
       width: 100%;
       max-width: fit-content;
+      .search_box_wrapper {
+        @media only screen and (max-width: 806px) {
+          width: 415px !important;
+          max-width: 100%;
+        }
+      }
       @media only screen and (max-width: 810px) {
         flex-direction: column;
         max-width: 100%;
@@ -227,13 +233,14 @@
     .ant-picker {
       border-radius: var(--Corner-Radius, 10px);
       border: 1px solid var(--Stroke, #252a29);
-      background: var(--Main-Background, #f6fefe);
+      background: var(--Text-white);
       // width: 100%;
       width: 240px;
 
       @media only screen and (max-width: 810px) {
+        width: 100% !important;
         min-height: 44px;
-        width: 403px !important;
+        max-width: 413px !important;
       }
 
       .ant-picker-active-bar {
@@ -242,14 +249,14 @@
 
       .ant-picker-range-separator {
         span {
-          color: #a6a6a6 !important;
+          color: var(--primary-text-color) !important;
         }
       }
       .ant-picker-suffix {
         cursor: pointer !important;
         span {
           svg {
-            fill: #a6a6a6;
+            fill: var(--primary-text-color);
           }
         }
       }
@@ -257,7 +264,7 @@
   }
 
   .title {
-    color: var(--Text-white, #ffffff);
+    color: var(--Text-white);
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -280,15 +287,15 @@
   }
   .ant-picker-panel {
     border-bottom: 1px solid var(--Stroke, #252a29) !important;
-    background: var(--Main-Background, #f6fefe) !important;
+    background: var(--Text-white) !important;
 
     button {
-      color: var(--Paragraph-text-colour, #a6a6a6) !important;
+      color: var(--primary-text-color) !important;
     }
 
     .ant-picker-header-view {
       button {
-        color: #1e1e1e !important;
+        color: var(--text-black) !important;
       }
     }
     .ant-picker-date-panel {
@@ -297,29 +304,29 @@
           tr {
             td {
               .ant-picker-cell-inner {
-                color: #1e1e1e !important;
+                color: var(--text-black) !important;
               }
             }
             .ant-picker-cell-in-range {
               div {
-                color: #000 !important;
+                color: var(--text-black) !important;
               }
               &:not(.ant-picker-cell-disabled):before {
-                background: #04d9ff !important;
+                background: var(--blue-color) !important;
               }
             }
 
             .ant-picker-cell-range-start {
               &:not(.ant-picker-cell-disabled):before {
-                color: #000 !important;
-                background: #04d9ff !important;
+                color: var(--text-black) !important;
+                background: var(--blue-color) !important;
               }
             }
 
             .ant-picker-cell-range-end {
               &:not(.ant-picker-cell-disabled):before {
-                color: #000 !important;
-                background: #04d9ff !important;
+                color: var(--text-black) !important;
+                background: var(--blue-color) !important;
               }
             }
           }
@@ -338,30 +345,30 @@
 
   .ant-modal-content {
     border-radius: var(--table-box, 20px);
-    background: var(--Brand-2, #12181f);
+    background: var(--navy-blue);
 
     .ant-modal-header {
-      background: var(--Brand-2, #12181f);
+      background: var(--navy-blue);
 
       .ant-modal-title {
-        color: #fff;
+        color: var(--Text-white);
       }
     }
     .ant-modal-close-x {
       span {
-        color: #fff;
+        color: var(--Text-white);
       }
     }
     .ant-modal-body {
       .modal-content {
         .modal-title {
-          color: #fff;
+          color: var(--Text-white);
         }
       }
     }
   }
   .ant-modal-title {
-    color: var(--Text-white, #1e1e1e);
+    color: var(--text-black);
     font-family: "Nunito Sans";
     font-size: 20px;
     font-style: normal;
@@ -375,7 +382,7 @@
     gap: 8px;
     margin-top: 20px;
     .modal-title {
-      color: var(--Text-white, #1e1e1e);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -390,7 +397,7 @@
       gap: 10px;
       align-self: stretch;
       border-radius: var(--table-box, 20px);
-      background: #fff;
+      background: var(--Text-white);
       min-height: 70px;
       resize: none;
     }
@@ -405,8 +412,8 @@
       width: 100%;
       max-width: 155px;
       border-radius: 10px;
-      border: 1px solid var(--Brand, #04d9ff);
-      color: var(--Text-white, #fff);
+      border: 1px solid var(--blue-color);
+      color: var(--Text-white);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -415,8 +422,8 @@
       background-color: transparent;
     }
     .block_btn {
-      color: var(--Brand-2, #12181f);
-      background: #04d9ff;
+      color: var(--navy-blue);
+      background: var(--blue-color);
       max-width: 155px;
     }
   }
@@ -430,7 +437,7 @@
   max-height: 44px;
   border-radius: var(--Corner-1, 10px);
   border: 1px solid var(--Stroke, #252a29);
-  background: var(--Main-Background, #f6fefe);
+  background: var(--Text-white);
   max-width: fit-content;
   // flex-basis: 20%;
   flex-shrink: 1;
@@ -449,7 +456,7 @@
     align-items: center;
     gap: 10px;
     border-radius: var(--Corner-1, 5px);
-    color: var(--Paragraph-text-colour, #12181f);
+    color: var(--navy-blue);
     border: 0;
     background: transparent;
     font-family: "Nunito Sans";
@@ -463,8 +470,8 @@
     }
 
     &.ant-radio-button-wrapper-checked {
-      background: var(--Brand, #04d9ff);
-      color: var(--Paragraph-text-colour, #12181f);
+      background: var(--blue-color);
+      color: var(--navy-blue);
     }
   }
 }
@@ -475,8 +482,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #FFD6AD;
-    color: #e95100;
+    background-color: var(--orange-bg-color);
+    color: var(--orange-border-color);
     border-radius: 4px;
     padding: 8px;
   }
@@ -502,7 +509,7 @@
   align-items: center;
   padding: 1rem;
   p {
-    color: var(--Brand-2, #12181f);
+    color: var(--navy-blue);
     font-family: "Nunito Sans";
     font-size: 18px;
     font-style: normal;
@@ -515,7 +522,7 @@
 .label {
   .label {
     font-size: 16px;
-    color: #000;
+    color: var(--text-black);
   }
 }
 .phase_filters {

@@ -6,7 +6,7 @@
         margin-top: 20px;
     }
     .title {
-        color: var(--white, #fff);
+        color: var(--Text-white);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -17,7 +17,7 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         border-radius: 20px;
-        background: var(--white, #fff);
+        background: var(--Text-white);
         margin-top: 10px;
 
         .input {
@@ -31,7 +31,7 @@
                 display: flex;
                 border-radius: var(--Corner-Radius, 10px);
                 border: 1px solid var(--Stroke, #252a29);
-                background: var(--Main-Background, #f6fefe);
+                background: var(--Text-white);
                 max-width: 530px;
                 max-height: 46px;
                 height: 100%;
@@ -44,7 +44,7 @@
                     align-items: center;
                     justify-content: center;
                     border-radius: 0px var(--Corner-Radius, 10px) var(--Corner-Radius, 10px) 0px;
-                    background: var(--Brand, #04d9ff);
+                    background: var(--blue-color);
                     width: 100%;
                     max-width: 44px; 
                 }
@@ -60,7 +60,7 @@
             gap: 10px;
             align-self: stretch;
             h2 {
-                color: var(--Text, #1e1e1e);
+                color: var(--text-black);
                 font-family: "Nunito Sans";
                 font-size: 12px;
                 font-style: normal;
@@ -113,7 +113,7 @@
     .btns {
         button {
             border-radius: 10px;
-            border: 1px solid #04d9ff;
+            border: 1px solid var(--blue-color);
             display: flex;
             height: 46px;
             padding: 10px 20px;
@@ -121,7 +121,7 @@
             align-items: center;
             gap: 10px;
             background: transparent;
-            color: var(--white, #fff);
+            color: var(--Text-white);
             font-family: "Nunito Sans";
             font-size: 14px;
             font-style: normal;
@@ -131,8 +131,8 @@
             width: 128px;
         }
         .save_btn {
-            background: #04d9ff !important;
-            color: #000 !important;
+            background: var(--blue-color) !important;
+            color: var(--text-black) !important;
         }
     }
 }
@@ -152,7 +152,7 @@
     .custom-modal {
         border-radius: 20px;
         border: 1px solid #d2d2d2;
-        background: #fff;
+        background: var(--Text-white);
         display: inline-flex;
         padding: 20px;
         flex-direction: column;
@@ -161,7 +161,7 @@
         max-width: 400px;
         width: 100%;
         h3 {
-            color: var(--Text, #1e1e1e);
+            color: var(--text-black);
             font-family: "Nunito Sans";
             font-size: 25px;
             font-style: normal;
@@ -186,9 +186,8 @@
         width: 100%;
         border-radius: var(--Corner-Radius, 10px);
         background: #ee3624;
-        color: #fff;
+        color: var(--Text-white);
         border: none;
-        color: var(--white, #fff);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;

@@ -11,7 +11,7 @@
 
         .date_box {
             border-radius: 10px;
-            background: #f6fefe;
+            background: var(--Text-white);
             display: flex;
             height: 46px;
             padding: 0px 15px;
@@ -32,7 +32,7 @@
             }
 
             .today_text {
-                color: #1e1e1e;
+                color: var(--text-black);
                 font-family: "Nunito Sans";
                 font-size: 14px;
                 font-style: normal;
@@ -45,7 +45,7 @@
                 top: 100%;
                 left: 0;
                 z-index: 1000;
-                background: #fff;
+                background: var(--Text-white);
                 border: 1px solid #ddd;
                 border-radius: 4px;
                 padding: 10px;
@@ -65,7 +65,7 @@
         }
         div {
             border-radius: var(--table-box, 20px);
-            background: #fff;
+            background: var(--Text-white);
             display: flex;
             height: 70px;
             padding: 20px;
@@ -75,7 +75,7 @@
             box-sizing: border-box;
 
             .title {
-                color: var(--Text-2, #686868);
+                color: var( --gray);
                 font-family: "Nunito Sans";
                 font-size: 14px;
                 font-style: normal;
@@ -84,7 +84,7 @@
             }
 
             .value {
-                color: var(--Text, #1e1e1e);
+                color: var(--text-black);
                 font-family: "Nunito Sans";
                 font-size: 20px;
                 font-style: normal;
@@ -100,7 +100,7 @@
             flex-direction: column;
             gap: 20px;
             border-radius: var(--table-box, 20px);
-            background: #fff;
+            background: var(--Text-white);
             padding: 20px;
 
             .header {
@@ -109,7 +109,7 @@
                 width: 100%;
 
                 h4 {
-                    color: var(--Text, #1e1e1e);
+                    color: var(--text-black);
                     font-family: "Nunito Sans";
                     font-size: 20px;
                     font-style: normal;
@@ -120,7 +120,7 @@
 
             .chart_info {
                 border-radius: var(--table-box, 20px);
-                background: var(--Table-header-fill, #edf0f0);
+                background: var(--Table-header-fill);
                 display: flex;
                 padding: 15px 20px;
                 justify-content: center;
@@ -129,7 +129,7 @@
                 max-width: 230px;
 
                 h4 {
-                    color: var(--Text, #1e1e1e);
+                    color: var(--text-black);
                     font-family: "Nunito Sans";
                     font-size: 20px;
                     font-style: normal;
@@ -138,7 +138,7 @@
                 }
 
                 p {
-                    color: var(--sucess, #009017);
+                    color: var(--green-border-color);
                     font-family: "Nunito Sans";
                     font-size: 14px;
                     font-style: normal;
@@ -164,8 +164,8 @@
 
         .active {
             border-radius: var(--Corner-Radius, 10px);
-            background: #04d9ff;
-            color: #fff; 
+            background: var(--blue-color);
+            color: var(--Text-white); 
         }
     }
 
@@ -182,7 +182,7 @@
 
     .chart_wrapper {
         border-radius: 20px;
-        background: var(--Table-header-fill, #edf0f0);
+        background: var(--Table-header-fill);
         height: 286px;
         align-self: stretch;
 

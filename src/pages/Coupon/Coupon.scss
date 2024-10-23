@@ -1,5 +1,5 @@
 .coupon_container {
-  .ant-select{
+  .ant-select {
     width: 100%;
   }
   .header_wrapper {
@@ -21,7 +21,7 @@
 
       .create_coupon_btn {
         button {
-          color: var(--Text-white, #ffffff);
+          color: var(--Text-white);
           font-family: "Nunito Sans";
           font-size: 14px;
           font-style: normal;
@@ -29,7 +29,7 @@
           line-height: normal;
           background: transparent;
           border-radius: 10px;
-          border: 1px solid var(--Brand, #04d9ff);
+          border: 1px solid var(--blue-color);
           min-height: 40px;
         }
 
@@ -56,7 +56,7 @@
     align-items: center;
 
     p {
-      color: var(--text, #141414);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -74,12 +74,12 @@
       background: transparent;
 
       &.active {
-        border: 1px solid var(--sucess, #009017);
-        background: var(--Success-Body, #cdffdd);
+        border: 1px solid var(--green-border-color);
+        background: var(--green-bg-color);
       }
       &.inactive {
-        border: 1px solid var(--Failed, #f20000);
-        background: var(--Failed-body, #ffe1e1);
+        border: 1px solid var(--red-border-color);
+        background: var(--red-bg-color);
       }
     }
   }
@@ -105,12 +105,12 @@
       text-transform: capitalize;
 
       &.private {
-        color: #f6fefe;
-        background: var(--Brand, #04d9ff);
+        color: var(--Text-white);
+        background: var(--blue-color);
       }
       &.public {
-        color: #1e1e1e;
-        border: 1px solid var(--Brand, #04d9ff);
+        color: var(--text-black);
+        border: 1px solid var(--blue-color);
       }
     }
 
@@ -125,7 +125,7 @@
       max-width: 46px;
       min-height: 31px;
       padding: 0px 20px;
-      color: var(--Text-white, #1e1e1e);
+      color: var(--text-black);
       font-family: var(--primary-font-family);
       font-size: 14px;
       font-style: normal;
@@ -134,8 +134,8 @@
       text-transform: capitalize;
 
       &:hover {
-        color: var(--Text-white, #1e1e1e) !important;
-        border: 1px solid var(--Text-white, #1e1e1e) !important;
+        color: var(--text-black) !important;
+        border: 1px solid var(--text-black) !important;
       }
     }
   }

@@ -11,7 +11,7 @@
     border: 1px solid transparent;
     text-transform: capitalize;
     &.funded {
-      border: 1px solid var(--Green, #a3ea93);
+      border: 1px solid var(--green-border-color);
     }
   }
 }

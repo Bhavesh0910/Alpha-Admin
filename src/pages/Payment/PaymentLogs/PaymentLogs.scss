@@ -1,6 +1,6 @@
 .status_btn_wrapper {
   div {
-    color: var(--Text-white, #1e1e1e);
+    color: var(--text-black);
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -19,16 +19,16 @@
     background: transparent;
 
     &.in_progress {
-      border: 1px solid #1e1e1e;
+      border: 1px solid var(--text-black);
     }
     &.approved {
-      border: 1px solid #a3ea93;
+      border: 1px solid var(--green-bg-color);
     }
     &.flagged {
-      border: 1px solid #ff7b36;
+      border: 1px solid var(--orange-border-color);
     }
     &.dismissed {
-      border: 1px solid #f97f7f;
+      border: 1px solid var(--red-bg-color);
     }
   }
 }

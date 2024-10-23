@@ -12,8 +12,8 @@
       max-width: 155px;
 
       &:hover {
-        color: #000;
-        background: var(--Brand, #04d9ff);
+        color: var(--text-black);
+        background: var(--blue-color);
       }
 
       @media only screen and (max-width: 800px) {

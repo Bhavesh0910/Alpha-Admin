@@ -61,7 +61,7 @@
       }
   
       button {
-        color: var(--Text-white, #1e1e1e);
+        color: var(--text-black);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -70,16 +70,16 @@
         min-height: 44px;
         padding: 0px 15px;
         border-radius: 10px;
-        background: #f6fefe;
+        background: var(--Text-white);
         &:hover {
-          border: 1px solid var(--Text-white, #f6fefe) !important;
-          color: var(--Text-white, #1e1e1e) !important;
-          background: var(--Stroke, #f6fefe) !important;
+          border: 1px solid var(--Text-white) !important;
+          color: var(--text-black) !important;
+          background: var(--Text-white) !important;
         }
       }
   
       a {
-        color: var(--Brand-1, #04d9ff) !important;
+        color: var(--blue-color) !important;
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -92,7 +92,7 @@
 
     .chart_wrapper{
         border-radius: var(--Corner-Radius, 10px);
-        background: #FFF;
+        background: var(--Text-white);
         display: flex;
         padding: 20px;
         flex-direction: column;
@@ -100,7 +100,7 @@
     }
 
     .chart_title{
-        color: var(--Text, #1E1E1E);
+        color: var(--text-black);
         font-family: "Nunito Sans";
         font-size: 20px;
         font-style: normal;
@@ -120,7 +120,7 @@
         width: 100%;
       }
       h3{
-        color: var(--white, #FFF);
+        color: var(--Text-white);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -133,7 +133,7 @@
       grid-template-columns: repeat(4 , 1fr);
       grid-gap: 20px;
       .card{
-        background-color: #fff;
+        background-color: var(--Text-white);
         border-radius: 10px;
         min-height: 120px;
         padding: 20px;
@@ -141,7 +141,7 @@
         flex-direction: column;
         gap: 20px;
         .title{
-          color: var(--Text, #1E1E1E);
+          color: var(--text-black);
           font-family: "Nunito Sans";
           font-size: 20px;
           font-style: normal;
@@ -149,7 +149,7 @@
           line-height: normal;  
         }
         .value{
-          color: var(--Text, #1E1E1E);
+          color: var(--text-black);
           font-family: "Nunito Sans";
           font-size: 16px;
           font-style: normal;

@@ -4,7 +4,7 @@
   gap: 20px;
 
   .standard_heading {
-    color: var(--Text, #1e1e1e);
+    color: var(--text-black);
     font-family: "Nunito Sans";
     font-size: 20px;
     font-style: normal;
@@ -15,7 +15,7 @@
   .analysis_box {
     padding: 20px;
     border-radius: var(--table-box, 20px);
-    background: var(--white, #fff);
+    background: var(--Text-white);
   }
   .ant-radio-group {
     gap: none !important;
@@ -35,9 +35,9 @@
   }
 
   .ant-radio-group::-webkit-scrollbar-thumb {
-    background-color: #04d9ff; /* color of the scrollbar thumb */
+    background-color: var(--blue-color); /* color of the scrollbar thumb */
     border-radius: 3px; /* roundness of the thumb */
-    border: 1px solid #04d9ff; /* border around the thumb */
+    border: 1px solid var(--blue-color); /* border around the thumb */
   }
 
   .ant-radio-button-wrapper {

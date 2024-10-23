@@ -16,10 +16,10 @@
           gap: 15px;
           flex: 1 0 0;
           border-radius: var(--table-box, 20px);
-          background: #fff;
+          background: var(--Text-white);
 
           .infobox_label {
-            color: var(--secondary-sb-200-paragraph-text-i-con, #8f8f8f);
+            color: var(--primary-text-color);
             font-family: "Nunito Sans";
             font-size: 14px;
             font-style: normal;
@@ -27,7 +27,7 @@
             line-height: normal;
           }
           .infobox_value {
-            color: var(--White, #1e1e1e);
+            color: var(--text-black);
             font-family: "Nunito Sans";
             font-size: 20px;
             font-style: normal;
@@ -36,7 +36,7 @@
             text-wrap: nowrap;
             margin-left: -5px;
             &.profit_value {
-              color: #8bfb88;
+              color: var(--green-shade0);
             }
           }
         }

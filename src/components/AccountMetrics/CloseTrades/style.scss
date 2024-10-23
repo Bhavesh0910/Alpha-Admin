@@ -3,7 +3,7 @@
   overflow-x: auto;
 
   h3 {
-    color: #1e1e1e;
+    color: var(--text-black);
     font-family: Outfit;
     font-size: 20px;
     font-style: normal;
@@ -12,7 +12,7 @@
   }
 
   .negative-profit {
-    color: var(--red, #ff4343);
+    color: var(--red-border-color);
 
     font-family: var(--primary-font-family);
     font-size: 15px;
@@ -25,7 +25,7 @@
   }
 
   .positive-profit {
-    color: var(--green, rgba(175, 255, 158));
+    color: var(--green, --green-shade0);
 
     font-family: var(--primary-font-family);
     font-size: 15px;

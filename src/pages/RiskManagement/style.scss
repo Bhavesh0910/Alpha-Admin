@@ -17,7 +17,7 @@
   }
 
   .ant-typography {
-    color: #ffffff !important;
+    color: var(--Text-white) !important;
     font-family: "Nunito Sans";
     font-size: 20px;
     font-style: normal;
@@ -29,11 +29,15 @@
   .row1_box {
     display: grid;
     gap: 20px;
-    // grid-template-columns: repeat(auto-fit, minmax(391px, 1fr));
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr !important;
 
+
+
+    @media only screen and (max-width: 1110px) {
+      grid-template-columns: 100% !important ;
+    }
     @media only screen and (max-width: 900px) {
-      grid-template-columns: 100%;
+      grid-template-columns: 100% !important;
     }
 
     .pieChart_container {
@@ -41,7 +45,7 @@
       max-width: 100%;
       padding-block: 20px;
       border-radius: 20px;
-      background: var(--white, #fff);
+      background: var(--Text-white);
 
       @media only screen and (max-width: 900px) {
         max-width: 100%;
@@ -56,14 +60,14 @@
     min-height: 44px;
     border-radius: var(--Corner-Radius, 10px);
     border: 1px solid var(--Stroke, #252a29);
-    background: var(--Main-Background, #f6fefe);
+    background: var(--Text-white);
     width: 100%;
     max-width: 364px;
     flex-basis: 100%;
     flex-shrink: 0;
     .ant-picker-input {
       input {
-        color: #1e1e1e !important;
+        color: var(--text-black) !important;
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -71,7 +75,7 @@
         line-height: normal;
 
         &::placeholder {
-          color: var(--Paragraph-text-colour, #1e1e1e);
+          color: var(--text-black);
         }
       }
     }
@@ -82,14 +86,14 @@
 
     .ant-picker-range-separator {
       span {
-        color: #1e1e1e !important;
+        color: var(--text-black) !important;
       }
     }
     .ant-picker-suffix {
       cursor: pointer !important;
       span {
         svg {
-          fill: #1e1e1e;
+          fill: var(--text-black);
         }
       }
     }

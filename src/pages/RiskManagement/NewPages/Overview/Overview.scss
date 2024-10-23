@@ -14,14 +14,14 @@
       align-items: center;
       gap: 10px;
       border-radius: 10px;
-      background: #f6fefe;
+      background: var(--Text-white);
 
       img {
         width: 17px;
         height: 17px;
       }
       p {
-        color: #1e1e1e;
+        color: var(--text-black);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -46,17 +46,16 @@
       // max-width: 100%;
       padding-block: 20px;
       border-radius: 2cap;
-      @media(max-width:320px){
+      @media (max-width: 320px) {
         width: 83%;
       }
-
     }
     .TotalPayout {
       width: 100%;
       // max-width: 100%;
       padding-block: 20px;
       border-radius: 20px;
-      @media(max-width:320px){
+      @media (max-width: 320px) {
         width: 83%;
       }
     }
@@ -78,8 +77,8 @@
   right: -20px !important;
   top: 10px;
   border-radius: var(--Corner-Radius, 10px);
-  border: 1px solid var(--Brand-1, #04d9ff);
-  background: var(--Brand-2, #12181f) !important;
+  border: 1px solid var(--blue-color);
+  background: var(--navy-blue) !important;
 }
 // .ant-dropdown-menu {
 //   background-color: #1e1e1e !important;
@@ -88,7 +87,7 @@
 // }
 
 .ant-dropdown-menu-item {
-  color: var(--white, #fff) !important;
+  color: var(--Text-white) !important;
   font-family: "Nunito Sans";
   font-size: 14px;
   font-style: normal;
@@ -98,8 +97,8 @@
 
 .ant-dropdown-menu-item:hover {
   border-radius: var(--Corner-Radius, 10px);
-  border: 1px solid var(--Brand-1, #04d9ff);
-  background: var(--Brand-2, #04d9ff) !important;
+  border: 1px solid var(--blue-color);
+  background: var(--blue-color) !important;
 }
 .ant-dropdown-menu-title-content {
   white-space: nowrap;

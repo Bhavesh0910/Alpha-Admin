@@ -10,14 +10,14 @@
     min-height: 44px;
     border-radius: var(--Corner-Radius, 10px);
     border: 1px solid var(--Stroke, #252a29);
-    background: var(--Main-Background, #f6fefe);
+    background: var(--Text-white);
     width: 100%;
     max-width: 364px;
     flex-basis: 100%;
     flex-shrink: 0;
     .ant-picker-input {
       input {
-        color: 1e1e1e !important;
+        color: var(--text-black) !important;
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -25,7 +25,7 @@
         line-height: normal;
 
         &::placeholder {
-          color: var(--Paragraph-text-colour, #1e1e1e);
+          color: var(--text-black);
         }
       }
     }
@@ -36,14 +36,14 @@
 
     .ant-picker-range-separator {
       span {
-        color: #1e1e1e !important;
+        color: var(--text-black) !important;
       }
     }
     .ant-picker-suffix {
       cursor: pointer !important;
       span {
         svg {
-          fill: #1e1e1e;
+          fill: var(--text-black);
         }
       }
     }
@@ -71,9 +71,9 @@
         align-items: center;
         gap: 10px;
         border-radius: 10px;
-        border: 1px solid var(--Stroke, #fff) !important;
-        background: #fff !important;
-        color: var(--Paragraph-text-colour, #1e1e1e);
+        border: 1px solid var(--Text-white) !important;
+        background: var(--Text-white) !important;
+        color: var(--text-black);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;

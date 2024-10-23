@@ -21,7 +21,7 @@
 
       .calendar-dates {
         position: relative;
-        background: var(--Box, #131313);
+        background: var(--Box, --bg-color);
         display: flex;
         height: 44px;
         padding: 10px 20px;
@@ -46,10 +46,10 @@
         right: 1px;
         bottom: 1px;
         border-radius: 10px;
-        border: 1px solid var(--brand-gradient, #4bb390);
-        background: var(--box-bg, #131313);
-        background: linear-gradient(45deg, #4bb390, #4bb390);
-        -webkit-mask: linear-gradient(#1e1e1e 0 0) padding-box, linear-gradient(#1e1e1e 0 0);
+        border: 1px solid var(--brand-gradient, --green-shade1);
+        background: var(--box-bg, --bg-color);
+        background: linear-gradient(45deg, --green-shade1, --green-shade1);
+        -webkit-mask: linear-gradient(--bg-color 0 0) padding-box, linear-gradient(--bg-color 0 0);
         -webkit-mask-composite: destination-out;
         mask-composite: exclude;
       }
@@ -65,7 +65,7 @@
       align-items: flex-start;
     }
     .legend:not(:last-child) {
-      border-right: 1px solid var(--stroke-unselect, #767676);
+      border-right: 1px solid var(--primary-text-color);
       @media only screen and (max-width: 600px) {
         border: none;
       }
@@ -94,11 +94,11 @@
     }
 
     .title {
-      color: var(--Icons, #818181);
+      color: var(--primary-text-color);
     }
 
     .value {
-      color: #1e1e1e;
+      color: --bg-color;
     }
 
     .circle {
@@ -117,20 +117,20 @@
     top: 58px;
     padding: 20px;
     border-radius: 20px;
-    border: 1px solid var(--Stroke, #272727);
-    background: var(--Box, #131313);
+    border: 1px solid var(--Stroke, --black27-color);
+    background: var(--Box, --bg-color);
     z-index: 11;
     > div {
       width: 318px;
       padding: 20px;
       border-radius: 20px;
-      background: var(--bg, #030504);
+      background: var(--bg, --bg-color);
 
       /* dropdown */
       box-shadow: 2px 16px 19px 0px rgba(0, 0, 0, 0.09);
     }
     p {
-      color: #1e1e1e;
+      color: var(--text-black);
       font-family: Nunito Sans;
       font-size: 14px;
       font-style: normal;
@@ -143,7 +143,7 @@
   .react-calendar {
     border: none;
     border-radius: 20px;
-    background: #030504;
+    background: --bg-color;
     display: flex;
     max-width: 275px;
     flex-direction: column;
@@ -156,14 +156,14 @@
     }
   }
   .react-calendar__tile:enabled:hover {
-    background-color: #04d9ff;
+    background-color: var(--blue-color);
   }
   .react-calendar__navigation button {
-    color: #1e1e1e;
+    color: --bg-color;
   }
 
   .react-calendar__navigation__label__labelText {
-    color: #1e1e1e;
+    color: var(--bg-color);
     text-align: center;
     font-family: Lato;
     font-size: 20px;
@@ -173,7 +173,7 @@
   }
 
   .react-calendar__month-view__weekdays__weekday {
-    color: #1e1e1e;
+    color: --bg-color;
     font-family: Lato;
     font-size: 12px;
     font-style: normal;
@@ -185,14 +185,14 @@
   }
 
   .react-calendar__navigation button:enabled:hover {
-    background-color: #04d9ff;
+    background-color: var(--blue-color);
   }
   .react-calendar__navigation {
-    background-color: #131313;
+    background-color: --bg-color;
   }
 
   .react-calendar__month-view__days__day--neighboringMonth {
-    color: #1e1e1e;
+    color: var(--text-black);
     text-align: center;
     font-family: Nunito Sans;
     font-size: 18px;
@@ -204,7 +204,7 @@
   }
 
   .react-calendar__navigation__label__labelText .react-calendar__navigation__label__labelText--from {
-    color: #1e1e1e;
+    color: --bg-color;
     text-align: center;
     font-family: Nunito Sans;
     font-size: 20px;
@@ -214,11 +214,11 @@
   }
 
   .react-calendar__month-view__days__day--weekend {
-    color: #1e1e1e;
+    color: --bg-color;
   }
 
   .react-calendar__month-view__days__day {
-    color: var(--Base-White, #1e1e1e);
+    color: var(--Base-White, --bg-color);
     text-align: center;
     font-family: Nunito Sans;
     font-size: 16px;
@@ -229,7 +229,7 @@
   }
 
   .react-calendar__tile--now {
-    color: #0b0e12;
+    color: --bg-color;
     display: flex;
     width: 30px;
     height: 30px;
@@ -256,8 +256,8 @@
     gap: 20px;
     align-self: stretch;
     border-radius: 20px;
-    border: 1px solid var(--Stroke, #272727);
-    background: var(--box-bg, #131313);
+    border: 1px solid var(--Stroke, --black27-color);
+    background: var(--box-bg, --bg-color);
     @media only screen and (max-width: 1100px) {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -268,7 +268,7 @@
     }
     .tginfobox {
       border-radius: 8px;
-      background: #010101;
+      background: --bg-color;
       display: flex;
       padding: 20px;
       justify-content: space-between;
@@ -277,7 +277,7 @@
       align-self: stretch;
 
       p {
-        color: #1e1e1e;
+        color: --bg-color;
         font-family: Nunito Sans;
         font-size: 14px;
         font-style: normal;
@@ -287,7 +287,7 @@
       }
 
       span {
-        color: var(--Text-white, #1e1e1e);
+        color: var(--Text-white, --bg-color);
         font-family: "Nunito Sans";
         font-size: 20px;
         font-style: normal;

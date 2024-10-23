@@ -1,27 +1,26 @@
 .TotalPayoutChart_container {
-    max-width: 100%;
-    min-height: 100px;
-    display: flex;
-    padding: 20px;
-    flex-direction: column;
-    gap: 20px;
-    border-radius: var(--Corner-Radius, 10px);
-    background: #fff;
-    display: flex;
-    height: 290px;
-    padding: 20px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    flex: 1 0 0;
-  
-    h2 {
-      color: var(--Text-white, #1e1e1e);
-      font-family: "Nunito Sans";
-      font-size: 20px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: normal;
-    }
+  max-width: 100%;
+  min-height: 100px;
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: var(--Corner-Radius, 10px);
+  background: var(--Text-white);
+  display: flex;
+  height: 290px;
+  padding: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  flex: 1 0 0;
+
+  h2 {
+    color: var(--text-black);
+    font-family: "Nunito Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
   }
-  
+}

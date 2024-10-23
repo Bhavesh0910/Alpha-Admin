@@ -5,7 +5,7 @@
     gap: 20px;
 
     h3 {
-      color: var(--Brand-2, #12181f);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 18px;
       font-style: normal;
@@ -14,7 +14,7 @@
     }
 
     h4 {
-      color: var(--Text, #1e1e1e);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -23,7 +23,7 @@
     }
 
     span {
-      color: #686868;
+      color: var(--gray);
     }
 
     .accountMetrics_wrapper_header {
@@ -32,7 +32,7 @@
       width: 100%;
 
       h2 {
-        color: var(--Text, #1e1e1e);
+        color: var(--text-black);
         font-family: "Nunito Sans";
         font-size: 20px;
         font-style: normal;
@@ -52,18 +52,18 @@
 
     .status_in_progress {
       border-radius: var(--Corner-Radius, 10px);
-      border: 1px solid var(--In-progress, #f4ea0f);
-      background: var(--in-Progress-Body, #fffdcf);
+      border: 1px solid var(--yellow-border-color);
+      background: var(--yellow-bg-color);
     }
     .status_succcess {
       border-radius: var(--Corner-Radius, 10px);
-      border: 1px solid var(--sucess, #009017);
-      background: var(--Success-Body, #cdffdd);
+      border: 1px solid var(--green-border-color);
+      background: var(--green-bg-color);
     }
     .status_failed {
       border-radius: var(--Corner-Radius, 10px);
-      border: 1px solid var(--In-progress, #f4260f);
-      background: var(--in-Progress-Body, #f33b32);
+      border: 1px solid var(--red-border-color);
+      background: var(--red-bg-color);
     }
 
     .accountMetrics_wrapper_top {
@@ -84,7 +84,7 @@
         align-self: stretch;
 
         border-radius: var(--table-box, 20px);
-        background: #fff;
+        background: var(--Text-white);
 
         .top_left_div_upper {
           display: flex;
@@ -96,7 +96,7 @@
               gap: 10px;
 
               h2 {
-                color: var(--Text, #1e1e1e);
+                color: var(--text-black);
                 font-family: "Nunito Sans";
                 font-size: 16px;
                 font-style: normal;
@@ -104,7 +104,7 @@
                 line-height: normal;
               }
               p {
-                color: var(--Paragraph-text, #767676);
+                color: var(--primary-text-color);
                 font-family: "Nunito Sans";
                 font-size: 14px;
                 font-style: normal;
@@ -126,17 +126,17 @@
             align-items: center;
             gap: 10px;
             border-radius: var(--Corner-Radius, 10px);
-            border: 1px solid var(--Brand-1, #04d9ff);
+            border: 1px solid var(--blue-color);
             background: var(--new-body, #c5ffff);
           }
           .in_progress {
             border-radius: var(--Corner-Radius, 10px);
-            border: 1px solid var(--In-progress, #f4ea0f);
-            background: var(--in-Progress-Body, #fffdcf);
+            border: 1px solid var(--yellow-border-color);
+            background: var(--yellow-bg-color);
           }
         }
 
-        .top_row_2{
+        .top_row_2 {
           display: flex;
           align-items: center;
           justify-content: flex-start;
@@ -172,7 +172,7 @@
         flex: 1 0 0;
         align-self: stretch;
         border-radius: var(--table-box, 20px);
-        background: #fff;
+        background: var(--Text-white);
 
         .top_right_div_header {
         }
@@ -230,7 +230,7 @@
           align-self: stretch;
 
           border-radius: var(--table-box, 20px);
-          background: #fff;
+          background: var(--Text-white);
 
           height: 380px;
 
@@ -253,7 +253,7 @@
           align-self: stretch;
 
           border-radius: var(--table-box, 20px);
-          background: #fff !important;
+          background: var(--Text-white) !important;
           width: 100%;
 
           .bottom_main_left_satistic_inner {
@@ -299,8 +299,8 @@
                   align-items: center;
                   gap: 10px;
                   border-radius: var(--Corner-Radius, 10px);
-                  border: 1px solid var(--sucess, #009017);
-                  background: var(--Success-Body, #cdffdd);
+                  border: 1px solid var(--green-border-color);
+                  background: var(--green-bg-color);
                 }
               }
             }
@@ -325,7 +325,7 @@
         align-self: stretch;
 
         border-radius: var(--table-box, 20px);
-        background: #fff;
+        background: var(--Text-white);
 
         @media only screen and (max-width: 1200px) {
           width: 100%;

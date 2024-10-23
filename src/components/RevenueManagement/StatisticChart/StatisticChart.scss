@@ -5,7 +5,7 @@
 
   padding: 20px;
   border-radius: var(--table-box, 20px);
-  background: #fff;
+  background: var(--Text-white);
 
   .header_wrapper {
     display: flex;
@@ -13,7 +13,7 @@
     align-items: center;
     gap: 20px;
     h3 {
-      color: var(--Text-white, #1e1e1e);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 20px;
       font-style: normal;
@@ -26,7 +26,7 @@
       .ant-select-selector {
         border-radius: var(--inner-box, 5px) !important;
         border: 1px solid var(--Stroke, #252a29) !important;
-        background: var(--Main-Background, #f6fefe) !important;
+        background: var(--Text-white) !important;
       }
     }
   }

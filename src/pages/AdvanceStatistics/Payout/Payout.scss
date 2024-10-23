@@ -5,17 +5,23 @@
 
   .payout_header {
     display: flex;
-    align-items: center;
+    // align-items: center;
     justify-content: space-between;
     gap: 20px;
+
+    @media only screen and (max-width: 748px) {
+      flex-direction: column;
+    }
     .payout_header_right {
       display: flex;
       gap: 20px;
-      display: flex;
       flex-direction: row-reverse;
+      @media only screen and (max-width: 450px) {
+        flex-direction: column !important;
+      }
     }
     h2 {
-      color: #fff;
+      color: var(--Text-white);
       font-family: "Nunito Sans";
       font-size: 20px;
       font-style: normal;
@@ -35,7 +41,7 @@
     }
 
     .link {
-      color: var(--Brand-1, #04d9ff);
+      color: var(--blue-color);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -46,7 +52,7 @@
     }
 
     button {
-      color: var(--Text-white, #1e1e1e);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -55,12 +61,12 @@
       min-height: 44px;
       padding: 0px 15px;
       border-radius: 10px;
-      background: #f6fefe;
+      background: var(--Text-white);
 
       &:hover {
-        border: 1px solid var(--Text-white, #f6fefe) !important;
-        color: var(--Text-white, #1e1e1e) !important;
-        background: var(--Stroke, #f6fefe) !important;
+        border: 1px solid var(--Text-white) !important;
+        color: var(--text-black) !important;
+        background: var(--Text-white) !important;
       }
     }
   }
@@ -79,7 +85,7 @@
       align-items: center;
       flex-shrink: 0;
       align-self: stretch;
-      color: var(--Text, #1e1e1e);
+      color: var(--text-black);
       leading-trim: both;
       text-edge: cap;
       font-family: "Nunito Sans";
@@ -89,22 +95,30 @@
       line-height: normal;
       flex-direction: row-reverse;
     }
-    span.green{
+    span.green {
       border-radius: var(--table-box, 20px);
-      border: 0.5px solid var(--sucess, #009017);
-      background: var(--Success-Body, #cdffdd);
+      border: 0.5px solid var(--green-border-color);
+      background: var(--green-bg-color);
     }
-    span.red{
+    span.red {
       border-radius: var(--table-box, 20px);
-border: 0.5px solid var(--Failed, #F20000);
-background: var(--Failed-body, #FFE1E1);
+      border: 0.5px solid var(--red-border-color);
+      background: var(--red-bg-color);
     }
     .payout_infobox_wrapper {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-gap: 20px;
+      width: 100% !important;
+      @media only screen and (max-width: 980px) {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+      @media only screen and (max-width: 580px) {
+        grid-template-columns: repeat(1, 1fr) !important;
+      }
     }
     .payout_lower_heading_left {
+      width: 100%;
       display: flex;
       padding: 20px;
       flex-direction: column;
@@ -114,15 +128,15 @@ background: var(--Failed-body, #FFE1E1);
       flex: 1 0 0;
 
       border-radius: var(--table-box, 20px);
-      background: #fff;
+      background: var(--Text-white);
 
       @media only screen and (max-width: 1400px) {
         max-width: 563px;
-        width: fit-content;
+        width: 100%;
       }
 
       h3 {
-        color: var(--Text-2, #686868);
+        color: var(--gray);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -135,7 +149,7 @@ background: var(--Failed-body, #FFE1E1);
         }
 
         span {
-          color: var(--Text-2, #1e1e1e);
+          color: var(--text-black);
           font-family: "Nunito Sans";
           font-size: 16px;
           font-style: normal;
@@ -151,7 +165,7 @@ background: var(--Failed-body, #FFE1E1);
         display: flex;
         gap: 10px;
         h2 {
-          color: var(--Text, #1e1e1e);
+          color: var(--text-black);
           leading-trim: both;
           text-edge: cap;
           font-family: "Nunito Sans";
@@ -165,11 +179,9 @@ background: var(--Failed-body, #FFE1E1);
 
         button {
           border-radius: var(--table-box, 20px);
-          border: 0.5px solid var(--sucess, #009017);
-          background: var(--Success-Body, #cdffdd);
-
+          border: 0.5px solid var(--green-border-color);
+          background: var(--green-bg-color);
           display: flex;
-
           padding: 0px 10px;
           justify-content: space-between;
           align-items: center;
@@ -193,14 +205,14 @@ background: var(--Failed-body, #FFE1E1);
         width: fit-content;
 
         border-radius: 10px;
-        background: #f6fefe;
+        background: var(--Text-white);
 
         button {
           border: none;
         }
       }
       p {
-        color: var(--Brand-1, #04d9ff);
+        color: var(--blue-color);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
@@ -216,9 +228,14 @@ background: var(--Failed-body, #FFE1E1);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @media only screen and (max-width: 425px) {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 10px !important;
+    }
     .left {
       h3 {
-        color: var(--white, #fff);
+        color: var(--Text-white);
         font-family: "Nunito Sans";
         font-size: 20px;
         font-style: normal;
@@ -239,9 +256,9 @@ background: var(--Failed-body, #FFE1E1);
         font-size: 12px;
       }
       border-radius: 10px;
-      background: #04d9ff;
+      background: var(--blue-color);
 
-      color: #12181f;
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 18px;
       font-style: normal;
@@ -260,8 +277,8 @@ background: var(--Failed-body, #FFE1E1);
 
   .payoutExportHistory_download_btn {
     border-radius: var(--Corner-Radius, 10px);
-    border: 1px solid var(--sucess, #009017);
-    background: var(--Success-Body, #cdffdd);
+    border: 1px solid var(--green-border-color);
+    background: var(--green-bg-color);
 
     display: flex;
     height: 32px;
@@ -271,7 +288,7 @@ background: var(--Failed-body, #FFE1E1);
     gap: 10px;
 
     p {
-      color: var(--Text, #1e1e1e);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;

@@ -1,11 +1,11 @@
 .paymentChart_wrapper {
   padding: 20px;
   border-radius: var(--Corner-Radius, 10px);
-  background: var(--white, #fff);
+  background: var(--Text-white);
 
   .header_wrapper {
     h2 {
-      color: var(--Text-white, #1e1e1e);
+      color: var(--text-black);
       font-family: Inter;
       font-size: 20px;
       font-style: normal;
@@ -41,7 +41,7 @@
         border-radius: 50% !important;
       }
       .apexcharts-legend-text {
-        color: var(--Paragraph-text-colour, #a6a6a6) !important;
+        color: var(--primary-text-color) !important;
         font-family: "Nunito Sans" !important;
         font-size: 12px !important;
         font-style: normal !important;

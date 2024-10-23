@@ -1,5 +1,5 @@
 .affiliateMarketing_container {
-  color: #1e1e1e;
+  color: var(--text-black);
   .ant-table-wrapper .ant-table-thead >tr>th{
     // text-wrap: nowrap !important;
   }
@@ -54,7 +54,7 @@
     min-height: 31px;
     padding: 0px 10px;
     border-radius: 10px;
-    color: var(--Main-Background, #12181f);
+    color: var( --navy-blue);
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -79,9 +79,9 @@
       align-items: center;
       gap: 10px;
       border-radius: 10px;
-      border: 1px solid var(--Text-white, #1e1e1e);
-      background: var(--Stroke, #fff);
-      color: var(--Text-white, #1e1e1e);
+      border: 1px solid var(--text-black);
+      background: var(--Text-white);
+      color: var(--text-black);
       font-family: "Nunito Sans";
       font-size: 14px;
       font-style: normal;
@@ -89,9 +89,9 @@
       line-height: normal;
 
       &:hover {
-        color: var(--Text-white, #1e1e1e) !important;
-        background: var(--Stroke, #fff) !important;
-        border: 1px solid var(--Text-white, #1e1e1e) !important;
+        color: var(--text-black) !important;
+        background: var(--Text-white) !important;
+        border: 1px solid var(--text-black) !important;
       }
     }
   }

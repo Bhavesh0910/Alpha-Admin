@@ -6,7 +6,7 @@
     align-items: center;
 
     h3 {
-      color: var(--Text-white, #fff);
+      color: var(--Text-white);
       font-family: "Nunito Sans";
       font-size: 20px;
       font-style: normal;
@@ -45,8 +45,8 @@
     gap: 10px;
     background: transparent;
     border-radius: 10px;
-    border: 1px solid var(--Brand, #04d9ff);
-    color: var(--Text-white, #1e1e1e);
+    border: 1px solid var(--blue-color);
+    color: var(--text-black);
     font-family: "Nunito Sans";
     font-size: 14px;
     font-style: normal;
@@ -54,14 +54,14 @@
     line-height: normal;
 
     &:hover {
-      border: 1px solid var(--Brand, #04d9ff) !important;
+      border: 1px solid var(--blue-color) !important;
       background: transparent !important;
-      color: var(--Text-white, #1e1e1e) !important;
+      color: var(--text-black) !important;
     }
   }
 
   .status_button {
-    color: #1e1e1e !important;
+    color: var(--text-black) !important;
     border: 0;
     background: transparent;
     padding: 0 !important;
@@ -69,7 +69,7 @@
     &:hover {
       border: 0 !important;
       background: transparent !important;
-      color: var(--Text-white, #1e1e1e) !important;
+      color: var(--text-black) !important;
     }
     p {
       display: flex;
@@ -83,23 +83,23 @@
       border: 1px solid transparent;
 
       &.in_progress {
-        border: 1px solid var(--In-progress, #f4ea0f);
-        background: var(--in-Progress-Body, #fffdcf);
+        border: 1px solid var( --yellow-border-color);
+        background: var(--yellow-bg-color);
       }
       &.approved {
-        border: 1px solid var(--sucess, #009017);
-        background: var(--Success-Body, #cdffdd);
+        border: 1px solid var(--green-border-color);
+        background: var(--green-bg-color);
       }
       &.flagged {
-        border: 1px solid #f26419;
-        background: var(--Flagged-Body, #ffddcb);
+        border: 1px solid var(--orange-border-color);
+        background: var(--orange-bg-color);
       }
       &.dismissed {
-        border: 1px solid var(--Failed, #f20000);
-        background: var(--Failed-body, #ffe1e1);
+        border: 1px solid var(--red-border-color);
+        background: var(--red-bg-color);
       }
       &.new {
-        border: 1px solid var(--Brand-1, #04d9ff);
+        border: 1px solid var(--blue-color);
         background: var(--new-body, #c5ffff);
       }
     }

@@ -1,7 +1,7 @@
 // Tabination Variant 1
 .tabination-container {
   border-radius: 20px;
-  background: #131313;
+  background: var(--text-black);
   display: flex;
   padding: 10px;
   justify-content: start;
@@ -38,8 +38,8 @@
         padding: 20px;
         text-wrap: nowrap;
         border-radius: 20px;
-        border: 1px solid var(--Stroke, #272727);
-        background: var(--bg, #030504);
+        border: 1px solid var( --black27-color);
+        background: var(--text-black);
         display: flex;
         align-items: center;
         max-height: 54px;
@@ -62,7 +62,7 @@
 }
 .tabination-container-variant2 {
   border: 1px solid var(--stroke-unselect, #767676);
-  background: var(--Box, #131313);
+  background: var(--text-black);
   max-width: 258px;
   padding: 20px;
   border-radius: 20px;
@@ -96,8 +96,8 @@
         padding: 20px;
         text-wrap: nowrap;
         border-radius: 20px;
-        border: 1px solid var(--Stroke, #272727);
-        background: var(--bg, #030504);
+        border: 1px solid var( --black27-color);
+        background: var(--text-black);
         display: flex;
         align-items: center;
         max-height: 54px;
@@ -112,7 +112,7 @@
         &.tabination-active-button-variant2 {
           border-radius: 20px;
           border: 1px solid var(--brand-gradient, #0273ff);
-          background: var(--background-gradient, linear-gradient(240deg, #1e1e1e -93.51%, rgba(255, 255, 255, 0.4) -93.49%, rgba(255, 255, 255, 0) 95.73%));
+          background: var(--background-gradient, linear-gradient(240deg, var(--text-black) -93.51%, rgba(255, 255, 255, 0.4) -93.49%, rgba(255, 255, 255, 0) 95.73%));
         }
       }
     }
@@ -174,7 +174,7 @@
 // Tabination Variant 4
 .tabination-container-variant4 {
   border-radius: 43px;
-  background: #131313;
+  background: var(--text-black);
   max-width: 577px;
   padding: 5px;
   height: 53px;
@@ -195,7 +195,7 @@
         padding: 15px 20px;
         text-wrap: nowrap;
         border-radius: 28px;
-        background: #0b0d0c;
+        background: var(--text-black);
         display: flex;
         align-items: center;
         max-height: 43px;
@@ -209,7 +209,7 @@
 
         &.tabination-active-button {
           border: 1px solid rgba(129, 129, 129, 0.6);
-          background: var(--Selection-Gradient, linear-gradient(240deg, #1e1e1e -93.51%, rgba(255, 255, 255, 0.4) -93.49%, rgba(255, 255, 255, 0) 95.73%));
+          background: var(--Selection-Gradient, linear-gradient(240deg, var(--text-black) -93.51%, rgba(255, 255, 255, 0.4) -93.49%, rgba(255, 255, 255, 0) 95.73%));
         }
       }
     }

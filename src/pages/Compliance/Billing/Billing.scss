@@ -4,16 +4,23 @@
     flex-direction: column;
     gap: 20px;
     margin-bottom: 20px;
-
+    @media only screen and (max-width: 800px) {
+      .ant-picker{
+        width: 100%;
+      }
+    }
     .heading_box {
       display: flex;
       flex-direction: row;
       gap: 20px;
       justify-content: space-between;
       align-items: center;
-
+      @media only screen and (max-width: 800px) {
+        flex-direction: column;
+        align-items: flex-start;
+      }
       h3 {
-        color: var(--white, #fff);
+        color: var(--Text-white);
         font-family: "Nunito Sans";
         font-size: 20px;
         font-style: normal;
@@ -62,21 +69,21 @@
         border-radius: var(--Corner-Radius, 10px);
         border: 1px solid transparent;
         background: transparent;
-        color: var(--text, #141414);
+        color: var(--text-black);
         font-family: "Nunito Sans";
         font-size: 14px;
         font-style: normal;
         font-weight: 600;
         line-height: normal;
         &.approved {
-          border: 1px solid var(--sucess, #009017);
-          background: var(--Success-Body, #cdffdd);
+          border: 1px solid var(--green-border-color);
+          background: var(--green-bg-color);
         }
 
         &.in_progress,
         &.in_review {
-          border: 1px solid var(--In-progress, #f4ea0f);
-          background: var(--in-Progress-Body, #fffdcf);
+          border: 1px solid var(--yellow-border-color);
+          background: var(--yellow-bg-color);
         }
       }
 

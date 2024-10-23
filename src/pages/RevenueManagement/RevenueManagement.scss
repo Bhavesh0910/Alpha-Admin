@@ -1,5 +1,5 @@
 .revenueManagement_container {
-  color: #1e1e1e;
+  color: var(--text-black);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -35,7 +35,7 @@
           margin-right: auto;
         }
         h3 {
-          color: var(--Text-white, #fff);
+          color: var(--Text-white);
           font-family: "Nunito Sans";
           font-size: 20px;
           font-style: normal;

@@ -5,7 +5,7 @@
     gap: 20px;
     flex-direction: column;
     border-radius: var(--table-box, 20px);
-    background: #fff;
+    background: var(--Text-white);
 
     .form_input {
       display: flex;
@@ -22,11 +22,11 @@
 
       .ant-select-selector {
         background: transparent !important;
-        border: 1px solid var(--Text-2, #686868) !important;
+        border: 1px solid var(--gray) !important;
 
         &:focus-within {
-          border: 1px solid var(--Brand-1, #04d9ff) !important;
-          background: var(--Table-header-fill, #edf0f0) !important;
+          border: 1px solid var(--blue-color) !important;
+          background: var(--Table-header-fill) !important;
         }
       }
     }
@@ -64,6 +64,6 @@
   }
 }
 
-.blackColor{
-  color: black;
+.blackColor {
+  color: var(--text-black);
 }

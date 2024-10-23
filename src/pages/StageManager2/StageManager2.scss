@@ -4,24 +4,25 @@
   gap: 20px;
 
   h2 {
-    color: var(--Text-white, #fff);
+    color: var(--Text-white);
     font-family: "Nunito Sans";
     font-size: 20px;
     font-style: normal;
     font-weight: 900;
     line-height: normal;
+    text-wrap: nowrap;
   }
 
   .header_wrapper {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    @media only screen and (max-width: 748px){
+    @media only screen and (max-width: 748px) {
       flex-direction: column;
     }
-    h2{
+    h2 {
       margin-right: auto;
-      @media only screen and (max-width: 748px){
+      @media only screen and (max-width: 748px) {
         text-align: left !important;
       }
     }
@@ -43,7 +44,7 @@
       max-height: 44px;
       border-radius: var(--Corner-Radius, 10px);
       border: 1px solid var(--Stroke, #252a29);
-      background: var(--Main-Background, #f6fefe);
+      background: var(--Text-white);
       width: 100%;
       max-width: 364px;
       flex-basis: 30%;
@@ -58,7 +59,7 @@
           line-height: normal;
 
           &::placeholder {
-            color: var(--Paragraph-text-colour, #a6a6a6);
+            color: var(--primary-text-color);
           }
         }
       }
@@ -69,14 +70,14 @@
 
       .ant-picker-range-separator {
         span {
-          color: #a6a6a6 !important;
+          color: var(--primary-text-color) !important;
         }
       }
       .ant-picker-suffix {
         cursor: pointer !important;
         span {
           svg {
-            fill: #a6a6a6;
+            fill: var(--primary-text-color);
           }
         }
       }
@@ -107,22 +108,22 @@
 
     border-radius: var(--Corner-1, 5px);
     border: 1px solid var(--Stroke, #252a29) !important;
-    background: var(--Main-Background, #f6fefe);
+    background: var(--Text-white);
     button {
       border-radius: var(--Corner-1, 5px);
       background: transparent !important;
-      color: #1e1e1e;
+      color: var(--text-black);
       border: none;
     }
     .active {
-      background: #04d9ff !important;
-      color: #000 !important;
+      background: var(--blue-color) !important;
+      color: var(--text-black) !important;
     }
     .active:hover {
-      color: #000 !important;
+      color: var(--text-black) !important;
     }
     button:hover {
-      color: #04d9ff !important;
+      color: var(--blue-color) !important;
       border: none !important;
     }
   }
@@ -131,6 +132,8 @@
 
     @media only screen and (max-width: 1024px) {
       display: block;
+      max-width: 352px;
+      width: 100%;
     }
 
     @media only screen and (max-width: 440px) {

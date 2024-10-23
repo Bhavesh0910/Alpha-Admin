@@ -20,8 +20,8 @@
     align-items: center;
     flex: 1 0 0;
     border-radius: 20px;
-    border: 1px solid var(--Stroke, #272727);
-    background: var(--bg, #030504);
+    border: 1px solid var(--black27-color);
+    background: var(--bg, --bg-color);
 
     > div {
       display: flex;
@@ -30,7 +30,7 @@
     }
 
     p {
-      color: #1e1e1e;
+      color: var(--bg-color);
       font-family: var(--primary-font-family);
       font-size: 14px;
       font-style: normal;
@@ -43,7 +43,7 @@
       background: var(--brand-gradient, linear-gradient(90deg, #0273ff 18.4%, #01e1ff 100%));
       background-clip: text;
       -webkit-background-clip: text;
-      color: #4bb390;
+      color: var(--green-shade1);
       // -webkit-text-fill-color: transparent;
       font-family: var(--primary-font-family);
       font-size: 20px;

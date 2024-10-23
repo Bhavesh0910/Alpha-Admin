@@ -18,30 +18,30 @@
 
   .ant-select-selector {
     border-radius: var(--Corner-2, 10px);
-    border: 1px solid var(--Stroke, #686868) !important;
+    border: 1px solid var(--primary-text-color) !important;
     background: transparent !important;
     &:hover {
-      border: 1px solid var(--Brand, #04d9ff) !important;
+      border: 1px solid var(---blue-color) !important;
       background: transparent;
     }
     &:focus-within {
-      border: 1px solid var(--Brand, #04d9ff) !important;
-      background: var(--Table-header-fill, #edf0f0) !important;
+      border: 1px solid var(--blue-color) !important;
+      background: var(--Table-header-fill, --Text-white) !important;
     }
   }
 
   .affiliate_input {
     border-radius: var(--Corner-2, 10px);
-    border: 1px solid var(--Stroke, #686868) !important;
+    border: 1px solid var(--primary-text-color) !important;
     background: transparent !important;
 
     &:hover {
-      border: 1px solid var(--Brand, #04d9ff) !important;
+      border: 1px solid var(--blue-color) !important;
       background: transparent;
     }
     &:focus-within {
-      border: 1px solid var(--Brand, #04d9ff) !important;
-      background: var(--Table-header-fill, #edf0f0) !important;
+      border: 1px solid var(--blue-color) !important;
+      background: var(--primary-text-color) !important;
     }
   }
 
@@ -49,7 +49,7 @@
     margin-top: 20px;
     padding: 20px;
     border-radius: var(--table-box, 20px);
-    background: #fff;
+    background: var(--Text-white);
 
     display: flex;
     flex-direction: column;
@@ -61,7 +61,7 @@
       gap: 10px;
 
       label {
-        color: var(--Text-white, #1e1e1e);
+        color: var(--text-black);
         font-family: var(--primary-font-family);
         font-size: 14px;
         font-style: normal;
@@ -71,8 +71,8 @@
 
       .ant-input-affix-wrapper {
         &:focus-within {
-          border: 1px solid var(--Brand, #04d9ff) !important;
-          background: var(--Table-header-fill, #edf0f0) !important;
+          border: 1px solid var(--blue-color) !important;
+          background: var(--Table-header-fill, --Text-white) !important;
         }
       }
     }
@@ -91,7 +91,7 @@
         border: 0 !important;
         &:focus-within {
           border: 0 !important;
-          background: var(--Table-header-fill, #edf0f0) !important;
+          background: var(--Table-header-fill, --Text-white) !important;
         }
       }
     }
