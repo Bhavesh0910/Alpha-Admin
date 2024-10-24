@@ -8,7 +8,7 @@ import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
 
 const CountryWiseOverview = () => {
   const {listData, isCountrySelectedFlag, filterListData, isLoading} = useSelector((state) => state.countryWise);
-  const [chartData, setChartData] = useState({series: [[], []], labels: [[], []], amounts: [[], []]});
+  const [chartData, setChartData] = useState({series: [[], []], labels: [[], []], amounts: [[], []], percent: [[], []]});
   const [totalData, setTotalData] = useState({totalPayment: 0, totalPayout: 0});
 
   useEffect(() => {
@@ -34,6 +34,9 @@ const CountryWiseOverview = () => {
         topNPayments = getTopNFields(listData, "total_payments", false);
         topNPayouts = getTopNFields(listData, "total_payouts", false);
       }
+
+      let topNPaymentPercent = topNPayments.map((item) => item.percent_payments ?? 0);
+      let topNPayoutPercent = topNPayments.map((item) => item.percent_payouts ?? 0);
 
       const total = filterListData.reduce(
         (acc, item) => {
@@ -81,19 +84,24 @@ const CountryWiseOverview = () => {
       //   payoutLabels = [...payoutPercentages.map((item) => item.country), "Other"].map((item) => (item ? item : "-"));
       //   payoutSeries = [...payoutPercentages.map((item) => parseFloat(item.percentage)), parseFloat((100 - topPayoutPercentageSum).toFixed(2))].map((item) => (isNaN(item) ? 0 : item));
       // } else {
-      paymentAmounts = paymentPercentages.map((item) => item.paymentAmount || "N/A");
+      paymentAmounts = paymentPercentages.map((item) => item.paymentAmount ?? 0);
       paymentLabels = paymentPercentages.map((item) => item.country || "N/A");
-      paymentSeries = paymentPercentages.map((item) => parseFloat(item.percentage) || 0);
+      paymentSeries = paymentPercentages.map((item) => parseFloat(item.percentage) ?? 0);
 
-      payoutAmounts = payoutPercentages.map((item) => item.payoutAmount || "N/A");
+      payoutAmounts = payoutPercentages.map((item) => item.payoutAmount ?? 0);
       payoutLabels = payoutPercentages.map((item) => item.country || "N/A");
-      payoutSeries = payoutPercentages.map((item) => parseFloat(item.percentage) || 0);
+      payoutSeries = payoutPercentages.map((item) => parseFloat(item.percentage) ?? 0);
       // }
 
-      setChartData({series: [paymentSeries, payoutSeries], labels: [paymentLabels, payoutLabels], amounts: [paymentAmounts, payoutAmounts]});
+      setChartData({series: [topNPaymentPercent, topNPayoutPercent], labels: [paymentLabels, payoutLabels], amounts: [paymentAmounts, payoutAmounts], percent: [topNPaymentPercent, topNPayoutPercent]});
       setTotalData(total);
     }
   }, [listData]);
+
+  useEffect(()=>{
+    console.log("chartData : ",chartData)
+    console.log(" ====== ")
+  },[chartData])
 
   return (
     <div className="countryWiseOverview_container">
@@ -102,8 +110,8 @@ const CountryWiseOverview = () => {
         <CountryWiseOverviewTable />
       </div>
       <div className="row2_chart_box">
-        <PaymentChart chartData={{series: chartData.series[0], labels: chartData.labels[0], amounts: chartData.amounts[0]}} />
-        <PayoutChart chartData={{series: chartData.series[1], labels: chartData.labels[1], amounts: chartData.amounts[1]}} />
+        <PaymentChart chartData={{series: chartData.series[0], labels: chartData.labels[0], amounts: chartData.amounts[0], percent:chartData.percent[0]}} />
+        <PayoutChart chartData={{series: chartData.series[1], labels: chartData.labels[1], amounts: chartData.amounts[1], percent:chartData.percent[1]}} />
       </div>
     </div>
   );

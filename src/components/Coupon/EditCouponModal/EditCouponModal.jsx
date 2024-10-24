@@ -8,17 +8,22 @@ import {editCoupon} from "../../../store/NewReducers/Coupons";
 import {useDispatch} from "react-redux";
 import {returnErrors} from "../../../store/reducers/error";
 import {getChallenges, UserSearchReq} from "../../../utils/api/apis";
+import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 
 const {Option} = Select;
 
 const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
   const [category, setCategory] = useState("Alpha Pro 5K");
   const [editedData, setEditedData] = useState(editCouponData || {});
+  // console.log("editCouponData : ", editCouponData);
+  // console.log("===================================");
   const [challenges, setChallenges] = useState([]);
   const [emailOpts, setEmailOpts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-  const [couponValue, setCouponValue] = useState("Coupon Amount");
+  const [couponValue, setCouponValue] = useState(
+    editCouponData.coupon_percent !== null && editCouponData.coupon_percent !== undefined && editCouponData.coupon_percent !== 0 ? "Coupon Discount" : "Coupon Amount",
+  );
 
   useEffect(() => {
     fetchChallenges();
@@ -29,23 +34,25 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
     if (editCouponData) {
       setEditedData(editCouponData);
       if (editCouponData.challenge) {
-        setCategory(editCouponData.challenge); // Pre-select challenge if exists
+        // setCategory(editCouponData.challenge); // Pre-select challenge if exists
       }
       if (editCouponData.Coupon_user) {
         // Convert user objects to email values for internal state
-        const selectedUserEmails = editCouponData.Coupon_user.map((user) => user.profile__Email);
+        const selectedUserEmails = editCouponData?.Coupon_user?.map((user) => user?.id);
         handleInputChange("Coupon_users", selectedUserEmails);
       }
     }
   }, [editCouponData]);
 
   const fetchChallenges = async () => {
+    setIsLoading(true);
     try {
       const response = await getChallenges(idToken);
       setChallenges(response.data);
     } catch (error) {
       console.error("Error fetching challenges:", error);
     }
+    setIsLoading(false);
   };
 
   const fetchUsers = async (value) => {
@@ -56,7 +63,7 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
       if (response?.status < 399) {
         const userArray = response?.data?.results?.map((item) => ({
           label: item?.email,
-          value: item?.email,
+          value: item?.id,
           id: item?.id,
         }));
         setEmailOpts(userArray);
@@ -69,7 +76,18 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
 
   const handleInputChange = (field, value) => {
     setEditedData((prev) => ({...prev, [field]: value}));
+    if (field === "coupon_amount") {
+      setEditedData((prev) => ({...prev, [field]: value, coupon_percent: 0}));
+    } else if (field === "coupon_percent") {
+      setEditedData((prev) => ({...prev, [field]: value, coupon_amount: "0"}));
+    } else {
+      setEditedData((prev) => ({...prev, [field]: value}));
+    }
   };
+
+  useEffect(() => {
+    console.log("setEditedData : ", editedData);
+  }, [editedData]);
 
   const handleCloseButton = () => {
     setIsEditModalVisible(false);
@@ -95,7 +113,7 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
     const updatedFields = {
       coupon_id: id,
       coupon_name: editedData?.coupon_name,
-      Coupon_user: selectedUserIds, // Send IDs in payload
+      Coupon_user: editedData?.Coupon_users, // Send IDs in payload
       coupon_amount: parseFloat(editedData?.coupon_amount), // Ensure it's a number
       coupon_percent: parseFloat(editedData?.coupon_percent), // Ensure it's a number
       public: editedData?.public,
@@ -108,6 +126,7 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
     try {
       dispatch(editCoupon({idToken, id, body: updatedFields, dispatch}));
       handleCloseButton();
+      setEditedData({});
     } catch (error) {
       dispatch(returnErrors(error?.response?.data?.detail || "Action Failed! Try Again.", error?.response?.status || 400));
     }
@@ -118,6 +137,7 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
       className="editCouponModal_container"
       onClick={handleCloseButton}
     >
+      {isLoading && <LoaderOverlay />}
       <div
         className="editCouponModal_wrapper"
         onClick={(e) => e.stopPropagation()}
@@ -147,21 +167,32 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
               <Select
                 mode="multiple"
                 placeholder="Please select users"
-                value={editedData?.Coupon_users || []} // Emails used for display
-                onChange={(value) => handleInputChange("Coupon_users", value)} // Handle emails
-                options={emailOpts}
+                defaultValue={editCouponData?.Coupon_user?.map((item) => item?.id)} // Emails used for display
+                onChange={(value, x) => {
+                  return handleInputChange("Coupon_users", value);
+                }} // Handle emails
+                options={
+                  [
+                    ...editCouponData?.Coupon_user?.map((item) => ({
+                      label: item?.profile__Email,
+                      value: item?.id,
+                    })),
+                    ...emailOpts,
+                  ] || []
+                }
                 onSearch={fetchUsers} // Fetch users on search input
                 showSearch
                 filterOption={false}
-                tagRender={({label}) => <div>{label}</div>} // Display email
-              >
-                {isLoading && (
-                  <Spin
-                    size="small"
-                    style={{marginLeft: 8}}
-                  />
-                )}
-              </Select>
+                // tagRender={({label}) => <div>{label} </div>} // Display email
+                notFoundContent={
+                  isLoading ? (
+                    <Spin
+                      size="small"
+                      style={{marginLeft: 8}}
+                    />
+                  ) : null
+                }
+              />
             </div>
             <div>
               <label htmlFor="coupon_value">Coupon Value</label>
@@ -172,7 +203,7 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
                 >
                   <Select
                     className="category_dropdown"
-                    defaultValue="Coupon Amount"
+                    defaultValue={couponValue}
                     onChange={setCouponValue}
                   >
                     <Option value="Coupon Amount">Coupon Amount</Option>
@@ -195,7 +226,8 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
                         onChange={(e) => {
                           const value = Number(e.target.value);
                           if (value >= 0 && value < 100) {
-                            handleInputChange("coupon_percent", e.target.value)}                         
+                            handleInputChange("coupon_percent", e.target.value);
+                          }
                         }}
                         required
                       />
@@ -238,7 +270,6 @@ const EditCouponModal = ({editCouponData, idToken, setIsEditModalVisible}) => {
               />
             </div> */}
 
-          
             <div className="form_input_box">
               <label htmlFor="coupon_challenge">Challenge</label>
               <Select

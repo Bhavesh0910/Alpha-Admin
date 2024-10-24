@@ -20,7 +20,6 @@ export const createCoupon = createAsyncThunk("coupon/create", async ({idToken, c
   }
 });
 export const editCoupon = createAsyncThunk("couponsList/edit", async ({idToken, id, body, dispatch}, {rejectWithValue}) => {
-  console.log("ljnjlljklkj ", idToken, id, body);
   try {
     const response = await patchCouponReq(idToken, id, body);
 

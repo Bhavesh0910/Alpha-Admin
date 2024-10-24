@@ -33,7 +33,8 @@ const PaymentChart = ({chartData}) => {
     },
     dataLabels: {
       formatter(val, opts) {
-        return [val.toFixed(1) + "%"];
+        const customVal = opts?.w?.globals?.initialSeries?.[opts.seriesIndex];
+        return customVal ? customVal?.toFixed(2) + "%" : val?.toFixed(2) + "%";
       },
     },
     legend: {
@@ -59,7 +60,7 @@ const PaymentChart = ({chartData}) => {
       <div id="payoutChart">
         <Chart
           options={options}
-          series={series}
+          series={chartData?.series || []}
           type="donut"
           id="custom_pie_chart"
         />

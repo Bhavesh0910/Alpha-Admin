@@ -35,9 +35,6 @@ const RevenueManagement = () => {
     dispatch(payoutStatsReq({idToken, dispatch, query}));
   }, [idToken, datesStastics]);
 
-
-  console.log(datesRevenue)
-
   
   useEffect(() => {
     let query = null;
@@ -100,7 +97,6 @@ const RevenueManagement = () => {
   ];
   return (
     <div className="revenueManagement_container">
-      {/* {isLoading && <LoaderOver} */}
       <div className="header_wrapper">
         <RangePicker
           presets={rangePresets}
@@ -146,7 +142,7 @@ const RevenueManagement = () => {
             </div>
           </div>
         </div>
-        <PayoutPaymentTable activeTab={activeTab} />
+        <PayoutPaymentTable activeTab={activeTab} dates={dates} />
       </div>
     </div>
   );

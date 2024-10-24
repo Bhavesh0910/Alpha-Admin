@@ -31,8 +31,8 @@ const PayoutChart = ({chartData}) => {
 
     dataLabels: {
       formatter(val, opts) {
-        const name = opts.w.globals.labels[opts.seriesIndex];
-        return [val.toFixed(1) + "%"];
+        const customVal = opts?.w?.globals?.initialSeries?.[opts.seriesIndex];
+        return customVal ? customVal?.toFixed(2) + "%" : val?.toFixed(2) + "%";
       },
     },
     legend: {

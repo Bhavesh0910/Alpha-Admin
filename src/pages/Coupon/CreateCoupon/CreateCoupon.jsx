@@ -8,20 +8,22 @@ import {createCoupon} from "../../../store/NewReducers/Coupons";
 import {Link} from "react-router-dom";
 import {returnErrors} from "../../../store/reducers/error";
 import {UserSearchReq, getChallenges} from "../../../utils/api/apis";
+import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 
 const {Option} = Select;
 
 const CreateCoupon = () => {
   const [category, setCategory] = useState();
-  const [date, setDate] = useState();
+  const [loading, setLoading] = useState(false);
+  const [date, setDate] = useState(null);
   const [size, setSize] = useState("middle");
   const [isLoading, setIsLoading] = useState(false);
   const [options, setOptions] = useState([]);
   const [code, setCode] = useState("");
   const [users, setUsers] = useState([]);
   const [emails, setEmails] = useState([]);
-  const [couponAmount, setCouponAmount] = useState("");
-  const [percent, setPercent] = useState(0);
+  const [couponAmount, setCouponAmount] = useState(null);
+  const [percent, setPercent] = useState(null);
   const [isActivate, setIsActivate] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
   const [isMulti, setIsMulti] = useState(false);
@@ -34,26 +36,21 @@ const CreateCoupon = () => {
 
   useEffect(() => {
     // Fetch challenges on component mount
+    setLoading(true);
     const fetchChallenges = async () => {
       try {
         const res = await getChallenges(idToken);
         setChallenges(res?.data || {});
       } catch (error) {
-        console.log("Error fetching challenges:", error);
-        dispatch(returnErrors("Failed to fetch challenges", 500));
+
+        dispatch(returnErrors(error?.response?.data?.detail || "Failed to fetch challenges", 500));
       }
+      setLoading(false);
     };
 
     fetchChallenges();
   }, [idToken, dispatch]);
 
-  useEffect(() => {
-    console.log("Date : ", date);
-    console.log("options : ", options);
-    console.log("users : ", users);
-    console.log("emails : ", emails);
-    console.log("challenges : ", challenges);
-  }, [date, options, users, challenges]);
 
   const fetch = async (value) => {
     setIsLoading(true);
@@ -123,44 +120,44 @@ const CreateCoupon = () => {
   };
 
   const handleChange = (values) => {
-    console.log(values, "valuess");
     const selectedLabels = options.filter((option) => values.includes(option.value)).map((option) => option.label);
     setEmails(selectedLabels);
   };
 
-  console.log("dates", date);
 
   const handleFormSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const couponData = {
       coupon_name: code,
       Coupon_user: users,
-      coupon_amount: couponAmount,
-      coupon_percent: percent,
+      coupon_amount: couponValue === "Coupon Amount" ? couponAmount : 0,
+      coupon_percent: couponValue === "Coupon Discount" ? percent : 0,
       challenge: category,
-      coupon_expiry: date,
+      coupon_expiry: date?.format("YYYY-MM-DD"),
       public: isPublic,
       is_active: isActivate,
       multi_use: isMulti,
     };
+    
+    let response;
+    try {
+      response = await dispatch(createCoupon({idToken, couponData, dispatch})).unwrap();
+    } catch (error) {}
 
-    console.log("Here...");
-    console.log(idToken, couponData, dispatch);
-    // dispatch(createCoupon({idToken, couponData, dispatch}));
-    const response = await dispatch(createCoupon({idToken, couponData, dispatch}));
-
-    if (response?.payload.status < 400) {
+    if (response?.status < 400) {
       // Clear all the form fields
       setCode("");
       setUsers([]);
-      setCouponAmount("");
-      setPercent(0);
+      setCouponAmount(null);
+      setPercent(null);
       setCategory(null);
       setDate(null);
       setIsActivate(false);
       setIsPublic(false);
       setIsMulti(false);
     }
+    setLoading(false);
   };
 
   const Loading = () => {
@@ -169,6 +166,7 @@ const CreateCoupon = () => {
 
   return (
     <div className="createCouponModal_container">
+      {loading && <LoaderOverlay />}
       <Breadcrumb
         separator=">"
         items={[
@@ -315,9 +313,10 @@ const CreateCoupon = () => {
               <DatePicker
                 format="YYYY-MM-DD HH:mm:ss"
                 disabledDate={disabledDate}
+                value={date}
                 // disabledTime={disabledDateTime}
                 showTime={{defaultValue: dayjs("00:00:00", "HH:mm:ss")}}
-                onChange={(value) => setDate(value ? value.format("YYYY-MM-DD") : null)}
+                onChange={(value) => setDate(value ? value : null)}
               />
             </div>
           </div>
