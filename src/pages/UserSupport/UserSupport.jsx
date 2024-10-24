@@ -200,7 +200,7 @@ const UserSupport = () => {
 };
 
 const ChangeEmail = ({handleOnInputChange, emailOpts, isLoading, currentEmail, setCurrentEmail, currentPassword, setCurrentPassword, newEmail, setNewEmail}) => {
-  const [selectEmail, setSelectEmail] = useState("");
+  const [selectEmail, setSelectEmail] = useState(null);
 
   const handleEmailChange = (value) => {
     setSelectEmail(value);

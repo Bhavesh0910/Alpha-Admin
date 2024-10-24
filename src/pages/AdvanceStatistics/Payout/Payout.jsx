@@ -208,21 +208,21 @@ const Payout = () => {
       dataIndex: "profit",
       key: "profit",
       width: 70,
-      render: (text) => Number(text).toFixed(2) || "-",
+      render: (text) => `$${Number(text).toFixed(2)}` || "-",
     },
     {
       title: "Bonus",
       dataIndex: "bonus",
       key: "bonus",
       width: 70,
-      render: (text) => text || "-",
+      render: (text) => `$${text}` || "-",
     },
     {
       title: "Withdraw Profit",
       dataIndex: "withdraw_profit",
       key: "withdraw_profit",
       width:100,
-      render: (text) => Number(text).toFixed(2) || "-",
+      render: (text) => `$${Number(text).toFixed(2)}` || "-",
     },
     {
       title: "Verification Type",
@@ -555,13 +555,13 @@ const ExpandedRowRender = ({ record }) => {
         <strong>Name:</strong> {record.name || "-"}
       </p>
       <p>
-        <strong>Starting Balance:</strong> {record.starting_balance || "-"}
+        <strong>Starting Balance:</strong> {`$${record.starting_balance}` || "-"}
       </p>
       <p>
-        <strong>Current Balance:</strong> {Number(record.current_balance).toFixed(2) || "-"}
+        <strong>Current Balance:</strong> {`$${Number(record.current_balance).toFixed(2)}` || "-"}
       </p>
       <p>
-        <strong>Current Equity:</strong> {Number(record.current_equity).toFixed(2) || "-"}
+        <strong>Current Equity:</strong> {`$${Number(record.current_equity).toFixed(2)}` || "-"}
       </p>
     </div>
   );

@@ -1,4 +1,19 @@
 .withdrawal_details_container {
+  .status_btn {
+    border-radius: var(--Corner-Radius, 10px);
+    display: flex;
+    width: 92px;
+    padding: 6px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-black);
+    font-family: "Nunito Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
   .ant-modal-content {
     background: var(--navy-blue) !important;
 

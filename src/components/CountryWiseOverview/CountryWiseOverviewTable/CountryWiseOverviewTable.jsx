@@ -28,6 +28,7 @@ const CountryWiseOverviewTable = () => {
 
   const handleDateChange = (dates) => {
     setRawValue(null);
+    setSelectedCountries([]);
     if (dates) {
       setDates(dates);
       // fetchCountryWiseData();

@@ -92,21 +92,21 @@ const WithdrawalStatus = () => {
       title: "Date",
       dataIndex: "date",
       key: "date",
-      width: 100,
+      width: 110,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      width: 100,
+      width: 90,
       render: (text) => (text ? text : "-"),
     },
     {
       title: "Login ID",
       dataIndex: "login_id",
       key: "login_id",
-      width: 100,
+      width: 80,
       render: (text) => (text ? text : "-"),
     },
     {
@@ -127,7 +127,7 @@ const WithdrawalStatus = () => {
       title: "Plan Size",
       dataIndex: "plan_size",
       key: "plan_size",
-      width: 100,
+      width: 70,
       render: (text) => (text ? text : "-"),
     },
     {
@@ -160,8 +160,8 @@ const WithdrawalStatus = () => {
       title: "Withdrawal Amt",
       dataIndex: "withdrawl_amount",
       key: "withdrawal_amount",
-      width: 100,
-      render: (text) => (text ? text.toFixed(2) : "-"),
+      width: 110,
+      render: (text) => (text ? `$${text.toFixed(2)}` : "-"),
     },
   ]);
 
