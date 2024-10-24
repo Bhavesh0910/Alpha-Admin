@@ -43,9 +43,9 @@ const FundingEvaluation = () => {
 
   return (
     <div className="fundingEvaluation_container">
-      <div className="mobile_headers">
+      {/* <div className="mobile_headers">
         <h4>Funding Evaluation</h4>
-      </div>
+      </div> */}
       <div className="viewLogs_button_wrapper">
         {/* <Button
           onClick={() =>

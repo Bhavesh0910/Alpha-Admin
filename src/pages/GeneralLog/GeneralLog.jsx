@@ -81,7 +81,7 @@ const GeneralLog = () => {
   return (
     <div className="generalLog_container">
       <div className="header_wrapper">
-        <h3> General Log</h3>
+        {/* <h3> General Log</h3> */}
         
         <div className="search_box_wrapper">
             <input

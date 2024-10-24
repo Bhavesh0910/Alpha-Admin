@@ -746,9 +746,9 @@ function TraderOverview() {
 
   return (
     <div className="trader-overview">
-      <div className="mobile_headers">
+      {/* <div className="mobile_headers">
         <h4>Trader Overview</h4>
-      </div>
+      </div> */}
       <div className="trader-overview-header">
         <div className="trader-overview-header-right tabs_wrapper">
           <Radio.Group

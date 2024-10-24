@@ -168,7 +168,7 @@ function Router() {
             exact={true}
             path="/support/payout"
             element={
-              <PageLayout headerName="Payout">
+              <PageLayout headerName="Support">
                 <StageManager />
               </PageLayout>
             }
@@ -458,7 +458,7 @@ function Router() {
             exact={true}
             path="/support/funded"
             element={
-              <PageLayout headerName="Funded">
+              <PageLayout headerName="Support">
                 <StageManager />
               </PageLayout>
             }
@@ -468,7 +468,7 @@ function Router() {
             exact={true}
             path="/funded/funded-view-logs"
             element={
-              <PageLayout headerName="Funded">
+              <PageLayout headerName="Support">
                 <FundedLogs />
               </PageLayout>
             }
