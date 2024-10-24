@@ -313,8 +313,8 @@
 //       query = query + `&search=${searchText}`;
 //     }
 //     if (dates) {
-//       let startDate = dates[0]?.format("DD/MMM/YYYY");
-//       let endDate = dates[1]?.format("DD/MMM/YYYY");
+//       let startDate = dates[0]?.format("YYYY-MM-DD");
+//       let endDate = dates[1]?.format("YYYY-MM-DD");
 //       query = query + `&start_date=${startDate}&end_date=${endDate}`;
 //     }
 
@@ -351,7 +351,7 @@
 //       if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
 //         notification.error({
 //           message: "Invalid Date Range",
-//           description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
+//           description: `The selected date range (${startDate.format("YYYY-MM-DD")} - ${endDate.format("YYYY-MM-DD")}) contains future dates. Please select a valid range.`,
 //         });
 
 //         if (lastValidRange) {
@@ -556,7 +556,7 @@
 //   const onRangeChange = (dates) => {
 //     // setPageNo(1);
 //     if (dates) {
-//       setDates(dates.map((date) => date.format("DD/MMM/YYYY")));
+//       setDates(dates.map((date) => date.format("YYYY-MM-DD")));
 //       console.log(dates);
 //     } else {
 //       setDates([]);
@@ -1063,8 +1063,8 @@ const Payment = () => {
       query = query + `&search=${searchText}`;
     }
     if (dates) {
-      let startDate = dates[0]?.format("DD/MMM/YYYY");
-      let endDate = dates[1]?.format("DD/MMM/YYYY");
+      let startDate = dates[0]?.format("YYYY-MM-DD");
+      let endDate = dates[1]?.format("YYYY-MM-DD");
       query = query + `&start_date=${startDate}&end_date=${endDate}`;
     }
 
@@ -1101,7 +1101,7 @@ const Payment = () => {
       if (endDate.isAfter(dayjs()) || startDate.isAfter(dayjs())) {
         notification.error({
           message: "Invalid Date Range",
-          description: `The selected date range (${startDate.format("DD/MMM/YYYY")} - ${endDate.format("DD/MMM/YYYY")}) contains future dates. Please select a valid range.`,
+          description: `The selected date range (${startDate.format("YYYY-MM-DD")} - ${endDate.format("YYYY-MM-DD")}) contains future dates. Please select a valid range.`,
         });
 
         if (lastValidRange) {
@@ -1306,7 +1306,7 @@ const CalendarModal = ({idToken, exportLink, status, handleCloseModal, setModalV
   const onRangeChange = (dates) => {
     // setPageNo(1);
     if (dates) {
-      setDates(dates.map((date) => date.format("DD/MMM/YYYY")));
+      setDates(dates.map((date) => date.format("YYYY-MM-DD")));
       console.log(dates);
     } else {
       setDates([]);

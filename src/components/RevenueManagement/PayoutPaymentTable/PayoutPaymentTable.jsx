@@ -9,7 +9,7 @@ import moment from "moment";
 import CopyToClipboard from "react-copy-to-clipboard";
 import {ReactComponent as CopyButton} from "../../../assets/icons/copyButtonGray.svg";
 
-const PayoutPaymentTable = ({activeTab}) => {
+const PayoutPaymentTable = ({activeTab, dates}) => {
   const [pageSize, setPageSize] = useState(20);
   const [pageNo, setPageNo] = useState(1);
 
@@ -319,17 +319,22 @@ const PayoutPaymentTable = ({activeTab}) => {
     } else {
       fetchPayouts(idToken, pageSize, pageNo);
     }
-  }, [idToken, pageSize, pageNo, activeTab]);
+  }, [idToken, pageSize, pageNo, activeTab, dates]);
 
   function fetchPayments(idToken, pageSize, pageNo) {
     let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}&status=${activeTab === "paid" ? 1 : activeTab === "unpaid" ? 0 : ""}`;
+    if (dates) {
+      query += `&start_date=${dates[0].format("YYYY-MM-DD")}&end_date=${dates[1].format("YYYY-MM-DD")}`;
+    }
 
     dispatch(paymentListReq({idToken, query, dispatch}));
   }
 
   function fetchPayouts(idToken, pageSize, pageNo) {
     let query = `?page=${pageNo || 1}&page_size=${pageSize || 20}`;
-
+    if (dates) {
+      query += `&start_date=${dates[0].format("DD/MMM/YYYY")}&end_date=${dates[1].format("DD/MMM/YYYY")}`;
+    }
     dispatch(payoutListReq({idToken, query, dispatch}));
   }
 

@@ -28,6 +28,7 @@ const CountryWiseOverviewTable = () => {
 
   const handleDateChange = (dates) => {
     setRawValue(null);
+    setSelectedCountries([])
     if (dates) {
       setDates(dates);
       // fetchCountryWiseData();
@@ -38,13 +39,13 @@ const CountryWiseOverviewTable = () => {
     }
   };
 
-  console.log("listData", listData);
+  // console.log("listData", listData);
 
   useEffect(() => {
     if (idToken) {
       fetchCountryWiseData();
     }
-    console.log("I am here");
+    // console.log("I am here");
   }, [idToken, dates, accRange]);
 
   const fetchCountryWiseData = () => {
@@ -207,12 +208,12 @@ const CountryWiseOverviewTable = () => {
     };
   }, [filterListData]);
 
-  useEffect(() => {
-    console.log("Component rendered or state updated");
-  }, [dates, idToken, accRange]);
+  // useEffect(() => {
+  //   console.log("Component rendered or state updated");
+  // }, [dates, idToken, accRange]);
 
   function handleCountriesData(val = true) {
-    const data = selectedCountries.map((item) => countriesLibrary[item]);
+    const data = selectedCountries?.map((item) => countriesLibrary[item]);
     if (val && selectedCountries && selectedCountries.length > 0) {
       dispatch(setCountrySelectedFlag(true));
       dispatch(setCountryWiseData(data));
@@ -224,7 +225,7 @@ const CountryWiseOverviewTable = () => {
   }
 
   useEffect(() => {
-    console.log(filteredCountries, " filteredCountries");
+    // console.log(filteredCountries, " filteredCountries");
   }, [filteredCountries]);
   return (
     <div className="countryWiseOverviewTable_wrapper">
@@ -241,7 +242,7 @@ const CountryWiseOverviewTable = () => {
               setRawValue(value);
               setSelectedCountries(value);
               setFilteredCountries(countries);
-              console.log("Value : ", value);
+              // console.log("Value : ", value);
             }}
             value={rawValue}
             options={filteredCountries}
