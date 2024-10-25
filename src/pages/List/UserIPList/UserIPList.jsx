@@ -65,7 +65,7 @@ const UserIPList = () => {
   };
 
   const handleBlock = async () => {
-    console.log("Action : ",action)
+    // console.log("Action : ",action)
     if (selectedRecord && reason) {
       try {
         dispatch(
@@ -86,7 +86,7 @@ const UserIPList = () => {
     setIsModalVisible(false);
   };
 
-  console.log(isBlockLoading);
+  // console.log(isBlockLoading);
 
   const handleCancel = () => {
     setIsModalVisible(false);

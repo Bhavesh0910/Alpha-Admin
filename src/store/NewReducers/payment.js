@@ -160,7 +160,7 @@ const paymentSlice = createSlice({
       })
       .addCase(paymentHistoryReq.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log(action.payload.data, " : action payload");
+        // console.log(action.payload.data, " : action payload");
         state.paymentHistoryData = action.payload?.data; // Update state with fetched data
         state.count = action.payload.data?.length; // Update state with fetched data
       })
@@ -175,7 +175,7 @@ const paymentSlice = createSlice({
       .addCase(paymentExportsReq.fulfilled, (state, action) => {
         state.isLoading = false;
         state.exportHistoryData = action.payload.data;
-        console.log(action.payload?.data);
+        // console.log(action.payload?.data);
         state.exportLink = action.payload?.data; // Update state with fetched data
       })
       .addCase(paymentExportsReq.rejected, (state) => {
@@ -189,7 +189,7 @@ const paymentSlice = createSlice({
       })
       .addCase(payoutListReq.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log("Paypout paylaod .. ", action.payload);
+        // console.log("Paypout paylaod .. ", action.payload);
         state.payoutData = action.payload?.data?.data; // Update state with fetched data
         state.count = action.payload?.data?.data?.count; // Update state with fetched data
       })

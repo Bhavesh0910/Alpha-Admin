@@ -60,9 +60,9 @@ const AntTable = ({serverSide = true, triggerChange, data, scrollY = 460, column
     }
   };
 
-  useEffect(() => {
-    console.log(expandedRowKeys, " expandedrowkey");
-  }, [expandedRowKeys]);
+  // useEffect(() => {
+  //   console.log(expandedRowKeys, " expandedrowkey");
+  // }, [expandedRowKeys]);
 
   function handleSortingLogic(pagination, filters, sorter) {
     // triggerChange(page, updatedPageSize, sorter);

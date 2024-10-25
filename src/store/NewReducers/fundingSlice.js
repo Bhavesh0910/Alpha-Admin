@@ -9,8 +9,10 @@ export const fetchFundingDetails = createAsyncThunk(
     try {
       const response = await getFundingDetails(idToken);
       if (response.status < 399) {
-        console.log(response)
+        // console.log(response)
         return response.data;
+
+        
       } else {
         const msg = response.response?.data?.detail || 'Error getting funding details';
         dispatch(returnErrors(msg, response.status));

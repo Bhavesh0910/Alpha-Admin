@@ -82,9 +82,9 @@ const CreateTradingAccount = () => {
     }
   }, [fundingData]);
 
-  useEffect(() => {
-    console.log("dataFundingAcc : ", data);
-  }, [data]);
+  // useEffect(() => {
+  //   console.log("dataFundingAcc : ", data);
+  // }, [data]);
 
   const handleCreateTradingAccount = async () => {
     const {challenge, group, leverage, name, pwd, pwdInvestor, raw_spread, status, user, email, reason} = data;
@@ -94,7 +94,7 @@ const CreateTradingAccount = () => {
       return;
     }
     setIsSpinner(true);
-    console.log(data);
+    // console.log(data);
 
     let traderData = {};
     if (data?.platform === "MT5") {
@@ -140,13 +140,13 @@ const CreateTradingAccount = () => {
       };
     }
 
-    console.log("traderdata : ", traderData);
+    // console.log("traderdata : ", traderData);
     try {
       const response = await CreateTradingAccountReq(idToken, traderData, data?.platform);
       if (response?.status < 399) {
         const id = response?.data?.login || "";
         const message = response?.data?.message || "Account created successfully!";
-        console.log("id", id);
+        // console.log("id", id);
         dispatch(returnMessages(`${message.slice(0, 1).toUpperCase() + message.slice(1, message.length - 1)} ${id}`, 201));
         setIsSpinner(false);
       } else {
@@ -156,7 +156,7 @@ const CreateTradingAccount = () => {
       console.log("errorr:", error);
       const msg = error?.response?.data?.message || error?.response?.data[0] || "Something went wrong";
       dispatch(returnErrors(msg, 400));
-      console.log("I am in catch");
+      // console.log("I am in catch");
 
       traderData = {};
       setIsSpinner(false);
@@ -187,15 +187,15 @@ const CreateTradingAccount = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("Custom flag : ", customFlag);
-  }, [customFlag]);
+  // useEffect(() => {
+  //   console.log("Custom flag : ", customFlag);
+  // }, [customFlag]);
 
   const handleAccountBalanceChange = (value, allValues) => {
     const update = {
       leverage: 100,
     };
-    console.log("Custom why i am here");
+    // console.log("Custom why i am here");
     const selectedChallenge = fundingData?.[data?.fundingEvalValue]?.filter((item) => item.account_balance === value)?.map((item) => item.id);
     setData((prev) => ({...prev, ...update}));
     setData((prev) => ({...prev, challenge: selectedChallenge ? selectedChallenge[0] : null}));
@@ -334,7 +334,7 @@ const CreateTradingAccount = () => {
                 handleAccountBalanceChange(value, allValues);
               }}
               onSelect={(value) => {
-                console.log("custom : ", value);
+                // console.log("custom : ", value);
                 customFlag && navigate("/add-value-form", {state: {accountBalance: value}});
               }}
               onSearch={handleAccountBalanceChange2}

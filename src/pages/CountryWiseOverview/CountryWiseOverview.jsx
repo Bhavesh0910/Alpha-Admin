@@ -98,10 +98,10 @@ const CountryWiseOverview = () => {
     }
   }, [listData]);
 
-  useEffect(()=>{
-    console.log("chartData : ",chartData)
-    console.log(" ====== ")
-  },[chartData])
+  // useEffect(()=>{
+  //   console.log("chartData : ",chartData)
+  //   console.log(" ====== ")
+  // },[chartData])
 
   return (
     <div className="countryWiseOverview_container">

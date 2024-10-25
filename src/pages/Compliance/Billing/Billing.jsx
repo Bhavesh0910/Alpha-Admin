@@ -128,7 +128,7 @@ const Billing = () => {
       return {uniqueKey: ind, ...item};
     });
 
-    console.log("dataaa ", dataaa);
+    // console.log("dataaa ", dataaa);
     setDataa(dataaa);
   }, [data]);
 
@@ -151,9 +151,9 @@ const Billing = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => {
-                console.log("e : ", e.key === "Enter");
+                // console.log("e : ", e.key === "Enter");
                 if (e.key === "Enter") {
-                  console.log("Searching.....");
+                  // console.log("Searching.....");
                   handleSearch(e.target.value);
                 }
               }}
@@ -194,12 +194,12 @@ function ExpandedRowRender({record}) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getBillingDetailsReq({idToken, email: record?.email}));
-    console.log("here..........");
+    // console.log("here..........");
   }, [record]);
 
-  useEffect(() => {
-    console.log(bilingDetailsData, " : billingDetails");
-  }, [bilingDetailsData]);
+  // useEffect(() => {
+  //   console.log(bilingDetailsData, " : billingDetails");
+  // }, [bilingDetailsData]);
 
   return (
     <>

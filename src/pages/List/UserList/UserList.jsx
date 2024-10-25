@@ -420,7 +420,7 @@ const UserListTable = () => {
 
   const handleExpand = (record) => {};
 
-  console.log(tableData);
+  // console.log(tableData);
   const ExpandedRowRender = ({record}) => {
     return (
       <div className="expanded-row-content">

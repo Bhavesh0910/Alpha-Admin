@@ -21,7 +21,7 @@ export const fetchIpLogs = createAsyncThunk("list/fetchIpLogs", async ({idToken,
   try {
     const response = await ipLogsReq(idToken, search, currentPage);
     // if (response?.status < 399) {
-    console.log("response ; ", response);
+    // console.log("response ; ", response);
     return response?.data;
     // }
   } catch (error) {
@@ -48,7 +48,7 @@ export const blockOrUnblockIp = createAsyncThunk("list/blockOrUnblockIp", async 
 });
 
 export const updateUser = createAsyncThunk("list/updateUser", async ({payload, idToken}, {dispatch, rejectWithValue}) => {
-  console.log("idToken", idToken);
+  // console.log("idToken", idToken);
   try {
     const response = await axios.patch(`${baseUrl}profile/update/`, payload, {headers: {Authorization: `Bearer ${idToken}`}});
     if (response?.status < 399) {
@@ -66,7 +66,7 @@ export const toggleActiveUser = createAsyncThunk("list/toggleActiveUser", async 
   try {
     const response = await changeUserStatus(idToken, note, id);
     dispatch(returnMessages("Status Changed Successfully"));
-    console.log(response);
+    // console.log(response);
     return response.data; // Adjust based on your API response
   } catch (error) {
     dispatch(returnErrors(error?.response?.data?.detail || "Error changing user status", 400));
@@ -116,7 +116,7 @@ const listSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchUserList.fulfilled, (state, action) => {
-        console.log("action", action);
+        // console.log("action", action);
 
         state.isLoading = false;
         state.tableData = action.payload;
@@ -130,7 +130,7 @@ const listSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchIpLogs.fulfilled, (state, action) => {
-        console.table("action.payload : ", action.payload);
+        // console.table("action.payload : ", action.payload);
 
         state.isLoading = false;
         state.ipLogsData = action.payload;
@@ -216,7 +216,7 @@ export const updateFlagReq = createAsyncThunk("list/updateFlagReq", async ({idTo
   try {
     const response = await updateFlagReqApi(idToken, body, id);
     dispatch(returnMessages("Status Changed Successfully", 200));
-    console.log(response);
+    // console.log(response);
     return response.data; // Adjust based on your API response
   } catch (error) {
     dispatch(returnErrors(error?.response?.data?.detail || "Error changing user status", 400));

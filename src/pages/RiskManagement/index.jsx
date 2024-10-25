@@ -25,7 +25,7 @@ function RiskManagement() {
   const [lastValidRange, setLastValidRange] = useState({startDate: dayjs().subtract(1, "month"), endDate: dayjs()});
 
   const onRangeChange = (dates) => {
-    console.log("Datesss: ", dates);
+    // console.log("Datesss: ", dates);
     if (dates && idToken) {
       const [startDate, endDate] = dates;
 

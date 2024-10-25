@@ -14,21 +14,10 @@
         margin-left: auto;
       }
     }
+  
   }
 
-  .ant-select-selector {
-    border-radius: var(--Corner-2, 10px);
-    border: 1px solid var(--primary-text-color) !important;
-    background: transparent !important;
-    &:hover {
-      border: 1px solid var(---blue-color) !important;
-      background: transparent;
-    }
-    &:focus-within {
-      border: 1px solid var(--blue-color) !important;
-      background: var(--Table-header-fill, --Text-white) !important;
-    }
-  }
+
 
   .affiliate_input {
     border-radius: var(--Corner-2, 10px);
@@ -41,7 +30,7 @@
     }
     &:focus-within {
       border: 1px solid var(--blue-color) !important;
-      background: var(--primary-text-color) !important;
+      background: var(--Table-header-fill) !important;
     }
   }
 
@@ -72,7 +61,7 @@
       .ant-input-affix-wrapper {
         &:focus-within {
           border: 1px solid var(--blue-color) !important;
-          background: var(--Table-header-fill, --Text-white) !important;
+          background: var(--Table-header-fill) !important;
         }
       }
     }
@@ -81,6 +70,20 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 20px;
+
+      .ant-select-selector {
+        border-radius: var(--Corner-2, 10px);
+        border: 1px solid var(--primary-text-color) !important;
+        background: transparent !important;
+        &:hover {
+          border: 1px solid var(--primary-text-color) !important;
+          background: transparent;
+        }
+        &:focus-within {
+          border: 1px solid var(--blue-color) !important;
+          background: var(--Table-header-fill) !important;
+        }
+      }
     }
     .row2 {
       display: grid;
@@ -91,7 +94,7 @@
         border: 0 !important;
         &:focus-within {
           border: 0 !important;
-          background: var(--Table-header-fill, --Text-white) !important;
+          background: var(--Table-header-fill) !important;
         }
       }
     }

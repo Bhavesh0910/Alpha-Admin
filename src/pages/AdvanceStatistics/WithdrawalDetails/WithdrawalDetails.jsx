@@ -61,7 +61,7 @@ const WithdrawalDetails = () => {
     }
 
     dispatch(fetchWithdrawalsDetails({idToken, query}));
-    console.log(query);
+    // console.log(query);
   }, [dispatch, idToken, pageNo, pageSize, searchText, dates]);
 
   const columns = useMemo(() => [
@@ -151,7 +151,7 @@ const WithdrawalDetails = () => {
   );
 
   const handleUpdateStatus = () => {
-    console.log(userToUpdate, updatedStatus);
+    // console.log(userToUpdate, updatedStatus);
     setStatusModelVisible(false);
   };
 
@@ -196,7 +196,7 @@ const WithdrawalDetails = () => {
     setPageNo(1);
     if (dates) {
       setDates(dates.map((date) => date.format("DD MMM YYYY")));
-      console.log(dates);
+      // console.log(dates);
     } else {
       setDates([]);
     }

@@ -9,16 +9,16 @@ const AccountProfitChart = () => {
 
   useEffect(() => {
     if (fundingChartData) {
-      console.log("fundingdata : ", fundingChartData?.result);
+      // console.log("fundingdata : ", fundingChartData?.result);
       let dates = [];
       let totalProfit = [];
       let totalLoss = [];
       dates = fundingChartData?.result?.map((item) => item?.date).reverse();
       totalProfit = fundingChartData?.result?.map((item) => item?.total_profit).reverse();
       totalLoss = fundingChartData?.result?.map((item) => item?.total_loss).reverse();
-      console.log("dates : ", dates);
-      console.log("totalProfit : ", totalProfit);
-      console.log("totalProfit : ", totalLoss);
+      // console.log("dates : ", dates);
+      // console.log("totalProfit : ", totalProfit);
+      // console.log("totalProfit : ", totalLoss);
       // totalLoss = fundingChartData?.result?.map((item)=>item?.totalLoss));
       setData((prev) => ({totalProfit: totalProfit, totalLoss: totalLoss, dates: dates}));
     }

@@ -343,7 +343,7 @@ const PayoutPaymentTable = ({activeTab, dates}) => {
     setPageSize(updatedPageSize);
   }
 
-  console.log("payment data : ", paymentData, payoutData);
+  // console.log("payment data : ", paymentData, payoutData);
 
   return (
     <AntTable

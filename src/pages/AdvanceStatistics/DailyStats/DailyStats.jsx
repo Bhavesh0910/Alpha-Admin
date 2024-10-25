@@ -56,7 +56,7 @@ const DailyStats = () => {
     }
 
     dispatch(fetchDailyStats({ idToken, query, dispatch }));
-    console.log(query);
+    // console.log(query);
   }, [dispatch, idToken, pageNo, pageSize, searchText, dates]);
 
   const columns = useMemo(() => [
@@ -226,7 +226,7 @@ const DailyStats = () => {
   );
 
   const handleUpdateStatus = () => {
-    console.log(userToUpdate, updatedStatus);
+    // console.log(userToUpdate, updatedStatus);
     setStatusModelVisible(false);
   };
 
@@ -271,7 +271,7 @@ const DailyStats = () => {
     setPageNo(1);
     if (dates) {
       setDates(dates.map((date) => date.format("DD/MMM/YYYY")));
-      console.log(dates);
+      // console.log(dates);
     } else {
       setDates([]);
     }

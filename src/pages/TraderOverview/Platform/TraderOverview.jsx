@@ -98,9 +98,9 @@ function TraderOverview() {
   //   }
   // }, [fundingData]);
 
-  useEffect(() => {
-    console.log("reason :", reason);
-  }, [reason]);
+  // useEffect(() => {
+  //   console.log("reason :", reason);
+  // }, [reason]);
 
   const fetchTradersData = async (dates, pageNo, pageSize, searchText, status, phase, platform, Challenges) => {
     setIsLoading(true);
@@ -652,7 +652,7 @@ function TraderOverview() {
   };
 
   function handleAction(action, record) {
-    console.log("Action : ", action);
+    // console.log("Action : ", action);
     setAction(action);
     setSelectedTrader(record);
     (action === "Reinstate" && setIsModalVisible(true)) ||
@@ -684,9 +684,9 @@ function TraderOverview() {
   };
 
   const handleUnBlock = () => {
-    console.log("In unblockingg", blockType);
+    // console.log("In unblockingg", blockType);
     if (blockType === "Hard") {
-      console.log("In unblockingg");
+      // console.log("In unblockingg");
       dispatch(changeAccountStatus({idToken, body: {id: selectedTrader?.user_id?.id, note: reason}, dispatch}));
     } else {
       dispatch(

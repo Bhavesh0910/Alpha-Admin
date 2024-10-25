@@ -67,7 +67,7 @@ const WithdrawalStatus = () => {
     dispatch(fetchWithdrawalsStatus({idToken, query, activeTab}));
   }, [dispatch, idToken, pageNo, pageSize, searchText, activeTab, dates, category, planSize]);
 
-  console.log("withdrawalsStatus", withdrawalsStatus);
+  // console.log("withdrawalsStatus", withdrawalsStatus);
 
   const handlePlanSizeChange = (value) => {
     setPageNo(1);
@@ -177,7 +177,7 @@ const WithdrawalStatus = () => {
   );
 
   const handleUpdateStatus = () => {
-    console.log(userToUpdate, updatedStatus);
+    // console.log(userToUpdate, updatedStatus);
     setStatusModelVisible(false);
   };
 
@@ -222,7 +222,7 @@ const WithdrawalStatus = () => {
     setPageNo(1);
     if (dates) {
       setDates(dates.map((date) => date.format("DD/MMM/YYYY")));
-      console.log(dates);
+      // console.log(dates);
     } else {
       setDates([]);
     }

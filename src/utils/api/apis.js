@@ -122,7 +122,7 @@ const updateUserDetailsRequest = async ({updatedData, idToken, id}) => {
   };
   let output;
 
-  console.log(updatedData);
+  // console.log(updatedData);
   await axios
     .patch(`${baseUrl}v2/admin/user-profile/${id}`, updatedData, config)
     .then((res) => {
@@ -266,7 +266,7 @@ const getSupportTableDetailsNew = async (idToken, searchText, pageNo, pageSize, 
     // params: params,
   };
   let output;
-  console.log("Active : ", activeTab);
+  // console.log("Active : ", activeTab);
   // searchText=searchText || "";
   // pageNo= pageNo || "", pageSize, activeTab
   await axios
@@ -329,7 +329,7 @@ const deleteSupportDetails = async (idToken, id) => {
 const getCertificatesDetails = async (idToken, user_id , query) => {
 
 
-  console.log(user_id)
+  // console.log(user_id)
 
 
   const config = {
@@ -591,7 +591,7 @@ export const fetchCommissionPayment = async (idToken, affiliateId, pageNo, pageS
     },
   };
 
-  console.log(pageNo)
+  // console.log(pageNo)
   
   const url = `${baseUrl}affiliate/v2/commission/payment/?affiliate_id=${affiliateId}&page=${pageNo}&page_size=${pageSize}`;
 
@@ -683,7 +683,7 @@ const getUserList = async (idToken, searchText, pageNo, pageSize, authType, acti
     params.search = searchText;
     params.page = 1;
   }
-  console.log(authType);
+  // console.log(authType);
   if (authType) {
     params.auth_type = authType;
     params.page = 1;
@@ -1228,7 +1228,7 @@ export const requestPayout = async (idToken, payload) => {
 
 export const getTradingAccountOverview = async (login_id, platform, idToken) => {
   let platformName = platform === "trader-accounts" ? "mt5" : platform === "ctrader-accounts" ? "ctrader" : "dxtrade";
-  console.log(platformName);
+  // console.log(platformName);
   try {
     const response = await axios.get(`${baseUrl}v2/account-metrics/${login_id}/?platform=${platformName}`, {
       headers: {
@@ -1532,7 +1532,7 @@ export const getLeaderboardDetails = async (idToken, id) => {
   };
   try {
     const response = await axios.get(apiUrl, config);
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.error("An error occurred ", error);
@@ -1877,7 +1877,7 @@ const deleteCompDetails = async (idToken, id) => {
 };
 
 const updateCompDetails = async (idToken, id, data) => {
-  console.log(data, id);
+  // console.log(data, id);
   const apiUrl = `${baseUrl}v3/adm/competition/${id}`;
 
   const config = {
@@ -2447,7 +2447,7 @@ const CreateTradingAccountReq = async (idToken, data, platform) => {
   ] = `ONRzS8gkWBRkr76XYyI6z1e6p6NX72x83KABC4dpx90sSxgzF9n3QqlQoBHGvGZKgu3a2hVPVtMeUYxlyILZMK5cZo2VspEKWORYvdN4fk1WVmtALKKlfwAFFXRpBFyIGQOcNHRtn0dsr6YJhhdNXrDh4Fk5dlt4Cns2CPl5e7QgByxNaSpfJE6vewJVsgmp6KMMWnnOqyMmBWw33NQyTbdP0gCwaLHPlspCEWJDokCUFSVf0IwG8hWJkulr5Al`;
 
   let endpoint;
-  console.log(platform);
+  // console.log(platform);
   if (platform === "MT5") {
     endpoint = "v2/account-create/admin/";
   } else if (platform === "C-Trader") {

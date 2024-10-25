@@ -145,7 +145,7 @@ const revenueManagementSlice = createSlice({
         state.isError = false;
       })
       .addCase(statsReq.fulfilled, (state, action) => {
-        console.log("Action payload oof statsReq : ", action.payload);
+        // console.log("Action payload oof statsReq : ", action.payload);
         state.statsDataLoader = false;
         state.statsData = action.payload; // Update state with fetched data
       })
@@ -158,7 +158,7 @@ const revenueManagementSlice = createSlice({
         state.isError = false;
       })
       .addCase(payoutStatsReq.fulfilled, (state, action) => {
-        console.log("Action payload oof payoutStatsReq : ", action.payload);
+        // console.log("Action payload oof payoutStatsReq : ", action.payload);
         state.chartData = action.payload; // Update state with fetched data
         state.chartDataLoader = false;
       })
@@ -171,7 +171,7 @@ const revenueManagementSlice = createSlice({
         state.isError = false;
       })
       .addCase(qualifiedAccountReq.fulfilled, (state, action) => {
-        console.log("Action payload oof qualifiedAccountReq : ", action.payload);
+        // console.log("Action payload oof qualifiedAccountReq : ", action.payload);
         state.barDataLoader = false;
         state.barData = action.payload; // Update state with fetched data
       })
@@ -185,7 +185,7 @@ const revenueManagementSlice = createSlice({
       })
       .addCase(payoutPaymentReq.fulfilled, (state, action) => {
         state.tableDataLoader = false;
-        console.log(action.payload, " nsbcjsabdcjhsbd ");
+        // console.log(action.payload, " nsbcjsabdcjhsbd ");
         state.tableData = action.payload?.results; // Update state with fetched data
         state.tableDataCount = action.payload?.count; // Update state with fetched data
       })

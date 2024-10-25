@@ -23,11 +23,11 @@ export const editCoupon = createAsyncThunk("couponsList/edit", async ({idToken, 
   try {
     const response = await patchCouponReq(idToken, id, body);
 
-    console.log(response);
+    // console.log(response);
     dispatch(returnMessages("Coupon Updated Successfully", 200));
     return response?.data;
   } catch (error) {
-    console.log(error.response)
+    // console.log(error.response)
     const errorMessage = error.response?.data?.coupon_name || "An error occurred while editing coupon";
     const statusCode = error.response?.status || 400;
     console.error("API Error:", errorMessage);
@@ -82,7 +82,7 @@ const couponSlice = createSlice({
       .addCase(getCoupons.fulfilled, (state, action) => {
         state.isLoading = false;
 
-        console.log(action.payload.results, "action payload");
+        // console.log(action.payload.results, "action payload");
 
         // if (action.payload?.length >= 1) {
         state.couponData = action.payload.results;
@@ -116,7 +116,7 @@ const couponSlice = createSlice({
       })
       .addCase(createCoupon.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log(action.payload, " : action payload coupon");
+        // console.log(action.payload, " : action payload coupon");
         // state.couponData = action.payload?.data; // Update state with fetched data
         state.count = action.payload.data?.length; // Update state with fetched data
       })
@@ -156,7 +156,7 @@ export async function getCouponsReq(idToken, pageNo, pageSize, searchText, activ
 }
 
 export async function patchCouponReq(idToken, id, body) {
-  console.log(idToken, id, body);
+  // console.log(idToken, id, body);
   try {
     const config = {
       headers: {
@@ -165,7 +165,7 @@ export async function patchCouponReq(idToken, id, body) {
     };
 
     const res = axios.put(`${baseUrl}v2/create/coupon/`, body, config);
-    console.log(res);
+    // console.log(res);
     return res;
   } catch (error) {
     console.log(error);

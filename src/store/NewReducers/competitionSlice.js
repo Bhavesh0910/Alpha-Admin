@@ -49,7 +49,7 @@ export const fetchCompetitionDetail = createAsyncThunk("comp/fetchCompetitionDet
 export const createCompetition = createAsyncThunk("comp/createCompetition", async ({idToken, formData}, {dispatch, rejectWithValue}) => {
   try {
     const response = await postCompDetails(idToken, formData);
-    console.log(response);
+    // console.log(response);
     dispatch(returnMessages("Successfully created competition", 200));
     return response?.data;
   } catch (error) {
@@ -61,7 +61,7 @@ export const createCompetition = createAsyncThunk("comp/createCompetition", asyn
 });
 
 export const updateCompetition = createAsyncThunk("comp/updateCompetition", async ({idToken, id, updatedData}, {dispatch, rejectWithValue}) => {
-  console.log(id, updatedData);
+  // console.log(id, updatedData);
   try {
     const response = await updateCompDetails(idToken, id, updatedData);
     dispatch(returnMessages("Successfully updated competition", 200));
@@ -158,7 +158,7 @@ const compSlice = createSlice({
       })
       .addCase(fetchCompDashboard.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log("action.payload : ", action?.payload);
+        // console.log("action.payload : ", action?.payload);
         state.compDashboard = action?.payload;
       })
       .addCase(fetchCompDashboard.rejected, (state, action) => {

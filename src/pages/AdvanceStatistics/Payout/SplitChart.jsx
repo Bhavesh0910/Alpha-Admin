@@ -28,7 +28,7 @@ const SplitChart = ({ data, loading }) => {
     }
   }, [data]);
 
-  console.log(chartData)
+  // console.log(chartData)
 
   return (
     <div className="splitChart_wrapper">

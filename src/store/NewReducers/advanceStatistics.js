@@ -6,7 +6,7 @@ import {getDailyStats, getPassRate, getPassStageChart, getPayoutDetails, getTota
 export const fetchWithdrawalsStatus = createAsyncThunk("advanceStats/fetchWithdrawalsStatus", async ({idToken, query , activeTab}, {dispatch, rejectWithValue}) => {
   try {
     const response = await getWithdrawalsStatus(idToken, query , activeTab);
-    console.log(query);
+    // console.log(query);
     return response;
   } catch (error) {
     const msg = error.response?.data?.detail || "Error fetching withdrawals status";
@@ -80,7 +80,7 @@ export const fetchTotalPayments = createAsyncThunk(
   async ({ idToken , query }, { dispatch, rejectWithValue }) => {
     try {
       const response = await getTotatPayments(idToken , query );
-      console.log(response)
+      // console.log(response)
       return response.result;
     } catch (error) {
       const msg = error.response?.data?.detail || "Error fetching total payments details";

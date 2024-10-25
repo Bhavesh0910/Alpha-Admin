@@ -63,7 +63,7 @@ const countryWiseSlice = createSlice({
         state.isError = false;
       })
       .addCase(countryWiseListReq.fulfilled, (state, action) => {
-        console.log("Action payload oof acc slice : ", action.payload);
+        // console.log("Action payload oof acc slice : ", action.payload);
         state.isLoading = false;
         if (action.payload?.data) {
           state.listData = action.payload?.data;

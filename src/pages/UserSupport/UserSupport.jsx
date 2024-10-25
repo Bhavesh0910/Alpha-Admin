@@ -42,7 +42,7 @@ const UserSupport = () => {
         value: item?.id,
       }));
       setEmailOpts(userArray);
-      console.log(userArray, "userarray");
+      // console.log(userArray, "userarray");
     } else {
       const msg = response?.response?.data?.detail || "Something went wrong";
       dispatch(returnErrors(msg, 400));
