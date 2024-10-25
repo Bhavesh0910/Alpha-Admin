@@ -1,30 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&display=swap");
+
 :root {
   --primary-text-color: #939393;
-  --text-black:#000;
-  --Text-white:#ffffff;
+  --text-black: #000;
+  --Text-white: #ffffff;
   --Red: #f97f7f;
-  --Table-header-fill:#edf0f0;
+  --Table-header-fill: #edf0f0;
   /* --Main-Background:#f6fefe; */
-  --orange-border-color:#f26419;
-  --orange-bg-color:#ffddcb;
-  --green-border-color:#009017;
-  --green-bg-color:#cdffdd;
+  --orange-border-color: #f26419;
+  --orange-bg-color: #ffddcb;
+  --green-border-color: #009017;
+  --green-bg-color: #cdffdd;
   --green-shade0: rgba(175, 255, 158);
   --green-shade1: #4bb390;
-  --red-border-color:#f20000;
-  --red-bg-color:#ffe1e1;
-  --yellow-border-color:#f4ea0f;
-  --yellow-bg-color:#fffdcf;
-  --blue-color:#04d9ff;
+  --red-border-color: #f20000;
+  --red-bg-color: #ffe1e1;
+  --yellow-border-color: #f4ea0f;
+  --yellow-bg-color: #fffdcf;
+  --blue-color: #04d9ff;
+  --success: #5eae67;
+  --Success-Body: rgba(94, 174, 103, 0.2);
+  --Failed: #e84953;
+  --Failed-body: rgba(232, 73, 83, 0.2);
+  --In-progress: #f6f069;
+  --in-Progress-Body: rgba(246, 240, 105, 0.2);
+  --action-yellow: #d6bc05;
   --bg-color: #09090b;
-  --gray:#686868;
-  --navy-blue:#12181f;
+  --gray: #686868;
+  --navy-blue: #12181f;
   --black27-color: #272727;
+  --Text-dull-white: #f6f6f6;
+  --Brand-color: #326ee7;
+  --Brand-gradient: #0d56eb;
+  --Inside-BG: #9f9f9f0d;
   --fw-normal: 400;
   --fw-medium: 700;
   --fw-bold: 800;
   --primary-font-family: "Nunito Sans";
-  
 }
 body {
   background-color: var(--bg-color);

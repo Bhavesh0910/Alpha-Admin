@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&display=swap");
+
 /* reset css */
 * {
   box-sizing: border-box;
@@ -974,7 +976,7 @@ textarea:where(.css-dev-only-do-not-override-m4timi).ant-input {
   resize: none !important;
   color: var(--text-black) !important;
 }
-textarea:where(.css-m4timi).ant-input{
+textarea:where(.css-m4timi).ant-input {
   resize: none !important;
   color: var(--text-black) !important;
 }

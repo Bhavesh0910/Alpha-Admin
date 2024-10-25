@@ -193,7 +193,7 @@ const AccountMetrics = () => {
             platform={platform}
           />
         )}
-        {status === "Transaction" && <TransactionHistory user_id={user_id}/>}
+        {status === "Transaction" && <TransactionHistory user_id={user_id} />}
         {status === "Certificate" && <AllCertificates user_id={user_id} />}
       </div>
     </>

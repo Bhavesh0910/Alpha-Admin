@@ -71,6 +71,7 @@ import Permissions from "../pages/Permissions/Permissions";
 import AddValueForm from "../components/FundingEvaluation/AddNewForm";
 import Affiliate from "../pages/AffiliateMarketing/Affiliate";
 import LeaderBoard from "../pages/Competition/LeaderBoard/Index";
+import PayoutReview from "../pages/Support/PayoutReview/PayoutReview";
 // import Stage1 from "../pages/NewStageManager/Stage1";
 // import Stage2 from "../pages/NewStageManager/Stage2";
 // import NewFunded from "../pages/NewStageManager/Funded";
@@ -170,6 +171,15 @@ function Router() {
             element={
               <PageLayout headerName="Support">
                 <StageManager />
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/support/payout/payout-review"
+            element={
+              <PageLayout headerName="Payout Review">
+                <PayoutReview />
               </PageLayout>
             }
           />
@@ -816,7 +826,7 @@ function Router() {
                 <LeaderBoard />
               </PageLayout>
             }
-          /> 
+          />
         </Route>
       </Routes>
     </BrowserRouter>
