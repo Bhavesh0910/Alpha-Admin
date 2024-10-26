@@ -70,14 +70,14 @@ const WithdrawalDetails = () => {
       dataIndex: "acg_share",
       key: "acg_share",
       width: 100,
-      render: (text) => (text ? text : "-"),
+      render: (text) => (text ? `$${text.toFixed(2)}` : "-"),
     },
     {
       title: "Client Share",
       dataIndex: "client_share",
       key: "client_share",
       width: 100,
-      render: (text) => (text ? text : "-"),
+      render: (text) => (text ? `$${text.toFixed(2)}` : "-"),
     },
     {
       title: "Date",

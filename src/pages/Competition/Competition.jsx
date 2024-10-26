@@ -1,20 +1,19 @@
-import { Button, Pagination, Modal, Input, DatePicker, message, Dropdown, Menu, Select } from "antd";
-import React, { useEffect, useState } from "react";
+import {Button, Pagination, Modal, Input, DatePicker, message, Dropdown, Menu, Select} from "antd";
+import React, {useEffect, useState} from "react";
 import threeDotsIcon from "../../assets/icons/menu_3dots_icon.svg";
 import "./Competition.scss";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
-import { deleteCompetition, fetchCompDetails, updateCompetition } from "../../store/NewReducers/competitionSlice";
+import {deleteCompetition, fetchCompDetails, resetCompetitionDetails, updateCompetition} from "../../store/NewReducers/competitionSlice";
 import TextArea from "antd/es/input/TextArea";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import { deleteCompDetails, getChallenges } from "../../utils/api/apis";
-import { returnMessages } from "../../store/reducers/message";
-import { returnErrors } from "../../store/reducers/error";
+import {deleteCompDetails, getChallenges} from "../../utils/api/apis";
+import {returnMessages} from "../../store/reducers/message";
+import {returnErrors} from "../../store/reducers/error";
 import dayjs from "dayjs";
 
-const { Option } = Select;
-
+const {Option} = Select;
 
 const Competition = () => {
   const [activeTab, setActiveTab] = useState("upcoming");
@@ -23,7 +22,7 @@ const Competition = () => {
   const navigate = useNavigate();
   const idToken = useSelector((state) => state.auth.idToken);
   const dispatch = useDispatch();
-  const { compData, isLoading, error } = useSelector((state) => state.comp);
+  const {compData, isLoading, error} = useSelector((state) => state.comp);
 
   useEffect(() => {
     dispatch(fetchCompDetails(idToken));
@@ -34,27 +33,20 @@ const Competition = () => {
   // Filter competitions based on status
   const filterCompetitions = (competitions) => {
     return competitions.map((item) => {
-      const status = moment(item.End_Date) < today
-        ? "ended"
-        : moment(item.Start_date) > today
-        ? "upcoming"
-        : "ongoing";
-      return { ...item, status };
+      const status = moment(item.End_Date) < today ? "ended" : moment(item.Start_date) > today ? "upcoming" : "ongoing";
+      return {...item, status};
     });
   };
 
   const filteredData = filterCompetitions(compData || []);
 
-  const ongoingComps = filteredData.filter(comp => comp.status === "ongoing");
-  const upcomingComps = filteredData.filter(comp => comp.status === "upcoming");
-  const endedComps = filteredData.filter(comp => comp.status === "ended");
+  const ongoingComps = filteredData.filter((comp) => comp.status === "ongoing");
+  const upcomingComps = filteredData.filter((comp) => comp.status === "upcoming");
+  const endedComps = filteredData.filter((comp) => comp.status === "ended");
 
   const currentData = activeTab === "upcoming" ? upcomingComps : activeTab === "ongoing" ? ongoingComps : endedComps;
 
-  const paginatedData = currentData.slice(
-    (pageNo - 1) * pageSize,
-    pageNo * pageSize
-  );
+  const paginatedData = currentData.slice((pageNo - 1) * pageSize, pageNo * pageSize);
 
   return (
     <div className="competition_container">
@@ -101,7 +93,10 @@ const Competition = () => {
       </div>
       <div className="competition_data">
         {paginatedData.map((item, index) => (
-          <CompetitionCard key={index} item={item} />
+          <CompetitionCard
+            key={index}
+            item={item}
+          />
         ))}
       </div>
       <Pagination
@@ -117,16 +112,13 @@ const Competition = () => {
         showQuickJumper
         showTotal={(total) => `Total ${total} items`}
       />
-  
     </div>
   );
 };
 
 export default Competition;
 
-
-
-const CompetitionCard = ({ item }) => {
+const CompetitionCard = ({item}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [formValues, setFormValues] = useState({});
   const dispatch = useDispatch();
@@ -158,10 +150,9 @@ const CompetitionCard = ({ item }) => {
       className: "delete_modal",
       onOk: async () => {
         try {
-          dispatch(deleteCompetition({ idToken, id }))
+          dispatch(deleteCompetition({idToken, id}));
           dispatch(returnMessages("Competition deleted successfully"));
-            dispatch(fetchCompDetails(idToken));
-     
+          dispatch(fetchCompDetails(idToken));
         } catch (error) {
           dispatch(returnErrors("Failed to delete competition"));
         }
@@ -172,7 +163,7 @@ const CompetitionCard = ({ item }) => {
     });
   };
 
-  const handleMenuClick = ({ key }) => {
+  const handleMenuClick = ({key}) => {
     if (key === "edit") {
       handleEdit();
     } else if (key === "delete") {
@@ -181,7 +172,10 @@ const CompetitionCard = ({ item }) => {
   };
 
   const menu = (
-    <Menu className="competition_card_dropdown" onClick={handleMenuClick}>
+    <Menu
+      className="competition_card_dropdown"
+      onClick={handleMenuClick}
+    >
       <Menu.Item key="edit">Edit</Menu.Item>
       <Menu.Item key="delete">Delete</Menu.Item>
     </Menu>
@@ -191,9 +185,12 @@ const CompetitionCard = ({ item }) => {
     <div className="competition_card_container">
       <div className="header_section">
         <h4>{item.competition_name}</h4>
-        <Dropdown overlay={menu} trigger={["click"]}>
+        <Dropdown
+          overlay={menu}
+          trigger={["click"]}
+        >
           <img
-            style={{ cursor: "pointer" }}
+            style={{cursor: "pointer"}}
             className="threeDotMenu"
             src={threeDotsIcon}
             alt="menu"
@@ -210,9 +207,7 @@ const CompetitionCard = ({ item }) => {
         <div className="bottomSection">
           <div className="status_box">
             <p className="label">Status</p>
-            <p className={`status_value ${item.status}`}>
-              {item.status}
-            </p>
+            <p className={`status_value ${item.status}`}>{item.status}</p>
           </div>
           <div className="participants_info">
             <p className="label">Accounts allowed to participate</p>
@@ -239,7 +234,12 @@ const CompetitionCard = ({ item }) => {
           </div>
         </div>
       </div>
-      <Button onClick={()=>navigate(`/leaderboard/${item.id}`)} className="view_board">View Leaderboard</Button>
+      <Button
+        onClick={() => navigate(`/leaderboard/${item.id}`)}
+        className="view_board"
+      >
+        View Leaderboard
+      </Button>
       <Modal
         className="edit_modal"
         title="Edit Competition"
@@ -263,7 +263,7 @@ const CompetitionCard = ({ item }) => {
   );
 };
 
-const EditCompetitionForm = ({ initialValues, onClose }) => {
+const EditCompetitionForm = ({initialValues, onClose}) => {
   const [formValues, setFormValues] = useState(initialValues);
   const dispatch = useDispatch();
   const idToken = useSelector((state) => state.auth.idToken);
@@ -288,18 +288,17 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
   }, [initialValues]);
 
   const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    setFormValues({ ...formValues, [id]: value });
+    const {id, value} = e.target;
+    setFormValues({...formValues, [id]: value});
   };
 
   const handleDateChange = (date, dateString, field) => {
-    setFormValues({ ...formValues, [field]: dateString });
+    setFormValues({...formValues, [field]: dateString});
   };
-  console.log(formValues)
-
+  console.log(formValues);
 
   const handleSubmit = (e) => {
-    console.log(formValues)
+    console.log(formValues);
     e.preventDefault();
     const updatedData = {
       competition_name: formValues.competition_name,
@@ -313,7 +312,7 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
       Competition_rules: formValues.Competition_rules,
     };
 
-    dispatch(updateCompetition({ idToken, id: formValues.id, updatedData }))
+    dispatch(updateCompetition({idToken, id: formValues.id, updatedData}))
       .then(() => {
         onClose();
       })
@@ -322,14 +321,15 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
       });
   };
 
-  
   const handleChallengeSelect = (value) => {
-    setFormValues({ ...formValues, challenge: value });
+    setFormValues({...formValues, challenge: value});
   };
 
-
   return (
-    <form className="edit_competition_form" onSubmit={handleSubmit}>
+    <form
+      className="edit_competition_form"
+      onSubmit={handleSubmit}
+    >
       <div className="form_group">
         <label htmlFor="competition_name">Competition Name</label>
         <Input
@@ -340,33 +340,33 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
         />
       </div>
       <div className="form_group">
-              <label htmlFor="challenge_id">Challenge</label>
-              <Select
-                id="challenge_id"
-                placeholder="Select Challenge"
-                value={formValues?.challenge || undefined}
-                onChange={handleChallengeSelect}
-              >
-                {Object.keys(challenges).map((category) => (
-                  
-                  <React.Fragment key={category}>
-                      {challenges[category].map((challenge) => (
-                        <Option key={challenge.id} value={challenge.id}>
-                          {challenge.name}
-                        </Option>
-                      ))}
-                  </React.Fragment>
-                ))}
-              </Select>
-            </div>
+        <label htmlFor="challenge_id">Challenge</label>
+        <Select
+          id="challenge_id"
+          placeholder="Select Challenge"
+          value={formValues?.challenge || undefined}
+          onChange={handleChallengeSelect}
+        >
+          {Object.keys(challenges).map((category) => (
+            <React.Fragment key={category}>
+              {challenges[category].map((challenge) => (
+                <Option
+                  key={challenge.id}
+                  value={challenge.id}
+                >
+                  {challenge.name}
+                </Option>
+              ))}
+            </React.Fragment>
+          ))}
+        </Select>
+      </div>
       <div className="form_group">
         <label htmlFor="schedule_competition">Schedule Competition</label>
         <DatePicker
           id="schedule_competition"
           value={formValues.Schedule_competition ? dayjs(formValues.Schedule_competition) : null}
-          onChange={(date, dateString) =>
-            handleDateChange(date, dateString, "Schedule_competition")
-          }
+          onChange={(date, dateString) => handleDateChange(date, dateString, "Schedule_competition")}
           required
         />
       </div>
@@ -376,9 +376,7 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
           <DatePicker
             id="start_date"
             value={formValues.Start_date ? dayjs(formValues.Start_date) : null}
-            onChange={(date, dateString) =>
-              handleDateChange(date, dateString, "Start_date")
-            }
+            onChange={(date, dateString) => handleDateChange(date, dateString, "Start_date")}
             required
           />
         </div>
@@ -387,9 +385,7 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
           <DatePicker
             id="end_date"
             value={formValues.End_Date ? dayjs(formValues.End_Date) : null}
-            onChange={(date, dateString) =>
-              handleDateChange(date, dateString, "End_Date")
-            }
+            onChange={(date, dateString) => handleDateChange(date, dateString, "End_Date")}
             required
           />
         </div>
@@ -432,7 +428,10 @@ const EditCompetitionForm = ({ initialValues, onClose }) => {
         />
       </div>
       <div className="form_group">
-        <Button className="standard_button" htmlType="submit">
+        <Button
+          className="standard_button"
+          htmlType="submit"
+        >
           Update Competition
         </Button>
       </div>

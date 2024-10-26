@@ -6,7 +6,7 @@ import "./style.scss";
 import AntTable from "../../../ReusableComponents/AntTable/AntTable";
 import {Button} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchCompDashboard, fetchCompTableDetails} from "../../../store/NewReducers/competitionSlice";
+import {fetchCompDashboard, fetchCompTableDetails, resetCompetitionDetails} from "../../../store/NewReducers/competitionSlice";
 import {useLocation, useParams} from "react-router";
 import {getCompDashboardChart} from "../../../utils/api/apis";
 import moment from "moment";
@@ -20,6 +20,9 @@ const LeaderBoard = () => {
 
   useEffect(() => {
     fetchCompTable();
+    return () => {
+      dispatch(resetCompetitionDetails());
+    };
   }, []);
   const fetchCompTable = () => {
     dispatch(fetchCompTableDetails({idToken, id}));

@@ -326,11 +326,8 @@ const deleteSupportDetails = async (idToken, id) => {
   }
 };
 //Certificates
-const getCertificatesDetails = async (idToken, user_id , query) => {
-
-
+const getCertificatesDetails = async (idToken, user_id, query) => {
   // console.log(user_id)
-
 
   const config = {
     headers: {
@@ -347,25 +344,19 @@ const getCertificatesDetails = async (idToken, user_id , query) => {
   }
 };
 
-
 export const createCertificateApi = async (idToken, certificateData) => {
   try {
-    const response = await axios.post(
-      `${baseUrl}create_certificate/`,
-      certificateData,
-      {
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
+    const response = await axios.post(`${baseUrl}create_certificate/`, certificateData, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
       },
-    );
+    });
     return response.data;
   } catch (error) {
     console.error("Error creating certificate:", error);
     throw error;
   }
 };
-
 
 // TraderList
 
@@ -592,14 +583,14 @@ export const fetchCommissionPayment = async (idToken, affiliateId, pageNo, pageS
   };
 
   // console.log(pageNo)
-  
+
   const url = `${baseUrl}affiliate/v2/commission/payment/?affiliate_id=${affiliateId}&page=${pageNo}&page_size=${pageSize}`;
 
   try {
     const res = await axios.get(url, config);
-    return res; 
+    return res;
   } catch (error) {
-    throw error; 
+    throw error;
   }
 };
 
@@ -2505,6 +2496,21 @@ const ipLogsReq = async (idToken, search, currentPage) => {
   }
 };
 
+//payout-review
+ const getUserNotesData = async (idToken) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    };
+    let response;
+    response = await axios.get(`${baseUrl}logentry/list/`, config);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
 export {
   updateUserDetailsRequest,
   loadUser,
@@ -2582,4 +2588,5 @@ export {
   generatePayoutRequestNew,
   postAdminLogin,
   getCodelistV2,
+  getUserNotesData,
 };

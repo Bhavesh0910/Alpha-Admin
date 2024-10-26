@@ -4,8 +4,20 @@ import {returnErrors} from "../reducers/error";
 import {returnMessages} from "../reducers/message";
 import {PURGE} from "redux-persist";
 import axios from "axios";
-import {baseUrl} from "../../utils/api/apis";
+import {baseUrl, getUserNotesData} from "../../utils/api/apis";
 
+
+export const fetchUserNotesData = createAsyncThunk("fetchUserNotesData", async ({idToken, id}, {dispatch, rejectWithValue}) => {
+  try {
+    const response = await getUserNotesData(idToken, id);
+    return response?.data;
+  } catch (error) {
+    const msg = error.response?.data?.detail || "Error fetching User Notes details";
+    const status = error.response?.status || 500;
+    dispatch(returnErrors(msg, status));
+    return rejectWithValue(msg);
+  }
+});
 async function supportListApi(idToken, query, url) {
   try {
     const config = {
@@ -76,6 +88,7 @@ const supportLists = createSlice({
     data: [],
     count: 1,
     stageStatusOptions: [],
+    userNotes:null,
     nestedTableData: null,
     refetch: false,
     isExpandable: null,
@@ -107,7 +120,7 @@ const supportLists = createSlice({
       })
       .addCase(nestedTableDataReq.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log("action ", action.payload);
+        // console.log("action ", action.payload);
         state.nestedTableData = action.payload?.data?.data || action.payload?.data;
       })
       .addCase(nestedTableDataReq.rejected, (state) => {
@@ -161,6 +174,19 @@ const supportLists = createSlice({
       .addCase(createAccountReq.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
+      })
+      .addCase(fetchUserNotesData.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(fetchUserNotesData.fulfilled, (state, action) => {
+        // console.log(action?.payload,"op")
+        state.isLoading = false;
+        state.userNotes = action?.payload?.results;
+      })
+      .addCase(fetchUserNotesData.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
       });
   },
 });
@@ -172,6 +198,10 @@ export const {setIsExpandable} = supportLists.actions;
 export const statusUpdateReq = createAsyncThunk("support/updateStatus", async ({idToken, body, id, isPayoutUpdate, updatedStatus, dispatch}, {rejectWithValue}) => {
   try {
     const response = await statusUpdateApi(idToken, body, id, isPayoutUpdate, updatedStatus);
+    dispatch(returnMessages(response?.data?.message || "Action Performed Successfully!", 200));
+    console.log(response,"ress")
+    console.log("")
+
     return response;
   } catch (error) {
     dispatch(returnErrors(error?.response?.data?.detail || "Error Updating the User status!", 400));
@@ -182,7 +212,8 @@ export const statusUpdateReq = createAsyncThunk("support/updateStatus", async ({
 export const editCommentReq = createAsyncThunk("support/editComment", async ({idToken, body, id, stage, dispatch}, {rejectWithValue}) => {
   try {
     const response = await editCommentApi(idToken, body, id, stage);
-    console.log(stage, " stage");
+    // console.log(stage, " stage");
+    dispatch(returnMessages(response?.data?.message || "Action Performed Successfully!", 200));
     return response;
   } catch (error) {
     dispatch(returnErrors(error.response?.data?.detail || "Error editing comment.", 400));
@@ -193,6 +224,7 @@ export const editCommentReq = createAsyncThunk("support/editComment", async ({id
 export const updateContactReq = createAsyncThunk("support/updateContract", async ({idToken, body, id, dispatch}, {rejectWithValue}) => {
   try {
     const response = await updateContactApi(idToken, body, id);
+    dispatch(returnMessages(response?.data?.message || "Action Performed Successfully!", 200));
     return response;
   } catch (error) {
     dispatch(returnErrors(error?.response?.data?.detail || "Error Updating Contract!", 400));
@@ -203,6 +235,8 @@ export const updateContactReq = createAsyncThunk("support/updateContract", async
 export const createAccountReq = createAsyncThunk("support/createAccount", async ({idToken, body, dispatch}, {rejectWithValue}) => {
   try {
     const response = await createAccountApi(idToken, body);
+    dispatch(returnMessages(response?.data?.message || "Action Performed Successfully!", 200));
+    console.log(response, "response");
     return response;
   } catch (error) {
     dispatch(returnErrors(error?.response?.data?.detail || "Error Updating Contract!", 400));
@@ -226,7 +260,7 @@ async function statusUpdateApi(idToken, body, id, isPayoutUpdate, updatedStatus)
     }
     return response;
   } catch (error) {
-    console.log("error :", error);
+    // console.log("error :", error);
     throw error;
   }
 }
@@ -239,7 +273,7 @@ async function editCommentApi(idToken, body, id, stage) {
       },
     };
     let response;
-    console.log("id", stage, body, id);
+    // console.log("id", stage, body, id);
 
     if (stage === "stage") {
       response = await axios.post(`${baseUrl}support/admin/get//details/${id}/`, body, config);
@@ -250,6 +284,7 @@ async function editCommentApi(idToken, body, id, stage) {
     if (stage === "payout") {
       response = await axios.post(`${baseUrl}v2/update-payout-status/`, body, config);
     }
+    console.log(response, "qwerty");
     return response;
   } catch (error) {
     console.log("error :", error);

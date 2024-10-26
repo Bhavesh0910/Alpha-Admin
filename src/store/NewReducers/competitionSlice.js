@@ -1,5 +1,15 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {getCompDetails, postCompDetails, getOneCompDetails, updateCompDetails, getLeaderboardDetails, deleteCompDetails, getCompTableDetails, getCompDashboardChart, getCompLeaderboardStats} from "../../utils/api/apis";
+import {
+  getCompDetails,
+  postCompDetails,
+  getOneCompDetails,
+  updateCompDetails,
+  getLeaderboardDetails,
+  deleteCompDetails,
+  getCompTableDetails,
+  getCompDashboardChart,
+  getCompLeaderboardStats,
+} from "../../utils/api/apis";
 import {returnErrors} from "../reducers/error";
 import {returnMessages} from "../reducers/message";
 
@@ -111,12 +121,11 @@ export const fetchCompDashboard = createAsyncThunk("comp/compDashboard", async (
   }
 });
 
-
 const initialState = {
   compData: [],
   compTableData: [],
   competitionDetail: null,
-  compDashboard:null,
+  compDashboard: null,
 
   leaderboardData: null,
   isLoading: false,
@@ -135,6 +144,11 @@ const compSlice = createSlice({
     },
     clearLeaderboardData: (state) => {
       state.leaderboardData = null;
+    },
+    resetCompetitionDetails: (state) => {
+      state.compDashboard = null;
+      state.compTableData = [];
+      state.compData=[]
     },
   },
   extraReducers: (builder) => {
@@ -240,6 +254,6 @@ const compSlice = createSlice({
   },
 });
 
-export const {deleteComp, clearCompetitionDetail, clearLeaderboardData} = compSlice.actions;
+export const {deleteComp, clearCompetitionDetail, clearLeaderboardData,resetCompetitionDetails} = compSlice.actions;
 
 export default compSlice.reducer;
