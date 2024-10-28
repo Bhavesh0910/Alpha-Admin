@@ -72,6 +72,9 @@ import AddValueForm from "../components/FundingEvaluation/AddNewForm";
 import Affiliate from "../pages/AffiliateMarketing/Affiliate";
 import LeaderBoard from "../pages/Competition/LeaderBoard/Index";
 import PayoutReview from "../pages/Support/PayoutReview/PayoutReview";
+import StepOne from "../pages/StageManager/Step1/StepOne";
+import StepTwo from "../pages/StageManager/Step2/StepTwo";
+import StepThree from "../pages/StageManager/Step3/StepThree";
 // import Stage1 from "../pages/NewStageManager/Stage1";
 // import Stage2 from "../pages/NewStageManager/Stage2";
 // import NewFunded from "../pages/NewStageManager/Funded";
@@ -231,34 +234,52 @@ function Router() {
             }
           />
 
-          <Route
+          {/* <Route
             exact={true}
-            path="/support/stage-1"
+            path="/support/step-1"
             element={
               <PageLayout headerName="Support">
                 <StageManager />
               </PageLayout>
             }
-          />
+          /> */}
           <Route
             exact={true}
-            path="/support/stage-2"
+            path="/support/step-1"
             element={
               <PageLayout headerName="Support">
-                <StageManager />
+                <StepOne />
               </PageLayout>
             }
           />
           <Route
             exact={true}
-            path="/support/stage-1/logs"
+            path="/support/step-2"
+            element={
+              <PageLayout headerName="Support">
+                <StepTwo />
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/support/step-3"
+            element={
+              <PageLayout headerName="Support">
+                <StepThree />
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/support/step-1/logs"
             element={
               <PageLayout headerName="Support">
                 <Stage1Logs />
               </PageLayout>
             }
           />
-          <Route
+          {/* <Route
             exact={true}
             path="/support/stage-2"
             element={
@@ -266,10 +287,10 @@ function Router() {
                 <StageManager />
               </PageLayout>
             }
-          />
+          /> */}
           <Route
             exact={true}
-            path="/support/stage-2/logs"
+            path="/support/step-2/logs"
             element={
               <PageLayout headerName="Support">
                 <Stage2Logs />

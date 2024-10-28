@@ -1,15 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Breadcrumb } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useEffect, useMemo, useState} from "react";
+import {Breadcrumb} from "antd";
+import {useDispatch, useSelector} from "react-redux";
 import "../Funded/FundedLogs/FundedLogs.scss";
 import AntTable from "../../ReusableComponents/AntTable/AntTable";
-import { logsListReq } from "../../store/NewReducers/logsSlice";
+import {logsListReq} from "../../store/NewReducers/logsSlice";
 import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const Stage2Logs = () => {
-  const { idToken } = useSelector((state) => state.auth);
-  const { stage2LogsData, count, isLoading } = useSelector((state) => state.logs);
+  const {idToken} = useSelector((state) => state.auth);
+  const {stage2LogsData, count, isLoading} = useSelector((state) => state.logs);
 
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -17,7 +17,7 @@ const Stage2Logs = () => {
 
   useEffect(() => {
     const query = `?category=STAGE_2&page=${pageNo}&page_size=${pageSize}`;
-    dispatch(logsListReq({ idToken, url: query, key: "stage2LogsData" }));
+    dispatch(logsListReq({idToken, url: query, key: "stage2LogsData"}));
   }, [pageNo, pageSize, idToken, dispatch]);
 
   // Transforming the log data
@@ -95,7 +95,7 @@ const Stage2Logs = () => {
           separator=">"
           items={[
             {
-              title: <a href="/support/stage-2">Stage 2</a>,
+              title: <a href="/support/step-2">Step 2</a>,
             },
             {
               title: <Link to="#">Log</Link>,

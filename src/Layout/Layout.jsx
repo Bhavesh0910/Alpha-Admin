@@ -65,13 +65,39 @@ const items = [
     //     link:"/trader-overview/view-logs"
     //   }
     // ]
-
   },
   // {
   //   key: "5",
   //   icon: <StageManagerIcon />,
   //   label: "Stage Manager",
   //   link: "/stage-manager",
+  // },
+  // {
+  //   key: "6",
+  //   icon: <SupportIcon />,
+  //   label: "Support",
+  //   children: [
+  //     {
+  //       key: "6-1",
+  //       label: "Stage 1 Pass",
+  //       link: "/support/stage-1",
+  //     },
+  //     {
+  //       key: "6-2",
+  //       label: "Stage 2 Pass",
+  //       link: "/support/stage-2",
+  //     },
+  //     {
+  //       key: "6-3",
+  //       label: "Funded",
+  //       link: "/support/funded",
+  //     },
+  //     {
+  //       key: "6-4",
+  //       label: "Payout",
+  //       link: "/support/payout",
+  //     },
+  //   ],
   // },
   {
     key: "6",
@@ -80,13 +106,18 @@ const items = [
     children: [
       {
         key: "6-1",
-        label: "Stage 1 Pass",
-        link: "/support/stage-1",
+        label: "Step 1",
+        link: "/support/step-1",
       },
       {
         key: "6-2",
-        label: "Stage 2 Pass",
-        link: "/support/stage-2",
+        label: "Step 2",
+        link: "/support/step-2",
+      },
+      {
+        key: "6-5",
+        label: "Step 3",
+        link: "/support/step-3",
       },
       {
         key: "6-3",
@@ -359,14 +390,16 @@ const PageLayout = ({headerName, children}) => {
         return "4";
       case "/stage-manager":
         return "5";
-      case "/support/stage-1":
+      case "/support/step-1":
         return "6-1";
-      case "/support/stage-1/logs":
+      case "/support/step-1/logs":
         return "6-1";
-      case "/support/stage-2":
+      case "/support/step-2":
         return "6-2";
-      case "/support/stage-2/logs":
+      case "/support/step-2/logs":
         return "6-2";
+      case "/support/step-3":
+        return "6-5";
       case "/support/funded":
         return "6-3";
       case "/funded/funded-view-logs":

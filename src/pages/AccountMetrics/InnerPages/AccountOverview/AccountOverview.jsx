@@ -279,6 +279,61 @@ const AccountOverview = ({overview, statistics, info, accountDetails, objectives
                 {objectives && objectives?.drawdown_result?.max_daily_loss?.status}
               </button>
             </div>
+
+            {objectives?.drawdown_result?.mll?.target > 0 ? (
+              <div className="bottom_main_right_inner_div">
+                <div>
+                  <h4>
+                    MLL {FormatUSD(objectives?.drawdown_result?.mll?.target ?? 0)} <span>{">"}</span>
+                  </h4>
+                  <p>Remaining : {FormatUSD(objectives?.drawdown_result?.mll?.remaining ?? 0)}</p>
+                </div>
+                <button
+                  className={`${
+                    objectives?.drawdown_result?.mll?.status === "In Progress" ? "status_in_progress" : objectives?.drawdown_result?.mll?.status === "Success" ? "status_green" : "status_red"
+                  }`}
+                >
+                  {objectives && objectives?.drawdown_result?.mll?.status}
+                </button>
+              </div>
+            ) : (
+              <></>
+            )}
+
+            {objectives?.consistency?.target > 0 ? (
+              <div className="bottom_main_right_inner_div">
+                <div>
+                  <h4>
+                    Consistency {FormatUSD(objectives?.consistency?.target)} <span>{">"}</span>
+                  </h4>
+                  <p>Results : {FormatUSD(objectives?.consistency?.result)}</p>
+                </div>
+                <button className={`${objectives?.consistency?.status === "In Progress" ? "status_in_progress" : objectives?.consistency?.status === "Success" ? "status_green" : "status_red"}`}>
+                  {objectives?.consistency?.status}
+                </button>
+              </div>
+            ) : (
+              <></>
+            )}
+            {objectives?.min_profit_days?.target > 0 ? (
+              <div className="bottom_main_right_inner_div">
+                <div>
+                  <h4>
+                    Min Profit days - {objectives?.min_profit_days?.target} <span>{">"}</span>
+                  </h4>
+                  <p>Results : {objectives?.min_profit_days?.result ?? 0}</p>
+                </div>
+                {objectives?.min_profit_days && (
+                  <button
+                    className={`${objectives?.min_profit_days?.status === "In Progress" ? "status_in_progress" : objectives?.min_profit_days?.status === "Success" ? "status_green" : "status_red"}`}
+                  >
+                    {objectives?.min_profit_days?.status}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>

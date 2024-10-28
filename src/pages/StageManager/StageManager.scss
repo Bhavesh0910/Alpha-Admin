@@ -10,14 +10,24 @@
     font-style: normal;
     font-weight: 900;
     line-height: normal;
-    margin-block-end: 20px;
+    // margin-block-end: 20px;
   }
   .header_wrapper {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
+    gap: 15px;
+    @media only screen and (max-width: 748px) {
+      flex-direction: column;
+      gap: 10px;
+    }
+    h2 {
+      margin-right: auto;
+      @media only screen and (max-width: 748px) {
+        text-align: left !important;
+      }
+    }
   }
-
   .status_green {
     border-radius: var(--Corner-Radius, 10px);
     border: 1px solid var(--green-border-color);
@@ -119,6 +129,43 @@
     @media only screen and (max-width: 570px) {
       button {
         padding: 4px 2px;
+      }
+    }
+
+    border-radius: var(--Corner-1, 5px);
+    border: 1px solid var(--Stroke, #252a29) !important;
+    background: var(--Text-white);
+    button {
+      border-radius: var(--Corner-1, 5px);
+      background: transparent !important;
+      color: var(--text-black);
+      border: none;
+    }
+    .active {
+      background: var(--blue-color) !important;
+      color: var(--text-black) !important;
+    }
+    .active:hover {
+      color: var(--text-black) !important;
+    }
+    button:hover {
+      color: var(--blue-color) !important;
+      border: none !important;
+    }
+  }
+
+  .stages_header_main {
+    display: flex;
+    gap: 6px;
+    padding: 4px;
+    align-items: center;
+    width: fit-content;
+
+    @media only screen and (max-width: 570px) {
+      width: 100%;
+      button {
+        padding: 4px 2px;
+        width: 100%;
       }
     }
 
@@ -380,10 +427,10 @@
   width: 100%;
   justify-content: flex-end;
   gap: 15px;
-  
+
   @media only screen and (max-width: 890px) {
-flex-direction: column-reverse;
-align-items: flex-end;
+    flex-direction: column-reverse;
+    align-items: flex-end;
   }
   > .ant-picker {
     // margin-right: 20px;

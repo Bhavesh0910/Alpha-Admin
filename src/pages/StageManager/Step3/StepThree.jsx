@@ -4,40 +4,40 @@ import React, {useEffect, useMemo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
-import searchIcon from "../../assets/icons/searchIcon.svg";
-import commentIcon from "../../assets/icons/comment.svg";
-import RightMark from "../../assets/icons/verified_green_circleIcon.svg";
-import createIcon from "../../assets/icons/createAcc.svg";
-import AccIcon from "../../assets/icons/acc-metrics.svg";
-import addIcon from "../../assets/icons/add-edit.svg";
-import acceptIcon from "../../assets/icons/accept.svg";
-import rejectIcon from "../../assets/icons/reject.svg";
-import toggleGreen from "../../assets/icons/toggle-green.svg";
-import toggleRed from "../../assets/icons/toggle-red.svg";
-import CrossMark from "../../assets/icons/notverified_red_circleIcon.svg";
-import {ReactComponent as Download} from "../../assets/icons/download.svg";
+import searchIcon from "../../../assets/icons/searchIcon.svg";
+import commentIcon from "../../../assets/icons/comment.svg";
+import RightMark from "../../../assets/icons/verified_green_circleIcon.svg";
+import createIcon from "../../../assets/icons/createAcc.svg";
+import AccIcon from "../../../assets/icons/acc-metrics.svg";
+import addIcon from "../../../assets/icons/add-edit.svg";
+import acceptIcon from "../../../assets/icons/accept.svg";
+import rejectIcon from "../../../assets/icons/reject.svg";
+import toggleGreen from "../../../assets/icons/toggle-green.svg";
+import toggleRed from "../../../assets/icons/toggle-red.svg";
+import CrossMark from "../../../assets/icons/notverified_red_circleIcon.svg";
+import {ReactComponent as Download} from "../../../assets/icons/download.svg";
 
-import AntTable from "../../ReusableComponents/AntTable/AntTable";
-import LoaderOverlay from "../../ReusableComponents/LoaderOverlay";
+import AntTable from "../../../ReusableComponents/AntTable/AntTable";
+import LoaderOverlay from "../../../ReusableComponents/LoaderOverlay";
 import {DownOutlined} from "@ant-design/icons";
-import "./StageManager.scss";
-import {supportListReq, nestedTableDataReq, statusUpdateReq, editCommentReq, updateContactReq, createAccountReq, editPaymentReferenceDetails} from "../../store/NewReducers/Support";
+import "../StageManager.scss";
+import {supportListReq, nestedTableDataReq, statusUpdateReq, editCommentReq, updateContactReq, createAccountReq, editPaymentReferenceDetails} from "../../../store/NewReducers/Support";
 import ReactCountryFlag from "react-country-flag";
 import dayjs from "dayjs";
-import {formatDate, formatDateTime, formatDateTimeNew, FormatUSD} from "../../utils/helpers/string";
-import {updateFlagReq} from "../../store/NewReducers/listSlice";
+import {formatDate, formatDateTime, formatDateTimeNew, FormatUSD} from "../../../utils/helpers/string";
+import {updateFlagReq} from "../../../store/NewReducers/listSlice";
 import axios from "axios";
-import {baseUrl} from "../../utils/api/apis";
-import {returnErrors} from "../../store/reducers/error";
-import downloadIcon from "../../assets/icons/download_to_pc.svg";
-import {copyToClipboard} from "../../utils/utilityFunctions";
-import {data} from "./../AffiliateMarketing/AffiliateRefList/AffiliateRefList";
+import {baseUrl} from "../../../utils/api/apis";
+import {returnErrors} from "../../../store/reducers/error";
+import downloadIcon from "../../../assets/icons/download_to_pc.svg";
+import {copyToClipboard} from "../../../utils/utilityFunctions";
+import {data} from "../../AffiliateMarketing/AffiliateRefList/AffiliateRefList";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 const {RangePicker} = DatePicker;
 
 const {Option} = Select;
 
-const StageManager = () => {
+const StepThree = () => {
   const lookup = require("country-code-lookup");
 
   const [pageNo, setPageNo] = useState(1);
@@ -75,6 +75,7 @@ const StageManager = () => {
   const [specialCount, setSpecialCount] = useState(0);
   const [fetchUpdate, setFetchUpdate] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState(false);
+  const [stage, setStage] = useState("Stage 1 Pass");
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -83,9 +84,12 @@ const StageManager = () => {
     stageStatusOptions || location.pathname === "/support/funded"
       ? ["New", "In Progress", "Flagged", "Dissmissed", "Rejected", "Approved"]
       : ["New", "In Progress", "Flagged", "Dissmissed", "Rejected", "Approved"];
+
+  const stagesOption = location.pathname === "/support/step-3" ? ["Stage 1 Pass", "Stage 2 Pass", "Stage 3 Pass"] : [];
+
   useEffect(() => {
     fetchStageList(idToken, pageNo, pageSize, searchText, status, dates);
-  }, [searchText, pageNo, pageSize, status, idToken, dates, refetch, fetchUpdate, listRefetch]);
+  }, [searchText, pageNo, pageSize, status, idToken, dates, refetch, fetchUpdate, listRefetch, stage]);
 
   useEffect(() => {
     // console.log("Indirect Update ");
@@ -95,6 +99,7 @@ const StageManager = () => {
     setSearchText("");
     setSearch("");
     setStatus("all");
+    setStage("Stage 1 Pass");
     if (specialCount > 0) {
       setFetchUpdate((prev) => !prev);
     }
@@ -104,15 +109,17 @@ const StageManager = () => {
 
   async function fetchStageList(idToken, pageNo, pageSize, searchText, status, dates) {
     let query = "";
-    let type;
-    let url;
+    let type = "";
+    let category = "";
+    let url = "";
     query = `?page=${pageNo}&page_size=${pageSize}`;
 
-    if (location.pathname === "/support/step-1" || location.pathname === "/support/step-2" || location.pathname === "/support/step-3") {
-      location.pathname === "/support/step-1" ? (type = "stage 1 Pass") : location.pathname === "/support/step-2" ? (type = "stage 2 Pass") : (type = "stage 3 Pass");
-      query = query + `&type=${type}`;
+    if (location.pathname === "/support/step-3") {
+      category = "STEP 3";
+      type = stage === "Stage 1 Pass" ? "Stage 1 Pass" : stage === "Stage 2 Pass" ? "Stage 2 Pass" : stage === "Stage 3 Pass" ? "Stage 3 Pass" : "stage 1 Pass";
+      query += `&type=${type}&category=${category}`;
     } else {
-      location.pathname === "/support/funded" ? (url = "v2/get/funded/list/") : (url = "v2/get-payout/");
+      url = location.pathname === "/support/funded" ? "v2/get/funded/list/" : "v2/get-payout/";
     }
 
     if (searchText) {
@@ -168,6 +175,11 @@ const StageManager = () => {
   const handleTabChange = (key) => {
     setPageNo(1);
     setStatus(key);
+  };
+
+  const handleStageChange = (key) => {
+    setPageNo(1);
+    setStage(key);
   };
 
   const handleCopyToClipboard = (text) => {
@@ -1835,15 +1847,20 @@ const StageManager = () => {
   return (
     <div className="stageManager_container">
       <div className="header_wrapper">
-        <h2>
-          {location.pathname === "/support/step-1"
-            ? "Step 1 Pass"
-            : location.pathname === "/support/step-2"
-            ? "Step 2 Pass"
-            : location.pathname === "/support/step-3"
-            ? "Step 3 Pass"
-            : location.pathname.split("/")[2].charAt(0).toUpperCase() + location.pathname.split("/")[2].slice(1)}
-        </h2>
+        <h2>Step 3</h2>
+      </div>
+
+      <div className="header_wrapper">
+        <div className="stages_header_main">
+          {stagesOption?.map((item) => (
+            <Button
+              className={stage === `${item}` ? "active" : ""}
+              onClick={() => handleStageChange(`${item}`)}
+            >
+              {item}
+            </Button>
+          ))}
+        </div>
 
         <div className="supportFilterParent">
           <RangePicker
@@ -2159,7 +2176,7 @@ const StageManager = () => {
   );
 };
 
-export default StageManager;
+export default StepThree;
 
 function ExpandedRowData({record}) {
   const location = useLocation();

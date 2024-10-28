@@ -981,6 +981,6 @@ textarea:where(.css-m4timi).ant-input {
   color: var(--text-black) !important;
 }
 .ant-table-thead {
-  position: relative;
-  z-index: 1;
+  position: relative !important;
+  z-index: 10 !important;
 }
