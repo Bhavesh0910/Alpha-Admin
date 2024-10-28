@@ -1831,8 +1831,8 @@ const StepThree = () => {
 
   let viewLogsLink;
 
-  if (location.pathname === "/support/step-1" || location.pathname === "/support/step-2" || location.pathname === "/support/step-2") {
-    viewLogsLink = location.pathname === "/support/step-1" ? "/support/step-1/logs" : "/support/step-2/logs";
+  if (location.pathname === "/support/step-3") {
+    viewLogsLink = "/support/step-3/logs";
   } else if (location.pathname === "/support/funded") {
     viewLogsLink = "/funded/funded-view-logs";
   } else if (location.pathname === "/support/payout") {

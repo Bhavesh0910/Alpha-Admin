@@ -75,6 +75,7 @@ import PayoutReview from "../pages/Support/PayoutReview/PayoutReview";
 import StepOne from "../pages/StageManager/Step1/StepOne";
 import StepTwo from "../pages/StageManager/Step2/StepTwo";
 import StepThree from "../pages/StageManager/Step3/StepThree";
+import StepThreeLogs from "../pages/StageManager/Step3/StepThreeLogs";
 // import Stage1 from "../pages/NewStageManager/Stage1";
 // import Stage2 from "../pages/NewStageManager/Stage2";
 // import NewFunded from "../pages/NewStageManager/Funded";
@@ -294,6 +295,15 @@ function Router() {
             element={
               <PageLayout headerName="Support">
                 <Stage2Logs />
+              </PageLayout>
+            }
+          />
+          <Route
+            exact={true}
+            path="/support/step-3/logs"
+            element={
+              <PageLayout headerName="Support">
+                <StepThreeLogs />
               </PageLayout>
             }
           />
